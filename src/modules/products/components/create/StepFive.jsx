@@ -1,0 +1,283 @@
+import React from 'react';
+import {Col, Row} from "react-grid-system";
+import StepNav from "../../../../components/step-nav";
+import Form from "../../../../containers/form/form";
+import Button from "../../../../components/ui/button";
+import {useSettingsStore} from "../../../../store";
+import {get, includes, isEqual} from "lodash"
+import Title from "../../../../components/ui/title";
+import Table from "../../../../components/table";
+import {useGetAllQuery, usePostQuery, usePutQuery} from "../../../../hooks/api";
+import {KEYS} from "../../../../constants/key";
+import {OverlayLoader} from "../../../../components/loader";
+import {URLS} from "../../../../constants/url";
+import {getSelectOptionsListFromData} from "../../../../utils";
+import {Download} from "react-feather";
+
+const StepFive = ({id = null, ...props}) => {
+
+    const setProduct = useSettingsStore(state => get(state, 'setProduct', () => {
+    }))
+    const resetProduct = useSettingsStore(state => get(state, 'resetProduct', () => {
+    }))
+    const resetRiskList = useSettingsStore(state => get(state, 'resetRiskList', []))
+    const product = useSettingsStore(state => get(state, 'product', {}))
+
+    const {mutate: createProduct, isLoading} = usePostQuery({listKeyId: KEYS.products})
+    const {mutate: updateProduct, isLoading: updateLoading} = usePutQuery({listKeyId: KEYS.products})
+
+    let {data: groups} = useGetAllQuery({key: KEYS.groupsofproducts, url: URLS.groupsofproducts})
+    groups = getSelectOptionsListFromData(get(groups, `data.data`, []), '_id', 'name')
+
+    let {data: subGroups} = useGetAllQuery({key: KEYS.subgroupsofproducts, url: URLS.subgroupsofproducts})
+    subGroups = getSelectOptionsListFromData(get(subGroups, `data.data`, []), '_id', 'name')
+
+    let {data: insurances} = useGetAllQuery({key: KEYS.typeofinsurer, url: URLS.typeofinsurer})
+    insurances = getSelectOptionsListFromData(get(insurances, `data.data`, []), '_id', 'name')
+
+    let {data: status} = useGetAllQuery({key: KEYS.statusofproduct, url: URLS.statusofproduct})
+    status = getSelectOptionsListFromData(get(status, `data.data`, []), '_id', 'name')
+
+    let {data: polices} = useGetAllQuery({key: KEYS.typeofpolice, url: URLS.typeofpolice})
+    polices = getSelectOptionsListFromData(get(polices, `data.data`, []), '_id', 'name')
+
+    let {data: persons} = useGetAllQuery({key: KEYS.typeofpersons, url: URLS.typeofpersons})
+    persons = getSelectOptionsListFromData(get(persons, `data.data`, []), '_id', 'name')
+
+    let {data: payments} = useGetAllQuery({key: KEYS.typeofpayment, url: URLS.typeofpayment})
+    payments = getSelectOptionsListFromData(get(payments, `data.data`, []), '_id', 'name')
+
+    let {data: policyformats} = useGetAllQuery({key: KEYS.policyformats, url: URLS.policyformats})
+    policyformats = getSelectOptionsListFromData(get(policyformats, `data.data`, []), '_id', 'name')
+
+    let {data: applicationformdocs} = useGetAllQuery({key: KEYS.applicationformdocs, url: URLS.applicationformdocs})
+    applicationformdocs = getSelectOptionsListFromData(get(applicationformdocs, `data.data`, []), '_id', 'url')
+
+    let {data: contractform} = useGetAllQuery({key: KEYS.contractform, url: URLS.contractform})
+    contractform = getSelectOptionsListFromData(get(contractform, `data.data`, []), '_id', 'url')
+
+    let {data: additionaldocuments} = useGetAllQuery({key: KEYS.additionaldocuments, url: URLS.additionaldocuments})
+    additionaldocuments = getSelectOptionsListFromData(get(additionaldocuments, `data.data`, []), '_id', 'url')
+
+
+    const findItem = (items = [], id, multiple = false) => {
+        if (!multiple) {
+            return items.find(item => isEqual(get(item, 'value'), id)) || {}
+        } else {
+            return items.filter(item => includes(id, get(item, 'value'))).map(({label}) => label).join(" , ") || "-"
+        }
+    }
+
+    const nextStep = () => {
+        if (id) {
+            updateProduct({url: `${URLS.products}/${id}`, attributes: product}, {
+                onSuccess: () => {
+                    resetRiskList();
+                    resetProduct();
+                    props.nextStep();
+                },
+                onError: () => {
+
+                }
+            })
+        } else {
+            createProduct({url: URLS.products, attributes: product}, {
+                onSuccess: () => {
+                    resetRiskList();
+                    resetProduct();
+                    props.nextStep();
+                },
+                onError: () => {
+
+                }
+            })
+        }
+
+    }
+
+
+    const prevStep = () => {
+        props.previousStep();
+    }
+
+    const reset = () => {
+        resetRiskList();
+        resetProduct();
+        props.firstStep();
+    }
+
+    return (<>
+            {(isLoading || updateLoading) && <OverlayLoader/>}
+            <Row>
+                <Col xs={12}>
+                    <StepNav step={5}/>
+                </Col>
+                <Col xs={12}>
+                    <Form formRequest={nextStep}>
+                        <Row>
+                            <Col xs={12}>
+                                <Title>Проверьте данные </Title>
+                            </Col>
+                        </Row>
+                        <Row className={'mb-25'}>
+                            <Col xs={6}>
+                                <Table thead={['1', '2']}>
+                                    <tr>
+                                        <td>Категория</td>
+                                        <td>
+                                            <strong>{get(findItem(groups, get(product, 'groupofproductsId', null)), 'label', '-')}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Под категория</td>
+                                        <td>
+                                            <strong>{get(findItem(subGroups, get(product, 'subgroupofproductsId', null)), 'label', '-')}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Код назначения</td>
+                                        <td><strong>{get(product, 'codeproduct', '-')}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Работа по версии продукта (Версия продукта)</td>
+                                        <td><strong>{get(product, 'versionproduct', '-')}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Тип страховщика</td>
+                                        <td>
+                                            <strong>{findItem(persons, get(product, 'typeofpersones', []), true)}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Наименование продукта</td>
+                                        <td><strong>{get(product, 'productname', '-')}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Статус договора</td>
+                                        <td>
+                                            <strong>{get(findItem(status, get(product, 'statusofproducts', null)), 'label', '-')}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Требует разрешения</td>
+                                        <td><strong>{get(product, 'isrequirepermission', false) ? 'Да' : 'Нет'}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Тип полиса</td>
+                                        <td>
+                                            <strong>{findItem(polices, get(product, 'typeofpolice', null), true)}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Разрешить несколько агентов</td>
+                                        <td><strong>{get(product, 'Isagreement', false) ? 'Да' : 'Нет'}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Имеет фиксированный превентивных мероприятий</td>
+                                        <td>
+                                            <strong>{get(product, 'Isfixedpreventivemeasures', false) ? 'Да' : 'Нет'}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Разрешить иностранную валюту</td>
+                                        <td><strong>{get(product, 'Isforeigncurrency', false) ? 'Да' : 'Нет'}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Разрешение изменение франшизы</td>
+                                        <td><strong>{get(product, 'Isfranchisechange', false) ? 'Да' : 'Нет'}</strong>
+                                        </td>
+                                    </tr>
+                                </Table>
+                            </Col>
+                            <Col xs={6}>
+                                <Table thead={['1', '2']}>
+                                    <tr>
+                                        <td>Форма анкеты</td>
+
+                                        <td><a
+                                            href={get(findItem(applicationformdocs, get(product, 'applicationformId', null)), 'url', '#')}
+                                            target={'_blank'} download><Download color={'#13D6D1'}/></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Договор</td>
+                                        <td><a
+                                            href={get(findItem(contractform, get(product, 'contractform', null)), 'url', '#')}
+                                            target={'_blank'} download><Download color={'#13D6D1'}/></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Приложения</td>
+                                        <td><a
+                                            href={get(findItem(additionaldocuments, get(product, 'additionaldocuments', null)), 'url', '#')}
+                                            target={'_blank'} download><Download color={'#13D6D1'}/></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Формат полиса</td>
+                                        <td>
+                                            <strong>{get(findItem(policyformats, get(product, 'policyformatId', null)), 'label', '-')}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Имеет фиксированного страхователя</td>
+                                        <td><strong>{get(product, 'Isfixedpolicyholder', false) ? 'Да' : 'Нет'}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Имеет выгодоприобретеля</td>
+                                        <td><strong>{get(product, 'Isbeneficiary', false) ? 'Да' : 'Нет'}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Имеет фиксированного выгодоприобретеля</td>
+                                        <td><strong>{get(product, 'Isfixedbeneficiary', false) ? 'Да' : 'Нет'}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Имеет фиксированную страховую сумму</td>
+                                        <td><strong>{get(product, 'Isfixedfee', false) ? 'Да' : 'Нет'}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Разрешить полис без оплаты</td>
+                                        <td>
+                                            <strong>{get(product, 'Ispolicywithoutpayment', false) ? 'Да' : 'Нет'}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Тип оплаты</td>
+                                        <td>
+                                            <strong>{findItem(payments, get(product, 'typeofpayment', null), true)}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Имеет фиксированную комиссию</td>
+                                        <td><strong>{get(product, 'Isfixedfee', false) ? 'Да' : 'Нет'}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Имеет диапазон ставок</td>
+                                        <td><strong>{get(product, 'Isbettingrange', false) ? 'Да' : 'Нет'}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Имеет франшизу</td>
+                                        <td><strong>{get(product, 'Isfranchisechange', false) ? 'Да' : 'Нет'}</strong>
+                                        </td>
+                                    </tr>
+                                </Table>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={12} className={'mt-32'}>
+                                <Button className={'mr-16'} type={'button'} onClick={reset} danger outlined
+                                        back>Отменить</Button>
+                                <Button dark className={'mr-16'} type={'button'} onClick={prevStep}
+                                        outlined>Назад</Button>
+                                <Button type={'submit'} success>Подтвердить</Button>
+                            </Col>
+                        </Row>
+                    </Form>
+                </Col>
+            </Row>
+        </>
+    );
+};
+
+export default StepFive;

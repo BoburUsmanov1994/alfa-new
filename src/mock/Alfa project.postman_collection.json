@@ -1,0 +1,853 @@
+{
+	"info": {
+		"_postman_id": "ffdfab2c-e6c4-4536-b980-77d4f23503ec",
+		"name": "Alfa project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://91.190.159.70:3000/auth/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"email@mail.ru\",\r\n    \"password\":\"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://91.190.159.70:3000/auth/login",
+					"protocol": "http",
+					"host": [
+						"91",
+						"190",
+						"159",
+						"70"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/auth/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"email@mail.ru\",\r\n    \"password\":\"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/products",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI1NDQyOTIsImV4cCI6MTY2Mjk3NjI5Mn0.4rs-3kJUdyPEcnxxp8YoAE1zc11EKSkwRkY5amRvXoQ",
+						"type": "default"
+					},
+					{
+						"key": "inn",
+						"value": "464655464",
+						"type": "default"
+					},
+					{
+						"key": "nameoforganization",
+						"value": "",
+						"type": "default"
+					},
+					{
+						"key": "name",
+						"value": "",
+						"type": "default"
+					},
+					{
+						"key": "secondname",
+						"value": "",
+						"type": "default"
+					},
+					{
+						"key": "middlename",
+						"value": "",
+						"type": "default"
+					},
+					{
+						"key": "passportSeries",
+						"value": "",
+						"type": "default"
+					},
+					{
+						"key": "passportNumber",
+						"value": "",
+						"type": "default"
+					},
+					{
+						"key": "pin",
+						"value": "",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n    \"groupofproductsId\":\"629712ce70bda308f5ab0c94\",\r\n    \"subgroupofproductsId\":\"62b035c5c027b6cecbd8be08\",\r\n    \"products\":\"62eb81529382a34e02212691\",\r\n    \"startofinsurance\":\"08.08.2022\",\r\n    \"endofinsurance\":\"08.08.2022\",\r\n    \"clinets\":{\r\n        \"forindividualsdata\":{\r\n            \"inn\":\"123\",\r\n            \"name\":\"name\",\r\n            \"secondname\":\"secondname\",\r\n            \"middlename\":\"middlename\",\r\n            \"gender\":\"62d7fcde3ee0be783489ce8c\",\r\n            \"dateofbirth\":\"07.07.2022\",\r\n            \"citizenship\":\"62d8ddc1a50321734857fd61\",\r\n            \"typeofdocument\":\"62d8e57fa85df4107be8a5d3\",\r\n            \"passportSeries\":\"AA\",\r\n            \"passportNumber\":\"123456789\",\r\n            \"pin\":\"31060250360985\",\r\n            \"passportissuancedate\":\"07.07.2022\",\r\n            \"passportissuedby\":\"XXXXXx\",\r\n            \"regions\":\"62a04ecfed4e2cf4024c55b7\",\r\n            \"districts\":\"62a0a75aed4e2cf4024c5c85\",\r\n            \"address\":\"YYYYYYY\",\r\n            \"postcode\":\"10005\",\r\n            \"telephonenumber\":\"+998901219667\",\r\n            \"emailforcontact\":\"test@mail.ru\",\r\n            \"mfo\":\"0906505\",\r\n            \"nameofbank\":\"Ipak yoli\",\r\n            \"numberofcard\":\"12345678\",\r\n            \"innofbank\":\"07080904\",\r\n            \"transitaccount\":\"99999999\",\r\n            \"personalaccount\":\"8958484242\"\r\n        },\r\n        \"corporateentitiesdata\":{\r\n            \"inn\":\"123\",\r\n            \"nameoforganization\":\"OOO Datagaze\",\r\n            \"oked\":\"98989896655454\",\r\n            \"mfo\":\"000000000\",\r\n            \"nameofbank\":\"nameofbank\",\r\n            \"innofbank\":\"07080904\",\r\n            \"scheduledaccount\":\"9898989898552548932\",\r\n            \"region\":\"6288c1c5d1c51320b29c4537\",\r\n            \"districts\":\"62a0a75aed4e2cf4024c5c85\",\r\n            \"address\":\"4546546456\",\r\n            \"postcode\":\"10005\",\r\n            \"checkingaccount\":\"89895587878455487\",\r\n            \"employees\":[{\r\n                \"fullname\":\"fullname\",\r\n                \"positions\":\"62b035c5c027b6cecbd8be08\",\r\n                \"typeofdocumentsformanager\":\"62b035c5c027b6cecbd8be08\",\r\n                \"documentnumber\":\"documentnumber\",\r\n                \"dateofmanagerdocument\":\"07.07.2022\",\r\n                \"expirationdate\":\"07.07.2022\",\r\n                \"telephonenumber\":\"+998901219667\",\r\n                \"emailforcontacts\":\"emailforcontacts\"\r\n            }]\r\n        }\r\n\r\n    },\r\n    \"riskId\":[{\r\n        \"riskgroup\":\"62e381b844264e27980c58c5\",\r\n        \"risk\":\"62e381c744264e27980c58d1\",\r\n        \"classeId\":\"62adafcea8f3b145d75e7ae7\",\r\n        \"startdate\":\"07.07.2022\",\r\n        \"enddate\":\"06.07.2022\",\r\n        \"insurancepremium\":35000,\r\n        \"insurancerate\":50000,\r\n        \"suminsured\":100000\r\n       }],\r\n    \"totalsuminsured\":90000,\r\n    \"totalinsurancepremium\":80000,\r\n    \"accruedinsurancepremium\":700000,\r\n    \"paidinsurancepremium\":1500000,\r\n    \"paymentcurrency\":\"629712ce70bda308f5ab0c94\",\r\n    \"duplicatefee\":[{\r\n        \"Isduplicatefee\":true,\r\n        \"typeoffee\":\"%\",\r\n        \"countoffee\":60000\r\n    }],\r\n    \"demonstrablecosts\":[{\r\n        \"Isdemonstrablecosts\":true,\r\n        \"typeoffee\":\"sum\",\r\n        \"countoffee\":900000\r\n    }],\r\n    \"premiumpaymentschedule\":[{\r\n        \"scheduledate\":\"07.07.2022\",\r\n        \"schedulecount\":900000\r\n    }],\r\n    \"franchise\":[{\r\n        \"risk\":\"629e3698ed4e2cf4024c4d14\",\r\n        \"Isfranchise\":true,\r\n        \"Isfixedfranchise\":true,\r\n        \"fixedvalue\":89000,\r\n        \"typeoffranchise\":\"629a1b5fed4e2cf4024c499b\",\r\n        \"baseoffranchise\":\"62b03506c027b6cecbd8bd14\",\r\n        \"franchise\":\"xxxxx\"\r\n    }],\r\n    \"termination\":[{\r\n        \"terminationdate\":\"07.07.2022\",\r\n        \"chargedamountreturned\":\"yyyy\",\r\n        \"amountreturned\":\"50000\",\r\n        \"reason\":\"629712ce70bda308f5ab0c94\"\r\n    }],\r\n    \"commission\":[{\r\n        \"agents\":\"629712ce70bda308f5ab0c94\",\r\n        \"percentageremuneration\":\"3%\",\r\n        \"accruedcommissionamount\":\"1%\",\r\n        \"commissionamountpaid\":\"11\",\r\n        \"accruedcommissionrefund\":\"test\",\r\n        \"returnedcommission\":\"ttttt\"\r\n    }],\r\n    \"rpm\":[{\r\n        \"perdeductionsRPM\":\"15%\",\r\n        \"amountdeductionsRPM\":\"12\"\r\n    }],\r\n    \"appregistrationnumber\":\"vvvv\",\r\n    \"applicationdate\":\"07.07.2022\",\r\n    \"whoaccepted\":\"Nodir aka\",\r\n    \"copyofdocuments\":\"9999\",\r\n    \"generalagreement\":true,\r\n    \"numberofcontract\":\"v4555\",\r\n    \"agreementdate\":\"07.07.2022\",\r\n    \"copyofagreement\":\"copyofagreement\",\r\n    \"documents\":[{\r\n        \"editaneldocumentation\":\"editaneldocumentation\"\r\n    }],\r\n    \"policy\":[{\r\n        \"policynumber\":\"policynumber\",\r\n        \"formno\":\"formno\",\r\n        \"dateofissue\":\"07.07.2022\",\r\n        \"copiesofdocuments\":\"copiesofdocuments\"\r\n    }],\r\n\"creatorId\":\"6288c1c5d1c51320b29c4537\"\r\n\r\n\r\n\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/agreements/agentsfilter",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"agreements",
+						"agentsfilter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://91.190.159.70:3000/products",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjE1ODk2NzYsImV4cCI6MTY2MjAyMTY3Nn0.Cx2J8wCEguWNDt0JWodgDKlC3oUPWSLBhSGCyRX-qcM",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://91.190.159.70:3000/products",
+					"protocol": "http",
+					"host": [
+						"91",
+						"190",
+						"159",
+						"70"
+					],
+					"port": "3000",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/agreements",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjE5NTE0NzEsImV4cCI6MTY2MjM4MzQ3MX0.yt5Py_8wDGrcCZZ7u5TEpUir9LHTje7-1vI1AghOdB8",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://91.190.159.70:3000/agreements",
+					"protocol": "http",
+					"host": [
+						"91",
+						"190",
+						"159",
+						"70"
+					],
+					"port": "3000",
+					"path": [
+						"agreements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/agreements/630f611004e34771ad079bab",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjE5NTE0NzEsImV4cCI6MTY2MjM4MzQ3MX0.yt5Py_8wDGrcCZZ7u5TEpUir9LHTje7-1vI1AghOdB8",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"groupofproductsId\":\"629712ce70bda308f5ab0c94\",\r\n    \"subgroupofproductsId\":\"62b035c5c027b6cecbd8be08\",\r\n    \"products\":\"62eb81529382a34e02212691\",\r\n    \"startofinsurance\":\"07.07.2022\",\r\n    \"endofinsurance\":\"08.08.2022\",\r\n    \"riskId\":[{\r\n        \"riskgroup\":\"62e381b844264e27980c58c5\",\r\n        \"risk\":\"62e381c744264e27980c58d1\",\r\n        \"classeId\":\"62adafcea8f3b145d75e7ae7\",\r\n        \"startdate\":\"07.07.2022\",\r\n        \"enddate\":\"06.07.2022\",\r\n        \"insurancepremium\":35000,\r\n        \"insurancerate\":50000,\r\n        \"suminsured\":100000\r\n       }],\r\n\r\n    \"totalsuminsured\":90000,\r\n    \"totalinsurancepremium\":80000,\r\n    \"accruedinsurancepremium\":700000,\r\n    \"paidinsurancepremium\":1500000,\r\n    \"paymentcurrency\":\"629712ce70bda308f5ab0c94\",\r\n    \"duplicatefee\":[{\r\n        \"Isduplicatefee\":true,\r\n        \"typeoffee\":\"%\",\r\n        \"countoffee\":60000\r\n    }],\r\n    \"demonstrablecosts\":[{\r\n        \"Isdemonstrablecosts\":true,\r\n        \"typeoffee\":\"sum\",\r\n        \"countoffee\":900000\r\n    }],\r\n    \"premiumpaymentschedule\":[{\r\n        \"scheduledate\":\"07.07.2022\",\r\n        \"schedulecount\":900000\r\n    }],\r\n    \"franchise\":[{\r\n        \"risk\":\"629e3698ed4e2cf4024c4d14\",\r\n        \"Isfranchise\":true,\r\n        \"Isfixedfranchise\":true,\r\n        \"fixedvalue\":89000,\r\n        \"typeoffranchise\":\"629a1b5fed4e2cf4024c499b\",\r\n        \"baseoffranchise\":\"62b03506c027b6cecbd8bd14\",\r\n        \"franchise\":\"xxxxx\"\r\n    }],\r\n    \"termination\":[{\r\n        \"terminationdate\":\"07.07.2022\",\r\n        \"chargedamountreturned\":\"yyyy\",\r\n        \"amountreturned\":\"50000\",\r\n        \"reason\":\"629712ce70bda308f5ab0c94\"\r\n    }],\r\n    \"commission\":[{\r\n        \"agents\":\"629712ce70bda308f5ab0c94\",\r\n        \"percentageremuneration\":\"3%\",\r\n        \"accruedcommissionamount\":\"1%\",\r\n        \"commissionamountpaid\":\"11\",\r\n        \"accruedcommissionrefund\":\"test\",\r\n        \"returnedcommission\":\"ttttt\"\r\n    }],\r\n    \"rpm\":[{\r\n        \"perdeductionsRPM\":\"15%\",\r\n        \"amountdeductionsRPM\":\"12\"\r\n    }],\r\n    \"appregistrationnumber\":\"vvvv\",\r\n    \"applicationdate\":\"07.07.2022\",\r\n    \"whoaccepted\":\"Nodir aka\",\r\n    \"copyofdocuments\":\"9999\",\r\n    \"generalagreement\":true,\r\n    \"numberofcontract\":\"v4555\",\r\n    \"agreementdate\":\"07.07.2022\",\r\n    \"copyofagreement\":\"copyofagreement\",\r\n    \"documents\":[{\r\n        \"editaneldocumentation\":\"editaneldocumentation\"\r\n    }],\r\n    \"policy\":[{\r\n        \"policynumber\":\"policynumber\",\r\n        \"formno\":\"formno\",\r\n        \"dateofissue\":\"07.07.2022\",\r\n        \"copiesofdocuments\":\"copiesofdocuments\"\r\n    }],\r\n  \"creatorId\":\"6288c1c5d1c51320b29c4537\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/agreements/630f611004e34771ad079bab",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"agreements",
+						"630f611004e34771ad079bab"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/reasons",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjE5NTE0NzEsImV4cCI6MTY2MjM4MzQ3MX0.yt5Py_8wDGrcCZZ7u5TEpUir9LHTje7-1vI1AghOdB8",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/reasons",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reasons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/reasons",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjE5NTE0NzEsImV4cCI6MTY2MjM4MzQ3MX0.yt5Py_8wDGrcCZZ7u5TEpUir9LHTje7-1vI1AghOdB8",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"yyyyyy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/reasons",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reasons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/reasons/6310906e94c703dda0be62c5",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjE5NTE0NzEsImV4cCI6MTY2MjM4MzQ3MX0.yt5Py_8wDGrcCZZ7u5TEpUir9LHTje7-1vI1AghOdB8",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"1111\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/reasons/6310906e94c703dda0be62c5",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reasons",
+						"6310906e94c703dda0be62c5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/reasons/6310906e94c703dda0be62c5",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjE5NTE0NzEsImV4cCI6MTY2MjM4MzQ3MX0.yt5Py_8wDGrcCZZ7u5TEpUir9LHTje7-1vI1AghOdB8",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/reasons/6310906e94c703dda0be62c5",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reasons",
+						"6310906e94c703dda0be62c5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/products/tariff",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI1NDQyOTIsImV4cCI6MTY2Mjk3NjI5Mn0.4rs-3kJUdyPEcnxxp8YoAE1zc11EKSkwRkY5amRvXoQ",
+						"type": "default"
+					},
+					{
+						"key": "subgroupofproductsId",
+						"value": "62b035c5c027b6cecbd8be08",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/products/tariff",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"products",
+						"tariff"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/products/",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI1NDQyOTIsImV4cCI6MTY2Mjk3NjI5Mn0.4rs-3kJUdyPEcnxxp8YoAE1zc11EKSkwRkY5amRvXoQ",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/products/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/agreements",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI1NDQyOTIsImV4cCI6MTY2Mjk3NjI5Mn0.4rs-3kJUdyPEcnxxp8YoAE1zc11EKSkwRkY5amRvXoQ",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/agreements/6311ea84124174da8da6f291",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"agreements",
+						"6311ea84124174da8da6f291"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/agreements/agentsfilter",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/agreements/agentsfilter",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"agreements",
+						"agentsfilter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/policy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI1NDQyOTIsImV4cCI6MTY2Mjk3NjI5Mn0.4rs-3kJUdyPEcnxxp8YoAE1zc11EKSkwRkY5amRvXoQ",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"agreementsId\":\"6311ea84124174da8da6f291\",\r\n    \"policynumber\":\"909290\",\r\n    \"formnumber\":\"12345\",\r\n    \"dateofissue\":\"30.12.2022\",\r\n    \"copyofdocuments\":\"xxxxxxxxx\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/policy",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"policy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/policy",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI1NDQyOTIsImV4cCI6MTY2Mjk3NjI5Mn0.4rs-3kJUdyPEcnxxp8YoAE1zc11EKSkwRkY5amRvXoQ",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/policy",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"policy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/policy/63197fa0ca10b6e301dc3191",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI1NDQyOTIsImV4cCI6MTY2Mjk3NjI5Mn0.4rs-3kJUdyPEcnxxp8YoAE1zc11EKSkwRkY5amRvXoQ",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"agreementsId\":\"6311ea84124174da8da6f291\",\r\n    \"policynumber\":\"101010\",\r\n    \"formnumber\":\"123\",\r\n    \"dateofissue\":\"30.12.2022\",\r\n    \"copyofdocuments\":\"xxxxxxxxx\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/policy/63197fa0ca10b6e301dc3191",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"policy",
+						"63197fa0ca10b6e301dc3191"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/policy",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI1NDQyOTIsImV4cCI6MTY2Mjk3NjI5Mn0.4rs-3kJUdyPEcnxxp8YoAE1zc11EKSkwRkY5amRvXoQ",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/policy",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"policy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/policy/",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI1NDQyOTIsImV4cCI6MTY2Mjk3NjI5Mn0.4rs-3kJUdyPEcnxxp8YoAE1zc11EKSkwRkY5amRvXoQ",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/policy/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"policy",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/typeofendorsements",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI2MzI5ODQsImV4cCI6MTY2MzA2NDk4NH0.bzNB-WndbQR-LuP12aNoCQT3Eb9EHrRHR2_fbX9XRis",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/typeofendorsements",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"typeofendorsements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/typeofendorsements",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI2MzI5ODQsImV4cCI6MTY2MzA2NDk4NH0.bzNB-WndbQR-LuP12aNoCQT3Eb9EHrRHR2_fbX9XRis",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Запрос на изменение тарифа\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/typeofendorsements",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"typeofendorsements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/typeofendorsements/6319c48b4a0d4e99f20c13f6",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI2MzI5ODQsImV4cCI6MTY2MzA2NDk4NH0.bzNB-WndbQR-LuP12aNoCQT3Eb9EHrRHR2_fbX9XRis",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/typeofendorsements/6319c48b4a0d4e99f20c13f6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"typeofendorsements",
+						"6319c48b4a0d4e99f20c13f6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/typeofendorsements/6319c48b4a0d4e99f20c13f6",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI2MzI5ODQsImV4cCI6MTY2MzA2NDk4NH0.bzNB-WndbQR-LuP12aNoCQT3Eb9EHrRHR2_fbX9XRis",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Запрос на изменение тарифwwwwwwwwwwwwwwwwwwwwwwwwwwа\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/typeofendorsements/6319c48b4a0d4e99f20c13f6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"typeofendorsements",
+						"6319c48b4a0d4e99f20c13f6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/statusofendorsements",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI3MDczMjAsImV4cCI6MTY2MzEzOTMyMH0.ImSRa8JhH2VLmSS_kw_AnOyetTUH6eTfQZs1P4uwVj0",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/statusofendorsements",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"statusofendorsements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/statusofendorsements",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI3MDczMjAsImV4cCI6MTY2MzEzOTMyMH0.ImSRa8JhH2VLmSS_kw_AnOyetTUH6eTfQZs1P4uwVj0",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"xxxxx\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/statusofendorsements",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"statusofendorsements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/fieldofendorsements",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI3MDczMjAsImV4cCI6MTY2MzEzOTMyMH0.ImSRa8JhH2VLmSS_kw_AnOyetTUH6eTfQZs1P4uwVj0",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"typeofendorsements\":\"6319c4ab4a0d4e99f20c13fc\",\r\n    \"filds\":[{\r\n        \"titleoffield\":\"suggestedChange\",\r\n        \"typeoffield\":\"String\"\r\n    }]\r\n   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/fieldofendorsements",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"fieldofendorsements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/fieldofendorsements",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI3MDczMjAsImV4cCI6MTY2MzEzOTMyMH0.ImSRa8JhH2VLmSS_kw_AnOyetTUH6eTfQZs1P4uwVj0",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/fieldofendorsements",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"fieldofendorsements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/fieldofendorsements/631c64e248941168bb45aa72",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NjI3MDczMjAsImV4cCI6MTY2MzEzOTMyMH0.ImSRa8JhH2VLmSS_kw_AnOyetTUH6eTfQZs1P4uwVj0",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/fieldofendorsements/631c65ac37e7ebffdb13dd4d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"fieldofendorsements",
+						"631c65ac37e7ebffdb13dd4d"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,96 @@
+{
+	"info": {
+		"_postman_id": "c465e3cf-dfa2-44bb-85d3-e5c0f7be7779",
+		"name": "16.06.2022",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3000/risk/typeofrisk/6295aea470bda308f5ab0a9b?",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTUxMDgzMTQsImV4cCI6MTY1NTU0MDMxNH0.-bDL9PZXagUiRdMhuHbN4XoKqrP1XIstbllo7EHc754",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/risk/typeofrisk/6295aea470bda308f5ab0a9b?",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"risk",
+						"typeofrisk",
+						"6295aea470bda308f5ab0a9b"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/risk/classesId/6295aea470bda308f5ab0a9b",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTUxMDgzMTQsImV4cCI6MTY1NTU0MDMxNH0.-bDL9PZXagUiRdMhuHbN4XoKqrP1XIstbllo7EHc754",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/risk/classesId/6295aea470bda308f5ab0a9b",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"risk",
+						"classesId",
+						"6295aea470bda308f5ab0a9b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/subgroupsofproducts/filter/6297144870bda308f5ab0cb7",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTUxMDgzMTQsImV4cCI6MTY1NTU0MDMxNH0.-bDL9PZXagUiRdMhuHbN4XoKqrP1XIstbllo7EHc754",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/subgroupsofproducts/filter/6297144870bda308f5ab0cb7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"subgroupsofproducts",
+						"filter",
+						"6297144870bda308f5ab0cb7"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

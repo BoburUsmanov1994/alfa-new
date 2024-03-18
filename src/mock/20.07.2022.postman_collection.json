@@ -1,0 +1,486 @@
+{
+	"info": {
+		"_postman_id": "3ee5532b-87c6-49ad-9866-873ddd4efa81",
+		"name": "20.07.2022",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3000/genders",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/agents",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"agents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/genders",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Erkak\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/genders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"genders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/district",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/district/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"district",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/district",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"cccccc\",\r\n    \"regiId\":\"62a04ecfed4e2cf4024c55b7\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/district",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"district"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/citizenship",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/citizenship",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"citizenship"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/citizenship",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"xxxxx\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/citizenship",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"citizenship"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/citizenship",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/citizenship",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"citizenship"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/position",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/position",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"position"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/position",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"бухгалтера\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/position",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"position"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/typeofdocuments",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/typeofdocuments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"typeofdocuments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/typeofdocuments",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"xxxxxxxx\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/typeofdocuments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"typeofdocuments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/levelofbranch",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"3 - отделение при филиале\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/levelofbranch/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"levelofbranch",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/breanches",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/breanches",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"breanches"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/breanches",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"levelofbreanches\":\"62d936755bcb122d3f1c41c4\",\r\n  \"codeofbreanches\"  :\"1-1-0\",\r\n  \"inn\":\"20462820s6\",\r\n  \"region\":\"62a04ecfed4e2cf4024c55b7\",\r\n  \"branchname\":\"Ташкентский городской департамент\",\r\n  \"shorttitleofbranch\":\"TSHD\",\r\n  \"address\":\"г. Ташкент, ул. А Кодирий 35\",\r\n  \"telephone\":\"(99894) 693 00 08\",\r\n  \"email\":\"r.Bobir@alfainvest.uz\",\r\n  \"agreementnumber\":\"01\",\r\n  \"agreementdate\":\"01/05/2022\",\r\n  \"expirationdate\":\"12/31/2022\",\r\n  \"employees\":[\r\n      {\r\n          \"fullname\":\"Рашидов Бобир Ойбек угли\",\r\n          \"positions\":\"62d8e1e8ca52e06fc353b8f2\",\r\n          \"telephonenumber\":\"+(99894) 693 00 08\",\r\n          \"emailforcontacts\":\"r.Bobir@alfainvest.uz\"\r\n      },\r\n         {\r\n          \"fullname\":\"Магзумова Мадина Гайратовна \",\r\n          \"positions\":\"62d944d3436a335c629379a4\",\r\n          \"telephonenumber\":\"+(99894) 693 00 08\",\r\n          \"emailforcontacts\":\"r.Bobir@alfainvest.uz\"\r\n      }\r\n  ],\r\n  \"checkingaccount\":\"20 214 000 904 273 606 009\",\r\n  \"mfo\":\"1036\",\r\n  \"nameofbank\":\"Сагбон Ипак йули\",\r\n  \"breanchstatus\":\"62d936755bcb122d3f1c41c4\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/breanches",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"breanches"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/breanchstatus",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/breanchstatus",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"breanchstatus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/breanchstatus",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTgyMjM4ODUsImV4cCI6MTY1ODY1NTg4NX0.PGGNltijqPM-xMGT7tOkZZZ7EU28EuZT1pAN37b0Nzk",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"не активный\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/breanchstatus",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"breanchstatus"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

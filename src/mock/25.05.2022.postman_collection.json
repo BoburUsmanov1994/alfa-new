@@ -1,0 +1,386 @@
+{
+	"info": {
+		"_postman_id": "952619e7-f0af-4d8f-b965-ebd432608d5f",
+		"name": "25.05.2022",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3000/applicationformdocs",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM0ODU1OTQsImV4cCI6MTY1MzkxNzU5NH0.xGG8z9Ozt6QNUtXgmwQB2dQ7dDniYHpKL7mqByhm_MI",
+						"type": "default"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/applicationformdocs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"applicationformdocs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/applicationformdocs",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM0ODU1OTQsImV4cCI6MTY1MzkxNzU5NH0.xGG8z9Ozt6QNUtXgmwQB2dQ7dDniYHpKL7mqByhm_MI",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"test1\",\r\n    \"url\":\"xxxx\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/applicationformdocs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"applicationformdocs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/applicationformdocs/628e3088023906117e1dc935",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM0ODU1OTQsImV4cCI6MTY1MzkxNzU5NH0.xGG8z9Ozt6QNUtXgmwQB2dQ7dDniYHpKL7mqByhm_MI",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/applicationformdocs/628e3088023906117e1dc935",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"applicationformdocs",
+						"628e3088023906117e1dc935"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/applicationformdocs/628e3088023906117e1dc935",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM0ODU1OTQsImV4cCI6MTY1MzkxNzU5NH0.xGG8z9Ozt6QNUtXgmwQB2dQ7dDniYHpKL7mqByhm_MI",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/applicationformdocs/628e3088023906117e1dc935",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"applicationformdocs",
+						"628e3088023906117e1dc935"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/contractform",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM0ODU1OTQsImV4cCI6MTY1MzkxNzU5NH0.xGG8z9Ozt6QNUtXgmwQB2dQ7dDniYHpKL7mqByhm_MI",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/contractform",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contractform"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/contractform",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM0ODU1OTQsImV4cCI6MTY1MzkxNzU5NH0.xGG8z9Ozt6QNUtXgmwQB2dQ7dDniYHpKL7mqByhm_MI",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"xxeeeee\",\r\n    \"url\":\"xxxxxxxxxxxxxxxxxxxxxxxxxx\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/contractform",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contractform"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/additionaldocuments",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM0ODU1OTQsImV4cCI6MTY1MzkxNzU5NH0.xGG8z9Ozt6QNUtXgmwQB2dQ7dDniYHpKL7mqByhm_MI",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/additionaldocuments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"additionaldocuments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/additionaldocuments",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM0ODU1OTQsImV4cCI6MTY1MzkxNzU5NH0.xGG8z9Ozt6QNUtXgmwQB2dQ7dDniYHpKL7mqByhm_MI",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"xxxx\",\r\n    \"url\":\"xxxxxxxxx\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/additionaldocuments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"additionaldocuments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/typeofclaimsettlement",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM1NjA0NTAsImV4cCI6MTY1Mzk5MjQ1MH0.UoaErOaRctHZaO2TzvE7n3SJ_1I_K1baZQ5v4ueJDBo",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"xxxx\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/typeofclaimsettlement",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"typeofclaimsettlement"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/typeofclaimsettlement",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM1NjA0NTAsImV4cCI6MTY1Mzk5MjQ1MH0.UoaErOaRctHZaO2TzvE7n3SJ_1I_K1baZQ5v4ueJDBo",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/typeofclaimsettlement",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"typeofclaimsettlement"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/typeofrefund",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM1NjA0NTAsImV4cCI6MTY1Mzk5MjQ1MH0.UoaErOaRctHZaO2TzvE7n3SJ_1I_K1baZQ5v4ueJDBo",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/typeofrefund",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"typeofrefund"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/typeofrefund",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM1NjA0NTAsImV4cCI6MTY1Mzk5MjQ1MH0.UoaErOaRctHZaO2TzvE7n3SJ_1I_K1baZQ5v4ueJDBo",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"xxxx\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/typeofrefund",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"typeofrefund"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/typeoffranchise",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQG1haWwucnUiLCJ1c2VySWQiOiI2Mjg4YzFjNWQxYzUxMzIwYjI5YzQ1MzciLCJpYXQiOjE2NTM0ODU1OTQsImV4cCI6MTY1MzkxNzU5NH0.xGG8z9Ozt6QNUtXgmwQB2dQ7dDniYHpKL7mqByhm_MI",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/typeoffranchise",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"typeoffranchise"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
