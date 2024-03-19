@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import styled from "styled-components";
-import {get, includes, isEmpty} from "lodash";
+import {get, hasIn,  isFunction} from "lodash";
 import {ErrorMessage} from "@hookform/error-message";
 import Label from "../../../../components/ui/label";
 import InputMask from 'react-input-mask';
@@ -8,7 +8,6 @@ import InputMask from 'react-input-mask';
 const Styled = styled.div`
   .masked-input {
     display: block;
-    min-width: 275px;
     width: 100%;
     padding: 12px 18px;
     color: #000;
@@ -17,7 +16,7 @@ const Styled = styled.div`
     border-radius: 5px;
     outline: none;
     font-family: 'Gilroy-Regular', sans-serif;
-    max-width: 400px;
+    //max-width: 400px;
     &.error{
       border-color: #ef466f;
     }
@@ -49,6 +48,17 @@ const MaskedInput = ({
     useEffect(() => {
         setValue(name, defaultValue)
     }, [defaultValue])
+    useEffect(()=>{
+        if(watch(name)){
+            if(isFunction(get(property,'onChange'))){
+                get(property,'onChange')(watch(name))
+            }
+        }
+
+    },[watch(name)])
+    useEffect(() => {
+        getValueFromField(getValues(name), name);
+    }, [watch(name)]);
 
     return (
         <Styled {...rest}>
@@ -63,14 +73,15 @@ const MaskedInput = ({
                     render={({field}) => (
                         <InputMask
                             {...field}
-                            className={`masked-input ${!isEmpty(errors) ? "error" : ''}`}
+                            className={`masked-input text-uppercase ${hasIn(errors,name) ? "error" : ''}`}
                             placeholder={get(property, "placeholder")}
                             mask={get(property, "mask","aa")}
                             maskChar={get(property, "maskChar"," ")}
+                            disabled={disabled}
                         />
                     )}
                 />
-                <ErrorMessage
+                {!get(property,'hideErrorMsg',false) && <ErrorMessage
                     errors={errors}
                     name={name}
                     render={({messages = `${label} is required`}) => {
@@ -84,9 +95,9 @@ const MaskedInput = ({
                         if (errors[name]?.type == 'manual') {
                             messages = `${label} ${errors[name].message}`;
                         }
-                        return <small className="form-error-message"> {messages}</small>;
+                        return   <small className="form-error-message"> {messages}</small>;
                     }}
-                />
+                />}
             </div>
         </Styled>
     );

@@ -49,9 +49,9 @@ const StyledButton = styled.button`
 `;
 
 const Button = ({...rest}) => {
-    return (
-        <StyledButton {...rest} />
-    );
+  return (
+      <StyledButton {...rest} />
+  );
 };
 
 export default Button;

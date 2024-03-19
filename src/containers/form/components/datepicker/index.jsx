@@ -7,8 +7,13 @@ import {get, isEmpty, isFunction} from "lodash";
 import {ErrorMessage} from "@hookform/error-message";
 import {Calendar} from "react-feather";
 import dayjs from "dayjs";
+import ru from "date-fns/locale/ru"
+import MaskedInput from "react-input-mask";
 
 const Styled = styled.div`
+  .react-datepicker-wrapper{
+    display: block;
+  }
   .custom-datepicker {
     display: block;
     min-width: 275px;
@@ -19,14 +24,15 @@ const Styled = styled.div`
     border: 1px solid #BABABA;
     border-radius: 5px;
     outline: none;
-    max-width: 400px;
+    //max-width: 400px;
     font-family: 'Gilroy-Regular', sans-serif;
 
   }
 
   .custom__box {
     position: relative;
-    max-width: 400px;
+    //max-width: 400px;
+
     .custom__icon {
       position: absolute;
       right: 8px;
@@ -52,36 +58,50 @@ const CustomDatepicker = ({
                               setValue,
                               getValueFromField = () => {
                               },
-                              dateFormat = "MM/DD/YYYY",
+                              dateFormat = "YYYY-MM-DD",
                               ...rest
                           }) => {
     const [startDate, setStartDate] = useState(new Date());
 
-    useEffect(()=>{
-        setValue(name,dayjs(startDate).format(dateFormat))
-        if(get(property,'onChange') && isFunction(get(property,'onChange'))) {
+    useEffect(() => {
+        setValue(name, dayjs(startDate).format(dateFormat))
+        if (get(property, 'onChange') && isFunction(get(property, 'onChange'))) {
             get(property, 'onChange')(startDate)
         }
-    },[startDate])
+    }, [startDate])
 
-    useEffect(()=>{
-        if(defaultValue){
+    useEffect(() => {
+        if (defaultValue) {
             if (dayjs(defaultValue).isValid()) {
                 setStartDate(dayjs(defaultValue).toDate())
             }
         }
-    },[defaultValue])
+    }, [defaultValue])
     useEffect(() => {
-        getValueFromField(getValues(name), name);
+        if(startDate) {
+            getValueFromField(getValues(name), name);
+        }
     }, [watch(name)]);
     return (
         <Styled {...rest}>
             <div className="form-group">
-                {!get(property,'hideLabel',false) &&  <Label>{label ?? name}</Label>}
+                {!get(property, 'hideLabel', false) && <Label>{label ?? name}</Label>}
                 <div className={"custom__box"}>
                     <DatePicker
+                        minDate={get(property,'minDate')}
+                        locale={ru}
+                        calendarStartDay={1}
+                        dateFormat={get(property, 'dateFormat', 'dd.MM.yyyy')}
                         className={`custom-datepicker ${!isEmpty(errors) ? "error" : ''}`}
-                        selected={startDate} onChange={(date) => setStartDate(date)}
+                        selected={dayjs(startDate).toDate()}
+                        onChange={(date) => {
+                            if (dayjs(date).isValid()) {
+                                setStartDate(date)
+                            }
+                        }}
+                        customInput={
+                            <MaskedInput  mask={'99.99.9999'} />
+                        }
                         readOnly={disabled}
                     />
                     <Calendar className={'custom__icon'}/>

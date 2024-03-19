@@ -86,4 +86,6 @@ export const KEYS = {
     transactionAttach: "transactionAttach",
     transactionDistribute: "transactionDistribute",
     personalInfoProvider: "personalInfoProvider",
+    ownershipForms: "ownershipForms",
+    organizationInfoProvider: "organizationInfoProvider",
 }

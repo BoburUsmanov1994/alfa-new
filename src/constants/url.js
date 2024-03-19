@@ -39,7 +39,7 @@ export const URLS = {
     accountstatus: 'accountstatus',
     typeofagent: 'typeofagent',
     citizenship: 'citizenship',
-    genders: 'genders',
+    genders: 'api/references/gender',
     position: 'position',
     typeofdocuments: 'typeofdocuments',
     levelofbranch: 'levelofbranch',
@@ -87,4 +87,7 @@ export const URLS = {
     transactionPolicies: 'transactions/policies',
     transactionAttach: 'transactions/attach',
     transactionDistribute: 'transactions/distribute',
+    ownershipForms: 'api/references/ownership-form',
+    organizationInfoProvider:'api/provider/organization-info',
+    personalInfoProvider:'api/provider/personal-info',
 }
