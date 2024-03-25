@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {Row, Col} from "react-grid-system";
+import Search from "../../../components/search";
+import Panel from "../../../components/panel";
 import Section from "../../../components/section";
 import Title from "../../../components/ui/title";
 import Field from "../../../containers/form/field";
-import {get, head, upperCase} from "lodash";
-import {useGetAllQuery, usePostQuery} from "../../../hooks/api";
+import {get, upperCase} from "lodash";
+import {usePostQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import Form from "../../../containers/form/form";
@@ -14,15 +16,13 @@ import {useNavigate} from "react-router-dom";
 import Flex from "../../../components/flex";
 import dayjs from "dayjs";
 import {PERSON_TYPE} from "../../../constants";
-import {getSelectOptionsListFromData} from "../../../utils";
 
-const ClientCreateContainer = ({...rest}) => {
+const JuridicalClientCreateContainer = ({...rest}) => {
     const navigate = useNavigate();
     const [person, setPerson] = useState(null)
     const [passportSeries, setPassportSeries] = useState(null)
     const [passportNumber, setPassportNumber] = useState(null)
     const [birthDate, setBirthDate] = useState(null)
-    const [regionId, setRegionId] = useState(null)
     const {
         mutate: getPersonalInfoRequest, isLoading: isLoadingPersonalInfo
     } = usePostQuery({listKeyId: KEYS.personalInfoProvider})
@@ -40,46 +40,17 @@ const ClientCreateContainer = ({...rest}) => {
             }
         )
     }
-    const {data: genders} = useGetAllQuery({
-        key: KEYS.genders, url: `${URLS.genders}/list`
-    })
-    const genderList = getSelectOptionsListFromData(get(genders, `data`, []), '_id', 'name')
 
-    const {data: residentTypes} = useGetAllQuery({
-        key: KEYS.residentTypes, url: `${URLS.residentTypes}/list`
-    })
-    const residentTypeList = getSelectOptionsListFromData(get(residentTypes, `data`, []), '_id', 'name')
-
-    const {data: country, isLoading: isLoadingCountry} = useGetAllQuery({
-        key: KEYS.countries, url: `${URLS.countries}/list`
-    })
-    const countryList = getSelectOptionsListFromData(get(country, `data`, []), '_id', 'name')
-
-    const {data: region, isLoading: isLoadingRegion} = useGetAllQuery({
-        key: KEYS.regions, url: `${URLS.regions}/list`
-    })
-    const regionList = getSelectOptionsListFromData(get(region, `data`, []), '_id', 'name')
-
-    const {data: district} = useGetAllQuery({
-        key: [KEYS.districts, regionId],
-        url: `${URLS.districts}/list`,
-        params: {
-            params: {
-                region: regionId
-            }
-        },
-        enabled: !!(regionId || get(person, 'regionId'))
-    })
-    const districtList = getSelectOptionsListFromData(get(district, `data`, []), '_id', 'name')
 
     const {mutate: createRequest, isLoading} = usePostQuery({listKeyId: KEYS.clients})
-
     const create = ({data}) => {
+        const {person: {seria, number, ...restPerson} = {}, ...rest} = data
         createRequest({
             url: URLS.clients,
             attributes: {
-                ...data,
+                ...rest,
                 type: PERSON_TYPE.person,
+                person: {...restPerson, passportNumber: `${seria}${number}`}
             }
         }, {
             onSuccess: () => {
@@ -124,7 +95,7 @@ const ClientCreateContainer = ({...rest}) => {
                                                    maskChar: '_',
                                                    onChange: (val) => setPassportSeries(upperCase(val))
                                                }}
-                                               name={'person.passportData.seria'}
+                                               name={'person.seria'}
                                                type={'input-mask'}
                                         />
                                         <Field params={{required: true}} property={{
@@ -134,7 +105,7 @@ const ClientCreateContainer = ({...rest}) => {
                                             placeholder: '1234567',
                                             maskChar: '_',
                                             onChange: (val) => setPassportNumber(val)
-                                        }} name={'person.passportData.number'} type={'input-mask'}/>
+                                        }} name={'person.number'} type={'input-mask'}/>
 
                                         <Field params={{required: true}} className={'ml-15'}
                                                property={{
@@ -161,120 +132,41 @@ const ClientCreateContainer = ({...rest}) => {
                                    defaultValue={get(person, 'firstNameLatin')}
                                    label={'Firstname'}
                                    type={'input'}
-                                   name={'person.fullName.firstname'}/>
+                                   name={'person.firstName'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field params={{required: true}} defaultValue={get(person, 'lastNameLatin')}
                                    label={'Lastname'} type={'input'}
-                                   name={'person.fullName.lastname'}/>
+                                   name={'person.lastName'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field params={{required: true}}
                                    defaultValue={get(person, 'middleNameLatin')}
                                    label={'Middlename'}
                                    type={'input'}
-                                   name={'person.fullName.middlename'}/>
+                                   name={'person.middleName'}/>
                         </Col>
-                        <Col xs={4} className={'mb-25'}>
-                            <Field params={{required: true}}
-                                   defaultValue={get(head(get(person, 'documents', [])), 'datebegin')}
-                                   label={'Дата выдачи паспорта'}
-                                   type={'datepicker'}
-                                   name={'person.passportData.startDate'}/>
-                        </Col>
-                        <Col xs={4} className={'mb-25'}>
-                            <Field params={{required: true}}
-                                   defaultValue={get(head(get(person, 'documents', [])), 'docgiveplace')}
-                                   label={'Кем выдан'}
-                                   type={'input'}
-                                   name={'person.passportData.issuedBy'}/>
-                        </Col>
-                        <Col xs={4} className={'mb-25'}>
-                            <Field
-                                fullWidth
-                                params={{required: true}}
-                                defaultValue={get(person, 'gender')}
-                                options={genderList}
-                                label={'Gender'}
-                                type={'select'}
-                                name={'person.gender'}/>
-                        </Col>
-                        <Col xs={4} className={'mb-25'}>
+                        <Col xs={4} params={{required: true}} className={'mb-25'}>
                             <Field defaultValue={get(person, 'pinfl')} label={'ПИНФЛ'} type={'input-mask'} property={{
                                 placeholder: 'ПИНФЛ',
                                 mask: '99999999999999',
                                 maskChar: '_'
                             }}
-                                   name={'person.passportData.pinfl'}/>
+                                   name={'person.personalIdentificationNumber'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field
-                                params={{
-                                    required: true,
-                                    pattern: {
-                                        value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
-                                        message: 'Invalid format'
-                                    }
-                                }}
-                                defaultValue={get(person, 'phone')}
-                                label={'Phone'}
+                                defaultValue={get(person, 'cardNumber')}
+                                label={'Card number'}
                                 type={'input'}
-                                property={{placeholder: '998XXXXXXXXX'}}
-                                name={'person.phone'}/>
+                                name={'person.cardNumber'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field
-                                defaultValue={get(person, 'email')}
-                                label={'Email'}
+                                defaultValue={get(person, 'personalAccount')}
+                                label={'Personal account'}
                                 type={'input'}
-                                name={'person.email'}/>
-                        </Col>
-                        <Col xs={4} className={'mb-25'}>
-                            <Field
-                                params={{required: true}}
-                                options={residentTypeList}
-                                defaultValue={get(person, 'residentType')}
-                                label={'Resident type'}
-                                type={'select'}
-                                name={'person.residentType'}/>
-                        </Col>
-                        <Col xs={4} className={'mb-25'}>
-                            <Field
-                                defaultValue={get(person, 'birthCountry', '210')}
-                                label={'Country'}
-                                type={'select'}
-                                options={countryList}
-                                name={'person.country'}/>
-                        </Col>
-                        <Col xs={4} className={'mb-25'}>
-                            <Field
-                                params={{required: true}}
-                                options={regionList}
-                                defaultValue={get(person, 'regionId')}
-                                label={'Region'}
-                                type={'select'}
-                                property={{
-                                    onChange: (val) => setRegionId(val)
-                                }}
-                                name={'person.region'}/>
-                        </Col>
-                        <Col xs={4} className={'mb-25'}>
-                            <Field
-                                params={{required: true}}
-                                options={districtList}
-                                defaultValue={get(person, 'districtId')}
-                                label={'District'}
-                                type={'select'}
-                                name={'person.district'}/>
-                        </Col>
-                        <Col xs={12} className={'mb-25'}>
-                            <Field
-                                noMaxWidth
-                                params={{required: true}}
-                                defaultValue={get(person, 'address')}
-                                label={'Address'}
-                                type={'input'}
-                                name={'person.address'}/>
+                                name={'person.personalAccount'}/>
                         </Col>
                     </Row>
                 </Form>
@@ -283,4 +175,4 @@ const ClientCreateContainer = ({...rest}) => {
     );
 };
 
-export default ClientCreateContainer;
+export default JuridicalClientCreateContainer;

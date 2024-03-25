@@ -64,7 +64,7 @@ const customStyles = {
         padding: '4px 12px',
         width: '100%',
         minHeight: '40px',
-        maxWidth: '400px',
+        // maxWidth: '400px',
         fontSize: '16px',
         fontWeight: '300',
         "&:hover": {

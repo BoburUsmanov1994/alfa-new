@@ -16,7 +16,7 @@ const Styled = styled.div`
     border: 1px solid #BABABA;
     border-radius: 5px;
     outline: none;
-    max-width: 400px;
+    //max-width: 400px;
     font-family: 'Gilroy-Regular', sans-serif;
     &.error{
       border-color: #ef466f;

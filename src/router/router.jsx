@@ -34,6 +34,8 @@ import BcoBlankPage from "../modules/accounting/pages/PolicyBlankPage";
 import BcoPage from "../modules/accounting/pages/BcoPage";
 import LogOutPage from "../modules/auth/pages/LogOutPage";
 import InsuranceFormPage from "../modules/handbook/pages/InsuranceFormPage";
+import JuridicalClientCreatePage from "../modules/clients/pages/JuridicalClientCreatePage";
+import JuridicalClientsPage from "../modules/clients/pages/JuridicalClientsPage";
 //lazy load
 const TypeObjectPage = lazy(() => import("../modules/handbook/pages/TypeObjectPage"));
 const ObjectPage = lazy(() => import("../modules/handbook/pages/ObjectPage"));
@@ -123,8 +125,9 @@ const Router = ({...rest}) => {
                             <Route path={"clients"}>
                                 <Route path={"person-type"} element={<PersonTypePage/>}/>
                                 <Route path={"physical"} element={<ClientsPage/>}/>
-                                <Route path={"juridical"} element={<ClientsPage/>}/>
-                                <Route path={"create"} element={<ClientCreatePage/>}/>
+                                <Route path={"juridical"} element={<JuridicalClientsPage/>}/>
+                                <Route path={"physical/create"} element={<ClientCreatePage/>}/>
+                                <Route path={"juridical/create"} element={<JuridicalClientCreatePage/>}/>
                             </Route>
 
                             <Route path={"accounts"}>

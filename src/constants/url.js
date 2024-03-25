@@ -4,7 +4,7 @@ export const URLS = {
     getMe: 'api/auth/get-me',
     regions: 'api/references/region',
     insuranceForm: 'api/references/insurance-form',
-    districts: 'districts',
+    districts: 'api/references/district',
     branches: 'branches',
     typeofobject: 'typeofobject',
     object: 'object',
@@ -90,4 +90,6 @@ export const URLS = {
     ownershipForms: 'api/references/ownership-form',
     organizationInfoProvider:'api/provider/organization-info',
     personalInfoProvider:'api/provider/personal-info',
+    residentTypes:'api/references/resident-type',
+    countries:'api/references/country',
 }

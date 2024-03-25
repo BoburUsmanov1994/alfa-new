@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-import ClientCreateContainer from "../containers/ClientCreateContainer";
+import JuridicalClientCreateContainer from "../containers/JuridicalClientCreateContainer";
 
 
 const Styled = styled.div`
@@ -11,12 +11,12 @@ const Styled = styled.div`
     margin-bottom: 15px;
   }
 `;
-const ClientCreatePage = ({...rest}) => {
+const JuridicalClientCreatePage = ({...rest}) => {
     return (
         <Styled {...rest}>
-            <ClientCreateContainer />
+            <JuridicalClientCreateContainer />
         </Styled>
     );
 };
 
-export default ClientCreatePage;
+export default JuridicalClientCreatePage;

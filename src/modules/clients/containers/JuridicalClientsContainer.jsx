@@ -8,7 +8,7 @@ import Field from "../../../containers/form/field";
 import {useTranslation} from "react-i18next";
 import {PERSON_TYPE} from "../../../constants";
 
-const ClientsContainer = ({...rest}) => {
+const JuridicalClientsContainer = ({...rest}) => {
     const {t} = useTranslation()
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
@@ -75,9 +75,9 @@ const ClientsContainer = ({...rest}) => {
                 listUrl={`${URLS.clients}/list`}
                 title={t('Clients')}
                 responseDataKey={'data'}
-                params={{type:PERSON_TYPE.person}}
+                params={{type:PERSON_TYPE.organization}}
                 // viewUrl={'/clients/view'}
-                createUrl={'/clients/physical/create'}
+                createUrl={'/clients/juridical/create'}
                 // updateUrl={'/clients/update'}
 
             />
@@ -85,4 +85,4 @@ const ClientsContainer = ({...rest}) => {
     );
 };
 
-export default ClientsContainer;
+export default JuridicalClientsContainer;

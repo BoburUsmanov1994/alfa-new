@@ -28,7 +28,6 @@ import {Check, ChevronUp, Menu} from "react-feather";
 import {useTranslation} from "react-i18next";
 
 
-
 const Styled = styled.div`
   .w-100 > div:first-child {
     width: 100%;
@@ -75,7 +74,8 @@ const GridView = ({
                       responseDataKey = 'data',
                       isHideColumn = false,
                       hidePagination = false,
-                      listUrl=null
+                      listUrl = null,
+                      params = {},
                   }) => {
     const navigate = useNavigate()
     const {t} = useTranslation()
@@ -83,7 +83,12 @@ const GridView = ({
     const [rowId, setRowId] = useState(null)
     const [page, setPage] = useState(1)
     const [columns, setColumns] = useState([])
-    const {data, isError, isLoading, isFetching} = usePaginateQuery({key: keyId, url:listUrl??url, page})
+    const {data, isError, isLoading, isFetching} = usePaginateQuery({
+        key: keyId,
+        url: listUrl ?? url,
+        page,
+        params: {params}
+    })
     const {mutate: createRequest, isLoading: postLoading} = usePostQuery({listKeyId: keyId})
     const {mutate: updateRequest, isLoading: putLoading} = usePutQuery({listKeyId: keyId})
     const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: keyId})
@@ -135,7 +140,7 @@ const GridView = ({
             confirmButtonColor: '#d33',
             cancelButtonColor: '#13D6D1',
             confirmButtonText: t('Delete'),
-            cancelButtonText:t('Cancel'),
+            cancelButtonText: t('Cancel'),
             customClass: {
                 title: 'title-color',
             },
@@ -146,11 +151,11 @@ const GridView = ({
         });
     }
 
-    const hideColumn = (key,has) => {
-        if(has) {
+    const hideColumn = (key, has) => {
+        if (has) {
             setColumns(columns => columns.filter(col => !isEqual(get(col, 'key'), key)))
-        }else{
-            setColumns(columns => [...columns,tableHeaderData.find(col => isEqual(get(col, 'key'), key))])
+        } else {
+            setColumns(columns => [...columns, tableHeaderData.find(col => isEqual(get(col, 'key'), key))])
         }
     }
 
@@ -161,7 +166,6 @@ const GridView = ({
     if (isError) {
         return <ErrorPage/>
     }
-    console.log('data',data)
     return (
         <Styled>
             <Panel>
@@ -192,9 +196,12 @@ const GridView = ({
                                 <ul className="column__filter">
                                     <li><span>{t("Выбрать")}</span><ChevronUp/></li>
                                     {
-                                        tableHeaderData && tableHeaderData.map(column => <li onClick={()=>hideColumn(get(column, 'key'),includes(columns.map(({key})=>key),get(column, 'key')))} key={get(column, 'id')}>
+                                        tableHeaderData && tableHeaderData.map(column => <li
+                                            onClick={() => hideColumn(get(column, 'key'), includes(columns.map(({key}) => key), get(column, 'key')))}
+                                            key={get(column, 'id')}>
                                             <span>{t(get(column, 'title'))}</span>
-                                            {includes(columns.map(({key})=>key),get(column, 'key')) &&<Check size={18}/>}
+                                            {includes(columns.map(({key}) => key), get(column, 'key')) &&
+                                                <Check size={18}/>}
                                         </li>)
                                     }
 
@@ -229,7 +236,8 @@ const GridView = ({
                         tableBodyData={get(data, responseDataKey, [])}
                         isFetching={isFetching}
                     /></div>
-                    {!hidePagination && <Pagination page={page} setPage={setPage} totalItems={get(data, `data.total`, 0)}/>}
+                    {!hidePagination &&
+                        <Pagination page={page} setPage={setPage} totalItems={get(data, `data.total`, 0)}/>}
                 </>}
             </Section>
         </Styled>

@@ -88,4 +88,6 @@ export const KEYS = {
     personalInfoProvider: "personalInfoProvider",
     ownershipForms: "ownershipForms",
     organizationInfoProvider: "organizationInfoProvider",
+    residentTypes: "residentTypes",
+    countries: "countries",
 }
