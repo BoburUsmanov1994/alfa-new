@@ -42,6 +42,7 @@ const FranchiseTypeContainer = ({...rest}) => {
                 ]}
                 keyId={KEYS.typeoffranchise}
                 url={URLS.typeoffranchise}
+                listUrl={`${URLS.typeoffranchise}/list`}
                 title={'Тип франшизы'}
                 responseDataKey={'data'}
 

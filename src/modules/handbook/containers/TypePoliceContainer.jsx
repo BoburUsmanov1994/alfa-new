@@ -37,11 +37,12 @@ const TypePoliceContainer = ({...rest}) => {
                     {
                         id: 2,
                         key: 'name',
-                        title: 'Название политика'
+                        title: 'Название'
                     },
                 ]}
                 keyId={KEYS.typeofpolice}
-                url={URLS.typeofpolice}
+                url={URLS.policyType}
+                listUrl={`${URLS.policyType}/list`}
                 title={'Тип полиции'}
                 responseDataKey={'data'}
 

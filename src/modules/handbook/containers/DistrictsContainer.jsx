@@ -14,8 +14,8 @@ import {getSelectOptionsListFromData} from "../../../utils";
 import Field from "../../../containers/form/field";
 
 const DistrictsContainer = ({...rest}) => {
-    const {data:types} = useGetAllQuery({key:KEYS.regions,url:URLS.regions})
-    const typesOptions = getSelectOptionsListFromData(get(types,`data.data`,[]),'_id','name')
+    const {data:types} = useGetAllQuery({key:KEYS.regions,url:`${URLS.regions}/list`})
+    const typesOptions = getSelectOptionsListFromData(get(types,`data`,[]),'_id','name')
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [
@@ -36,7 +36,8 @@ const DistrictsContainer = ({...rest}) => {
     }, [])
     const ModalBody = ({data,rowId = null}) =>  <>
         <Field  name={'name'} type={'input'} label={'Название'} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
-        <Field  name={'regiId'} type={'select'} label={'Region'} options={typesOptions} defaultValue={rowId ? get(data,'regiId._id'):null} params={{required: true}} />
+        <Field  name={'region'} type={'select'} label={'Region'} options={typesOptions} defaultValue={rowId ? get(data,'region._id'):null} params={{required: true}} />
+        <Field  name={'fondId'} type={'input'}  defaultValue={1} params={{required: true}} property={{type:'hidden',hideLabel:true}} />
     </>
     return (
         <>
@@ -50,12 +51,13 @@ const DistrictsContainer = ({...rest}) => {
                     },
                     {
                         id: 3,
-                        key: 'regiId.name',
+                        key: 'region',
                         title: 'Region'
                     }
                 ]}
                 keyId={KEYS.districts}
                 url={URLS.districts}
+                listUrl={`${URLS.districts}/list`}
                 title={'Districts'}
                 responseDataKey={'data'}
 

@@ -42,7 +42,8 @@ const BranchStatusContainer = ({...rest}) => {
                     },
                 ]}
                 keyId={KEYS.breanchstatus}
-                url={URLS.breanchstatus}
+                url={URLS.branchStatus}
+                listUrl={`${URLS.branchStatus}/list`}
                 title={'Branch status'}
                 responseDataKey={'data'}
             />

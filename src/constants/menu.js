@@ -1,8 +1,70 @@
 export const menuData = [
+    // {
+    //     id: 1,
+    //     title: 'Панель приборов',
+    //     path: '/dashboard',
+    // },
     {
-        id: 1,
-        title: 'Панель приборов',
-        path: '/dashboard',
+        id: 7,
+        title: 'Продукты',
+        path: '/products',
+        submenu: [
+            {
+                id: 1,
+                title: 'Все продукты',
+                path: '/products/all',
+            },
+            {
+                id: 44,
+                title: 'Группы продуктов',
+                path: '/products/product-groups',
+            },
+            {
+                id: 18,
+                title: 'Подгруппы продуктов',
+                path: '/products/product-subgroups',
+            },
+            // {
+            //     id: 19,
+            //     title: 'Статус продукта',
+            //     path: '/products/product-status',
+            // },
+            // {
+            //     id: 20,
+            //     title: 'Agent product',
+            //     path: '/products/agent-product',
+            // },
+            // {
+            //     id: 21,
+            //     title: 'Tenge bank contracts',
+            //     path: '/products/tengebank-contracts',
+            // },
+            // {
+            //     id: 22,
+            //     title: 'Agreements',
+            //     path: '/agreements',
+            // },
+            // {
+            //     id: 2,
+            //     title: 'Классы страхования',
+            //     path: '/products/insurance-classes',
+            // },
+            // {
+            //     id: 3,
+            //     title: 'Риски',
+            //     path: '/products/risks',
+            // },
+            // {
+            //     id: 6,
+            //     title: 'Страховые продукты',
+            //     path: '/products/insurance-products',
+            // },
+            // {
+            //     id: 7,
+            //     title: 'Вординги',
+            //     path: '/products/wordings',
+            // },
+        ]
     },
     {
         id: 2,
@@ -29,93 +91,88 @@ export const menuData = [
             //     title: 'Оповещения',
             //     path: '/clients/notifications',
             // },
-            {
-                id: 5,
-                title: 'Тип человека',
-                path: '/clients/person-type',
-            }
-        ]
-    },
-    {
-        id: 222,
-        title: 'Accounts',
-        path: '/accounts',
-        submenu: [
-            {
-                id: 1,
-                title: 'Users',
-                path: '/accounts/list',
-            },
-            {
-                id: 2,
-                title: 'Account role',
-                path: '/accounts/role',
-            },
-        ]
-    },
-    {
-        id: 3,
-        title: 'Бухгалтерия',
-        path: '/accounting',
-        submenu: [
-            {
-                id: 1,
-                title: 'Импорт платёжные документы',
-                path: '/accounting/import-payment-documents',
-            },
-            {
-                id: 2,
-                title: 'Распределение',
-                path: '/accounting/distribution',
-            },
-            {
-                id: 3,
-                title: 'Тип распределения',
-                path: '/accounting/distribution-type',
-            },
-            {
-                id: 4,
-                title: 'К полису',
-                path: '/accounting/policy',
-            },
-            {
-                id: 5,
-                title: 'ACTS',
-                path: '/accounting/act',
-            },
-            {
-                id: 55,
-                title: 'BCO list',
-                path: '/accounting/bco',
-            },
-            {
-                id: 6,
-                title: 'BCO Type',
-                path: '/accounting/bco-type',
-            },
-            {
-                id: 66,
-                title: 'BCO language',
-                path: '/handbook/bco-language-policy',
-            },
-            {
-                id: 666,
-                title: 'BCO blanks',
-                path: '/accounting/bco-blanks',
-            },
             // {
-            //     id: 6,
-            //     title: 'Журнал БСО',
-            //     path: '/accounting/bco-journal',
-            // },
-            {
-                id: 7,
-                title: 'Журнал БСО(Warehouse)',
-                path: '/accounting/warehouse',
-            }
-
+            //     id: 5,
+            //     title: 'Тип человека',
+            //     path: '/clients/person-type',
+            // }
         ]
     },
+    // {
+    //     id: 222,
+    //     title: 'Accounts',
+    //     path: '/accounts',
+    //     submenu: [
+    //         {
+    //             id: 1,
+    //             title: 'Users',
+    //             path: '/accounts/list',
+    //         },
+    //         {
+    //             id: 2,
+    //             title: 'Account role',
+    //             path: '/accounts/role',
+    //         },
+    //     ]
+    // },
+    // {
+    //     id: 3,
+    //     title: 'Бухгалтерия',
+    //     path: '/accounting',
+    //     submenu: [
+    //         {
+    //             id: 1,
+    //             title: 'Импорт платёжные документы',
+    //             path: '/accounting/import-payment-documents',
+    //         },
+    //         {
+    //             id: 2,
+    //             title: 'Распределение',
+    //             path: '/accounting/distribution',
+    //         },
+    //         {
+    //             id: 3,
+    //             title: 'Тип распределения',
+    //             path: '/accounting/distribution-type',
+    //         },
+    //         {
+    //             id: 4,
+    //             title: 'К полису',
+    //             path: '/accounting/policy',
+    //         },
+    //         {
+    //             id: 5,
+    //             title: 'ACTS',
+    //             path: '/accounting/act',
+    //         },
+    //         {
+    //             id: 55,
+    //             title: 'BCO list',
+    //             path: '/accounting/bco',
+    //         },
+    //         {
+    //             id: 6,
+    //             title: 'BCO Type',
+    //             path: '/accounting/bco-type',
+    //         },
+    //         {
+    //             id: 66,
+    //             title: 'BCO language',
+    //             path: '/handbook/bco-language-policy',
+    //         },
+    //         {
+    //             id: 666,
+    //             title: 'BCO blanks',
+    //             path: '/accounting/bco-blanks',
+    //         },
+    //         {
+    //             id: 7,
+    //             title: 'Журнал БСО(Warehouse)',
+    //             path: '/accounting/warehouse',
+    //         }
+    //
+    //     ]
+    // },
     // {
     //     id: 4,
     //     title: 'Страховой',
@@ -187,127 +244,56 @@ export const menuData = [
     //         },
     //     ]
     // },
-    {
-        id: 7,
-        title: 'Продукты',
-        path: '/products',
-        submenu: [
-            {
-                id: 1,
-                title: 'Все продукты',
-                path: '/products/all',
-            },
-            {
-                id: 44,
-                title: 'Группы продуктов',
-                path: '/products/product-groups',
-            },
-            {
-                id: 18,
-                title: 'Подгруппы продуктов',
-                path: '/products/product-subgroups',
-            },
-            {
-                id: 19,
-                title: 'Статус продукта',
-                path: '/products/product-status',
-            },
-            {
-                id: 20,
-                title: 'Agent product',
-                path: '/products/agent-product',
-            },
-            {
-                id: 21,
-                title: 'Tenge bank contracts',
-                path: '/products/tengebank-contracts',
-            },
-            {
-                id: 22,
-                title: 'Agreements',
-                path: '/agreements',
-            },
-            // {
-            //     id: 2,
-            //     title: 'Классы страхования',
-            //     path: '/products/insurance-classes',
-            // },
-            // {
-            //     id: 3,
-            //     title: 'Риски',
-            //     path: '/products/risks',
-            // },
-            // {
-            //     id: 6,
-            //     title: 'Страховые продукты',
-            //     path: '/products/insurance-products',
-            // },
-            // {
-            //     id: 7,
-            //     title: 'Вординги',
-            //     path: '/products/wordings',
-            // },
-        ]
-    },
-    {
-        id: 8,
-        title: 'Агенты',
-        path: '/agents',
-        submenu: [
-            {
-                id: 1,
-                title: 'Страховые агенты',
-                path: '/agents/insurance-agents',
-            },
-            {
-                id: 2,
-                title: 'Agent types',
-                path: '/agents/types',
-            },
-            {
-                id: 3,
-                title: 'Agent roles',
-                path: '/agents/roles',
-            },
-            {
-                id: 4,
-                title: 'Agent status',
-                path: '/agents/status',
-            },
-            // {
-            //     id: 5,
-            //     title: 'Управление вознаграждениями',
-            //     path: '/agents/compensation-management',
-            // },
-            // {
-            //     id: 6,
-            //     title: 'Отчеты агентов',
-            //     path: '/agents/agent-reports',
-            // },
-        ]
-    },
+
+    // {
+    //     id: 8,
+    //     title: 'Агенты',
+    //     path: '/agents',
+    //     submenu: [
+    //         {
+    //             id: 1,
+    //             title: 'Страховые агенты',
+    //             path: '/agents/insurance-agents',
+    //         },
+    //         {
+    //             id: 2,
+    //             title: 'Agent types',
+    //             path: '/agents/types',
+    //         },
+    //         {
+    //             id: 3,
+    //             title: 'Agent roles',
+    //             path: '/agents/roles',
+    //         },
+    //         {
+    //             id: 4,
+    //             title: 'Agent status',
+    //             path: '/agents/status',
+    //         },
+    //     ]
+    // },
     // {
     //     id: 9,
     //     title: 'Отчёты',
     //     path: '/reports',
     // },
-    {
-        id: 111,
-        title: 'Filials and employees',
-        path: '/branches',
-        submenu: [
-            {
-                id: 1,
-                title: 'Филиалы',
-                path: '/branches/list',
-            },
-            {
-                id: 2,
-                title: 'Employees',
-                path: '/branches/employees',
-            },
-        ]
-    },
+    // {
+    //     id: 111,
+    //     title: 'Filials and employees',
+    //     path: '/branches',
+    //     submenu: [
+    //         {
+    //             id: 1,
+    //             title: 'Филиалы',
+    //             path: '/branches/list',
+    //         },
+    //         {
+    //             id: 2,
+    //             title: 'Employees',
+    //             path: '/branches/employees',
+    //         },
+    //     ]
+    // },
     {
         id: 10,
         title: 'Справочники',
@@ -379,11 +365,11 @@ export const menuData = [
                 title: 'Формат полиса',
                 path: '/handbook/policy-formats',
             },
-            {
-                id: 16,
-                title: 'Тип страховщика',
-                path: '/handbook/insurer-type',
-            },
+            // {
+            //     id: 16,
+            //     title: 'Тип страховщика',
+            //     path: '/handbook/insurer-type',
+            // },
             {
                 id: 19,
                 title: 'Документы формы заявки',
@@ -425,26 +411,26 @@ export const menuData = [
                 path: '/handbook/payment-type',
             },
 
-            {
-                id: 27,
-                title: 'Citizenship',
-                path: '/handbook/citizenship',
-            },
+            // {
+            //     id: 27,
+            //     title: 'Citizenship',
+            //     path: '/handbook/citizenship',
+            // },
             {
                 id: 28,
                 title: 'Genders',
                 path: '/handbook/genders',
             },
-            {
-                id: 29,
-                title: 'Position',
-                path: '/handbook/position',
-            },
-            {
-                id: 30,
-                title: 'Document types',
-                path: '/handbook/document-types',
-            },
+            // {
+            //     id: 29,
+            //     title: 'Position',
+            //     path: '/handbook/position',
+            // },
+            // {
+            //     id: 30,
+            //     title: 'Document types',
+            //     path: '/handbook/document-types',
+            // },
             {
                 id: 31,
                 title: 'Branch level',
@@ -455,11 +441,11 @@ export const menuData = [
                 title: 'Branch status',
                 path: '/handbook/branch-status',
             },
-            {
-                id: 33,
-                title: 'Manager doument type',
-                path: '/handbook/manager-document-type',
-            },
+            // {
+            //     id: 33,
+            //     title: 'Manager doument type',
+            //     path: '/handbook/manager-document-type',
+            // },
             {
                 id: 34,
                 title: 'Reasons',

@@ -44,45 +44,45 @@ const ProductsContainer = ({...rest}) => {
                 tableHeaderData={[
                     {
                         id: 2,
-                        key: 'productname',
+                        key: 'name',
                         title: 'Наименование продукта'
                     },
                     {
                         id: 3,
-                        key: 'typeofpolice',
+                        key: 'policyTypes',
                         title: 'Тип страховщика',
-                        isArray:true
+                        isArray: true
                     },
                     {
                         id: 4,
-                        key: 'typeofpayment',
+                        key: 'paymentType',
                         title: 'Тип оплаты',
-                        isArray:true
+                        isArray: true
                     },
                     {
                         id: 5,
-                        key: 'typeofinsurerId.name',
+                        key: 'insuranceForm',
                         title: 'Страхователь',
                     },
                     {
                         id: 6,
-                        key: 'policyformatId.name',
+                        key: 'insuranceForm',
                         title: 'Формат полиса',
                     },
                     {
                         id: 7,
-                        key: 'fixedpremium',
+                        key: 'fixedPremium',
                         title: 'Страховая сумма',
-                        hasNumberFormat:true
+                        hasNumberFormat: true
                     },
                 ]}
                 keyId={KEYS.products}
                 url={URLS.products}
                 title={t('Все продукты')}
                 responseDataKey={'data'}
-                viewUrl={'/products/view'}
-                createUrl={'/products/create'}
-                updateUrl={'/products/update'}
+                // viewUrl={'/products/view'}
+                // createUrl={'/products/create'}
+                // updateUrl={'/products/update'}
                 isHideColumn
 
             />

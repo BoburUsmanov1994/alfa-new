@@ -42,6 +42,7 @@ const FranchiseBaseContainer = ({...rest}) => {
                 ]}
                 keyId={KEYS.baseoffranchise}
                 url={URLS.baseoffranchise}
+                listUrl={`${URLS.baseoffranchise}/list`}
                 title={'База франшизы'}
                 responseDataKey={'data'}
 

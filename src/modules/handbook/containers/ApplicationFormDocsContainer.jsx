@@ -47,7 +47,8 @@ const ApplicationFormDocsContainer = ({...rest}) => {
                     },
                 ]}
                 keyId={KEYS.applicationformdocs}
-                url={URLS.applicationformdocs}
+                url={URLS.applicationForm}
+                listUrl={`${URLS.applicationForm}/list`}
                 title={'Документы формы заявки'}
                 responseDataKey={'data'}
 

@@ -42,6 +42,7 @@ const BranchLevelContainer = ({...rest}) => {
                 ]}
                 keyId={KEYS.levelofbranch}
                 url={URLS.levelofbranch}
+                listUrl={`${URLS.levelofbranch}/list`}
                 title={'Branch level'}
                 responseDataKey={'data'}
             />

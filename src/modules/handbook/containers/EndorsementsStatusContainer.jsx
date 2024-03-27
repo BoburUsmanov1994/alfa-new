@@ -42,7 +42,8 @@ const EndorsementsTypeContainer = ({...rest}) => {
                     },
                 ]}
                 keyId={KEYS.statusofendorsements}
-                url={URLS.statusofendorsements}
+                url={URLS.endorsementStatus}
+                listUrl={`${URLS.endorsementStatus}/list`}
                 title={'Endorsements status'}
                 responseDataKey={'data'}
 

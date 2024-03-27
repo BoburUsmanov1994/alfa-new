@@ -40,42 +40,32 @@ const JuridicalClientsContainer = ({...rest}) => {
                 tableHeaderData={[
                     {
                         id: 1,
-                        key: 'person.fullName.firstname',
-                        title: 'Firstname'
+                        key: 'organization.name',
+                        title: 'Name'
                     },
                     {
                         id: 2,
-                        key: 'person.fullName.lastname',
-                        title: 'Lastname'
+                        key: 'organization.inn',
+                        title: 'Inn'
                     },
                     {
                         id: 3,
-                        key: 'person.fullName.middlename',
-                        title: 'Middlename'
+                        key: 'organization.phone',
+                        title: 'Phone'
                     },
                     {
                         id: 4,
-                        key: 'person.passportData.pinfl',
-                        title: 'Pinfl'
-                    },
-                    {
-                        id: 5,
-                        key: 'person.passportData.seria',
-                        title: 'Passport seria'
-                    },
-                    {
-                        id: 6,
-                        key: 'person.passportData.number',
-                        title: 'Passport number'
+                        key: 'organization.address',
+                        title: 'Address'
                     },
 
                 ]}
-                keyId={KEYS.clients}
+                keyId={'juridical'}
                 url={URLS.clients}
                 listUrl={`${URLS.clients}/list`}
                 title={t('Clients')}
                 responseDataKey={'data'}
-                params={{type:PERSON_TYPE.organization}}
+                params={{type: PERSON_TYPE.organization}}
                 // viewUrl={'/clients/view'}
                 createUrl={'/clients/juridical/create'}
                 // updateUrl={'/clients/update'}

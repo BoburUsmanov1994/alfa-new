@@ -27,7 +27,7 @@ const PolicyFormatsContainer = ({...rest}) => {
     }, [])
 
     const ModalBody = ({data,rowId = null}) =>  <>
-        <Field  name={'name'} type={'input'} label={'Название политика'} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
+        <Field  name={'name'} type={'input'} label={'Название'} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
     </>
     return (
         <>
@@ -37,11 +37,12 @@ const PolicyFormatsContainer = ({...rest}) => {
                     {
                         id: 2,
                         key: 'name',
-                        title: 'Название политика'
+                        title: 'Название'
                     },
                 ]}
                 keyId={KEYS.policyformats}
-                url={URLS.policyformats}
+                url={URLS.policyFormat}
+                listUrl={`${URLS.policyFormat}/list`}
                 title={'Формат полиса'}
                 responseDataKey={'data'}
 

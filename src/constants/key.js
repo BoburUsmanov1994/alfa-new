@@ -90,4 +90,5 @@ export const KEYS = {
     organizationInfoProvider: "organizationInfoProvider",
     residentTypes: "residentTypes",
     countries: "countries",
+    okeds: "okeds",
 }

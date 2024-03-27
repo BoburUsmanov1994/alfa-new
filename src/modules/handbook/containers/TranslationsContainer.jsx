@@ -45,6 +45,7 @@ const TranslationsContainer = ({...rest}) => {
                 },]}
                 keyId={KEYS.translations}
                 url={URLS.translations}
+                listUrl={`${URLS.translations}/list`}
                 title={t('Translations')}
                 responseDataKey={'data'}
             />

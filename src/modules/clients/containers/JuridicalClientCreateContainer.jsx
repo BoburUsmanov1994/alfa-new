@@ -6,7 +6,7 @@ import Section from "../../../components/section";
 import Title from "../../../components/ui/title";
 import Field from "../../../containers/form/field";
 import {get, upperCase} from "lodash";
-import {usePostQuery} from "../../../hooks/api";
+import {useGetAllQuery, usePostQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import Form from "../../../containers/form/form";
@@ -14,28 +14,53 @@ import {OverlayLoader} from "../../../components/loader";
 import Button from "../../../components/ui/button";
 import {useNavigate} from "react-router-dom";
 import Flex from "../../../components/flex";
-import dayjs from "dayjs";
 import {PERSON_TYPE} from "../../../constants";
+import {getSelectOptionsListFromData} from "../../../utils";
 
 const JuridicalClientCreateContainer = ({...rest}) => {
     const navigate = useNavigate();
-    const [person, setPerson] = useState(null)
-    const [passportSeries, setPassportSeries] = useState(null)
-    const [passportNumber, setPassportNumber] = useState(null)
-    const [birthDate, setBirthDate] = useState(null)
-    const {
-        mutate: getPersonalInfoRequest, isLoading: isLoadingPersonalInfo
-    } = usePostQuery({listKeyId: KEYS.personalInfoProvider})
+    const [organization, setOrganization] = useState(null)
+    const [inn, setInn] = useState(null)
+    const [regionId, setRegionId] = useState(null)
 
-    const getInfo = () => {
-        getPersonalInfoRequest({
-                url: URLS.personalInfoProvider, attributes: {
-                    birthDate: dayjs(birthDate).format('YYYY-MM-DD'), passportSeries, passportNumber
+    const {data: country, isLoading: isLoadingCountry} = useGetAllQuery({
+        key: KEYS.countries, url: `${URLS.countries}/list`
+    })
+    const countryList = getSelectOptionsListFromData(get(country, `data`, []), '_id', 'name')
+    const {data: region, isLoading: isLoadingRegion} = useGetAllQuery({
+        key: KEYS.regions, url: `${URLS.regions}/list`
+    })
+    const regionList = getSelectOptionsListFromData(get(region, `data`, []), '_id', 'name')
+
+    const {data: district} = useGetAllQuery({
+        key: [KEYS.districts, regionId],
+        url: `${URLS.districts}/list`,
+        params: {
+            params: {
+                region: regionId
+            }
+        },
+        enabled: !!(regionId || get(organization, 'regionId'))
+    })
+    const districtList = getSelectOptionsListFromData(get(district, `data`, []), '_id', 'name')
+
+    const {data: ownershipForms} = useGetAllQuery({
+        key: KEYS.ownershipForms, url: `${URLS.ownershipForms}/list`
+    })
+    const ownershipFormList = getSelectOptionsListFromData(get(ownershipForms, `data`, []), '_id', 'name')
+    const {
+        mutate: getOrganizationInfoRequest, isLoading: isLoadingOrganizationInfo
+    } = usePostQuery({listKeyId: KEYS.organizationInfoProvider})
+
+    const getOrgInfo = (type = 'owner') => {
+        getOrganizationInfoRequest({
+                url: URLS.organizationInfoProvider, attributes: {
+                    inn: inn
                 }
             },
             {
                 onSuccess: ({data}) => {
-                    setPerson(data);
+                    setOrganization(data)
                 }
             }
         )
@@ -44,17 +69,15 @@ const JuridicalClientCreateContainer = ({...rest}) => {
 
     const {mutate: createRequest, isLoading} = usePostQuery({listKeyId: KEYS.clients})
     const create = ({data}) => {
-        const {person: {seria, number, ...restPerson} = {}, ...rest} = data
         createRequest({
             url: URLS.clients,
             attributes: {
-                ...rest,
-                type: PERSON_TYPE.person,
-                person: {...restPerson, passportNumber: `${seria}${number}`}
+                ...data,
+                type: PERSON_TYPE.organization,
             }
         }, {
             onSuccess: () => {
-                navigate('/clients/physical')
+                navigate('/clients/juridical')
             },
             onError: () => {
 
@@ -63,7 +86,7 @@ const JuridicalClientCreateContainer = ({...rest}) => {
     }
     return (
         <>
-            {(isLoading || isLoadingPersonalInfo) && <OverlayLoader/>}
+            {(isLoading || isLoadingOrganizationInfo) && <OverlayLoader/>}
             <Section>
                 <Row className={'mb-25'}>
                     <Col xs={12}>
@@ -79,43 +102,18 @@ const JuridicalClientCreateContainer = ({...rest}) => {
                                     <Flex>
                                         <Button
                                             className={'mr-16'}
-                                            type={'button'}>Физ. лицо</Button>
+                                            type={'button'}>Юр.лицо</Button>
                                     </Flex>
                                 </Col>
                                 <Col xs={9} className={'text-right'}>
                                     <Flex justify={'flex-end'} align={'flex-start'}>
-                                        <Field params={{required: true}}
-                                               className={'mr-16'} style={{width: 75}}
-                                               property={{
-                                                   hideErrorMsg: true,
-                                                   hideLabel: true,
-                                                   mask: 'aa',
-                                                   placeholder: 'AA',
-                                                   upperCase: true,
-                                                   maskChar: '_',
-                                                   onChange: (val) => setPassportSeries(upperCase(val))
-                                               }}
-                                               name={'person.seria'}
-                                               type={'input-mask'}
-                                        />
-                                        <Field params={{required: true}} property={{
-                                            hideErrorMsg: true,
+                                        <Field onChange={(e) => setInn(e.target.value)} property={{
                                             hideLabel: true,
-                                            mask: '9999999',
-                                            placeholder: '1234567',
-                                            maskChar: '_',
-                                            onChange: (val) => setPassportNumber(val)
-                                        }} name={'person.number'} type={'input-mask'}/>
-
-                                        <Field params={{required: true}} className={'ml-15'}
-                                               property={{
-                                                   hideErrorMsg: true,
-                                                   hideLabel: true,
-                                                   placeholder: 'Дата рождения',
-                                                   onChange: (e) => setBirthDate(e)
-                                               }}
-                                               name={'person.birthDate'} type={'datepicker'}/>
-                                        <Button onClick={() => getInfo()} className={'ml-15'}
+                                            mask: '999999999',
+                                            placeholder: 'Inn',
+                                            maskChar: '_'
+                                        }} name={'inn'} type={'input-mask'}/>
+                                        <Button onClick={() => getOrgInfo()} className={'ml-15'}
                                                 type={'button'}>Получить
                                             данные</Button>
                                     </Flex>
@@ -128,45 +126,85 @@ const JuridicalClientCreateContainer = ({...rest}) => {
                         </Col>
 
                         <Col xs={4} className={'mb-25'}>
-                            <Field params={{required: true}}
-                                   defaultValue={get(person, 'firstNameLatin')}
-                                   label={'Firstname'}
-                                   type={'input'}
-                                   name={'person.firstName'}/>
+                            <Field params={{required: true}} defaultValue={get(organization, 'name')}
+                                   label={'Наименование'} type={'input'}
+                                   name={'organization.name'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
-                            <Field params={{required: true}} defaultValue={get(person, 'lastNameLatin')}
-                                   label={'Lastname'} type={'input'}
-                                   name={'person.lastName'}/>
+                            <Field label={'Руководитель'} type={'input'}
+                                   name={'organization.representativeName'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
-                            <Field params={{required: true}}
-                                   defaultValue={get(person, 'middleNameLatin')}
-                                   label={'Middlename'}
-                                   type={'input'}
-                                   name={'person.middleName'}/>
+                            <Field label={'Должность'} type={'input'}
+                                   name={'organization.position'}/>
                         </Col>
-                        <Col xs={4} params={{required: true}} className={'mb-25'}>
-                            <Field defaultValue={get(person, 'pinfl')} label={'ПИНФЛ'} type={'input-mask'} property={{
-                                placeholder: 'ПИНФЛ',
-                                mask: '99999999999999',
-                                maskChar: '_'
+                        <Col xs={4} className={'mb-25'}>
+                            <Field defaultValue={get(organization, 'email')} label={'Email'} type={'input'}
+                                   name={'organization.email'}/>
+                        </Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field defaultValue={get(organization, 'phone')} params={{
+                                required: true,
+                                pattern: {
+                                    value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
+                                    message: 'Invalid format'
+                                }
                             }}
-                                   name={'person.personalIdentificationNumber'}/>
+                                   property={{placeholder: '998XXXXXXXXX'}}
+                                   label={'Телефон'} type={'input'}
+                                   name={'organization.phone'}/>
+                        </Col>
+                        <Col xs={4}><Field defaultValue={get(organization, 'oked')}
+                                           label={'Oked'} params={{required: true, valueAsString: true}}
+                                           type={'input'}
+                                           name={'organization.oked'}/></Col>
+
+                        <Col xs={4} className={'mb-25'}>
+                            <Field label={'Расчетный счет'} type={'input'}
+                                   name={'organization.checkingAccount'}/>
+                        </Col>
+                        <Col xs={4}><Field label={'Форма собственности'}
+                                           options={ownershipFormList}
+                                           type={'select'}
+                                           name={'organization.ownershipForm'}/></Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                params={{required: true}}
+                                defaultValue={get(organization, 'birthCountry', 210)}
+                                label={'Country'}
+                                type={'select'}
+                                options={countryList}
+                                name={'organization.country'}/>
+                        </Col>
+                        <Col xs={4}><Field label={'Область'} params={{required: true}} property={{
+                            onChange: (val) => setRegionId(val)
+                        }} options={regionList}
+                                           type={'select'}
+                                           name={'organization.region'}/></Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                params={{required: true}}
+                                options={districtList}
+                                defaultValue={get(organization, 'districtId')}
+                                label={'District'}
+                                type={'select'}
+                                name={'organization.district'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field
-                                defaultValue={get(person, 'cardNumber')}
-                                label={'Card number'}
+                                noMaxWidth
+                                params={{required: true}}
+                                defaultValue={get(organization, 'address')}
+                                label={'Address'}
                                 type={'input'}
-                                name={'person.cardNumber'}/>
+                                name={'organization.address'}/>
                         </Col>
-                        <Col xs={4} className={'mb-25'}>
+                        <Col xs={1} className={'mt-15'}>
                             <Field
-                                defaultValue={get(person, 'personalAccount')}
-                                label={'Personal account'}
+                                property={{disabled: true, type: 'hidden', hideLabel: true}}
+                                defaultValue={inn}
                                 type={'input'}
-                                name={'person.personalAccount'}/>
+                                name={'organization.inn'}/>
                         </Col>
                     </Row>
                 </Form>

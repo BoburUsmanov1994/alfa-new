@@ -27,8 +27,8 @@ const i18config = i18n.use(initReactI18next)
                 // ...( get(JSON.parse(storage.get('settings')), 'state.token') && {auth: get(JSON.parse(storage.get('settings')), 'state.token')})
                 Authorization: `Bearer ${get(JSON.parse(storage.get('settings')), 'state.token')}`
             },
-            loadPath: `${config.API_ROOT}/translations/lang/{{lng}}`,
-            addPath: `${config.API_ROOT}/translations`,
+            loadPath: `${config.API_ROOT}/api/references/translation/{{lng}}`,
+            addPath: `${config.API_ROOT}/api/references/translation`,
         },
 
     })

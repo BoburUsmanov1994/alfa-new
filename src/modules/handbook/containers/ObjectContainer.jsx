@@ -9,8 +9,8 @@ import {useGetAllQuery} from "../../../hooks/api";
 import {getSelectOptionsListFromData} from "../../../utils";
 
 const ObjectContainer = ({...rest}) => {
-    const {data:types} = useGetAllQuery({key:KEYS.typeofobject,url:URLS.typeofobject})
-    const typesOptions = getSelectOptionsListFromData(get(types,`data.data`,[]),'_id','name')
+    const {data:types} = useGetAllQuery({key:KEYS.typeofobject,url:`${URLS.objectType}/list`})
+    const typesOptions = getSelectOptionsListFromData(get(types,`data`,[]),'_id','name')
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [
@@ -32,7 +32,7 @@ const ObjectContainer = ({...rest}) => {
 
     const ModalBody = ({data,rowId = null}) =>  <>
         <Field  name={'name'} type={'input'} label={'Введите название'} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
-        <Field  name={'typobjectsId'} type={'select'} label={'Tипа объекта'} options={typesOptions} defaultValue={rowId ? get(data,'typobjectsId'):null} params={{required: true}} />
+        <Field  name={'type'} type={'select'} label={'Tипа объекта'} options={typesOptions} defaultValue={rowId ? get(data,'type'):null} params={{required: true}} />
     </>
     return (
         <>
@@ -46,13 +46,14 @@ const ObjectContainer = ({...rest}) => {
                     },
                     {
                         id: 3,
-                        key: 'typobjectsId.name',
+                        key: 'type',
                         title: 'Tипа объекта'
                     },
 
                 ]}
                 keyId={KEYS.object}
                 url={URLS.object}
+                listUrl={`${URLS.object}/list`}
                 title={'Объект страхования'}
                 responseDataKey={'data'}
 

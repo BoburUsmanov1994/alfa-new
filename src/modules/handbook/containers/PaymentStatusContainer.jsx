@@ -42,7 +42,8 @@ const PaymentStatusContainer = ({...rest}) => {
                     },
                 ]}
                 keyId={KEYS.statusofpayment}
-                url={URLS.statusofpayment}
+                url={URLS.paymentStatus}
+                listUrl={`${URLS.paymentStatus}/list`}
                 title={'Payment status'}
                 responseDataKey={'data'}
             />

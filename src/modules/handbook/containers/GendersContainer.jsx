@@ -42,6 +42,7 @@ const GendersContainer = ({...rest}) => {
                 ]}
                 keyId={KEYS.genders}
                 url={URLS.genders}
+                listUrl={`${URLS.genders}/list`}
                 title={'Genders'}
                 responseDataKey={'data'}
             />

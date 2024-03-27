@@ -47,7 +47,8 @@ const ContractFormContainer = ({...rest}) => {
                     },
                 ]}
                 keyId={KEYS.contractform}
-                url={URLS.contractform}
+                url={URLS.contractForm}
+                listUrl={`${URLS.contractForm}/list`}
                 title={'Форма контракта'}
                 responseDataKey={'data'}
 

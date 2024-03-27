@@ -27,7 +27,7 @@ const TypeObjectContainer = ({...rest}) => {
     }, [])
 
     const ModalBody = ({data,rowId = null}) =>  <>
-        <Field  name={'name'} type={'input'} label={'Название объекта'} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
+        <Field  name={'name'} type={'input'} label={'Название'} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
     </>
     return (
         <>
@@ -37,11 +37,12 @@ const TypeObjectContainer = ({...rest}) => {
                     {
                         id: 2,
                         key: 'name',
-                        title: 'Название объекта'
+                        title: 'Название'
                     },
                 ]}
                 keyId={KEYS.typeofobject}
-                url={URLS.typeofobject}
+                url={URLS.objectType}
+                listUrl={`${URLS.objectType}/list`}
                 title={'Вид объекта страхования'}
                 responseDataKey={'data'}
 
