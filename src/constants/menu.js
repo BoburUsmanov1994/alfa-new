@@ -486,7 +486,31 @@ export const menuData = [
             //     title: 'Bco language policy',
             //     path: '/handbook/bco-language-policy',
             // },
-
+            {
+                id: 41,
+                title: 'Vehicle type',
+                path: '/handbook/vehicle-type',
+            },
+            {
+                id: 42,
+                title: 'Property type',
+                path: '/handbook/property-type',
+            },
+            {
+                id: 46,
+                title: 'Property right type',
+                path: '/handbook/property-right-type',
+            },
+            {
+                id: 43,
+                title: 'Agricultural type',
+                path: '/handbook/agricultural-type',
+            },
+            {
+                id: 44,
+                title: 'Measurement type',
+                path: '/handbook/measurement-type',
+            },
             {
                 id: 26,
                 title: 'Translations',

@@ -36,6 +36,11 @@ import LogOutPage from "../modules/auth/pages/LogOutPage";
 import InsuranceFormPage from "../modules/handbook/pages/InsuranceFormPage";
 import JuridicalClientCreatePage from "../modules/clients/pages/JuridicalClientCreatePage";
 import JuridicalClientsPage from "../modules/clients/pages/JuridicalClientsPage";
+import VehicleTypePage from "../modules/handbook/pages/VehicleTypePage";
+import PropertyTypePage from "../modules/handbook/pages/PropertyTypePage";
+import PropertyRightTypePage from "../modules/handbook/pages/PropertyRightTypePage";
+import AgriculturalTypePage from "../modules/handbook/pages/AgriculturalTypePage";
+import MeasurementTypePage from "../modules/handbook/pages/MeasurementTypePage";
 //lazy load
 const TypeObjectPage = lazy(() => import("../modules/handbook/pages/TypeObjectPage"));
 const ObjectPage = lazy(() => import("../modules/handbook/pages/ObjectPage"));
@@ -206,6 +211,11 @@ const Router = ({...rest}) => {
                                 <Route path={"payment-status"} element={<PaymentStatusPage/>}/>
                                 <Route path={"status-bco-policy"} element={<BCOStatusPage/>}/>
                                 <Route path={"bco-language-policy"} element={<BCOLanguagePolicyPage/>}/>
+                                <Route path={"vehicle-type"} element={<VehicleTypePage/>}/>
+                                <Route path={"property-type"} element={<PropertyTypePage/>}/>
+                                <Route path={"property-right-type"} element={<PropertyRightTypePage/>}/>
+                                <Route path={"agricultural-type"} element={<AgriculturalTypePage/>}/>
+                                <Route path={"measurement-type"} element={<MeasurementTypePage/>}/>
                             </Route>
                             <Route path={"policy"}>
                                 <Route path={"create/:product_id"} element={<PolicyCreatePage/>}/>

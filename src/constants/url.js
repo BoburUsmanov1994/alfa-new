@@ -93,4 +93,9 @@ export const URLS = {
     countries:'api/references/country',
     areaTypes:'api/references/country',
     okeds:'api/references/okeds',
+    vehicleType:'api/references/vehicle-type',
+    propertyType:'api/references/property-type',
+    propertyRightType:'api/references/property-right-type',
+    agriculturalType:'api/references/agricultural-type',
+    measurementType:'api/references/measurement-type',
 }

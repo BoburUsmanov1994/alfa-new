@@ -75,6 +75,8 @@ const GridView = ({
                       isHideColumn = false,
                       hidePagination = false,
                       listUrl = null,
+                      hideDeleteBtn = false,
+                      hideCreateBtn = false,
                       params = {},
                   }) => {
     const navigate = useNavigate()
@@ -170,11 +172,11 @@ const GridView = ({
         <Styled>
             <Panel>
                 <Row>
-                    <Col xs={10}>
+                    <Col xs={!hideCreateBtn ? 10 : 12}>
                         <Search/>
                     </Col>
                     <Col xs={2} className={'text-right'}>
-                        <Button lg onClick={() => {
+                        {!hideCreateBtn && <Button lg onClick={() => {
                             if (createUrl) {
                                 navigate(createUrl)
                                 return
@@ -183,7 +185,7 @@ const GridView = ({
                             setRowId(null)
                         }}>
                             {t("Добавить")}
-                        </Button>
+                        </Button>}
                     </Col>
                 </Row>
             </Panel>
@@ -225,7 +227,7 @@ const GridView = ({
 
                 </Row>
                 {isEmpty(get(data, responseDataKey, [])) ? <EmptyPage/> : <>
-                    <div className={'horizontal-scroll'}><GridTable
+                    <div className={'horizontal-scroll'}><GridTable hideDeleteBtn={hideDeleteBtn}
                         viewUrl={viewUrl}
                         updateUrl={updateUrl}
                         page={page}

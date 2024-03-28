@@ -14,7 +14,8 @@ const GridTableBody = ({
                            },
                            page,
                            viewUrl = null,
-                           updateUrl = null
+                           updateUrl = null,
+                           hideDeleteBtn=false
                        }) => {
     const navigate = useNavigate();
     return (
@@ -42,8 +43,8 @@ const GridTableBody = ({
                             openEditModal(get(tr, '_id', null))
                         }} className={'cursor-pointer mr-10'} size={20}
                         color={'#13D6D1'}/>}
-                        <Trash2 onClick={() => remove(get(tr, '_id', null))}
-                                className={'cursor-pointer '} size={20} color={'#dc2626'}/></td>
+                        {!hideDeleteBtn && <Trash2 onClick={() => remove(get(tr, '_id', null))}
+                                className={'cursor-pointer '} size={20} color={'#dc2626'}/>}</td>
                 </tr>)
             }
         </>

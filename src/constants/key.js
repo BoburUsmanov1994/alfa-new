@@ -91,4 +91,9 @@ export const KEYS = {
     residentTypes: "residentTypes",
     countries: "countries",
     okeds: "okeds",
+    vehicleType: "vehicleType",
+    propertyType: "propertyType",
+    propertyRightType: "propertyRightType",
+    agriculturalType: "agriculturalType",
+    measurementType: "measurementType",
 }
