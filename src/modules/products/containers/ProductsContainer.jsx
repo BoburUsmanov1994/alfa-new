@@ -81,7 +81,7 @@ const ProductsContainer = ({...rest}) => {
                 title={t('Все продукты')}
                 responseDataKey={'data'}
                 // viewUrl={'/products/view'}
-                // createUrl={'/products/create'}
+                createUrl={'/products/create'}
                 // updateUrl={'/products/update'}
                 isHideColumn
 

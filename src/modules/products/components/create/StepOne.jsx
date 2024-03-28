@@ -152,31 +152,31 @@ const StepOne = ({id = null, ...props}) => {
                     <Row>
                         <Col xs={3}>
                             <Field label={t('Выберите категорию')} options={groups} type={'select'}
-                                   name={'groupofproductsId'} params={{required: true}}
+                                   name={'group'} params={{required: true}}
                                    property={{hasRequiredLabel: true}}
-                                   defaultValue={get(product, 'groupofproductsId')}
+                                   defaultValue={get(product, 'group')}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field label={t('Выберите подкатегорию ')} options={subGroups} type={'select'}
-                                   name={'subgroupofproductsId'} params={{required: true}}
+                                   name={'subGroup'} params={{required: true}}
                                    property={{hasRequiredLabel: true}}
-                                   defaultValue={get(product, 'subgroupofproductsId')}
+                                   defaultValue={get(product, 'subGroup')}
                             />
                         </Col>
                         <Col xs={3}>
-                            <Field label={t('Наименование продукта')} type={'input'} name={'productname'}
+                            <Field label={t('Наименование продукта')} type={'input'} name={'name'}
                                    params={{required: true}}
                                    property={{hasRequiredLabel: true, placeholder: t('Введите значение')}}
-                                   defaultValue={get(product, 'productname')}
+                                   defaultValue={get(product, 'name')}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field label={t('Код назначения')}
                                    type={'input'}
-                                   name={'codeproduct'}
+                                   name={'code'}
                                    property={{placeholder: t('Введите значение')}}
-                                   defaultValue={get(product, 'codeproduct', '')}
+                                   defaultValue={get(product, 'code', '')}
                             />
                         </Col>
                     </Row>
@@ -185,9 +185,9 @@ const StepOne = ({id = null, ...props}) => {
                             <Field
                                 label={t('Работа по версии продукта (Версия продукта)')}
                                 type={'input'}
-                                name={'versionproduct'}
+                                name={'version'}
                                 property={{placeholder: t('Введите значение')}}
-                                defaultValue={get(product, 'versionproduct', '')}
+                                defaultValue={get(product, 'version', '')}
                             />
                         </Col>
                         <Col xs={3}>
@@ -195,8 +195,8 @@ const StepOne = ({id = null, ...props}) => {
                                 options={insurances}
                                 label={t('Форма страхования')}
                                 type={'select'}
-                                name={'typeofinsurerId'}
-                                defaultValue={get(product, 'typeofinsurerId')}
+                                name={'insuranceForm'}
+                                defaultValue={get(product, 'insuranceForm')}
                             />
                         </Col>
                         <Col xs={3}>
@@ -204,8 +204,8 @@ const StepOne = ({id = null, ...props}) => {
                                 options={sectors}
                                 label={t('Указать сектор')}
                                 type={'select'}
-                                name={'typeofsectorId'}
-                                defaultValue={get(product, 'typeofsectorId')}
+                                name={'sectorType'}
+                                defaultValue={get(product, 'sectorType')}
                             />
                         </Col>
                         <Col xs={3}>
@@ -213,16 +213,16 @@ const StepOne = ({id = null, ...props}) => {
                                 options={bcoTypes}
                                 label={t('Bco type')}
                                 type={'select'}
-                                name={'typeofbco'}
-                                defaultValue={get(product, 'typeofbco')}
+                                name={'bcoType'}
+                                defaultValue={get(product, 'bcoType')}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field
                                 label={t('Требуется разрешение')}
                                 type={'switch'}
-                                name={'isrequirepermission'}
-                                defaultValue={get(product, 'isrequirepermission', false)}/>
+                                name={'isRequirePermission'}
+                                defaultValue={get(product, 'isRequirePermission', false)}/>
                         </Col>
                     </Row>
                     <Row>
@@ -231,15 +231,15 @@ const StepOne = ({id = null, ...props}) => {
                                 options={persons}
                                 label={t('Выбрать тип страховщика')}
                                 type={'checkbox'}
-                                name={'typeofpersones'}
-                                defaultValue={get(product, 'typeofpersones', [])}
+                                name={'personType'}
+                                defaultValue={get(product, 'personType', [])}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field options={status}
                                    label={t('Статус продукта')}
                                    type={'switch'}
-                                   name={'statusofproducts'} defaultValue={get(product, 'statusofproducts', false)}
+                                   name={'status'} defaultValue={get(product, 'status', false)}
                                    params={{required: true}}
                             />
                         </Col>
