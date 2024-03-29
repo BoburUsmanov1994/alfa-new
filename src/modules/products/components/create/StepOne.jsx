@@ -35,8 +35,8 @@ const StepOne = ({id = null, ...props}) => {
     const resetRiskList = useSettingsStore(state => get(state, 'resetRiskList', []))
 
     const product = useSettingsStore(state => get(state, 'product', {}))
-    let {data: bcoTypes} = useGetAllQuery({key: KEYS.typeofbco, url: URLS.typeofbco})
-    bcoTypes = getSelectOptionsListFromData(get(bcoTypes, `data.data`, []), '_id', 'policy_type_name')
+    let {data: bcoTypes} = useGetAllQuery({key: KEYS.typeofbco, url: `${URLS.bcoType}/list`})
+    bcoTypes = getSelectOptionsListFromData(get(bcoTypes, `data`, []), '_id', 'policy_type_name')
 
     useEffect(() => {
         if (id && isEmpty(riskItem) && !isEmpty(get(product, 'riskId', []))) {
@@ -70,9 +70,9 @@ const StepOne = ({id = null, ...props}) => {
     let {data: subGroups} = useGetAllQuery({
         key: KEYS.subgroupsofproductsFilter,
         url: URLS.subgroupsofproductsFilter,
-        params:{
-            params:{
-                group:productGroupId
+        params: {
+            params: {
+                group: productGroupId
             }
         },
         enabled: !!productGroupId
@@ -85,25 +85,25 @@ const StepOne = ({id = null, ...props}) => {
     let {data: sectors} = useGetAllQuery({key: KEYS.typeofsector, url: `${URLS.sectorType}/list`})
     sectors = getSelectOptionsListFromData(get(sectors, `data`, []), '_id', 'name')
 
-    let {data: persons} = useGetAllQuery({key: KEYS.typeofpersons, url: URLS.typeofpersons})
-    persons = getSelectOptionsListFromData(get(persons, `data.data`, []), '_id', 'name')
+    let {data: persons} = useGetAllQuery({key: KEYS.typeofpersons, url: `${URLS.personType}/list`})
+    persons = getSelectOptionsListFromData(get(persons, `data`, []), '_id', 'name')
 
-    let {data: status} = useGetAllQuery({key: KEYS.statusofproduct, url: URLS.statusofproduct})
+    let {data: status} = useGetAllQuery({key: KEYS.statusofproduct, url: `${URLS.statusofproduct}/list`})
     status = getSelectOptionsListFromData(get(status, `data.data`, []), '_id', 'name')
 
     let {data: riskGroups} = useGetAllQuery({key: KEYS.typeofrisk, url: `${URLS.riskType}/list`})
     riskGroups = getSelectOptionsListFromData(get(riskGroups, `data`, []), '_id', 'name')
 
-    let {data: risksList} = useGetAllQuery({key: KEYS.risk, url: `${URLS.risk}/list`})
-    risksList = getSelectOptionsListFromData(get(risksList, `data.data`, []), '_id', 'name')
+    let {data: risksListData} = useGetAllQuery({key: KEYS.risk, url: `${URLS.risk}/list`})
+    let risksList = getSelectOptionsListFromData(get(risksListData, `data`, []), '_id', 'name')
 
     let {data: risksData} = useGetAllQuery({
         id: riskTypeId,
         key: KEYS.riskFilter,
-        url: URLS.riskFilter,
-        params:{
-            params:{
-                typeofrisksId:riskTypeId
+        url: `${URLS.risk}/list`,
+        params: {
+            params: {
+                riskType: riskTypeId
             }
         },
         enabled: !!riskTypeId
@@ -117,10 +117,10 @@ const StepOne = ({id = null, ...props}) => {
         if (includes(['riskgroup', 'classeId', 'risk'], name)) {
             setRiskItem(prev => ({...prev, [name]: value}))
         }
-        if (isEqual(name, 'groupofproductsId')) {
+        if (isEqual(name, 'group')) {
             setProductGroupId(value)
         }
-        if (isEqual(name, 'riskgroup')) {
+        if (isEqual(name, 'riskType')) {
             setRiskTypeId(value)
         }
     }
@@ -138,10 +138,7 @@ const StepOne = ({id = null, ...props}) => {
     const findItem = (list = [], id = null) => {
         return list.find(l => isEqual(get(l, "_id"), id))
     }
-
-    console.log('riskList',riskList)
-    console.log('risksList',risksList)
-
+    console.log('risksList', risksList)
     return (
         <Row>
             <Col xs={12}>
@@ -256,8 +253,8 @@ const StepOne = ({id = null, ...props}) => {
                                             <Field
                                                 options={riskGroups}
                                                 type={'select'}
-                                                name={'riskgroup'}
-                                                defaultValue={get(riskItem, 'riskgroup')}
+                                                name={'riskType'}
+                                                defaultValue={get(riskItem, 'riskType')}
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: t('Выберите группу  риска')
@@ -277,12 +274,12 @@ const StepOne = ({id = null, ...props}) => {
                                         <Col xs={4}>
                                             <Field
                                                 options={insuranceClasses.filter(classItem => includes(get(findItem(
-                                                    get(risksData, 'data.data', []), get(riskItem, 'risk')
+                                                    get(risksListData, 'data', []), get(riskItem, 'risk')
                                                 ), 'classesId', []), get(classItem, 'value')))}
                                                 type={'select'}
                                                 name={'classeId'}
                                                 defaultValue={get(head(insuranceClasses.filter(classItem => includes(get(findItem(
-                                                    get(risksData, 'data.data', []), get(riskItem, 'risk')
+                                                    get(risksListData, 'data', []), get(riskItem, 'risk')
                                                 ), 'classesId', []), get(classItem, 'value')))), 'value')}
                                                 property={{
                                                     hideLabel: true,
@@ -327,7 +324,7 @@ const StepOne = ({id = null, ...props}) => {
                                                     defaultValue={get(item, 'classeId')}
                                                     property={{
                                                         hideLabel: true,
-                                                        bgColor: get(findItem(get(insuranceClassesList, 'data.data'), get(item, 'classeId')), 'color')
+                                                        bgColor: get(findItem(get(insuranceClassesList, 'data'), get(item, 'classeId')), 'color')
                                                     }}
                                                 />
                                             </td>

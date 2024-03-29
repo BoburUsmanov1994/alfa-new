@@ -19,7 +19,6 @@ import ImportPaymentDocumentsPage from "../modules/accounting/pages/ImportPaymen
 import DistributionPage from "../modules/accounting/pages/DistributionPage";
 import DistributionTypeContainer from "../modules/accounting/containers/DistributionTypeContainer";
 import PolicyDistributionPage from "../modules/accounting/pages/PolicyDistributionPage";
-import BCOStatusPage from "../modules/handbook/pages/BCOStatusPage";
 import BCOLanguagePolicyPage from "../modules/handbook/pages/BCOLanguagePolicyPage";
 import BCOPage from "../modules/handbook/pages/BCOPage";
 import AddActPage from "../modules/handbook/pages/AddActPage";
@@ -29,9 +28,9 @@ import AddPoliceBlankPage from "../modules/handbook/pages/AddPoliceBlankPage";
 import UsersPage from "../modules/users/pages/UsersPage";
 import ClientsPage from "../modules/clients/pages/ClientsPage";
 import ClientCreatePage from "../modules/clients/pages/ClientCreatePage";
-import BcoTypePage from "../modules/accounting/pages/BcoTypePage";
+import BcoTypePage from "../modules/bco/pages/BcoTypePage";
 import BcoBlankPage from "../modules/accounting/pages/PolicyBlankPage";
-import BcoPage from "../modules/accounting/pages/BcoPage";
+import BcoPage from "../modules/bco/pages/BcoPage";
 import LogOutPage from "../modules/auth/pages/LogOutPage";
 import InsuranceFormPage from "../modules/handbook/pages/InsuranceFormPage";
 import JuridicalClientCreatePage from "../modules/clients/pages/JuridicalClientCreatePage";
@@ -41,6 +40,9 @@ import PropertyTypePage from "../modules/handbook/pages/PropertyTypePage";
 import PropertyRightTypePage from "../modules/handbook/pages/PropertyRightTypePage";
 import AgriculturalTypePage from "../modules/handbook/pages/AgriculturalTypePage";
 import MeasurementTypePage from "../modules/handbook/pages/MeasurementTypePage";
+import BcoStatusPage from "../modules/bco/pages/BcoStatusPage";
+import BcoLanguagePage from "../modules/bco/pages/BcoLanguagePage";
+import BcoPolicyStatusPage from "../modules/bco/pages/BcoPolicyStatusPage";
 //lazy load
 const TypeObjectPage = lazy(() => import("../modules/handbook/pages/TypeObjectPage"));
 const ObjectPage = lazy(() => import("../modules/handbook/pages/ObjectPage"));
@@ -209,7 +211,6 @@ const Router = ({...rest}) => {
                                 <Route path={"payment-currency"} element={<PaymentCurrencyPage/>}/>
                                 <Route path={"policy-status"} element={<PolicyStatusPage/>}/>
                                 <Route path={"payment-status"} element={<PaymentStatusPage/>}/>
-                                <Route path={"status-bco-policy"} element={<BCOStatusPage/>}/>
                                 <Route path={"bco-language-policy"} element={<BCOLanguagePolicyPage/>}/>
                                 <Route path={"vehicle-type"} element={<VehicleTypePage/>}/>
                                 <Route path={"property-type"} element={<PropertyTypePage/>}/>
@@ -219,6 +220,13 @@ const Router = ({...rest}) => {
                             </Route>
                             <Route path={"policy"}>
                                 <Route path={"create/:product_id"} element={<PolicyCreatePage/>}/>
+                            </Route>
+                            <Route path={"bco"}>
+                                <Route index element={<BcoPage/>}/>
+                                <Route path={"type"} element={<BcoTypePage/>}/>
+                                <Route path={"status"} element={<BcoStatusPage/>}/>
+                                <Route path={"language"} element={<BcoLanguagePage/>}/>
+                                <Route path={"policy-status"} element={<BcoPolicyStatusPage/>}/>
                             </Route>
                             <Route path={"endorsement"}>
                                 <Route path={"create/:product_id"} element={<EndorsementCreatePage/>}/>
@@ -242,7 +250,6 @@ const Router = ({...rest}) => {
                     </Routes>
                 </IsGuest>
             </Suspense>
-
         </BrowserRouter>
     );
 };

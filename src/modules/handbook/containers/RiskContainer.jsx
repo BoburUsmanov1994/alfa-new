@@ -39,7 +39,7 @@ const RiskContainer = ({...rest}) => {
         <Field  name={'name'} type={'input'} label={'Название риска'} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
         <Field  name={'riskType'} type={'select'} label={'Tипа риск '} options={typesOptions} defaultValue={rowId ? get(data,'riskType'):null} params={{required: true}} />
         <Field  name={'insuranceClass'} type={'select'} label={'Class '} options={typesClasses} defaultValue={rowId ? get(data,'insuranceClass'):null} params={{required: true}} />
-        <Field  name={'categoryNumber'} type={'input'} label={'Category number '} property={{type:'number'}} defaultValue={rowId ? get(data,'categoryNumber'):null} params={{required: true}} />
+        <Field  name={'categoryNumber'} type={'input'} label={'Category number '} property={{type:'number'}} defaultValue={rowId ? get(data,'categoryNumber'):null} params={{required: true,valueAsNumber:true}} />
     </>
     return (
         <>

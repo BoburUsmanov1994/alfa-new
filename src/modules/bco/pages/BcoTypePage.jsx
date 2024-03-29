@@ -1,5 +1,5 @@
 import React from 'react';
-import DistributionContainer from "../containers/DistributionContainer";
+import DistributionContainer from "../../accounting/containers/DistributionContainer";
 import styled from "styled-components";
 import BcoTypeContainer from "../containers/BcoTypeContainer";
 

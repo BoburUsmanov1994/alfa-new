@@ -19,34 +19,32 @@ const BcoContainer = ({...rest}) => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Accounting',
-            path: '/accounting',
+            title: 'БСО',
+            path: '/bco',
         },
         {
             id: 2,
             title: 'Bco list',
-            path: '/accounting/bco',
+            path: '/bco',
         }
     ], [])
-    let {data: branches} = useGetAllQuery({key: KEYS.branches, url: URLS.branches})
-    let branchesList = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchname')
 
     let {data: policyList} = useGetAllQuery({
         key: KEYS.typeofbco,
-        url: URLS.typeofbco
+        url: `${URLS.bcoType}/list`
     })
-    policyList = getSelectOptionsListFromData(get(policyList, `data.data`, []), '_id', 'policy_type_name')
+    policyList = getSelectOptionsListFromData(get(policyList, `data`, []), '_id', 'policy_type_name')
     let {data: policyBlankList} = useGetAllQuery({
         key: KEYS.policyblank,
-        url: URLS.policyblank
+        url: `${URLS.policyblank}/list`
     })
-    policyBlankList = getSelectOptionsListFromData(get(policyBlankList, `data.data`, []), '_id', 'blank_number')
+    policyBlankList = getSelectOptionsListFromData(get(policyBlankList, `data`, []), '_id', 'blank_number')
 
-    let {data: bcoStatusList} = useGetAllQuery({
-        key: KEYS.statusbcopolicy,
-        url: URLS.statusbcopolicy
+    let {data: actList} = useGetAllQuery({
+        key: KEYS.act,
+        url: `${URLS.act}/list`
     })
-    bcoStatusList = getSelectOptionsListFromData(get(bcoStatusList, `data.data`, []), '_id', 'name')
+    actList = getSelectOptionsListFromData(get(actList, `data`, []), '_id', 'name')
     useEffect(() => {
         setBreadcrumbs(breadcrumbs)
     }, [])
@@ -59,25 +57,25 @@ const BcoContainer = ({...rest}) => {
                        params={{required: true}}/>
             </Col>
             <Col xs={6}>
-                <Field name={'branch_id'} type={'select'} options={branchesList} label={'Branch'}
-                       defaultValue={rowId ? get(data, 'branch_id') : null}
+                <Field name={'policy_blank_number_from'} property={{type: 'number'}}
+                       label={'Policy number from'} defaultValue={rowId ? get(data, 'policy_blank_number_from') : null}
                        params={{required: true}}/>
             </Col>
             <Col xs={6}>
-                <Field type={'select'} label={'Работник'} name={'employee_id'}
-                       options={getSelectOptionsListFromData(get(head(get(branches, 'data.data', [])), 'employees', []), '_id', 'fullname')}/>
-            </Col>
-            <Col xs={6}>
-                <Field isMulti name={'policy_blank_number'} type={'select'} options={policyBlankList}
-                       label={'Policy blanks'} defaultValue={rowId ? get(data, 'policy_blank_number') : null}
+                <Field name={'policy_blank_number_to'} type={'input'} property={{type: 'number'}}
+                       label={'Policy number to'} defaultValue={rowId ? get(data, 'policy_blank_number_to') : null}
                        params={{required: true}}/>
             </Col>
-            {/*<Col xs={6}>*/}
-
-            {/*    <Field name={'statusofbcopolicy'} type={'select'} options={bcoStatusList} label={'Status'}*/}
-            {/*           defaultValue={rowId ? get(data, 'statusofbcopolicy') : null}*/}
-            {/*           params={{required: true}}/>*/}
-            {/*</Col>*/}
+            <Col xs={6}>
+                <Field isMulti name={'blank_number'} type={'select'} options={policyBlankList}
+                       label={'Policy blank'} defaultValue={rowId ? get(data, 'blank_number') : null}
+                       params={{required: true}}/>
+            </Col>
+            <Col xs={6}>
+                <Field name={'act_id'} type={'select'} options={actList}
+                       label={'Act'} defaultValue={rowId ? get(data, 'act_id') : null}
+                       params={{required: true}}/>
+            </Col>
         </Row>
 
     </>
@@ -108,11 +106,10 @@ const BcoContainer = ({...rest}) => {
                 ]}
                 keyId={KEYS.bco}
                 url={URLS.bco}
+                listUrl={`${URLS.bco}/list`}
                 title={'Bco list'}
                 responseDataKey={'data'}
-
             />
-
 
 
         </>

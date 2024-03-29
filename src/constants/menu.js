@@ -98,6 +98,38 @@ export const menuData = [
             // }
         ]
     },
+    {
+        id: 2,
+        title: 'БСО',
+        path: '/bco',
+        submenu: [
+            {
+                id: 11,
+                title: 'БСО',
+                path: '/bco',
+            },
+            {
+                id: 1,
+                title: 'Тип БСО',
+                path: '/bco/type',
+            },
+            {
+                id: 2,
+                title: 'БСО статус полиса',
+                path: '/bco/policy-status',
+            },
+            {
+                id: 3,
+                title: 'БСО статус',
+                path: '/bco/status',
+            },
+            {
+                id: 4,
+                title: 'БСО язык',
+                path: '/bco/language',
+            },
+        ]
+    },
     // {
     //     id: 222,
     //     title: 'Accounts',
@@ -410,27 +442,11 @@ export const menuData = [
                 title: 'Способ оплаты',
                 path: '/handbook/payment-type',
             },
-
-            // {
-            //     id: 27,
-            //     title: 'Citizenship',
-            //     path: '/handbook/citizenship',
-            // },
             {
                 id: 28,
                 title: 'Genders',
                 path: '/handbook/genders',
             },
-            // {
-            //     id: 29,
-            //     title: 'Position',
-            //     path: '/handbook/position',
-            // },
-            // {
-            //     id: 30,
-            //     title: 'Document types',
-            //     path: '/handbook/document-types',
-            // },
             {
                 id: 31,
                 title: 'Branch level',
@@ -441,11 +457,6 @@ export const menuData = [
                 title: 'Branch status',
                 path: '/handbook/branch-status',
             },
-            // {
-            //     id: 33,
-            //     title: 'Manager doument type',
-            //     path: '/handbook/manager-document-type',
-            // },
             {
                 id: 34,
                 title: 'Reasons',
@@ -476,16 +487,6 @@ export const menuData = [
                 title: 'Payment status',
                 path: '/handbook/payment-status',
             },
-            {
-                id: 40,
-                title: 'Bco policy status',
-                path: '/handbook/status-bco-policy',
-            },
-            // {
-            //     id: 40,
-            //     title: 'Bco language policy',
-            //     path: '/handbook/bco-language-policy',
-            // },
             {
                 id: 41,
                 title: 'Vehicle type',

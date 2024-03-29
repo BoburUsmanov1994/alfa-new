@@ -96,4 +96,8 @@ export const KEYS = {
     propertyRightType: "propertyRightType",
     agriculturalType: "agriculturalType",
     measurementType: "measurementType",
+    bcoStatus: "bcoStatus",
+    bcoLanguage: "bcoLanguage",
+    act: "act",
+    actStatus: "actStatus",
 }

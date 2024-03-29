@@ -50,8 +50,8 @@ const StepTwo = ({...props}) => {
 
     const product = useSettingsStore(state => get(state, 'product', {}))
 
-    const {data:applicationformdocs} = useGetAllQuery({key: KEYS.applicationformdocs, url: URLS.applicationformdocs})
-    const {data:contractform} = useGetAllQuery({key: KEYS.contractform, url: URLS.contractform})
+    const {data:applicationformdocs} = useGetAllQuery({key: KEYS.applicationformdocs, url: `${URLS.applicationForm}/list`})
+    const {data:contractform} = useGetAllQuery({key: KEYS.contractform, url: `${URLS.contractForm}/list`})
     const {data:additionaldocuments} = useGetAllQuery({key: KEYS.additionaldocuments, url: URLS.additionaldocuments})
     const {mutate: deleteApplicationFormDocs} = useDeleteQuery({listKeyId: KEYS.applicationformdocs})
     const {mutate: deleteContactForm} = useDeleteQuery({listKeyId: KEYS.contractform})
