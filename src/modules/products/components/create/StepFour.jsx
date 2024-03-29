@@ -45,8 +45,8 @@ const StepFour = ({id = null, ...props}) => {
         props.firstStep();
     }
 
-    let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.clients}/list`})
-    agents = getSelectOptionsListFromData(get(agents, `data`, []), '_id', ['person.fullName.lastname','person.fullName.firstname','organization.name'])
+    let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.agents}/list`})
+    agents = getSelectOptionsListFromData(get(agents, `data`, []), '_id', 'name')
 
 
     let {data: classes} = useGetAllQuery({key: KEYS.classes, url: `${URLS.insuranceClass}/list`})
