@@ -276,6 +276,20 @@ const ClientCreateContainer = ({...rest}) => {
                                 type={'input'}
                                 name={'person.address'}/>
                         </Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                label={'isUseOurPanel?'}
+                                type={'switch'}
+                                name={'isUseOurPanel'}
+                            />
+                        </Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                label={'isUseRestAPI?'}
+                                type={'switch'}
+                                name={'isUseRestAPI'}
+                            />
+                        </Col>
                     </Row>
                 </Form>
             </Section>

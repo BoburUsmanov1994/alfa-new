@@ -47,6 +47,7 @@ const AgentStatusContainer = ({...rest}) => {
                 ]}
                 keyId={KEYS.accountstatus}
                 url={URLS.accountstatus}
+                listUrl={`${URLS.accountstatus}/list`}
                 title={'Agent status'}
                 responseDataKey={'data'}
 

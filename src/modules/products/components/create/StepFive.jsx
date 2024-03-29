@@ -26,38 +26,37 @@ const StepFive = ({id = null, ...props}) => {
     const {mutate: createProduct, isLoading} = usePostQuery({listKeyId: KEYS.products})
     const {mutate: updateProduct, isLoading: updateLoading} = usePutQuery({listKeyId: KEYS.products})
 
-    let {data: groups} = useGetAllQuery({key: KEYS.groupsofproducts, url: URLS.groupsofproducts})
-    groups = getSelectOptionsListFromData(get(groups, `data.data`, []), '_id', 'name')
+    let {data: groups} = useGetAllQuery({key: KEYS.groupsofproducts, url: `${URLS.groupsofproducts}/list`})
+    groups = getSelectOptionsListFromData(get(groups, `data`, []), '_id', 'name')
 
-    let {data: subGroups} = useGetAllQuery({key: KEYS.subgroupsofproducts, url: URLS.subgroupsofproducts})
-    subGroups = getSelectOptionsListFromData(get(subGroups, `data.data`, []), '_id', 'name')
+    let {data: subGroups} = useGetAllQuery({key: KEYS.subgroupsofproducts, url: `${URLS.subgroupsofproducts}/list`})
+    subGroups = getSelectOptionsListFromData(get(subGroups, `data`, []), '_id', 'name')
 
-    let {data: insurances} = useGetAllQuery({key: KEYS.typeofinsurer, url: URLS.typeofinsurer})
-    insurances = getSelectOptionsListFromData(get(insurances, `data.data`, []), '_id', 'name')
 
-    let {data: status} = useGetAllQuery({key: KEYS.statusofproduct, url: URLS.statusofproduct})
-    status = getSelectOptionsListFromData(get(status, `data.data`, []), '_id', 'name')
 
-    let {data: polices} = useGetAllQuery({key: KEYS.typeofpolice, url: URLS.typeofpolice})
-    polices = getSelectOptionsListFromData(get(polices, `data.data`, []), '_id', 'name')
+    let {data: status} = useGetAllQuery({key: KEYS.statusofproduct, url: `${URLS.statusofproduct}/list`})
+    status = getSelectOptionsListFromData(get(status, `data`, []), '_id', 'name')
 
-    let {data: persons} = useGetAllQuery({key: KEYS.typeofpersons, url: URLS.typeofpersons})
-    persons = getSelectOptionsListFromData(get(persons, `data.data`, []), '_id', 'name')
+    let {data: polices} = useGetAllQuery({key: KEYS.typeofpolice, url: `${URLS.policyType}/list`})
+    polices = getSelectOptionsListFromData(get(polices, `data`, []), '_id', 'name')
 
-    let {data: payments} = useGetAllQuery({key: KEYS.typeofpayment, url: URLS.typeofpayment})
-    payments = getSelectOptionsListFromData(get(payments, `data.data`, []), '_id', 'name')
+    let {data: persons} = useGetAllQuery({key: KEYS.typeofpersons, url: `${URLS.personType}/list`})
+    persons = getSelectOptionsListFromData(get(persons, `data`, []), '_id', 'name')
 
-    let {data: policyformats} = useGetAllQuery({key: KEYS.policyformats, url: URLS.policyformats})
-    policyformats = getSelectOptionsListFromData(get(policyformats, `data.data`, []), '_id', 'name')
+    let {data: payments} = useGetAllQuery({key: KEYS.typeofpayment, url: `${URLS.typeofpayment}/list`})
+    payments = getSelectOptionsListFromData(get(payments, `data`, []), '_id', 'name')
 
-    let {data: applicationformdocs} = useGetAllQuery({key: KEYS.applicationformdocs, url: URLS.applicationformdocs})
-    applicationformdocs = getSelectOptionsListFromData(get(applicationformdocs, `data.data`, []), '_id', 'url')
+    let {data: policyformats} = useGetAllQuery({key: KEYS.policyformats, url: `${URLS.policyFormat}/list`})
+    policyformats = getSelectOptionsListFromData(get(policyformats, `data`, []), '_id', 'name')
 
-    let {data: contractform} = useGetAllQuery({key: KEYS.contractform, url: URLS.contractform})
-    contractform = getSelectOptionsListFromData(get(contractform, `data.data`, []), '_id', 'url')
+    let {data: applicationformdocs} = useGetAllQuery({key: KEYS.applicationformdocs, url: `${URLS.applicationForm}/list`})
+    applicationformdocs = getSelectOptionsListFromData(get(applicationformdocs, `data`, []), '_id', 'url')
 
-    let {data: additionaldocuments} = useGetAllQuery({key: KEYS.additionaldocuments, url: URLS.additionaldocuments})
-    additionaldocuments = getSelectOptionsListFromData(get(additionaldocuments, `data.data`, []), '_id', 'url')
+    let {data: contractform} = useGetAllQuery({key: KEYS.contractform, url: `${URLS.contractForm}/list`})
+    contractform = getSelectOptionsListFromData(get(contractform, `data`, []), '_id', 'url')
+
+    let {data: additionaldocuments} = useGetAllQuery({key: KEYS.additionaldocuments, url: `${URLS.additionaldocuments}/list`})
+    additionaldocuments = getSelectOptionsListFromData(get(additionaldocuments, `data`, []), '_id', 'url')
 
 
     const findItem = (items = [], id, multiple = false) => {
@@ -81,7 +80,7 @@ const StepFive = ({id = null, ...props}) => {
                 }
             })
         } else {
-            createProduct({url: URLS.products, attributes: product}, {
+            createProduct({url: URLS.productCreate, attributes: product}, {
                 onSuccess: () => {
                     resetRiskList();
                     resetProduct();

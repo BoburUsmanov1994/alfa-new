@@ -24,11 +24,11 @@ export const menuData = [
                 title: 'Подгруппы продуктов',
                 path: '/products/product-subgroups',
             },
-            // {
-            //     id: 19,
-            //     title: 'Статус продукта',
-            //     path: '/products/product-status',
-            // },
+            {
+                id: 19,
+                title: 'Статус продукта',
+                path: '/products/product-status',
+            },
             // {
             //     id: 20,
             //     title: 'Agent product',
@@ -81,21 +81,55 @@ export const menuData = [
                 title: 'Юридические лица',
                 path: '/clients/juridical',
             },
-            // {
-            //     id: 3,
-            //     title: 'Контактная информация',
-            //     path: '/clients/contact-information',
-            // },
-            // {
-            //     id: 4,
-            //     title: 'Оповещения',
-            //     path: '/clients/notifications',
-            // },
-            // {
-            //     id: 5,
-            //     title: 'Тип человека',
-            //     path: '/clients/person-type',
-            // }
+            {
+                id: 5,
+                title: 'Тип человека',
+                path: '/clients/person-type',
+            }
+        ]
+    },
+    {
+        id: 8,
+        title: 'Агенты',
+        path: '/agents',
+        submenu: [
+            {
+                id: 1,
+                title: 'Страховые агенты',
+                path: '/agents/insurance-agents',
+            },
+            {
+                id: 2,
+                title: 'Agent types',
+                path: '/agents/types',
+            },
+            {
+                id: 3,
+                title: 'Agent roles',
+                path: '/agents/roles',
+            },
+            {
+                id: 4,
+                title: 'Agent status',
+                path: '/agents/status',
+            },
+        ]
+    },
+    {
+        id: 111,
+        title: 'Филиалы и сотрудники',
+        path: '/branches',
+        submenu: [
+            {
+                id: 1,
+                title: 'Филиалы',
+                path: '/branches/list',
+            },
+            {
+                id: 2,
+                title: 'Employees',
+                path: '/branches/employees',
+            },
         ]
     },
     {
@@ -277,55 +311,13 @@ export const menuData = [
     //     ]
     // },
 
-    // {
-    //     id: 8,
-    //     title: 'Агенты',
-    //     path: '/agents',
-    //     submenu: [
-    //         {
-    //             id: 1,
-    //             title: 'Страховые агенты',
-    //             path: '/agents/insurance-agents',
-    //         },
-    //         {
-    //             id: 2,
-    //             title: 'Agent types',
-    //             path: '/agents/types',
-    //         },
-    //         {
-    //             id: 3,
-    //             title: 'Agent roles',
-    //             path: '/agents/roles',
-    //         },
-    //         {
-    //             id: 4,
-    //             title: 'Agent status',
-    //             path: '/agents/status',
-    //         },
-    //     ]
-    // },
+
     // {
     //     id: 9,
     //     title: 'Отчёты',
     //     path: '/reports',
     // },
-    // {
-    //     id: 111,
-    //     title: 'Filials and employees',
-    //     path: '/branches',
-    //     submenu: [
-    //         {
-    //             id: 1,
-    //             title: 'Филиалы',
-    //             path: '/branches/list',
-    //         },
-    //         {
-    //             id: 2,
-    //             title: 'Employees',
-    //             path: '/branches/employees',
-    //         },
-    //     ]
-    // },
+
     {
         id: 10,
         title: 'Справочники',

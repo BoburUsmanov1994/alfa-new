@@ -89,11 +89,12 @@ const AgentsContainer = ({...rest}) => {
                 ]}
                 keyId={KEYS.agents}
                 url={URLS.agents}
+                listUrl={`${URLS.agents}/list`}
                 title={'Страховые агенты'}
                 responseDataKey={'data'}
-                viewUrl={'/agents/view'}
+                // viewUrl={'/agents/view'}
                 createUrl={'/agents/create'}
-                updateUrl={'/agents/update'}
+                // updateUrl={'/agents/update'}
                 isHideColumn
 
             />

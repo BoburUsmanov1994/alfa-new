@@ -199,6 +199,21 @@ const JuridicalClientCreateContainer = ({...rest}) => {
                                 type={'input'}
                                 name={'organization.address'}/>
                         </Col>
+
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                label={'isUseOurPanel?'}
+                                type={'switch'}
+                                name={'isUseOurPanel'}
+                            />
+                        </Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                label={'isUseRestAPI?'}
+                                type={'switch'}
+                                name={'isUseRestAPI'}
+                            />
+                        </Col>
                         <Col xs={1} className={'mt-15'}>
                             <Field
                                 property={{disabled: true, type: 'hidden', hideLabel: true}}

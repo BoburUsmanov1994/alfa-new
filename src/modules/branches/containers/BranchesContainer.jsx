@@ -33,50 +33,27 @@ const BranchesContainer = ({...rest}) => {
                 tableHeaderData={[
                     {
                         id: 1,
-                        key: 'branchname',
+                        key: 'branchName',
                         title: 'Branch name '
                     },
                     {
                         id: 2,
-                        key: 'region.name',
-                        title: 'Region'
-                    },
-                    {
-                        id: 3,
-                        key: 'address',
-                        title: 'Address'
-                    },
-                    {
-                        id: 4,
-                        key: 'codeofbreanches',
-                        title: 'Branch code'
-                    },
-                    {
-                        id: 6,
-                        key: 'email',
-                        title: 'Email'
-                    },
-                    {
-                        id: 7,
-                        key: 'mfo',
-                        title: 'MFO'
-                    },
-                    {
-                        id: 8,
-                        key: 'nameofbank',
-                        title: 'nameofbank'
+                        key: 'fondId',
+                        title: 'Fond id'
                     },
                 ]}
                 keyId={KEYS.branches}
                 url={URLS.branches}
+                listUrl={`${URLS.branches}/list`}
                 title={'Branches'}
                 responseDataKey={'data'}
-                viewUrl={'/branches/view'}
-                createUrl={'/branches/create'}
-                updateUrl={'/branches/update'}
+                // viewUrl={'/branches/view'}
+                // createUrl={'/branches/create'}
+                // updateUrl={'/branches/update'}
                 isHideColumn
                 hidePagination
-
+                hideCreateBtn
+                hideDeleteBtn
             />
         </>
     );

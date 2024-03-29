@@ -37,47 +37,44 @@ const EmployeesContainer = ({...rest}) => {
                 tableHeaderData={[
                     {
                         id: 1,
-                        key: 'name',
-                        title: 'Name '
+                        key: 'fullname',
+                        title: 'Fullname '
                     },
                     {
                         id: 2,
-                        key: 'secondname',
-                        title: 'Secondname'
+                        key: 'photo',
+                        title: 'Photo'
                     },
                     {
                         id: 3,
-                        key: 'middlename',
-                        title: 'Middlename'
+                        key: 'documentnumber',
+                        title: 'Passport'
                     },
                     {
                         id: 4,
-                        key: 'branch.branchname',
-                        title: 'Branch'
-                    },
-                    {
-                        id: 5,
-                        key: 'position.name',
+                        key: 'positions',
                         title: 'Position'
                     },
+
                     {
                         id: 6,
-                        key: 'regions.name',
-                        title: 'Region'
+                        key: 'telephonenumber',
+                        title: 'Phone'
                     },
                     {
                         id: 7,
-                        key: 'districts.name',
-                        title: 'District'
+                        key: 'emailforcontacts',
+                        title: 'Email'
                     },
                 ]}
                 keyId={KEYS.employee}
                 url={URLS.employee}
+                listUrl={`${URLS.employee}/list`}
                 title={'Employees'}
                 responseDataKey={'data'}
-                viewUrl={'/branches/employee/view'}
+                // viewUrl={'/branches/employee/view'}
                 createUrl={'/branches/employee/create'}
-                updateUrl={'/branches/employee/update'}
+                // updateUrl={'/branches/employee/update'}
                 isHideColumn
 
             />

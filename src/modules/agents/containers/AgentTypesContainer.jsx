@@ -47,6 +47,7 @@ const AgentsContainer = ({...rest}) => {
                 ]}
                 keyId={KEYS.typeofagent}
                 url={URLS.typeofagent}
+                listUrl={`${URLS.typeofagent}/list`}
                 title={'Agent types'}
                 responseDataKey={'data'}
 

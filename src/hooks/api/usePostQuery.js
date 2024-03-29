@@ -27,7 +27,7 @@ const usePostQuery = ({hideSuccessToast = false, listKeyId = null}) => {
                     }
                 },
                 onError: (data) => {
-                    toast.error(data?.response?.data?.message  || data?.response?.data?.error || 'ERROR' )
+                    toast.error(data?.response?.data?.message || data?.response?.data?.error || data?.response?.data?.message?.[0] || 'ERROR')
                 }
             }
         );

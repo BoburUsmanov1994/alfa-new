@@ -44,27 +44,27 @@ const StepThree = ({...props}) => {
         props.firstStep();
     }
 
-    let {data: agents} = useGetAllQuery({key: KEYS.agents, url: URLS.agents})
-    agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', 'inn')
+    let {data: clients} = useGetAllQuery({key: KEYS.agents, url: `${URLS.clients}/list`})
+    clients = getSelectOptionsListFromData(get(clients, `data`, []), '_id', ['person.fullName.lastname','person.fullName.firstname','organization.name'])
 
-    let {data: policyformats} = useGetAllQuery({key: KEYS.policyformats, url: URLS.policyformats})
-    policyformats = getSelectOptionsListFromData(get(policyformats, `data.data`, []), '_id', 'name')
+    let {data: policyformats} = useGetAllQuery({key: KEYS.policyformats, url: `${URLS.policyFormat}/list`})
+    policyformats = getSelectOptionsListFromData(get(policyformats, `data`, []), '_id', 'name')
 
-    let {data: refunds} = useGetAllQuery({key: KEYS.typeofrefund, url: URLS.typeofrefund})
-    refunds = getSelectOptionsListFromData(get(refunds, `data.data`, []), '_id', 'name')
+    let {data: refunds} = useGetAllQuery({key: KEYS.typeofrefund, url: `${URLS.typeofrefund}/list`})
+    refunds = getSelectOptionsListFromData(get(refunds, `data`, []), '_id', 'name')
 
-    let {data: claimSettlements} = useGetAllQuery({key: KEYS.typeofclaimsettlement, url: URLS.typeofclaimsettlement})
-    claimSettlements = getSelectOptionsListFromData(get(claimSettlements, `data.data`, []), '_id', 'name')
+    let {data: claimSettlements} = useGetAllQuery({key: KEYS.typeofclaimsettlement, url: `${URLS.claimSettlement}/list`})
+    claimSettlements = getSelectOptionsListFromData(get(claimSettlements, `data`, []), '_id', 'name')
 
-    let {data: payments} = useGetAllQuery({key: KEYS.typeofpayment, url: URLS.typeofpayment})
-    payments = getSelectOptionsListFromData(get(payments, `data.data`, []), '_id', 'name')
+    let {data: payments} = useGetAllQuery({key: KEYS.typeofpayment, url: `${URLS.typeofpayment}/list`})
+    payments = getSelectOptionsListFromData(get(payments, `data`, []), '_id', 'name')
 
-    let {data: polices} = useGetAllQuery({key: KEYS.typeofpolice, url: URLS.typeofpolice})
-    polices = getSelectOptionsListFromData(get(polices, `data.data`, []), '_id', 'name')
+    let {data: polices} = useGetAllQuery({key: KEYS.typeofpolice, url: `${URLS.policyType}/list`})
+    polices = getSelectOptionsListFromData(get(polices, `data`, []), '_id', 'name')
 
 
     const showField = (value, name) => {
-        if (includes(['Isfixedpolicyholder', 'Isfixedbeneficiary', 'Isfixedpremium', 'Isfixedrate', 'Isfixedsuminsured', 'Isfixedfee', 'Isfixedpreventivemeasures'], name)) {
+        if (includes(['hasFixedPolicyHolder', 'hasFixedBeneficary', 'hasFixedPremium', 'hasFixedRate', 'hasFixedInsuranceSum', 'hasFixedFee', 'hasFixedPreventiveMeasures'], name)) {
             setShow(prev => ({...prev, [name]: value}))
         }
     }
@@ -79,40 +79,40 @@ const StepThree = ({...props}) => {
                         <Col xs={4}>
                             <Field label={'Имеет фиксированного страхователя'}
                                    type={'switch'}
-                                   name={'Isfixedpolicyholder'}
-                                   defaultValue={get(product,'Isfixedpolicyholder',false)}
+                                   name={'hasFixedPolicyHolder'}
+                                   defaultValue={get(product,'hasFixedPolicyHolder',false)}
                                    property={{hasRequiredLabel: true}}
                             />
-                            {get(show, 'Isfixedpolicyholder', false) &&
+                            {get(show, 'hasFixedPolicyHolder', false) &&
                                 <Field label={'Имеет фиксированного страхователя'}
                                        type={'select'}
-                                       name={'fixedpolicyholder'}
+                                       name={'fixedPolicyHolder'}
                                        property={{hideLabel: true}}
-                                       options={agents}
-                                       defaultValue={get(product,'fixedpolicyholder')}
+                                       options={clients}
+                                       defaultValue={get(product,'fixedPolicyHolder')}
                                 />}
                         </Col>
                         <Col xs={4}>
                             <Field label={'Имеет  выгодоприобретеля'}
                                    type={'switch'}
-                                   name={'Isbeneficiary'}
-                                   defaultValue={get(product,'Isbeneficiary',false)}
+                                   name={'hasBeneficary'}
+                                   defaultValue={get(product,'hasBeneficary',false)}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field label={'Имеет  фиксированного выгодоприобретеля'}
                                    type={'switch'}
-                                   name={'Isfixedbeneficiary'}
-                                   defaultValue={get(product,'Isfixedbeneficiary',false)}
+                                   name={'hasFixedBeneficary'}
+                                   defaultValue={get(product,'hasFixedBeneficary',false)}
 
                             />
-                            {get(show, 'Isfixedbeneficiary', false) &&
+                            {get(show, 'hasFixedBeneficary', false) &&
                                 <Field label={'Имеет фиксированного страхователя'}
                                        type={'select'}
-                                       name={'fixedbeneficiary'}
+                                       name={'fixedBeneficary'}
                                        property={{hideLabel: true}}
-                                       options={agents}
-                                       defaultValue={get(product,'fixedbeneficiary')}
+                                       options={clients}
+                                       defaultValue={get(product,'fixedBeneficary')}
                                 />}
                         </Col>
                     </Row>
@@ -120,34 +120,34 @@ const StepThree = ({...props}) => {
                         <Col xs={4}>
                             <Field label={'Имеет фиксированную премию'}
                                    type={'switch'}
-                                   name={'Isfixedpremium'}
-                                   defaultValue={get(product,'Isfixedpremium',false)}
+                                   name={'hasFixedPremium'}
+                                   defaultValue={get(product,'hasFixedPremium',false)}
                             />
-                            {get(show, 'Isfixedpremium', false) && <Field
+                            {get(show, 'hasFixedPremium', false) && <Field
                                 type={'number-format-input'}
-                                name={'fixedpremium'}
+                                name={'fixedPremium'}
                                 property={{hideLabel: true}}
-                                defaultValue={get(product,'fixedpremium',0)}
+                                defaultValue={get(product,'fixedPremium',0)}
                             />}
                         </Col>
                         <Col xs={4}>
                             <Field label={'Имеет диапазон ставок'}
                                    type={'switch'}
-                                   name={'Isbettingrange'}
-                                   defaultValue={get(product,'Isbettingrange',false)}
+                                   name={'hasBettingRange'}
+                                   defaultValue={get(product,'hasBettingRange',false)}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field label={'Имеет фиксированную ставку'}
                                    type={'switch'}
-                                   name={'Isfixedrate'}
-                                   defaultValue={get(product,'Isfixedrate',false)}
+                                   name={'hasFixedRate'}
+                                   defaultValue={get(product,'hasFixedRate',false)}
                             />
-                            {get(show, 'Isfixedrate', false) && <Field
+                            {get(show, 'hasFixedRate', false) && <Field
                                 type={'number-format-input'}
-                                name={'fixedrate'}
+                                name={'fixedRate'}
                                 property={{hideLabel: true, suffix: " %"}}
-                                defaultValue={get(product,'fixedrate',0)}
+                                defaultValue={get(product,'fixedRate',0)}
                             />}
                         </Col>
                     </Row>
@@ -156,40 +156,40 @@ const StepThree = ({...props}) => {
                         <Col xs={4}>
                             <Field label={'Имеет фиксированную страховую сумму'}
                                    type={'switch'}
-                                   name={'Isfixedsuminsured'}
-                                   defaultValue={get(product,'Isfixedsuminsured',false)}
+                                   name={'hasFixedInsuranceSum'}
+                                   defaultValue={get(product,'hasFixedInsuranceSum',false)}
                             />
-                            {get(show, 'Isfixedsuminsured', false) && <Field
+                            {get(show, 'hasFixedInsuranceSum', false) && <Field
                                 type={'number-format-input'}
-                                name={'fixedsuminsured'}
+                                name={'fixedInsuranceSum'}
                                 property={{hideLabel: true}}
-                                defaultValue={get(product,'fixedsuminsured',0)}
+                                defaultValue={get(product,'fixedInsuranceSum',0)}
                             />}
                         </Col>
                         <Col xs={4}>
                             <Field label={'Имеет фиксированную комиссию'}
                                    type={'switch'}
-                                   name={'Isfixedfee'}
-                                   defaultValue={get(product,'Isfixedfee',false)}
+                                   name={'hasFixedFee'}
+                                   defaultValue={get(product,'hasFixedFee',false)}
                             />
-                            {get(show, 'Isfixedfee', false) && <Field
+                            {get(show, 'hasFixedFee', false) && <Field
                                 type={'number-format-input'}
-                                name={'fixedfee'}
+                                name={'fixedFee'}
                                 property={{hideLabel: true, suffix: " %"}}
-                                defaultValue={get(product,'fixedfee',0)}
+                                defaultValue={get(product,'fixedFee',0)}
                             />}
                         </Col>
                         <Col xs={4}>
                             <Field label={'Имеет фиксированный превентивных мероприятий '}
                                    type={'switch'}
-                                   name={'Isfixedpreventivemeasures'}
-                                   defaultValue={get(product,'Isfixedpreventivemeasures',false)}
+                                   name={'hasFixedPreventiveMeasures'}
+                                   defaultValue={get(product,'hasFixedPreventiveMeasures',false)}
                             />
-                            {get(show, 'Isfixedpreventivemeasures', false) && <Field
+                            {get(show, 'hasFixedPreventiveMeasures', false) && <Field
                                 type={'number-format-input'}
-                                name={'fixedpreventivemeasures'}
+                                name={'fixedPreventiveMeasures'}
                                 property={{hideLabel: true, suffix: " %"}}
-                                defaultValue={get(product,'fixedpreventivemeasures',0)}
+                                defaultValue={get(product,'fixedPreventiveMeasures',0)}
                             />}
                         </Col>
                     </Row>
@@ -197,22 +197,22 @@ const StepThree = ({...props}) => {
                         <Col xs={4}>
                             <Field label={'Разрешить полис без оплаты'}
                                    type={'switch'}
-                                   name={'Ispolicywithoutpayment'}
-                                   defaultValue={get(product,'Ispolicywithoutpayment',false)}
+                                   name={'allowPolicyWithoutPayment'}
+                                   defaultValue={get(product,'allowPolicyWithoutPayment',false)}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field label={'Разрешить несколько агентов'}
                                    type={'switch'}
-                                   name={'Ismultipleagents'}
-                                   defaultValue={get(product,'Ismultipleagents',false)}
+                                   name={'allowMultipleAgents'}
+                                   defaultValue={get(product,'allowMultipleAgents',false)}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field label={'Разрешить изменение франшизы'}
                                    type={'switch'}
-                                   name={'Isfranchisechange'}
-                                   defaultValue={get(product,'Isfranchisechange',false)}
+                                   name={'allowChangeFranchise'}
+                                   defaultValue={get(product,'allowChangeFranchise',false)}
                             />
                         </Col>
                     </Row>
@@ -220,24 +220,24 @@ const StepThree = ({...props}) => {
                         <Col xs={4}>
                             <Field label={'Разрешать иностранную валюту'}
                                    type={'switch'}
-                                   name={'Isforeigncurrency'}
-                                   defaultValue={get(product,'Isforeigncurrency',false)}
+                                   name={'allowForeignCurrency'}
+                                   defaultValue={get(product,'allowForeignCurrency',false)}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field label={'Форматы полисов'}
                                    type={'select'}
-                                   name={'policyformatId'}
+                                   name={'policyFormat'}
                                    options={policyformats}
-                                   defaultValue={get(product,'policyformatId')}
+                                   defaultValue={get(product,'policyFormat')}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field label={'Вид урегулирования претензии'}
                                    type={'select'}
-                                   name={'typeofclaimsettlement'}
+                                   name={'claimSettlementType'}
                                    options={claimSettlements}
-                                   defaultValue={get(product,'typeofclaimsettlement')}
+                                   defaultValue={get(product,'claimSettlementType')}
                             />
                         </Col>
                     </Row>
@@ -245,9 +245,9 @@ const StepThree = ({...props}) => {
                         <Col xs={4}>
                             <Field label={'Тип возмещения'}
                                    type={'radio-group'}
-                                   name={'typeofrefund'}
+                                   name={'refundType'}
                                    options={refunds}
-                                   defaultValue={get(product,'typeofrefund',get(head(refunds),'value'))}
+                                   defaultValue={get(product,'refundType',get(head(refunds),'value'))}
                             />
                         </Col>
                         <Col xs={4}>
@@ -255,17 +255,19 @@ const StepThree = ({...props}) => {
                                 options={payments}
                                 label={'Тип оплаты'}
                                 type={'checkbox'}
-                                name={'typeofpayment'}
-                                defaultValue={get(product,'typeofpayment')}
+                                name={'paymentType'}
+                                defaultValue={get(product,'paymentType')}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field
+                                params={{required:true}}
                                 options={polices}
                                 label={'Тип полиса'}
                                 type={'checkbox'}
-                                name={'typeofpolice'}
-                                defaultValue={get(product,'typeofpolice')}
+                                name={'policyTypes'}
+                                property={{hasRequiredLabel:true}}
+                                defaultValue={get(product,'policyTypes')}
                             />
                         </Col>
                     </Row>
@@ -274,16 +276,16 @@ const StepThree = ({...props}) => {
                             <Field
                                 label={'Укажите минимальный срок страхования в днях'}
                                 type={'number-format-input'}
-                                name={'minimumterminsurance'}
-                                defaultValue={get(product,'minimumterminsurance',0)}
+                                name={'minimumInsuranceTerm'}
+                                defaultValue={get(product,'minimumInsuranceTerm',0)}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field
                                 label={'Укажите максимальный срок страхования в днях'}
                                 type={'number-format-input'}
-                                name={'maxterminsurance'}
-                                defaultValue={get(product,'maxterminsurance',0)}
+                                name={'maximumInsuranceTerm'}
+                                defaultValue={get(product,'maximumInsuranceTerm',0)}
                             />
                         </Col>
                     </Row>

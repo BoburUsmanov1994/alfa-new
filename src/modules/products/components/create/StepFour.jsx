@@ -18,12 +18,8 @@ import {toast} from "react-toastify";
 
 const StepFour = ({id = null, ...props}) => {
     const [fields, setFields] = useState({riskOptions: []})
-    const [tarif, setTarif] = useState({
-        agentlist: null,
-        limitofagreement: 0,
-        Isagreement: false,
-        tariffperclasses: []
-    })
+    const [otherParams, setOtherParams] = useState({})
+    const [tarif, setTarif] = useState({})
     const [tariffList, setTariffList] = useState([])
     const setProduct = useSettingsStore(state => get(state, 'setProduct', () => {
     }))
@@ -49,35 +45,37 @@ const StepFour = ({id = null, ...props}) => {
         props.firstStep();
     }
 
-    let {data: agents} = useGetAllQuery({key: KEYS.agents, url: URLS.agents})
-    agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', 'inn')
+    let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.clients}/list`})
+    agents = getSelectOptionsListFromData(get(agents, `data`, []), '_id', ['person.fullName.lastname','person.fullName.firstname','organization.name'])
 
-    let {data: classes} = useGetAllQuery({key: KEYS.classes, url: URLS.classes})
-    const classOptions = getSelectOptionsListFromData(get(classes, `data.data`, []), '_id', 'name')
 
-    let {data: risks} = useGetAllQuery({key: KEYS.risk, url: URLS.risk})
-    let risksOptions = getSelectOptionsListFromData(get(risks, `data.data`, []), '_id', 'name')
+    let {data: classes} = useGetAllQuery({key: KEYS.classes, url: `${URLS.insuranceClass}/list`})
+    const classOptions = getSelectOptionsListFromData(get(classes, `data`, []), '_id', 'name')
 
-    let {data: franchises} = useGetAllQuery({key: KEYS.typeoffranchise, url: URLS.typeoffranchise})
-    franchises = getSelectOptionsListFromData(get(franchises, `data.data`, []), '_id', 'name')
+    let {data: risks} = useGetAllQuery({key: KEYS.risk, url: `${URLS.risk}/list`})
+    let risksOptions = getSelectOptionsListFromData(get(risks, `data`, []), '_id', 'name')
 
-    let {data: baseFranchises} = useGetAllQuery({key: KEYS.baseoffranchise, url: URLS.baseoffranchise})
-    baseFranchises = getSelectOptionsListFromData(get(baseFranchises, `data.data`, []), '_id', 'name')
+    let {data: franchises} = useGetAllQuery({key: KEYS.typeoffranchise, url: `${URLS.typeoffranchise}/list`})
+    franchises = getSelectOptionsListFromData(get(franchises, `data`, []), '_id', 'name')
+
+    let {data: baseFranchises} = useGetAllQuery({key: KEYS.baseoffranchise, url: `${URLS.baseoffranchise}/list`})
+    baseFranchises = getSelectOptionsListFromData(get(baseFranchises, `data`, []), '_id', 'name')
 
 
     const setFieldValue = (value, name = "") => {
 
-        if (includes('riskOptions', name) || includes(name, 'franchise')) {
+        if (includes('franchise[0].risk', name) || includes(name, 'franchise')) {
             setFields(prev => ({...prev, [name]: value}));
         }
 
-        if (includes(['agentlist', 'Isagreement', 'limitofagreement'], name)) {
+        if (includes(['tariff[0].agent', 'tariff[0].allowAgreement', 'tariff[0].limitOfAgreement'], name)) {
             setTarif(prev => ({...prev, [name]: value}))
         }
 
-        if (includes(name, 'tariffperclasses')) {
+        if (includes(name, 'tariff[0].tariffPerClass')) {
             setTarif(({...setWith(tarif, name, value)}))
         }
+        setOtherParams(prev => ({...prev, [name]: value}))
     }
 
 
@@ -88,14 +86,14 @@ const StepFour = ({id = null, ...props}) => {
 
     const addTariff = () => {
         let result = [];
-        let {tariff, ...rest} = tarif;
-        if (!isNil(get(tarif, "agentlist"))) {
-            const res = tariffList.filter(t => !isEqual(get(t, "agentlist"), get(rest, "agentlist")));
+        let {...rest} = tarif;
+        if (!isNil(get(tarif, "tariff[0].agent"))) {
+            const res = tariffList.filter(t => !isEqual(get(t, "tariff[0].agent"), get(rest, "tariff[0].agent")));
             result = [...res, rest]
             setTariffList(result)
             setTarif({
                 ...tarif,
-                tariffperclasses: get(tarif, 'tariffperclasses', []).map(({classes, min, max}) => ({
+                tariffPerClass: get(tarif, 'tariff.tariffPerClass', []).map(({class:classes, min, max}) => ({
                     classes,
                     min: 0,
                     max: 0
@@ -110,7 +108,9 @@ const StepFour = ({id = null, ...props}) => {
     const removeTariffFromList = (i) => {
         setTariffList(prev => prev.filter((f, j) => !isEqual(i, j)))
     }
-
+    console.log('tariffList',tariffList)
+    console.log('otherParams',otherParams)
+    console.log('tarif',tarif)
 
     return (
         <Row>
@@ -130,23 +130,24 @@ const StepFour = ({id = null, ...props}) => {
                                 <Col xs={3}>
                                     <Field label={'Агенты'}
                                            type={'select'}
-                                           name={'agentlist'}
+                                           name={'tariff[0].agent'}
                                            options={agents}
-                                           defaultValue={get(product, 'agentlist')}
+                                           defaultValue={get(product, 'tariff[0].agent')}
+                                           params={{required: get(product, 'riskData', []).length > 0}}
                                     />
                                 </Col>
                                 <Col xs={3}>
                                     <Field label={'Разрешить заключение договоров'}
                                            type={'switch'}
-                                           name={'Isagreement'}
-                                           defaultValue={get(product, 'Isagreement', false)}
+                                           name={'tariff[0].allowAgreement'}
+                                           defaultValue={get(product, 'tariff[0].allowAgreement', false)}
                                     />
                                 </Col>
                                 <Col xs={3}>
                                     <Field label={'Лимит ответственности'}
                                            type={'number-format-input'}
-                                           name={'limitofagreement'}
-                                           defaultValue={get(product, 'limitofagreement', 0)}
+                                           name={'tariff[0].limitOfAgreement'}
+                                           defaultValue={get(product, 'tariff[0].limitOfAgreement', 0)}
                                            property={{placeholder: 'Введите значение'}}
                                     />
                                 </Col>
@@ -155,41 +156,41 @@ const StepFour = ({id = null, ...props}) => {
                                 </Col>
                             </Row>
                         </Col>
-                        {get(product, 'riskId', []).length > 0 && <Col xs={12} className={'mb-25'}>
+                        {get(product, 'riskData', []).length > 0 && <Col xs={12} className={'mb-25'}>
                             <hr/>
                             <Table hideThead={false}
                                    thead={['Класс', 'минимальную и  ставку по классу ', 'максимальную ставку по классу',]}>
-                                {get(product, 'riskId', []).map((item, i) => <tr key={i + 1}>
+                                {get(product, 'riskData', []).map((item, i) => <tr key={i + 1}>
                                     <td>
                                         <Field
-                                            name={`tariffperclasses[${i}].classes`}
+                                            name={`tariff[0].tariffPerClass[${i}].class`}
                                             type={'select'}
                                             property={{
                                                 hideLabel: true,
-                                                bgColor: get(findItem(get(classes, 'data.data'), get(item, "_id")), 'color')
+                                                bgColor: get(findItem(get(classes, 'data'), get(item, "_id")), 'color')
                                             }}
                                             options={classOptions}
-                                            defaultValue={get(findItem(get(classes, 'data.data'), get(item, "classeId")), '_id')}
+                                            defaultValue={get(findItem(get(classes, 'data'), get(item, "classeId")), '_id')}
                                             isDisabled={true}
                                         />
                                     </td>
                                     <td>
                                         <Flex justify={'center'}>
                                             <Field
-                                                name={`tariffperclasses[${i}].min`}
+                                                name={`tariff[0].tariffPerClass[${i}].min`}
                                                 type={'number-format-input'}
                                                 property={{hideLabel: true, placeholder: 'Мин', suffix: ' %'}}
-                                                defaultValue={get(product, `tariffperclasses[${i}].min`, 0)}
+                                                defaultValue={get(product, `tariff[0].tariffPerClass[${i}].min`, 0)}
                                             />
                                         </Flex>
                                     </td>
                                     <td>
                                         <Flex justify={'flex-end'}>
                                             <Field
-                                                name={`tariffperclasses[${i}].max`}
+                                                name={`tariff[0].tariffPerClass[${i}].max`}
                                                 type={'number-format-input'}
                                                 property={{hideLabel: true, placeholder: 'Макс', suffix: ' %'}}
-                                                defaultValue={get(product, `tariffperclasses[${i}].max`, 0)}
+                                                defaultValue={get(product, `tariff[0].tariffPerClass[${i}].max`, 0)}
                                             />
                                         </Flex>
                                     </td>
@@ -202,23 +203,23 @@ const StepFour = ({id = null, ...props}) => {
                                    thead={['Агент', 'Class', 'Разрешить заключение договоров', 'Лимит ответственности', 'Max', 'Min', 'Delete']}>
                                 {tariffList.map((item, i) => <tr key={i + 1}>
                                     <td>
-                                        <Field options={agents} type={'select'} name={`tariff[${i}].agentlist`}
-                                               defaultValue={get(item, 'agentlist')} property={{hideLabel: true}}
+                                        <Field options={agents} type={'select'} name={`tariff[${i}].agent`}
+                                               defaultValue={get(item, 'tariff[0].agent')} property={{hideLabel: true}}
                                                isDisabled={true}/>
                                     </td>
                                     <td>
                                         {
-                                            get(item, 'tariffperclasses', []).map((c, j) => <Field key={j}
-                                                                                                   className={'mb-15'}
-                                                                                                   name={`tariff[${i}].tariffperclasses[${j}].classes`}
-                                                                                                   type={'select'}
-                                                                                                   property={{
-                                                                                                       hideLabel: true,
-                                                                                                       bgColor: get(findItem(get(classes, 'data.data'), get(c, "_id")), 'color')
-                                                                                                   }}
-                                                                                                   options={classOptions}
-                                                                                                   defaultValue={get(findItem(get(classes, 'data.data'), get(c, "classes")), '_id')}
-                                                                                                   isDisabled={true}
+                                            get(item, 'tariff[0].tariffPerClass', []).map((c, j) => <Field key={j}
+                                                                                                 className={'mb-15'}
+                                                                                                 name={`tariff[${i}].tariffPerClass[${j}].class`}
+                                                                                                 type={'select'}
+                                                                                                 property={{
+                                                                                                     hideLabel: true,
+                                                                                                     bgColor: get(findItem(get(classes, 'data'), get(c, "_id")), 'color')
+                                                                                                 }}
+                                                                                                 options={classOptions}
+                                                                                                 defaultValue={get(findItem(get(classes, 'data'), get(c, "classes")), '_id')}
+                                                                                                 isDisabled={true}
                                             />)
 
                                         }
@@ -226,16 +227,16 @@ const StepFour = ({id = null, ...props}) => {
                                     <td>
                                         <Field property={{hideLabel: true}}
                                                type={'switch'}
-                                               name={`tariff[${i}].Isagreement`}
-                                               defaultValue={get(item, 'Isagreement', false)}
+                                               name={`tariff[${i}].allowAgreement`}
+                                               defaultValue={get(item, 'allowAgreement', false)}
                                                disabled={true}
                                         />
                                     </td>
                                     <td>
                                         <Field
                                             type={'number-format-input'}
-                                            name={`tariff[${i}].limitofagreement`}
-                                            defaultValue={get(item, 'limitofagreement', 0)}
+                                            name={`tariff[${i}].limitOfAgreement`}
+                                            defaultValue={get(item, 'limitOfAgreement', 0)}
                                             property={{
                                                 disabled: true,
                                                 placeholder: 'Введите значение',
@@ -244,30 +245,30 @@ const StepFour = ({id = null, ...props}) => {
                                         />
                                     </td>
                                     <td>
-                                        {get(item, `tariffperclasses`, []).map((c, j) => <Field key={j}
-                                                                                                className={'mb-15'}
-                                                                                                type={'number-format-input'}
-                                                                                                name={`tariff[${i}].tariffperclasses[${j}].max`}
-                                                                                                defaultValue={get(c, 'max', 0)}
-                                                                                                property={{
-                                                                                                    disabled: true,
-                                                                                                    placeholder: 'Введите значение',
-                                                                                                    hideLabel: true
-                                                                                                }}
+                                        {get(item, `tariffPerClass`, []).map((c, j) => <Field key={j}
+                                                                                              className={'mb-15'}
+                                                                                              type={'number-format-input'}
+                                                                                              name={`tariff[${i}].tariffPerClass[${j}].max`}
+                                                                                              defaultValue={get(c, 'max', 0)}
+                                                                                              property={{
+                                                                                                  disabled: true,
+                                                                                                  placeholder: 'Введите значение',
+                                                                                                  hideLabel: true
+                                                                                              }}
                                         />)}
 
                                     </td>
                                     <td>
-                                        {get(item, `tariffperclasses`, []).map((c, j) => <Field key={j}
-                                                                                                className={'mb-15'}
-                                                                                                type={'number-format-input'}
-                                                                                                name={`tariff[${i}].tariffperclasses[${j}].min`}
-                                                                                                defaultValue={get(c, 'min', 0)}
-                                                                                                property={{
-                                                                                                    disabled: true,
-                                                                                                    placeholder: 'Введите значение',
-                                                                                                    hideLabel: true
-                                                                                                }}
+                                        {get(item, `tariffPerClass`, []).map((c, j) => <Field key={j}
+                                                                                              className={'mb-15'}
+                                                                                              type={'number-format-input'}
+                                                                                              name={`tariff[${i}].tariffPerClass[${j}].min`}
+                                                                                              defaultValue={get(c, 'min', 0)}
+                                                                                              property={{
+                                                                                                  disabled: true,
+                                                                                                  placeholder: 'Введите значение',
+                                                                                                  hideLabel: true
+                                                                                              }}
                                         />)}
 
                                     </td>
@@ -282,11 +283,11 @@ const StepFour = ({id = null, ...props}) => {
                         <Col xs={12}><Title>Франшиза</Title></Col>
                     </Row>
                     <Row className={'mb-25'}>
-                        {get(product, 'riskId', []).length > 0 && <Col xs={12} className={'horizontal-scroll'}>
+                        {get(product, 'risk', []).length > 0 && <Col xs={12} className={'horizontal-scroll'}>
                             <hr/>
                             <Table hideThead={false}
                                    thead={['Страховой риск', 'Имеет франшизу', 'Строго фиксирована', 'Введите фиксированное значение', 'Укажите тип франшизы', 'Укажите базу франшизы', 'Франшиза']}>
-                                {get(product, 'riskId', []).map((item, i) => <tr key={i + 1}>
+                                {get(product, 'riskData', []).map((item, i) => <tr key={i + 1}>
                                     <td>
                                         <Field
                                             className={'w-250'}
@@ -294,7 +295,7 @@ const StepFour = ({id = null, ...props}) => {
                                             type={'select'}
                                             property={{hideLabel: true}}
                                             options={risksOptions}
-                                            defaultValue={get(findItem(get(risks, 'data.data'), get(item, 'risk')), '_id')}
+                                            defaultValue={get(findItem(get(risks, 'data', []), get(item, 'risk')), '_id')}
                                             isDisabled={true}
                                         />
                                     </td>
@@ -302,8 +303,8 @@ const StepFour = ({id = null, ...props}) => {
                                         <Flex justify={'center'}>
                                             <Field
                                                 type={'switch'}
-                                                name={`franchise[${i}].Isfranchise`}
-                                                defaultValue={get(product, `franchise[${i}].Isfranchise`, false)}
+                                                name={`franchise[${i}].hasFranchise`}
+                                                defaultValue={get(product, `franchise[${i}].hasFranchise`, false)}
                                                 property={{hideLabel: true}}
                                             />
                                         </Flex>
@@ -312,24 +313,24 @@ const StepFour = ({id = null, ...props}) => {
                                         <Flex justify={'center'}>
                                             <Field
                                                 type={'switch'}
-                                                name={`franchise[${i}].Isfixedfranchise`}
-                                                defaultValue={get(product, `franchise[${i}].Isfixedfranchise`, false)}
+                                                name={`franchise[${i}].isFixed`}
+                                                defaultValue={get(product, `franchise[${i}].isFixed`, false)}
                                                 property={{hideLabel: true}}
-                                                disabled={!!!(get(fields, `franchise[${i}].Isfranchise`))}
+                                                disabled={!get(otherParams, `franchise[${i}].hasFranchise`)}
                                             />
                                         </Flex>
                                     </td>
                                     <td>
                                         <Flex justify={'center'}>
                                             <Field
-                                                name={`franchise[${i}].fixedvalue`}
+                                                name={`franchise[${i}].fixedValue`}
                                                 type={'number-format-input'}
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: 'ввод значения',
-                                                    disabled: !!!(get(fields, `franchise[${i}].Isfixedfranchise`))
+                                                    disabled: !!!(get(fields, `franchise[${i}].isFixed`))
                                                 }}
-                                                defaultValue={get(product, `franchise[${i}].fixedvalue`, 0)}
+                                                defaultValue={get(product, `franchise[${i}].isFixed`, 0)}
                                             />
                                         </Flex>
                                     </td>
@@ -337,12 +338,13 @@ const StepFour = ({id = null, ...props}) => {
                                         <Flex justify={'center'}>
                                             <Field
                                                 className={'w-250'}
-                                                name={`franchise[${i}].typeoffranchise`}
+                                                name={`franchise[${i}].franchiseType`}
                                                 type={'select'}
                                                 property={{hideLabel: true}}
+                                                params={{required:true}}
                                                 options={franchises}
-                                                isDisabled={!!!(get(fields, `franchise[${i}].Isfranchise`))}
-                                                defaultValue={get(product, `franchise[${i}].typeoffranchise`)}
+                                                isDisabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
+                                                defaultValue={get(product, `franchise[${i}].hasFranchise`)}
                                             />
                                         </Flex>
                                     </td>
@@ -350,12 +352,13 @@ const StepFour = ({id = null, ...props}) => {
                                         <Flex justify={'center'}>
                                             <Field
                                                 className={'w-250'}
-                                                name={`franchise[${i}].baseoffranchise`}
+                                                name={`franchise[${i}].franchiseBase`}
                                                 type={'select'}
                                                 property={{hideLabel: true}}
+                                                params={{required:true}}
                                                 options={baseFranchises}
-                                                isDisabled={!!!(get(fields, `franchise[${i}].Isfranchise`))}
-                                                defaultValue={get(product, `franchise[${i}].baseoffranchise`)}
+                                                isDisabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
+                                                defaultValue={get(product, `franchise[${i}].franchiseBase`)}
                                             />
                                         </Flex>
                                     </td>
@@ -369,7 +372,7 @@ const StepFour = ({id = null, ...props}) => {
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: 'Введите значение',
-                                                    disabled: !(get(fields, `franchise[${i}].Isfranchise`) && !get(fields, `franchise[${i}].Isfixedfranchise`))
+                                                    disabled: !(get(otherParams, `franchise[${i}].hasFranchise`) && !get(otherParams, `franchise[${i}].isFixed`))
                                                 }}
                                                 defaultValue={get(product, `franchise[${i}].franchise`, '')}
                                             />

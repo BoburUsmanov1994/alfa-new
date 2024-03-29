@@ -5,8 +5,8 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, includes, some, values, isEmpty, isEqual, head} from "lodash"
-import {useGetAllQuery, useGetOneQuery} from "../../../../hooks/api";
+import {get, includes, some, values, isEmpty, isEqual, head, isNil} from "lodash"
+import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
 import {getSelectOptionsListFromData} from "../../../../utils";
@@ -43,15 +43,19 @@ const StepOne = ({id = null, ...props}) => {
             addRiskList(...get(product, 'riskId', []).map(({classeId, risk, riskgroup}) => ({
                 risk: get(risk, '_id'),
                 riskgroup: get(riskgroup, '_id'),
-                classeId: get(classeId, '_id')
+                classeId: get(classeId, '_id'),
             })))
         }
     }, [product])
 
     const nextStep = ({data}) => {
-        const {classeId, risk, riskgroup, ...rest} = data
-        setProduct(rest);
-        props.nextStep();
+        const {classeId, risk, riskgroup, riskId, riskType, ...rest} = data
+        if (isEmpty(riskList)) {
+            toast.warn('You have to add risk')
+        } else {
+            setProduct({...rest, risk: riskList.map(({risk}) => risk), riskData: riskList});
+            props.nextStep();
+        }
     }
 
     const prevStep = () => {
@@ -89,7 +93,7 @@ const StepOne = ({id = null, ...props}) => {
     persons = getSelectOptionsListFromData(get(persons, `data`, []), '_id', 'name')
 
     let {data: status} = useGetAllQuery({key: KEYS.statusofproduct, url: `${URLS.statusofproduct}/list`})
-    status = getSelectOptionsListFromData(get(status, `data.data`, []), '_id', 'name')
+    status = getSelectOptionsListFromData(get(status, `data`, []), '_id', 'name')
 
     let {data: riskGroups} = useGetAllQuery({key: KEYS.typeofrisk, url: `${URLS.riskType}/list`})
     riskGroups = getSelectOptionsListFromData(get(riskGroups, `data`, []), '_id', 'name')
@@ -114,7 +118,7 @@ const StepOne = ({id = null, ...props}) => {
     let insuranceClasses = getSelectOptionsListFromData(get(insuranceClassesList, `data`, []), '_id', 'name')
 
     const setRisk = (value, name) => {
-        if (includes(['riskgroup', 'classeId', 'risk'], name)) {
+        if (includes(['riskType', 'classeId', 'risk'], name)) {
             setRiskItem(prev => ({...prev, [name]: value}))
         }
         if (isEqual(name, 'group')) {
@@ -126,19 +130,18 @@ const StepOne = ({id = null, ...props}) => {
     }
 
     const addRiskItem = () => {
-        if (some(values(riskItem), val => isEmpty(val))) {
+        if (some(values(riskItem), val => isNil(val))) {
             toast.warn('You have to select all fields')
         } else {
             addRiskList({...riskItem, id: riskList.length + 1})
         }
-        setRiskItem({riskgroup: '', classeId: '', risk: ''})
+        setRiskItem({riskgroup: null, classeId: null, risk: null})
     }
 
 
     const findItem = (list = [], id = null) => {
         return list.find(l => isEqual(get(l, "_id"), id))
     }
-    console.log('risksList', risksList)
     return (
         <Row>
             <Col xs={12}>
@@ -221,9 +224,7 @@ const StepOne = ({id = null, ...props}) => {
                                 name={'isRequirePermission'}
                                 defaultValue={get(product, 'isRequirePermission', false)}/>
                         </Col>
-                    </Row>
-                    <Row>
-                        <Col xs={9}>
+                        <Col xs={6}>
                             <Field
                                 options={persons}
                                 label={t('Выбрать тип страховщика')}
@@ -273,14 +274,14 @@ const StepOne = ({id = null, ...props}) => {
                                         </Col>
                                         <Col xs={4}>
                                             <Field
-                                                options={insuranceClasses.filter(classItem => includes(get(findItem(
+                                                options={insuranceClasses.filter(classItem => isEqual(get(findItem(
                                                     get(risksListData, 'data', []), get(riskItem, 'risk')
-                                                ), 'classesId', []), get(classItem, 'value')))}
+                                                ), 'insuranceClass'), get(classItem, 'value')))}
                                                 type={'select'}
                                                 name={'classeId'}
-                                                defaultValue={get(head(insuranceClasses.filter(classItem => includes(get(findItem(
+                                                defaultValue={get(head(insuranceClasses.filter(classItem => isEqual(get(findItem(
                                                     get(risksListData, 'data', []), get(riskItem, 'risk')
-                                                ), 'classesId', []), get(classItem, 'value')))), 'value')}
+                                                ), 'insuranceClass', []), get(classItem, 'value')))), 'value')}
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: t('Класс страхования')
@@ -301,7 +302,7 @@ const StepOne = ({id = null, ...props}) => {
                                                     type={'select'}
                                                     options={riskGroups} name={`riskId[${i}.riskgroup`}
                                                     isDisabled={true}
-                                                    defaultValue={get(item, 'riskgroup')}
+                                                    defaultValue={get(item, 'riskType')}
                                                     property={{hideLabel: true}}
                                                 />
                                             </td>

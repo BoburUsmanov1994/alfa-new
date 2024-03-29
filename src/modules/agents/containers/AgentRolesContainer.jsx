@@ -47,6 +47,7 @@ const AgentRolesContainer = ({...rest}) => {
                 ]}
                 keyId={KEYS.accountroles}
                 url={URLS.accountroles}
+                listUrl={`${URLS.accountroles}/list`}
                 title={'Agent roles'}
                 responseDataKey={'data'}
 
