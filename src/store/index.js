@@ -2,6 +2,7 @@ import create from 'zustand'
 import {devtools, persist} from "zustand/middleware";
 import config from "../config";
 import storage from "../services/storage";
+import {PERSON_TYPE} from "../constants";
 
 
 let store = (set) => ({
@@ -20,13 +21,13 @@ let settingsStore = (set) => ({
     lang: storage.get('lang') || config.DEFAULT_APP_LANG,
     product: {},
     agreement: {},
-    insurer: {type: 'physical', openModal: false, data: null},
-    beneficiary: {type: 'physical', openModal: false, data: null},
-    pledger: {type: 'physical', openModal: false, data: null},
+    insurer: {type: PERSON_TYPE.person, openModal: false, data: null},
+    beneficiary: {type: PERSON_TYPE.person, openModal: false, data: null},
+    pledger: {type: PERSON_TYPE.person, openModal: false, data: null},
     pledgers: [],
     riskList: [],
     objects: [],
-    commissions:[],
+    commissions: [],
     setToken: (token) => set(state => ({...state, token})),
     setLang: (lang) => set(state => ({...state, lang})),
     setMode: () => set(state => ({...state, darkMode: !state.darkMode})),

@@ -170,7 +170,7 @@ const StepOne = ({id = null, ...props}) => {
             } : {
                person:{
                    birthDate: get(data, 'person.birthDate'),
-                   phone: get(data, 'person.pinfl'),
+                   phone: get(data, 'person.phone'),
                    seria: get(data, 'person.seria'),
                    number: get(data, 'person.number'),
                },
@@ -179,15 +179,15 @@ const StepOne = ({id = null, ...props}) => {
         }, {
             onSuccess: (data) => {
                 if (isEqual(type, 'insurer')) {
-                    if (isEqual(get(insurer, 'type'), 'physical') && get(data, 'data.data.forindividualsdata')) {
+                    if (isEqual(get(insurer, 'type'), PERSON_TYPE.person) && get(data, 'data.person')) {
                         setInsurer({
                             ...insurer, openModal: false, data: {
-                                ...get(data, 'data.data.forindividualsdata'),
-                                id: get(data, 'data.data._id')
+                                ...get(data, 'data.person'),
+                                id: get(data, 'data._id')
                             }
                         })
                     }
-                    if (isEqual(get(insurer, 'type'), 'juridical') && get(data, 'data.data.corporateentitiesdata')) {
+                    if (isEqual(get(insurer, 'type'), PERSON_TYPE.organization) && get(data, 'data.data.corporateentitiesdata')) {
                         setInsurer({
                             ...insurer, openModal: false, data: {
                                 ...get(data, 'data.data.corporateentitiesdata'),
@@ -251,6 +251,7 @@ const StepOne = ({id = null, ...props}) => {
             toast.warn('Select pledger')
         }
     }
+    console.log('insurer', insurer)
     console.log('product', product)
 
     return (

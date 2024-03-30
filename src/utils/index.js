@@ -1,6 +1,6 @@
-import {includes, isEqual,get,isArray} from "lodash";
+import {includes, isEqual, get, isArray} from "lodash";
 
-const addDetectClick =  ({setOpen,classNames = []}) => {
+const addDetectClick = ({setOpen, classNames = []}) => {
     window.addEventListener("click", (e) => {
         if (!classNames.some(className => e.target.classList.contains(className))) {
             setOpen(false);
@@ -8,7 +8,7 @@ const addDetectClick =  ({setOpen,classNames = []}) => {
     });
 }
 const removeDetectClick = () => {
-    window.removeEventListener('click',addDetectClick,false);
+    window.removeEventListener('click', addDetectClick, false);
 }
 
 const hasAccess = (roles = [], can = '') => {
@@ -19,29 +19,30 @@ const hasAccess = (roles = [], can = '') => {
     return access;
 }
 
-const formatDate  = (date) => {
+const formatDate = (date) => {
 
     date = new Date(date);
     let day = date.getDate();
-    let monthIndex = date.getMonth()+1;
+    let monthIndex = date.getMonth() + 1;
     let year = date.getFullYear();
 
     return monthIndex < 10 ? `${day}/0${monthIndex}/${year}` : `${day}/${monthIndex}/${year}`;
 }
 
 
-
-
 const getSelectOptionsListFromData = (data = [], value = 'id', label = 'title') => {
-    return data.map(item => ({ value: item[value], label: isArray(label) ? label.map(_label=>get(item,_label))?.join(' ') :get(item,label) })) || [];
+    return isArray(data) ? data?.map(item => ({
+        value: item[value],
+        label: isArray(label) ? label.map(_label => get(item, _label))?.join(' ') : get(item, label)
+    })) : [];
 }
 
 const getFieldType = (type = 'String') => {
-    if(isEqual(type,'Date')){
+    if (isEqual(type, 'Date')) {
         return 'datepicker';
     }
 
-    if(isEqual(type,'Schema.Types.ObjectId')){
+    if (isEqual(type, 'Schema.Types.ObjectId')) {
         return 'select';
     }
 

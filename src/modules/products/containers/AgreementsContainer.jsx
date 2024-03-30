@@ -82,7 +82,7 @@ const AgreementsContainer = ({...rest}) => {
                 createUrl={'/agreements/create'}
                 // updateUrl={'/agreements/update'}
                 isHideColumn
-                // hideCreateBtn
+                hideCreateBtn
             />
         </>
     );
