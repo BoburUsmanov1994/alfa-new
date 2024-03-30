@@ -46,7 +46,7 @@ const StepFour = ({id = null, ...props}) => {
     }
 
     let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.agents}/list`})
-    agents = getSelectOptionsListFromData(get(agents, `data`, []), '_id', 'name')
+    agents = getSelectOptionsListFromData(get(agents, `data`, []), '_id', ['corporateentitiesdata.nameoforganization', 'forindividualsdata.secondname', 'forindividualsdata.name'])
 
 
     let {data: classes} = useGetAllQuery({key: KEYS.classes, url: `${URLS.insuranceClass}/list`})
@@ -93,7 +93,7 @@ const StepFour = ({id = null, ...props}) => {
             setTariffList(result)
             setTarif({
                 ...tarif,
-                tariffPerClass: get(tarif, 'tariff.tariffPerClass', []).map(({class:classes, min, max}) => ({
+                tariffPerClass: get(tarif, 'tariff.tariffPerClass', []).map(({class: classes, min, max}) => ({
                     classes,
                     min: 0,
                     max: 0
@@ -108,9 +108,9 @@ const StepFour = ({id = null, ...props}) => {
     const removeTariffFromList = (i) => {
         setTariffList(prev => prev.filter((f, j) => !isEqual(i, j)))
     }
-    console.log('tariffList',tariffList)
-    console.log('otherParams',otherParams)
-    console.log('tarif',tarif)
+    console.log('tariffList', tariffList)
+    console.log('otherParams', otherParams)
+    console.log('tarif', tarif)
 
     return (
         <Row>
@@ -210,16 +210,16 @@ const StepFour = ({id = null, ...props}) => {
                                     <td>
                                         {
                                             get(item, 'tariff[0].tariffPerClass', []).map((c, j) => <Field key={j}
-                                                                                                 className={'mb-15'}
-                                                                                                 name={`tariff[${i}].tariffPerClass[${j}].class`}
-                                                                                                 type={'select'}
-                                                                                                 property={{
-                                                                                                     hideLabel: true,
-                                                                                                     bgColor: get(findItem(get(classes, 'data'), get(c, "_id")), 'color')
-                                                                                                 }}
-                                                                                                 options={classOptions}
-                                                                                                 defaultValue={get(findItem(get(classes, 'data'), get(c, "classes")), '_id')}
-                                                                                                 isDisabled={true}
+                                                                                                           className={'mb-15'}
+                                                                                                           name={`tariff[${i}].tariffPerClass[${j}].class`}
+                                                                                                           type={'select'}
+                                                                                                           property={{
+                                                                                                               hideLabel: true,
+                                                                                                               bgColor: get(findItem(get(classes, 'data'), get(c, "_id")), 'color')
+                                                                                                           }}
+                                                                                                           options={classOptions}
+                                                                                                           defaultValue={get(findItem(get(classes, 'data'), get(c, "classes")), '_id')}
+                                                                                                           isDisabled={true}
                                             />)
 
                                         }
@@ -341,7 +341,7 @@ const StepFour = ({id = null, ...props}) => {
                                                 name={`franchise[${i}].franchiseType`}
                                                 type={'select'}
                                                 property={{hideLabel: true}}
-                                                params={{required:true}}
+                                                params={{required: true}}
                                                 options={franchises}
                                                 isDisabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
                                                 defaultValue={get(product, `franchise[${i}].hasFranchise`)}
@@ -355,7 +355,7 @@ const StepFour = ({id = null, ...props}) => {
                                                 name={`franchise[${i}].franchiseBase`}
                                                 type={'select'}
                                                 property={{hideLabel: true}}
-                                                params={{required:true}}
+                                                params={{required: true}}
                                                 options={baseFranchises}
                                                 isDisabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
                                                 defaultValue={get(product, `franchise[${i}].franchiseBase`)}
