@@ -6,7 +6,7 @@ import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import Field from "../../../containers/form/field";
 
-const RoleContainer = ({...rest}) => {
+const UserStatusContainer = ({...rest}) => {
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [
@@ -17,8 +17,8 @@ const RoleContainer = ({...rest}) => {
         },
         {
             id: 2,
-            title: 'Ролевой аккаунт',
-            path: '/handbook/role',
+            title: 'User status',
+            path: '/accounts/status',
         }
     ], [])
 
@@ -27,7 +27,7 @@ const RoleContainer = ({...rest}) => {
     }, [])
 
     const ModalBody = ({data, rowId = null}) => <>
-        <Field name={'name'} type={'input'} label={'Название роли'} defaultValue={rowId ? get(data, 'name') : null}
+        <Field name={'name'} type={'input'} label={'Название'} defaultValue={rowId ? get(data, 'name') : null}
                params={{required: true}}/>
     </>
     return (
@@ -38,17 +38,17 @@ const RoleContainer = ({...rest}) => {
                     {
                         id: 2,
                         key: 'name',
-                        title: 'Название роли'
+                        title: 'Название'
                     },
                 ]}
-                keyId={KEYS.role}
-                url={URLS.role}
-                listUrl={`${URLS.role}/list`}
-                title={'Ролевой аккаунт'}
+                keyId={KEYS.userStatus}
+                url={URLS.userStatus}
+                listUrl={`${URLS.userStatus}/list`}
+                title={'User status'}
                 responseDataKey={'data'}
             />
         </>
     );
 };
 
-export default RoleContainer;
+export default UserStatusContainer;

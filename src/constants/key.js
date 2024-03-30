@@ -100,4 +100,5 @@ export const KEYS = {
     bcoLanguage: "bcoLanguage",
     act: "act",
     actStatus: "actStatus",
+    userStatus: "userStatus",
 }

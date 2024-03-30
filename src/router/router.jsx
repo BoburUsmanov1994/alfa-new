@@ -43,6 +43,7 @@ import MeasurementTypePage from "../modules/handbook/pages/MeasurementTypePage";
 import BcoStatusPage from "../modules/bco/pages/BcoStatusPage";
 import BcoLanguagePage from "../modules/bco/pages/BcoLanguagePage";
 import BcoPolicyStatusPage from "../modules/bco/pages/BcoPolicyStatusPage";
+import UserStatusPage from "../modules/users/pages/UserStatusPage";
 //lazy load
 const TypeObjectPage = lazy(() => import("../modules/handbook/pages/TypeObjectPage"));
 const ObjectPage = lazy(() => import("../modules/handbook/pages/ObjectPage"));
@@ -140,6 +141,7 @@ const Router = ({...rest}) => {
                             <Route path={"accounts"}>
                                 <Route path={"list"} element={<UsersPage/>}/>
                                 <Route path={"role"} element={<RolePage/>}/>
+                                <Route path={"status"} element={<UserStatusPage/>}/>
                             </Route>
                             <Route path={"agents"}>
                                 <Route path={"insurance-agents"} element={<AgentsPage/>}/>

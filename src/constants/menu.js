@@ -116,6 +116,28 @@ export const menuData = [
         ]
     },
     {
+        id: 222,
+        title: 'Аккаунты',
+        path: '/accounts',
+        submenu: [
+            {
+                id: 1,
+                title: 'Users',
+                path: '/accounts/list',
+            },
+            {
+                id: 2,
+                title: 'Account role',
+                path: '/accounts/role',
+            },
+            {
+                id: 3,
+                title: 'Account status',
+                path: '/accounts/status',
+            },
+        ]
+    },
+    {
         id: 111,
         title: 'Филиалы и сотрудники',
         path: '/branches',
@@ -129,7 +151,7 @@ export const menuData = [
                 id: 2,
                 title: 'Employees',
                 path: '/branches/employees',
-            },
+            }
         ]
     },
     {
@@ -164,23 +186,7 @@ export const menuData = [
             },
         ]
     },
-    // {
-    //     id: 222,
-    //     title: 'Accounts',
-    //     path: '/accounts',
-    //     submenu: [
-    //         {
-    //             id: 1,
-    //             title: 'Users',
-    //             path: '/accounts/list',
-    //         },
-    //         {
-    //             id: 2,
-    //             title: 'Account role',
-    //             path: '/accounts/role',
-    //         },
-    //     ]
-    // },
+
     // {
     //     id: 3,
     //     title: 'Бухгалтерия',
