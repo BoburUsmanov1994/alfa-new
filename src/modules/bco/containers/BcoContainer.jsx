@@ -33,18 +33,18 @@ const BcoContainer = ({...rest}) => {
         key: KEYS.typeofbco,
         url: `${URLS.bcoType}/list`
     })
-    policyList = getSelectOptionsListFromData(get(policyList, `data`, []), '_id', 'policy_type_name')
+    policyList = getSelectOptionsListFromData(get(policyList, `data.data`, []), '_id', 'policy_type_name')
     let {data: policyBlankList} = useGetAllQuery({
         key: KEYS.policyblank,
         url: `${URLS.policyblank}/list`
     })
-    policyBlankList = getSelectOptionsListFromData(get(policyBlankList, `data`, []), '_id', 'blank_number')
+    policyBlankList = getSelectOptionsListFromData(get(policyBlankList, `data.data`, []), '_id', 'blank_number')
 
     let {data: actList} = useGetAllQuery({
         key: KEYS.act,
         url: `${URLS.act}/list`
     })
-    actList = getSelectOptionsListFromData(get(actList, `data`, []), '_id', 'name')
+    actList = getSelectOptionsListFromData(get(actList, `data.data`, []), '_id', 'name')
     useEffect(() => {
         setBreadcrumbs(breadcrumbs)
     }, [])

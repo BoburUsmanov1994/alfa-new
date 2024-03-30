@@ -16,19 +16,19 @@ const BcoTypeContainer = ({...rest}) => {
         key: KEYS.statusoftypebco,
         url: `${URLS.bcoStatus}/list`
     })
-    bcoStatusList = getSelectOptionsListFromData(get(bcoStatusList, `data`, []), '_id', 'name')
+    bcoStatusList = getSelectOptionsListFromData(get(bcoStatusList, `data.data`, []), '_id', 'name')
 
     let {data: languageList} = useGetAllQuery({
         key: KEYS.languagepolicy,
         url: `${URLS.bcoLanguage}/list`
     })
-    languageList = getSelectOptionsListFromData(get(languageList, `data`, []), '_id', 'name')
+    languageList = getSelectOptionsListFromData(get(languageList, `data.data`, []), '_id', 'name')
 
     let {data: policyFormatList} = useGetAllQuery({
         key: KEYS.policyformats,
         url: `${URLS.policyFormat}/list`
     })
-    policyFormatList = getSelectOptionsListFromData(get(policyFormatList, `data`, []), '_id', 'name')
+    policyFormatList = getSelectOptionsListFromData(get(policyFormatList, `data.data`, []), '_id', 'name')
     const breadcrumbs = useMemo(() => [
         {
             id: 1,

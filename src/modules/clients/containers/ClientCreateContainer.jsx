@@ -43,22 +43,22 @@ const ClientCreateContainer = ({...rest}) => {
     const {data: genders} = useGetAllQuery({
         key: KEYS.genders, url: `${URLS.genders}/list`
     })
-    const genderList = getSelectOptionsListFromData(get(genders, `data`, []), '_id', 'name')
+    const genderList = getSelectOptionsListFromData(get(genders, `data.data`, []), '_id', 'name')
 
     const {data: residentTypes} = useGetAllQuery({
         key: KEYS.residentTypes, url: `${URLS.residentTypes}/list`
     })
-    const residentTypeList = getSelectOptionsListFromData(get(residentTypes, `data`, []), '_id', 'name')
+    const residentTypeList = getSelectOptionsListFromData(get(residentTypes, `data.data`, []), '_id', 'name')
 
     const {data: country, isLoading: isLoadingCountry} = useGetAllQuery({
         key: KEYS.countries, url: `${URLS.countries}/list`
     })
-    const countryList = getSelectOptionsListFromData(get(country, `data`, []), '_id', 'name')
+    const countryList = getSelectOptionsListFromData(get(country, `data.data`, []), '_id', 'name')
 
     const {data: region, isLoading: isLoadingRegion} = useGetAllQuery({
         key: KEYS.regions, url: `${URLS.regions}/list`
     })
-    const regionList = getSelectOptionsListFromData(get(region, `data`, []), '_id', 'name')
+    const regionList = getSelectOptionsListFromData(get(region, `data.data`, []), '_id', 'name')
 
     const {data: district} = useGetAllQuery({
         key: [KEYS.districts, regionId],
@@ -70,7 +70,7 @@ const ClientCreateContainer = ({...rest}) => {
         },
         enabled: !!(regionId || get(person, 'regionId'))
     })
-    const districtList = getSelectOptionsListFromData(get(district, `data`, []), '_id', 'name')
+    const districtList = getSelectOptionsListFromData(get(district, `data.data`, []), '_id', 'name')
 
     const {mutate: createRequest, isLoading} = usePostQuery({listKeyId: KEYS.clients})
 

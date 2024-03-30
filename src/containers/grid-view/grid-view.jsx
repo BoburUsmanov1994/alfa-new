@@ -71,7 +71,7 @@ const GridView = ({
                       createUrl = null,
                       updateUrl = null,
                       viewUrl = null,
-                      responseDataKey = 'data',
+                      responseDataKey = 'data.data',
                       isHideColumn = false,
                       hidePagination = false,
                       listUrl = null,
@@ -168,6 +168,7 @@ const GridView = ({
     if (isError) {
         return <ErrorPage/>
     }
+    console.log('data',data)
     return (
         <Styled>
             <Panel>

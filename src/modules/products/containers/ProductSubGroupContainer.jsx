@@ -12,7 +12,7 @@ import {useTranslation} from "react-i18next";
 const ProductSubGroupContainer = ({...rest}) => {
     const {t} = useTranslation()
     const {data:types} = useGetAllQuery({key:KEYS.groupsofproducts,url:`${URLS.groupsofproducts}/list`})
-    const typesOptions = getSelectOptionsListFromData(get(types,`data`,[]),'_id','name')
+    const typesOptions = getSelectOptionsListFromData(get(types,`data.data`,[]),'_id','name')
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [

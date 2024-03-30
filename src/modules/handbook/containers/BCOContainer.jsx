@@ -36,7 +36,7 @@ const BCOContainer = ({...rest}) => {
         key: KEYS.actstatus,
         url: `${URLS.actstatus}/list`
     })
-    actStatusList = getSelectOptionsListFromData(get(actStatusList, `data`, []), '_id', 'name')
+    actStatusList = getSelectOptionsListFromData(get(actStatusList, `data.data`, []), '_id', 'name')
     const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: KEYS.acts})
     const {mutate: updateRequest, isLoading: putLoading} = usePutQuery({listKeyId: KEYS.acts})
     const breadcrumbs = useMemo(() => [

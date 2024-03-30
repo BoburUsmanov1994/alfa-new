@@ -46,20 +46,20 @@ const StepFour = ({id = null, ...props}) => {
     }
 
     let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.agents}/list`})
-    agents = getSelectOptionsListFromData(get(agents, `data`, []), '_id', ['corporateentitiesdata.nameoforganization', 'forindividualsdata.secondname', 'forindividualsdata.name'])
+    agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', ['corporateentitiesdata.nameoforganization', 'forindividualsdata.secondname', 'forindividualsdata.name'])
 
 
     let {data: classes} = useGetAllQuery({key: KEYS.classes, url: `${URLS.insuranceClass}/list`})
-    const classOptions = getSelectOptionsListFromData(get(classes, `data`, []), '_id', 'name')
+    const classOptions = getSelectOptionsListFromData(get(classes, `data.data`, []), '_id', 'name')
 
     let {data: risks} = useGetAllQuery({key: KEYS.risk, url: `${URLS.risk}/list`})
-    let risksOptions = getSelectOptionsListFromData(get(risks, `data`, []), '_id', 'name')
+    let risksOptions = getSelectOptionsListFromData(get(risks, `data.data`, []), '_id', 'name')
 
     let {data: franchises} = useGetAllQuery({key: KEYS.typeoffranchise, url: `${URLS.typeoffranchise}/list`})
-    franchises = getSelectOptionsListFromData(get(franchises, `data`, []), '_id', 'name')
+    franchises = getSelectOptionsListFromData(get(franchises, `data.data`, []), '_id', 'name')
 
     let {data: baseFranchises} = useGetAllQuery({key: KEYS.baseoffranchise, url: `${URLS.baseoffranchise}/list`})
-    baseFranchises = getSelectOptionsListFromData(get(baseFranchises, `data`, []), '_id', 'name')
+    baseFranchises = getSelectOptionsListFromData(get(baseFranchises, `data.data`, []), '_id', 'name')
 
 
     const setFieldValue = (value, name = "") => {
@@ -80,7 +80,7 @@ const StepFour = ({id = null, ...props}) => {
 
 
     const findItem = (list = [], id = null) => {
-        return list.find(l => isEqual(get(l, "_id"), id))
+        return list?.find(l => isEqual(get(l, "_id"), id))
     }
 
 

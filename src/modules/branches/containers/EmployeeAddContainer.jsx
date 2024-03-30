@@ -19,9 +19,9 @@ import {getSelectOptionsListFromData} from "../../../utils";
 const EmployeeAddContainer = () => {
     const navigate = useNavigate();
     let {data: positionList} = useGetAllQuery({key: KEYS.position, url: `${URLS.position}/list`})
-    positionList = getSelectOptionsListFromData(get(positionList, `data`, []), '_id', 'name')
+    positionList = getSelectOptionsListFromData(get(positionList, `data.data`, []), '_id', 'name')
     let {data: documentTypeList} = useGetAllQuery({key: KEYS.documentType, url: `${URLS.documentType}/list`})
-    documentTypeList = getSelectOptionsListFromData(get(documentTypeList, `data`, []), '_id', 'name')
+    documentTypeList = getSelectOptionsListFromData(get(documentTypeList, `data.data`, []), '_id', 'name')
     const {mutate: createRequest, isLoading} = usePostQuery({listKeyId: KEYS.employee})
 
     const create = ({data}) => {

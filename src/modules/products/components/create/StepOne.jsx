@@ -36,7 +36,7 @@ const StepOne = ({id = null, ...props}) => {
 
     const product = useSettingsStore(state => get(state, 'product', {}))
     let {data: bcoTypes} = useGetAllQuery({key: KEYS.typeofbco, url: `${URLS.bcoType}/list`})
-    bcoTypes = getSelectOptionsListFromData(get(bcoTypes, `data`, []), '_id', 'policy_type_name')
+    bcoTypes = getSelectOptionsListFromData(get(bcoTypes, `data.data`, []), '_id', 'policy_type_name')
 
     useEffect(() => {
         if (id && isEmpty(riskItem) && !isEmpty(get(product, 'riskId', []))) {
@@ -69,7 +69,7 @@ const StepOne = ({id = null, ...props}) => {
     }
 
     let {data: groups} = useGetAllQuery({key: KEYS.groupsofproducts, url: `${URLS.groupsofproducts}/list`})
-    groups = getSelectOptionsListFromData(get(groups, `data`, []), '_id', 'name')
+    groups = getSelectOptionsListFromData(get(groups, `data.data`, []), '_id', 'name')
 
     let {data: subGroups} = useGetAllQuery({
         key: KEYS.subgroupsofproductsFilter,
@@ -81,25 +81,25 @@ const StepOne = ({id = null, ...props}) => {
         },
         enabled: !!productGroupId
     })
-    subGroups = getSelectOptionsListFromData(get(subGroups, `data`, []), '_id', 'name')
+    subGroups = getSelectOptionsListFromData(get(subGroups, `data.data`, []), '_id', 'name')
 
     let {data: insurances} = useGetAllQuery({key: KEYS.insuranceForm, url: `${URLS.insuranceForm}/list`})
-    insurances = getSelectOptionsListFromData(get(insurances, `data`, []), '_id', 'name')
+    insurances = getSelectOptionsListFromData(get(insurances, `data.data`, []), '_id', 'name')
 
     let {data: sectors} = useGetAllQuery({key: KEYS.typeofsector, url: `${URLS.sectorType}/list`})
-    sectors = getSelectOptionsListFromData(get(sectors, `data`, []), '_id', 'name')
+    sectors = getSelectOptionsListFromData(get(sectors, `data.data`, []), '_id', 'name')
 
     let {data: persons} = useGetAllQuery({key: KEYS.typeofpersons, url: `${URLS.personType}/list`})
-    persons = getSelectOptionsListFromData(get(persons, `data`, []), '_id', 'name')
+    persons = getSelectOptionsListFromData(get(persons, `data.data`, []), '_id', 'name')
 
     let {data: status} = useGetAllQuery({key: KEYS.statusofproduct, url: `${URLS.statusofproduct}/list`})
-    status = getSelectOptionsListFromData(get(status, `data`, []), '_id', 'name')
+    status = getSelectOptionsListFromData(get(status, `data.data`, []), '_id', 'name')
 
     let {data: riskGroups} = useGetAllQuery({key: KEYS.typeofrisk, url: `${URLS.riskType}/list`})
-    riskGroups = getSelectOptionsListFromData(get(riskGroups, `data`, []), '_id', 'name')
+    riskGroups = getSelectOptionsListFromData(get(riskGroups, `data.data`, []), '_id', 'name')
 
     let {data: risksListData} = useGetAllQuery({key: KEYS.risk, url: `${URLS.risk}/list`})
-    let risksList = getSelectOptionsListFromData(get(risksListData, `data`, []), '_id', 'name')
+    let risksList = getSelectOptionsListFromData(get(risksListData, `data.data`, []), '_id', 'name')
 
     let {data: risksData} = useGetAllQuery({
         id: riskTypeId,
@@ -112,10 +112,10 @@ const StepOne = ({id = null, ...props}) => {
         },
         enabled: !!riskTypeId
     })
-    let risks = getSelectOptionsListFromData(get(risksData, `data`, []), '_id', 'name')
+    let risks = getSelectOptionsListFromData(get(risksData, `data.data`, []), '_id', 'name')
 
     let {data: insuranceClassesList} = useGetAllQuery({key: KEYS.classes, url: `${URLS.insuranceClass}/list`})
-    let insuranceClasses = getSelectOptionsListFromData(get(insuranceClassesList, `data`, []), '_id', 'name')
+    let insuranceClasses = getSelectOptionsListFromData(get(insuranceClassesList, `data.data`, []), '_id', 'name')
 
     const setRisk = (value, name) => {
         if (includes(['riskType', 'classeId', 'risk'], name)) {
@@ -140,7 +140,7 @@ const StepOne = ({id = null, ...props}) => {
 
 
     const findItem = (list = [], id = null) => {
-        return list.find(l => isEqual(get(l, "_id"), id))
+        return list?.find(l => isEqual(get(l, "_id"), id))
     }
     return (
         <Row>

@@ -103,13 +103,13 @@ const StepOne = ({id = null, ...props}) => {
         key: KEYS.branches,
         url: `${URLS.branches}/list`,
     })
-    branchList = getSelectOptionsListFromData(get(branchList, `data`, []), '_id', 'branchName')
+    branchList = getSelectOptionsListFromData(get(branchList, `data.data`, []), '_id', 'branchName')
 
     let {data: products} = useGetAllQuery({
         key: KEYS.productsfilter,
         url: URLS.products,
     })
-    const productsList = getSelectOptionsListFromData(get(products, `data`, []), '_id', 'name')
+    const productsList = getSelectOptionsListFromData(get(products, `data.data`, []), '_id', 'name')
 
 
     let {data: riskGroups} = useGetAllQuery({key: KEYS.typeofrisk, url: URLS.typeofrisk})
@@ -156,24 +156,24 @@ const StepOne = ({id = null, ...props}) => {
 
 
     const findItem = (list = [], id = null) => {
-        return list.find(l => isEqual(get(l, "_id"), id))
+        return list?.find(l => isEqual(get(l, "_id"), id))
     }
 
     const agentFilter = ({data}, type = 'insurer') => {
         filterRequest({
             url: URLS.findOrCreateClient,
             attributes: isEqual(get(type === 'insurer' ? insurer : pledger, 'type'), PERSON_TYPE.organization) ? {
-                organization:{
+                organization: {
                     inn: get(data, 'person.inn'),
                 },
                 type: PERSON_TYPE.organization
             } : {
-               person:{
-                   birthDate: get(data, 'person.birthDate'),
-                   phone: get(data, 'person.phone'),
-                   seria: get(data, 'person.seria'),
-                   number: get(data, 'person.number'),
-               },
+                person: {
+                    birthDate: get(data, 'person.birthDate'),
+                    phone: get(data, 'person.phone'),
+                    seria: get(data, 'person.seria'),
+                    number: get(data, 'person.number'),
+                },
                 type: PERSON_TYPE.person
             }
         }, {

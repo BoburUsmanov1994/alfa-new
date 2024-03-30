@@ -10,7 +10,7 @@ import {getSelectOptionsListFromData} from "../../../utils";
 
 const ObjectContainer = ({...rest}) => {
     const {data:types} = useGetAllQuery({key:KEYS.typeofobject,url:`${URLS.objectType}/list`})
-    const typesOptions = getSelectOptionsListFromData(get(types,`data`,[]),'_id','name')
+    const typesOptions = getSelectOptionsListFromData(get(types,`data.data`,[]),'_id','name')
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [

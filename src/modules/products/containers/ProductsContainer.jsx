@@ -51,22 +51,19 @@ const ProductsContainer = ({...rest}) => {
                         id: 3,
                         key: 'policyTypes',
                         title: 'Тип страховщика',
+                        arrayKey: 'name',
                         isArray: true
                     },
                     {
                         id: 4,
                         key: 'paymentType',
                         title: 'Тип оплаты',
+                        arrayKey: 'name',
                         isArray: true
                     },
                     {
-                        id: 5,
-                        key: 'insuranceForm',
-                        title: 'Страхователь',
-                    },
-                    {
                         id: 6,
-                        key: 'insuranceForm',
+                        key: 'insuranceForm.name',
                         title: 'Формат полиса',
                     },
                     {
@@ -79,7 +76,7 @@ const ProductsContainer = ({...rest}) => {
                 keyId={KEYS.products}
                 url={URLS.products}
                 title={t('Все продукты')}
-                responseDataKey={'data'}
+                // responseDataKey={'data.data'}
                 // viewUrl={'/products/view'}
                 createUrl={'/products/create'}
                 // updateUrl={'/products/update'}

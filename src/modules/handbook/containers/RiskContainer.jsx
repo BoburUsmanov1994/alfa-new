@@ -10,10 +10,10 @@ import {getSelectOptionsListFromData} from "../../../utils";
 
 const RiskContainer = ({...rest}) => {
     const {data:types} = useGetAllQuery({key:KEYS.typeofrisk,url:`${URLS.riskType}/list`})
-    const typesOptions = getSelectOptionsListFromData(get(types,`data`,[]),'_id','name')
+    const typesOptions = getSelectOptionsListFromData(get(types,`data.data`,[]),'_id','name')
 
     const {data:classes} = useGetAllQuery({key:KEYS.classes,url:`${URLS.insuranceClass}/list`})
-    const typesClasses = getSelectOptionsListFromData(get(classes,`data`,[]),'_id','name')
+    const typesClasses = getSelectOptionsListFromData(get(classes,`data.data`,[]),'_id','name')
 
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))

@@ -45,22 +45,22 @@ const StepThree = ({...props}) => {
     }
 
     let {data: clients} = useGetAllQuery({key: KEYS.agents, url: `${URLS.clients}/list`})
-    clients = getSelectOptionsListFromData(get(clients, `data`, []), '_id', ['person.fullName.lastname','person.fullName.firstname','organization.name'])
+    clients = getSelectOptionsListFromData(get(clients, `data.data`, []), '_id', ['person.fullName.lastname','person.fullName.firstname','organization.name'])
 
     let {data: policyformats} = useGetAllQuery({key: KEYS.policyformats, url: `${URLS.policyFormat}/list`})
-    policyformats = getSelectOptionsListFromData(get(policyformats, `data`, []), '_id', 'name')
+    policyformats = getSelectOptionsListFromData(get(policyformats, `data.data`, []), '_id', 'name')
 
     let {data: refunds} = useGetAllQuery({key: KEYS.typeofrefund, url: `${URLS.typeofrefund}/list`})
-    refunds = getSelectOptionsListFromData(get(refunds, `data`, []), '_id', 'name')
+    refunds = getSelectOptionsListFromData(get(refunds, `data.data`, []), '_id', 'name')
 
     let {data: claimSettlements} = useGetAllQuery({key: KEYS.typeofclaimsettlement, url: `${URLS.claimSettlement}/list`})
-    claimSettlements = getSelectOptionsListFromData(get(claimSettlements, `data`, []), '_id', 'name')
+    claimSettlements = getSelectOptionsListFromData(get(claimSettlements, `data.data`, []), '_id', 'name')
 
     let {data: payments} = useGetAllQuery({key: KEYS.typeofpayment, url: `${URLS.typeofpayment}/list`})
-    payments = getSelectOptionsListFromData(get(payments, `data`, []), '_id', 'name')
+    payments = getSelectOptionsListFromData(get(payments, `data.data`, []), '_id', 'name')
 
     let {data: polices} = useGetAllQuery({key: KEYS.typeofpolice, url: `${URLS.policyType}/list`})
-    polices = getSelectOptionsListFromData(get(polices, `data`, []), '_id', 'name')
+    polices = getSelectOptionsListFromData(get(polices, `data.data`, []), '_id', 'name')
 
 
     const showField = (value, name) => {

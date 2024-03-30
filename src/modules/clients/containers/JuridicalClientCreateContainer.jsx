@@ -26,11 +26,11 @@ const JuridicalClientCreateContainer = ({...rest}) => {
     const {data: country, isLoading: isLoadingCountry} = useGetAllQuery({
         key: KEYS.countries, url: `${URLS.countries}/list`
     })
-    const countryList = getSelectOptionsListFromData(get(country, `data`, []), '_id', 'name')
+    const countryList = getSelectOptionsListFromData(get(country, `data.data`, []), '_id', 'name')
     const {data: region, isLoading: isLoadingRegion} = useGetAllQuery({
         key: KEYS.regions, url: `${URLS.regions}/list`
     })
-    const regionList = getSelectOptionsListFromData(get(region, `data`, []), '_id', 'name')
+    const regionList = getSelectOptionsListFromData(get(region, `data.data`, []), '_id', 'name')
 
     const {data: district} = useGetAllQuery({
         key: [KEYS.districts, regionId],
@@ -42,12 +42,12 @@ const JuridicalClientCreateContainer = ({...rest}) => {
         },
         enabled: !!(regionId || get(organization, 'regionId'))
     })
-    const districtList = getSelectOptionsListFromData(get(district, `data`, []), '_id', 'name')
+    const districtList = getSelectOptionsListFromData(get(district, `data.data`, []), '_id', 'name')
 
     const {data: ownershipForms} = useGetAllQuery({
         key: KEYS.ownershipForms, url: `${URLS.ownershipForms}/list`
     })
-    const ownershipFormList = getSelectOptionsListFromData(get(ownershipForms, `data`, []), '_id', 'name')
+    const ownershipFormList = getSelectOptionsListFromData(get(ownershipForms, `data.data`, []), '_id', 'name')
     const {
         mutate: getOrganizationInfoRequest, isLoading: isLoadingOrganizationInfo
     } = usePostQuery({listKeyId: KEYS.organizationInfoProvider})

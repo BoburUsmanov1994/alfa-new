@@ -33,7 +33,7 @@ const AddActContainer = ({...rest}) => {
         key: KEYS.actstatus,
         url: `${URLS.actstatus}/list`
     })
-    bcoStatusList = getSelectOptionsListFromData(get(bcoStatusList, `data`, []), '_id', 'name')
+    bcoStatusList = getSelectOptionsListFromData(get(bcoStatusList, `data.data`, []), '_id', 'name')
 
     let {data: branches, isLoading: isLoadingBranches} = useGetAllQuery({
         key: KEYS.branches,

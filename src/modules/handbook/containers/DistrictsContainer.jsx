@@ -15,7 +15,7 @@ import Field from "../../../containers/form/field";
 
 const DistrictsContainer = ({...rest}) => {
     const {data:types} = useGetAllQuery({key:KEYS.regions,url:`${URLS.regions}/list`})
-    const typesOptions = getSelectOptionsListFromData(get(types,`data`,[]),'_id','name')
+    const typesOptions = getSelectOptionsListFromData(get(types,`data.data`,[]),'_id','name')
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [

@@ -13,15 +13,15 @@ import {Col, Row} from "react-grid-system";
 const UsersContainer = () => {
     const {t} = useTranslation()
     let {data: branchList} = useGetAllQuery({key: KEYS.branches, url: `${URLS.branches}/list`})
-    branchList = getSelectOptionsListFromData(get(branchList, `data`, []), '_id', 'branchName')
+    branchList = getSelectOptionsListFromData(get(branchList, `data.data`, []), '_id', 'branchName')
     let {data: employeeList} = useGetAllQuery({key: KEYS.employee, url: `${URLS.employee}/list`})
-    employeeList = getSelectOptionsListFromData(get(employeeList, `data`, []), '_id', 'fullname')
+    employeeList = getSelectOptionsListFromData(get(employeeList, `data.data`, []), '_id', 'fullname')
     let {data: agentList} = useGetAllQuery({key: KEYS.agents, url: `${URLS.agents}/list`})
-    agentList = getSelectOptionsListFromData(get(agentList, `data`, []), '_id', 'name')
+    agentList = getSelectOptionsListFromData(get(agentList, `data.data`, []), '_id', 'name')
     let {data: roles} = useGetAllQuery({key: KEYS.role, url: `${URLS.role}/list`})
-    roles = getSelectOptionsListFromData(get(roles, `data`, []), '_id', 'name')
+    roles = getSelectOptionsListFromData(get(roles, `data.data`, []), '_id', 'name')
     let {data: status} = useGetAllQuery({key: KEYS.userStatus, url: `${URLS.userStatus}/list`})
-    status = getSelectOptionsListFromData(get(status, `data`, []), '_id', 'name')
+    status = getSelectOptionsListFromData(get(status, `data.data`, []), '_id', 'name')
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [

@@ -36,25 +36,25 @@ const AgentsCreateContainer = () => {
         }
     }
     let {data: branches} = useGetAllQuery({key: KEYS.branches, url: `${URLS.branches}/list`})
-    branches = getSelectOptionsListFromData(get(branches, `data`, []), '_id', 'branchName')
+    branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
 
     let {data: citizenshipList} = useGetAllQuery({key: KEYS.residentType, url: `${URLS.residentType}`})
-    citizenshipList = getSelectOptionsListFromData(get(citizenshipList, `data`, []), '_id', 'name')
+    citizenshipList = getSelectOptionsListFromData(get(citizenshipList, `data.data`, []), '_id', 'name')
 
     let {data: documentTypeList} = useGetAllQuery({key: KEYS.documentType, url: `${URLS.documentType}/list`})
-    documentTypeList = getSelectOptionsListFromData(get(documentTypeList, `data`, []), '_id', 'name')
+    documentTypeList = getSelectOptionsListFromData(get(documentTypeList, `data.data`, []), '_id', 'name')
 
     let {data: regions} = useGetAllQuery({key: KEYS.regions, url: `${URLS.regions}/list`})
-    regions = getSelectOptionsListFromData(get(regions, `data`, []), '_id', 'name')
+    regions = getSelectOptionsListFromData(get(regions, `data.data`, []), '_id', 'name')
 
     let {data: agentTypes} = useGetAllQuery({key: KEYS.typeofagent, url: `${URLS.typeofagent}/list`})
-    agentTypes = getSelectOptionsListFromData(get(agentTypes, `data`, []), '_id', 'name')
+    agentTypes = getSelectOptionsListFromData(get(agentTypes, `data.data`, []), '_id', 'name')
 
     let {data: genders} = useGetAllQuery({key: KEYS.genders, url: `${URLS.genders}/list`})
-    genders = getSelectOptionsListFromData(get(genders, `data`, []), '_id', 'name')
+    genders = getSelectOptionsListFromData(get(genders, `data.data`, []), '_id', 'name')
 
     let {data: employeeList} = useGetAllQuery({key: KEYS.employee, url: `${URLS.employee}/list`})
-    employeeList = getSelectOptionsListFromData(get(employeeList, `data`, []), '_id', 'fullname')
+    employeeList = getSelectOptionsListFromData(get(employeeList, `data.data`, []), '_id', 'fullname')
 
     let {data: districts} = useGetAllQuery({
         key: KEYS.districtsByRegion,
@@ -66,7 +66,7 @@ const AgentsCreateContainer = () => {
         },
         enabled: !!(region)
     })
-    districts = getSelectOptionsListFromData(get(districts, `data`, []), '_id', 'name')
+    districts = getSelectOptionsListFromData(get(districts, `data.data`, []), '_id', 'name')
 
 
     const {mutate: createRequest, isLoading} = usePostQuery({listKeyId: KEYS.agents})

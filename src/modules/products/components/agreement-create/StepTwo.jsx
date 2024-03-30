@@ -124,7 +124,7 @@ const StepTwo = ({id = null, ...props}) => {
 
 
     const findItem = (list = [], id = null) => {
-        return list.find(l => isEqual(get(l, "_id"), id))
+        return list?.find(l => isEqual(get(l, "_id"), id))
     }
 
 
