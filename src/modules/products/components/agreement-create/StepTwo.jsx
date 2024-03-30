@@ -5,9 +5,9 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {chain, get, includes, isEqual, isNil, range, round, sum, update, updateWith} from "lodash"
+import {get, includes, isEqual, isNil, range, round, sum, find} from "lodash"
 import Title from "../../../../components/ui/title";
-import {useGetAllQuery, useGetOneQuery} from "../../../../hooks/api";
+import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
 import {formatDate, getSelectOptionsListFromData} from "../../../../utils";
@@ -118,13 +118,13 @@ const StepTwo = ({id = null, ...props}) => {
         if (includes(['accruedinsurancepremium', 'paidinsurancepremium'], name)) {
             setDiff(prev => ({...prev, [name]: value}))
         }
-        _setFields(prev=>({...prev,[name]:value}))
+        _setFields(prev => ({...prev, [name]: value}))
 
     }
 
 
     const findItem = (list = [], id = null) => {
-        return list?.find(l => isEqual(get(l, "_id"), id))
+        return find(list, l => isEqual(get(l, "_id"), id))
     }
 
 
@@ -154,7 +154,7 @@ const StepTwo = ({id = null, ...props}) => {
         }
     }, [agreement])
 
-   console.log('_fields',_fields)
+    console.log('_fields', _fields)
     return (
         <Row>
             <Col xs={12}>
@@ -347,7 +347,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                     hideLabel: true,
                                                     placeholder: 'ввод значения',
                                                 }}
-                                                defaultValue={round((((dayjs(get(_fields, `riskId[${i}].enddate`)).diff(get(_fields, `riskId[${i}].startdate`),'day')+1)/365)*get(_fields, `riskId[${i}].suminsured`, 0)*get(_fields, `riskId[${i}].insurancerate`, 0)/100),2)}
+                                                defaultValue={round((((dayjs(get(_fields, `riskId[${i}].enddate`)).diff(get(_fields, `riskId[${i}].startdate`), 'day') + 1) / 365) * get(_fields, `riskId[${i}].suminsured`, 0) * get(_fields, `riskId[${i}].insurancerate`, 0) / 100), 2)}
                                             />
                                         </Flex>
                                     </td>
@@ -357,7 +357,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 name={`riskId[${i}].insurancerate`}
                                                 type={'number-format-input'}
                                                 property={{hideLabel: true, placeholder: 'insurancerate', suffix: ' %'}}
-                                                defaultValue={round((365*100*get(_fields, `riskId[${i}].insurancepremium`, 0)/((dayjs(get(_fields, `riskId[${i}].enddate`)).diff(get(_fields, `riskId[${i}].startdate`),'day')+1) * get(_fields, `riskId[${i}].suminsured`, 0))),2)}
+                                                defaultValue={round((365 * 100 * get(_fields, `riskId[${i}].insurancepremium`, 0) / ((dayjs(get(_fields, `riskId[${i}].enddate`)).diff(get(_fields, `riskId[${i}].startdate`), 'day') + 1) * get(_fields, `riskId[${i}].suminsured`, 0))), 2)}
                                             />
                                         </Flex>
                                     </td>
@@ -441,7 +441,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             placeholder: 'ввод значения',
                                             disabled: true
                                         }}
-                                        defaultValue={sum(range(0,riskFields?.length).map(i=>get(_fields,`riskId[${i}].suminsured`)))}
+                                        defaultValue={sum(range(0, riskFields?.length).map(i => get(_fields, `riskId[${i}].suminsured`)))}
                                     />
                                 </Col>
                                 <Col xs={3}>
@@ -450,7 +450,7 @@ const StepTwo = ({id = null, ...props}) => {
                                         name={`totalinsurancepremium`}
                                         type={'number-format-input'}
                                         label={'Общая страховая премия'}
-                                        defaultValue={sum(range(0,riskFields?.length).map(i=>get(_fields,`riskId[${i}].insurancepremium`)))}
+                                        defaultValue={sum(range(0, riskFields?.length).map(i => get(_fields, `riskId[${i}].insurancepremium`)))}
                                         property={{
                                             placeholder: 'ввод значения',
                                             disabled: true

@@ -5,7 +5,7 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, includes, some, values, isEmpty, isEqual, head, isNil} from "lodash"
+import {get, includes, some, values, isEmpty, isEqual, head, isNil,find} from "lodash"
 import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
@@ -140,7 +140,7 @@ const StepOne = ({id = null, ...props}) => {
 
 
     const findItem = (list = [], id = null) => {
-        return list?.find(l => isEqual(get(l, "_id"), id))
+        return find(list,l => isEqual(get(l, "_id"), id))
     }
     return (
         <Row>

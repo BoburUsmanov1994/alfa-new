@@ -1,11 +1,11 @@
-import React, {useState, useMemo, useCallback} from 'react';
+import React, {useState} from 'react';
 import {Col, Row} from "react-grid-system";
 import StepNav from "../../../../components/step-nav";
 import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {every, get, includes, isEmpty, isEqual, isNil, setWith, some} from "lodash"
+import {get, includes, find, isEqual, isNil, setWith} from "lodash"
 import Title from "../../../../components/ui/title";
 import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
@@ -80,7 +80,7 @@ const StepFour = ({id = null, ...props}) => {
 
 
     const findItem = (list = [], id = null) => {
-        return list?.find(l => isEqual(get(l, "_id"), id))
+        return find(list, l => isEqual(get(l, "_id"), id))
     }
 
 

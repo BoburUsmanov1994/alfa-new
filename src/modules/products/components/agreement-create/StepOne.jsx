@@ -5,8 +5,8 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, includes, some, values, isEmpty, isEqual, head, entries, last, find, isNil, isArray} from "lodash"
-import {useGetAllQuery, useGetOneQuery, usePostQuery} from "../../../../hooks/api";
+import {get, includes, some, values, isEmpty, isEqual, head, find, isNil} from "lodash"
+import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
 import {getSelectOptionsListFromData} from "../../../../utils";
@@ -19,11 +19,9 @@ import Flex from "../../../../components/flex"
 import Modal from "../../../../components/modal";
 import {ContentLoader} from "../../../../components/loader";
 import {useNavigate} from "react-router-dom";
-import Checkbox from "rc-checkbox";
 import {PERSON_TYPE} from "../../../../constants";
 
 const StepOne = ({id = null, ...props}) => {
-    const navigate = useNavigate();
     const {t} = useTranslation()
 
 
@@ -156,7 +154,7 @@ const StepOne = ({id = null, ...props}) => {
 
 
     const findItem = (list = [], id = null) => {
-        return list?.find(l => isEqual(get(l, "_id"), id))
+        return find(list, l => isEqual(get(l, "_id"), id))
     }
 
     const agentFilter = ({data}, type = 'insurer') => {
