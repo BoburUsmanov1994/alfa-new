@@ -49,7 +49,7 @@ const ImportPaymentDocumentContainer = ({
 
     const upload = (file) => {
         const formData = new FormData();
-        formData.append('files', file);
+        formData.append('file', file);
 
         if(!isNil(file)) {
             uploadFile({

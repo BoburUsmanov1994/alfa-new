@@ -45,7 +45,7 @@ const StepSix = ({...rest}) => {
                     <p>Продукт успешно добавлен!</p>
                 </div>
                 <div className="text-center">
-                    <Link to={'/dashboard'}>Перейти на главную страницу</Link>
+                    <Link to={'/products/all'}>Перейти на главную страницу</Link>
                 </div>
             </Col>
         </Row>
