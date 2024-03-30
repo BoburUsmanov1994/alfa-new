@@ -57,6 +57,14 @@ const GlobalStyles = createGlobalStyle`
   .text-danger{
     color: #EF142F;
   }
+  .minWidth300{
+    min-width: 300px !important;
+  }
+  .flex-none{
+    flex: none !important;
+    min-width: 300px;
+    margin-right: 16px;
+  }
   .cursor-pointer {
     cursor: pointer;
   }

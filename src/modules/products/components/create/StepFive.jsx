@@ -33,7 +33,6 @@ const StepFive = ({id = null, ...props}) => {
     subGroups = getSelectOptionsListFromData(get(subGroups, `data`, []), '_id', 'name')
 
 
-
     let {data: status} = useGetAllQuery({key: KEYS.statusofproduct, url: `${URLS.statusofproduct}/list`})
     status = getSelectOptionsListFromData(get(status, `data`, []), '_id', 'name')
 
@@ -49,13 +48,19 @@ const StepFive = ({id = null, ...props}) => {
     let {data: policyformats} = useGetAllQuery({key: KEYS.policyformats, url: `${URLS.policyFormat}/list`})
     policyformats = getSelectOptionsListFromData(get(policyformats, `data`, []), '_id', 'name')
 
-    let {data: applicationformdocs} = useGetAllQuery({key: KEYS.applicationformdocs, url: `${URLS.applicationForm}/list`})
+    let {data: applicationformdocs} = useGetAllQuery({
+        key: KEYS.applicationformdocs,
+        url: `${URLS.applicationForm}/list`
+    })
     applicationformdocs = getSelectOptionsListFromData(get(applicationformdocs, `data`, []), '_id', 'url')
 
     let {data: contractform} = useGetAllQuery({key: KEYS.contractform, url: `${URLS.contractForm}/list`})
     contractform = getSelectOptionsListFromData(get(contractform, `data`, []), '_id', 'url')
 
-    let {data: additionaldocuments} = useGetAllQuery({key: KEYS.additionaldocuments, url: `${URLS.additionaldocuments}/list`})
+    let {data: additionaldocuments} = useGetAllQuery({
+        key: KEYS.additionaldocuments,
+        url: `${URLS.additionaldocuments}/list`
+    })
     additionaldocuments = getSelectOptionsListFromData(get(additionaldocuments, `data`, []), '_id', 'url')
 
 
@@ -80,7 +85,8 @@ const StepFive = ({id = null, ...props}) => {
                 }
             })
         } else {
-            createProduct({url: URLS.productCreate, attributes: product}, {
+            const {riskData, ...rest} = product
+            createProduct({url: URLS.productCreate, attributes: {...rest}}, {
                 onSuccess: () => {
                     resetRiskList();
                     resetProduct();
