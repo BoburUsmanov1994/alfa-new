@@ -29,54 +29,43 @@ const AgreementsContainer = ({...rest}) => {
             <GridView
                 tableHeaderData={[
                     {
+                        id: 1,
+                        key: 'agreementNumber',
+                        title: 'agreementNumber'
+                    },
+                    {
+                        id: 1111,
+                        key: 'agreementDate',
+                        title: 'agreementDate'
+                    },
+                    {
                         id: 11,
-                        key: 'startofinsurance',
-                        title: 'startofinsurance',
-                        date:true
+                        key: 'startOfInsurance',
+                        title: 'startOfInsurance',
+                        date: true
                     },
                     {
                         id: 12,
-                        key: 'endofinsurance',
-                        title: 'endofinsurance',
-                        date:true
-                    },
-                    {
-                        id: 1,
-                        key: 'numberofcontract',
-                        title: 'numberofcontract'
+                        key: 'endOfInsurance',
+                        title: 'endOfInsurance',
+                        date: true
                     },
                     {
                         id: 2,
-                        key: 'products.productname',
+                        key: 'product',
                         title: 'Наименование продукта'
                     },
                     {
-                        id: 3,
-                        key: 'typeofpolice',
-                        title: 'Тип страховщика',
-                        isArray:true
-                    },
-                    {
-                        id: 4,
-                        key: 'paymentcurrency.name_',
-                        title: 'Тип оплаты',
-                        isArray:true
-                    },
-                    {
-                        id: 5,
-                        key: 'typeofinsurerId.name',
-                        title: 'Страхователь',
-                    },
-                    {
-                        id: 6,
-                        key: 'policyformatId.name',
-                        title: 'Формат полиса',
-                    },
-                    {
                         id: 7,
-                        key: 'totalinsurancepremium',
-                        title: 'totalinsurancepremium',
-                        hasNumberFormat:true
+                        key: 'totalInsuranceSum',
+                        title: 'totalInsuranceSum',
+                        hasNumberFormat: true
+                    },
+                    {
+                        id: 77,
+                        key: 'totalInsurancePremium',
+                        title: 'totalInsurancePremium',
+                        hasNumberFormat: true
                     },
                     {
                         id: 8,
@@ -86,13 +75,14 @@ const AgreementsContainer = ({...rest}) => {
                 ]}
                 keyId={KEYS.agreements}
                 url={URLS.agreements}
+                listUrl={`${URLS.agreements}/list`}
                 title={t('Agreements')}
                 responseDataKey={'data'}
-                viewUrl={'/agreements/view'}
+                // viewUrl={'/agreements/view'}
                 createUrl={'/agreements/create'}
                 // updateUrl={'/agreements/update'}
                 isHideColumn
-
+                hideCreateBtn
             />
         </>
     );

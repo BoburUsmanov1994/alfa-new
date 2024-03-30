@@ -31,14 +31,20 @@ const AddActContainer = ({...rest}) => {
     const navigate = useNavigate()
     let {data: bcoStatusList, isLoading: bcoStatusListIsLoading} = useGetAllQuery({
         key: KEYS.actstatus,
-        url: URLS.actstatus
+        url: `${URLS.actstatus}/list`
     })
-    bcoStatusList = getSelectOptionsListFromData(get(bcoStatusList, `data.data`, []), '_id', 'name')
+    bcoStatusList = getSelectOptionsListFromData(get(bcoStatusList, `data`, []), '_id', 'name')
 
-    let {data: branches, isLoading: isLoadingBranches} = useGetAllQuery({key: KEYS.branches, url: URLS.branches})
-    let branchesList = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchname')
+    let {data: branches, isLoading: isLoadingBranches} = useGetAllQuery({
+        key: KEYS.branches,
+        url: `${URLS.branches}/list`
+    })
+    let branchesList = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
 
-    let {data: bcoList, isLoading: isLoadingBcoList} = useGetAllQuery({key: KEYS.typeofbco, url: URLS.typeofbco})
+    let {data: bcoList, isLoading: isLoadingBcoList} = useGetAllQuery({
+        key: KEYS.typeofbco,
+        url: `${URLS.bcoType}/list`
+    })
     let bcoListSelect = getSelectOptionsListFromData(get(bcoList, `data.data`, []), '_id', 'policy_type_name')
 
     const {
@@ -71,7 +77,6 @@ const AddActContainer = ({...rest}) => {
             return [];
         }
         return getSelectOptionsListFromData(get(find(branchList, ({_id}) => _id == branchId), 'employees', []), '_id', 'fullname')
-
     }
 
     const create = ({data}) => {
@@ -79,7 +84,10 @@ const AddActContainer = ({...rest}) => {
             url: URLS.acts,
             attributes: {
                 ...data,
-                bco_data: bcoListData.map(({policy_type_id,...rest})=>({...rest,policy_type_id:get(policy_type_id,'_id')})),
+                bco_data: bcoListData.map(({policy_type_id, ...rest}) => ({
+                    ...rest,
+                    policy_type_id: get(policy_type_id, '_id')
+                })),
             }
         }, {
             onSuccess: () => {
@@ -91,19 +99,19 @@ const AddActContainer = ({...rest}) => {
         })
     }
     const checkBlank = ({data}) => {
-        const {policy_blank_number_from,policy_blank_number_to,...rest} = data
+        const {policy_blank_number_from, policy_blank_number_to, ...rest} = data
         checkBlankRequest({
                 url: URLS.checkBlank,
                 attributes: {
-                    policy_blank_number_to:parseInt(policy_blank_number_to),
-                    policy_blank_number_from:parseInt(policy_blank_number_from),
+                    policy_blank_number_to: parseInt(policy_blank_number_to),
+                    policy_blank_number_from: parseInt(policy_blank_number_from),
                     ...rest,
                 }
             },
             {
                 onSuccess: ({data}) => {
-                        setBcoListData(prev => [...prev, get(data, 'data', {})])
-                        setOpen(false)
+                    setBcoListData(prev => [...prev, get(data, 'data', {})])
+                    setOpen(false)
                 }
             })
     }
@@ -169,25 +177,26 @@ const AddActContainer = ({...rest}) => {
                             <Row className={'mb-20'}>
                                 <Col xs={12} className={'horizontal-scroll'}>
                                     {isEmpty(bcoListData) ? <EmptyPage/> :
-                                        <Table bordered hideThead={false} thead={['№', 'Тип полиса', 'Начальный №', 'Конечный №','Blank numbers', 'Количество','Action']}>{bcoListData.map((item, i) =>
+                                        <Table bordered hideThead={false}
+                                               thead={['№', 'Тип полиса', 'Начальный №', 'Конечный №', 'Blank numbers', 'Количество', 'Action']}>{bcoListData.map((item, i) =>
                                             <tr key={get(item, '_id')}>
                                                 <td>{i + 1}</td>
-                                                <td>{get(item, 'policy_type_id.policy_type_name','-')}</td>
-                                                <td>{get(item,'policy_blank_number_from')}</td>
-                                                <td>{get(item,'policy_blank_number_to')}</td>
+                                                <td>{get(item, 'policy_type_id.policy_type_name', '-')}</td>
+                                                <td>{get(item, 'policy_blank_number_from')}</td>
+                                                <td>{get(item, 'policy_blank_number_to')}</td>
 
-                                                <td >
-                                                    <div style={{maxHeight:'25vh',overflowY:'scroll'}}>
-                                                        {get(item,'blanks',[]).map(_blank=><div>{_blank}</div>)}
+                                                <td>
+                                                    <div style={{maxHeight: '25vh', overflowY: 'scroll'}}>
+                                                        {get(item, 'blanks', []).map(_blank => <div>{_blank}</div>)}
                                                     </div>
                                                 </td>
                                                 <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                                                   value={get(item, 'blank_counts') || 0}/>
                                                 </td>
                                                 <td>
-                                                    <Trash2 onClick={()=>{
-                                                        setBcoListData(filter(bcoListData,(_item)=>!isEqual(get(_item,'policy_type_id._id'),get(item,'policy_type_id._id'))))
-                                                    }} className={'cursor-pointer'} color={'red'} />
+                                                    <Trash2 onClick={() => {
+                                                        setBcoListData(filter(bcoListData, (_item) => !isEqual(get(_item, 'policy_type_id._id'), get(item, 'policy_type_id._id'))))
+                                                    }} className={'cursor-pointer'} color={'red'}/>
                                                 </td>
 
                                             </tr>)}</Table>}

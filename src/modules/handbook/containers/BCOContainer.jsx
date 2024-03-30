@@ -31,12 +31,12 @@ const BCOContainer = ({...rest}) => {
     const [acceptModal, setAcceptModal] = useState(false)
     const [id, setId] = useState(null)
     const navigate = useNavigate();
-    let {data: acts, isLoading: actsIsLoading} = useGetAllQuery({key: KEYS.acts, url: URLS.acts})
+    let {data: acts, isLoading: actsIsLoading} = useGetAllQuery({key: KEYS.acts, url: `${URLS.acts}/list`})
     let {data: actStatusList, isLoading: actStatusListIsLoading} = useGetAllQuery({
         key: KEYS.actstatus,
-        url: URLS.actstatus
+        url: `${URLS.actstatus}/list`
     })
-    actStatusList = getSelectOptionsListFromData(get(actStatusList, `data.data`, []), '_id', 'name')
+    actStatusList = getSelectOptionsListFromData(get(actStatusList, `data`, []), '_id', 'name')
     const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: KEYS.acts})
     const {mutate: updateRequest, isLoading: putLoading} = usePutQuery({listKeyId: KEYS.acts})
     const breadcrumbs = useMemo(() => [
@@ -82,16 +82,16 @@ const BCOContainer = ({...rest}) => {
 
     const acceptOrCancel = ({data}) => {
         updateRequest({
-            url:`${URLS.acts}/${id}`,
-            attributes:{
+            url: `${URLS.acts}/${id}`,
+            attributes: {
                 ...data
             }
-        },{
-            onSuccess:()=>{
+        }, {
+            onSuccess: () => {
                 setId(null);
                 setAcceptModal(false);
             },
-            onError:()=>{
+            onError: () => {
                 setId(null);
                 setAcceptModal(false);
             }
@@ -135,16 +135,17 @@ const BCOContainer = ({...rest}) => {
                                     <td>{get(item, 'receiver_branch_id.branchname')}</td>
                                     <td>{get(item, 'receiver_employee_id.email')}</td>
                                     <td><NumberFormat displayType={'text'} thousandSeparator={" "}
-                                                      value={sum(get(item, 'bco_data', []).map(({blank_counts})=>blank_counts))}/></td>
+                                                      value={sum(get(item, 'bco_data', []).map(({blank_counts}) => blank_counts))}/>
+                                    </td>
                                     <td>{get(item, 'statusofact.name')}</td>
                                     <td><Check onClick={() => {
                                         setAcceptModal(true);
-                                        setId(get(item,'_id'));
+                                        setId(get(item, '_id'));
                                     }} size={20}
                                                className={'cursor-pointer mr-10'} color={'green'}/>
                                         <X onClick={() => {
                                             setAcceptModal(true);
-                                            setId(get(item,'_id'));
+                                            setId(get(item, '_id'));
                                         }
                                         } size={20}
                                            className={'cursor-pointer mr-10'} color={'red'}/><Edit2
@@ -163,10 +164,11 @@ const BCOContainer = ({...rest}) => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={6} >
+                    <Col xs={6}>
                         <Modal title={'Accept or cancel'} visible={acceptModal} hide={() => setAcceptModal(false)}>
-                            {putLoading && <ContentLoader />}
-                            <Form mainClassName={'mt-15'} formRequest={(val)=>acceptOrCancel(val)} footer={<Button>Accept or cancel</Button>}>
+                            {putLoading && <ContentLoader/>}
+                            <Form mainClassName={'mt-15'} formRequest={(val) => acceptOrCancel(val)}
+                                  footer={<Button>Accept or cancel</Button>}>
                                 <Field label={'Status'} type={'select'} name={'statusofact'} options={actStatusList}/>
                             </Form>
                         </Modal>

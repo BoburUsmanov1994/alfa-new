@@ -67,6 +67,11 @@ export const menuData = [
         ]
     },
     {
+        id: 222,
+        title: 'Соглашения',
+        path: '/agreements',
+    },
+    {
         id: 2,
         title: 'Клиенты',
         path: '/clients',
@@ -155,6 +160,64 @@ export const menuData = [
         ]
     },
     {
+        id: 3,
+        title: 'Бухгалтерия',
+        path: '/accounting',
+        submenu: [
+            {
+                id: 1,
+                title: 'Импорт платёжные документы',
+                path: '/accounting/import-payment-documents',
+            },
+            // {
+            //     id: 2,
+            //     title: 'Распределение',
+            //     path: '/accounting/distribution',
+            // },
+            // {
+            //     id: 3,
+            //     title: 'Тип распределения',
+            //     path: '/accounting/distribution-type',
+            // },
+            {
+                id: 4,
+                title: 'К полису',
+                path: '/accounting/policy',
+            },
+            {
+                id: 5,
+                title: 'ACTS',
+                path: '/accounting/act',
+            },
+            // {
+            //     id: 55,
+            //     title: 'BCO list',
+            //     path: '/accounting/bco',
+            // },
+            // {
+            //     id: 6,
+            //     title: 'BCO Type',
+            //     path: '/accounting/bco-type',
+            // },
+            // {
+            //     id: 66,
+            //     title: 'BCO language',
+            //     path: '/handbook/bco-language-policy',
+            // },
+            // {
+            //     id: 666,
+            //     title: 'BCO blanks',
+            //     path: '/accounting/bco-blanks',
+            // },
+            {
+                id: 7,
+                title: 'Warehouse',
+                path: '/accounting/warehouse',
+            }
+
+        ]
+    },
+    {
         id: 2,
         title: 'БСО',
         path: '/bco',
@@ -187,64 +250,7 @@ export const menuData = [
         ]
     },
 
-    // {
-    //     id: 3,
-    //     title: 'Бухгалтерия',
-    //     path: '/accounting',
-    //     submenu: [
-    //         {
-    //             id: 1,
-    //             title: 'Импорт платёжные документы',
-    //             path: '/accounting/import-payment-documents',
-    //         },
-    //         {
-    //             id: 2,
-    //             title: 'Распределение',
-    //             path: '/accounting/distribution',
-    //         },
-    //         {
-    //             id: 3,
-    //             title: 'Тип распределения',
-    //             path: '/accounting/distribution-type',
-    //         },
-    //         {
-    //             id: 4,
-    //             title: 'К полису',
-    //             path: '/accounting/policy',
-    //         },
-    //         {
-    //             id: 5,
-    //             title: 'ACTS',
-    //             path: '/accounting/act',
-    //         },
-    //         {
-    //             id: 55,
-    //             title: 'BCO list',
-    //             path: '/accounting/bco',
-    //         },
-    //         {
-    //             id: 6,
-    //             title: 'BCO Type',
-    //             path: '/accounting/bco-type',
-    //         },
-    //         {
-    //             id: 66,
-    //             title: 'BCO language',
-    //             path: '/handbook/bco-language-policy',
-    //         },
-    //         {
-    //             id: 666,
-    //             title: 'BCO blanks',
-    //             path: '/accounting/bco-blanks',
-    //         },
-    //         {
-    //             id: 7,
-    //             title: 'Журнал БСО(Warehouse)',
-    //             path: '/accounting/warehouse',
-    //         }
-    //
-    //     ]
-    // },
+
     // {
     //     id: 4,
     //     title: 'Страховой',
