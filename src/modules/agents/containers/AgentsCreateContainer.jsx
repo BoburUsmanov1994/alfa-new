@@ -16,12 +16,13 @@ import Button from "../../../components/ui/button";
 import {useNavigate} from "react-router-dom";
 import {Minus, Plus} from "react-feather";
 import dayjs from "dayjs";
+import {PERSON_TYPE} from "../../../constants";
+import {useTranslation} from "react-i18next";
 
-const AgentsCreateContainer = ({...rest}) => {
+const AgentsCreateContainer = () => {
     const navigate = useNavigate();
-
+    const {t} = useTranslation()
     const [personType, setPersonType] = useState(null)
-    const [empCount, setEmpCount] = useState(0);
     const [region, setregion] = useState(null);
     const setPersonTypeForSelect = (val, name) => {
         if (isEqual(name, 'typeofpersons')) {
@@ -30,12 +31,18 @@ const AgentsCreateContainer = ({...rest}) => {
         if (isEqual(name, 'corporateentitiesdata.region')) {
             setregion(val)
         }
-        if (isEqual(name, 'forindividualsdata.regions')) {
+        if (isEqual(name, 'forindividualsdata.region')) {
             setregion(val)
         }
     }
     let {data: branches} = useGetAllQuery({key: KEYS.branches, url: `${URLS.branches}/list`})
     branches = getSelectOptionsListFromData(get(branches, `data`, []), '_id', 'branchName')
+
+    let {data: citizenshipList} = useGetAllQuery({key: KEYS.residentType, url: `${URLS.residentType}`})
+    citizenshipList = getSelectOptionsListFromData(get(citizenshipList, `data`, []), '_id', 'name')
+
+    let {data: documentTypeList} = useGetAllQuery({key: KEYS.documentType, url: `${URLS.documentType}/list`})
+    documentTypeList = getSelectOptionsListFromData(get(documentTypeList, `data`, []), '_id', 'name')
 
     let {data: regions} = useGetAllQuery({key: KEYS.regions, url: `${URLS.regions}/list`})
     regions = getSelectOptionsListFromData(get(regions, `data`, []), '_id', 'name')
@@ -43,13 +50,11 @@ const AgentsCreateContainer = ({...rest}) => {
     let {data: agentTypes} = useGetAllQuery({key: KEYS.typeofagent, url: `${URLS.typeofagent}/list`})
     agentTypes = getSelectOptionsListFromData(get(agentTypes, `data`, []), '_id', 'name')
 
-    let {data: persons} = useGetAllQuery({key: KEYS.typeofpersons, url: `${URLS.personType}/list`})
-    persons = getSelectOptionsListFromData(get(persons, `data`, []), '_id', 'name')
-
-
     let {data: genders} = useGetAllQuery({key: KEYS.genders, url: `${URLS.genders}/list`})
     genders = getSelectOptionsListFromData(get(genders, `data`, []), '_id', 'name')
 
+    let {data: employeeList} = useGetAllQuery({key: KEYS.employee, url: `${URLS.employee}/list`})
+    employeeList = getSelectOptionsListFromData(get(employeeList, `data`, []), '_id', 'fullname')
 
     let {data: districts} = useGetAllQuery({
         key: KEYS.districtsByRegion,
@@ -64,12 +69,11 @@ const AgentsCreateContainer = ({...rest}) => {
     districts = getSelectOptionsListFromData(get(districts, `data`, []), '_id', 'name')
 
 
-
     const {mutate: createRequest, isLoading} = usePostQuery({listKeyId: KEYS.agents})
     const create = ({data}) => {
         createRequest({
             url: URLS.agents,
-            attributes: {...data, agreementdate: dayjs(get(data, 'agreementdate')), user_id: '123'}
+            attributes: {...data, agreementdate: dayjs(get(data, 'agreementdate'))}
         }, {
             onSuccess: () => {
                 navigate('/agents/insurance-agents')
@@ -105,7 +109,7 @@ const AgentsCreateContainer = ({...rest}) => {
                         <Col xs={4}>
                             <Field name={'inn'} type={'input-mask'} label={'INN'}
                                    property={{mask: '999999999', maskChar: '_'}}
-                                   params={{required: true, pattern: /^[0-9]*$/}}/>
+                                   params={{pattern: /^[0-9]*$/}}/>
                         </Col>
 
                         <Col xs={4}>
@@ -133,19 +137,22 @@ const AgentsCreateContainer = ({...rest}) => {
                         </Col>
                         <Col xs={4}>
                             <Field
-                                label={'isfixedpolicyholde'}
+                                label={'isfixedpolicyholder'}
                                 type={'switch'}
-                                name={'isfixedpolicyholde'}
+                                name={'isfixedpolicyholder'}
                                 params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
-                            <Field name={'typeofpersons'} type={'select'} label={'Person type'} options={persons}
+                            <Field name={'typeofpersons'} type={'select'} label={'Person type'} options={[{
+                                value: PERSON_TYPE.person,
+                                label: t(PERSON_TYPE.person)
+                            }, {value: PERSON_TYPE.organization, label: t(PERSON_TYPE.organization)}]}
                                    params={{required: true}}/>
                         </Col>
-                        {isEqual(personType, '6606f75dadf406e7876a4573') && <>
+                        {isEqual(personType, PERSON_TYPE.person) && <>
                             <Col xs={4}>
                                 <Field name={'forindividualsdata.photo'} type={'input'} label={'Photo'}
-                                       params={{required: true}}/>
+                                />
                             </Col>
                             <Col xs={4}>
                                 <Field name={'forindividualsdata.name'} type={'input'} label={'name'}
@@ -171,11 +178,13 @@ const AgentsCreateContainer = ({...rest}) => {
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.citizenship'} type={'input'} label={'Citizenship'}
+                                <Field name={'forindividualsdata.citizenship'} type={'select'} options={citizenshipList}
+                                       label={'Citizenship'}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.typeofdocument'} type={'input'}
+                                <Field name={'forindividualsdata.typeofdocument'} type={'select'}
+                                       options={documentTypeList}
                                        label={'typeofdocument'}
                                        params={{required: true}}/>
                             </Col>
@@ -197,29 +206,26 @@ const AgentsCreateContainer = ({...rest}) => {
 
                                 <Field name={'forindividualsdata.pin'} type={'input-mask'} label={'PINFL'}
                                        property={{mask: '99999999999999', maskChar: '_'}}
-                                       params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field name={'forindividualsdata.passportissuancedate'} dateFormat={"MM/DD/YYYY"}
                                        type={'datepicker'}
                                        label={'passportissuancedate'}
-                                       params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field name={'forindividualsdata.passportissuedby'} type={'input'}
                                        label={'passportissuedby'}
-                                       params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.regions'} type={'select'} label={'Region'}
+                                <Field name={'forindividualsdata.region'} type={'select'} label={'Region'}
                                        options={regions}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.districts'} type={'select'} label={'District'}
+                                <Field name={'forindividualsdata.district'} type={'select'} label={'District'}
                                        options={districts}
                                        params={{required: true}}/>
                             </Col>
@@ -233,55 +239,51 @@ const AgentsCreateContainer = ({...rest}) => {
                             <Col xs={4}>
                                 <Field name={'forindividualsdata.postcode'} type={'input'}
                                        label={'postcode'}
-                                       params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field name={'forindividualsdata.telephonenumber'} type={'input'}
                                        label={'telephonenumber'}
-                                       params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field name={'forindividualsdata.emailforcontact'} type={'input'}
                                        label={'emailforcontact'}
-                                       params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field name={'forindividualsdata.personalaccount'} type={'input'}
                                        label={'personalaccount'}
-                                       params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field name={'forindividualsdata.transitaccount'} type={'input'}
-                                       label={'transitaccount'} params={{required: true}}
+                                       label={'transitaccount'}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field name={'forindividualsdata.mfo'} type={'input'}
-                                       label={'mfo'} params={{required: true}}
+                                       label={'mfo'}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field name={'forindividualsdata.nameofbank'} type={'input'}
-                                       label={'nameofbank'} params={{required: true}}
+                                       label={'nameofbank'}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field name={'forindividualsdata.numberofcard'} type={'input'} label={'numberofcard'}
-                                       params={{required: true}}
                                 />
                             </Col>
                         </>
                         }
-                        {isEqual(personType, '6606f764adf406e7876a457a') &&
+                        {isEqual(personType, PERSON_TYPE.organization) &&
                         <>
 
                             <Col xs={4}>
                                 <Field name={'corporateentitiesdata.nameoforganization'} type={'input'}
                                        label={'nameoforganization'}
+                                       params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
@@ -309,10 +311,11 @@ const AgentsCreateContainer = ({...rest}) => {
                             <Col xs={4}>
                                 <Field name={'corporateentitiesdata.region'} type={'select'} label={'Region'}
                                        options={regions}
+                                       params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'corporateentitiesdata.districts'} type={'select'} label={'District'}
+                                <Field name={'corporateentitiesdata.district'} type={'select'} label={'District'}
                                        options={districts}
                                        params={{required: true}}/>
                             </Col>
@@ -320,6 +323,7 @@ const AgentsCreateContainer = ({...rest}) => {
                             <Col xs={4}>
                                 <Field name={'corporateentitiesdata.address'} type={'input'}
                                        label={'address'}
+                                       params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
@@ -332,78 +336,13 @@ const AgentsCreateContainer = ({...rest}) => {
                                        label={'checkingaccount'}
                                 />
                             </Col>
-                            <Col xs={11} className={"mb-15"}>
-                                <Title sm>Add employee</Title>
+                            <Col xs={8}>
+                                <Field isMulti name={'corporateentitiesdata.employees'} type={'select'}
+                                       options={employeeList}
+                                       label={'Employees'}
+                                       params={{required: true}}
+                                />
                             </Col>
-                            <Col xs={1} className={'text-right'}>
-                                <Button onClick={() => setEmpCount(prev => ++prev)} sm type={"button"}
-                                        inline><Plus/></Button>
-                            </Col>
-                            {range(0, empCount).map(count => <Col xs={12} className={'box__outlined'}><Row
-                                align={"center"}>
-                                <Col xs={11}>
-                                    <Row>
-                                        <Col xs={4}>
-                                            <Field name={`corporateentitiesdata.employees[${count}].fullname`}
-                                                   type={'input'}
-                                                   label={'Employee fullname'}
-                                                   params={{required: true}}
-                                            />
-                                        </Col>
-                                        <Col xs={4}>
-                                            <Field name={`corporateentitiesdata.employees[${count}].positions`}
-                                                   type={'input'}
-                                                   label={'Employee position'}
-                                                   params={{required: true}}
-                                            />
-                                        </Col>
-                                        <Col xs={4}>
-                                            <Field
-                                                name={`corporateentitiesdata.employees[${count}].typeofdocumentsformanager`}
-                                                type={'input'}
-                                                label={'Employee doc type'}
-                                                params={{required: true}}
-                                            />
-                                        </Col>
-                                        <Col xs={4}>
-                                            <Field name={`corporateentitiesdata.employees[${count}].documentnumber`}
-                                                   type={'input'}
-                                                   label={'Employee documentnumber'}
-                                            />
-                                        </Col>
-                                        <Col xs={4}>
-                                            <Field
-                                                name={`corporateentitiesdata.employees[${count}].dateofmanagerdocument`}
-                                                dateFormat={"MM/DD/YYYY"} type={'datepicker'}
-                                                label={'dateofmanagerdocument'}
-                                            />
-                                        </Col>
-                                        <Col xs={4}>
-                                            <Field name={`corporateentitiesdata.employees[${count}].expirationdate`}
-                                                   dateFormat={"MM/DD/YYYY"} type={'datepicker'}
-                                                   label={'expirationdate'}
-                                            />
-                                        </Col>
-                                        <Col xs={4}>
-                                            <Field name={`corporateentitiesdata.employees[${count}].telephonenumber`}
-                                                   type={'input'}
-                                                   label={'telephonenumber'}
-                                            />
-                                        </Col>
-                                        <Col xs={4}>
-                                            <Field name={`corporateentitiesdata.employees[${count}].emailforcontacts`}
-                                                   type={'input'}
-                                                   label={'emailforcontacts'}
-                                            />
-                                        </Col>
-                                    </Row>
-                                </Col>
-                                <Col xs={1} className={"text-right "}>
-                                    <Button danger onClick={() => setEmpCount(prev => --prev)} sm type={"button"}
-                                            inline><Minus/></Button>
-                                </Col>
-                            </Row></Col>)}
-
                         </>
                         }
                         <Col xs={4}>

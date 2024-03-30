@@ -41,20 +41,15 @@ const AgentsContainer = ({...rest}) => {
                         key: 'inn',
                         title: 'INN'
                     },
-                    // {
-                    //     id: 2,
-                    //     key: 'region.name',
-                    //     title: 'Region'
-                    // },
                     {
                         id: 3,
-                        key: 'typeofagent.name',
+                        key: 'typeofagent',
                         title: 'Agent type'
                     },
                     {
                         id: 4,
-                        key: 'typeofpersons.name',
-                        title: 'Person type'
+                        key: 'corporateentitiesdata.nameoforganization',
+                        title: 'organization name'
                     },
                     {
                         id: 5,
@@ -70,21 +65,6 @@ const AgentsContainer = ({...rest}) => {
                         id: 555,
                         key: 'forindividualsdata.middlename',
                         title: 'Middlename'
-                    },
-                    {
-                        id: 6,
-                        key: 'email',
-                        title: 'Email'
-                    },
-                    {
-                        id: 7,
-                        key: 'accountrole.name',
-                        title: 'Role'
-                    },
-                    {
-                        id: 8,
-                        key: 'accountstatus.name',
-                        title: 'Status'
                     },
                 ]}
                 keyId={KEYS.agents}

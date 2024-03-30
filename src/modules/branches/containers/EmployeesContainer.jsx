@@ -52,10 +52,9 @@ const EmployeesContainer = ({...rest}) => {
                     },
                     {
                         id: 4,
-                        key: 'positions',
+                        key: 'position',
                         title: 'Position'
                     },
-
                     {
                         id: 6,
                         key: 'telephonenumber',
@@ -76,7 +75,6 @@ const EmployeesContainer = ({...rest}) => {
                 createUrl={'/branches/employee/create'}
                 // updateUrl={'/branches/employee/update'}
                 isHideColumn
-
             />
         </>
     );

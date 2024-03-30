@@ -6,7 +6,7 @@ import Section from "../../../components/section";
 import Title from "../../../components/ui/title";
 import Field from "../../../containers/form/field";
 import {get} from "lodash";
-import {usePostQuery} from "../../../hooks/api";
+import {useGetAllQuery, usePostQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import Form from "../../../containers/form/form";
@@ -14,16 +14,24 @@ import Button from "../../../components/ui/button";
 import {useNavigate} from "react-router-dom";
 import {OverlayLoader} from "../../../components/loader";
 import dayjs from "dayjs";
+import {getSelectOptionsListFromData} from "../../../utils";
 
 const EmployeeAddContainer = () => {
     const navigate = useNavigate();
-
+    let {data: positionList} = useGetAllQuery({key: KEYS.position, url: `${URLS.position}/list`})
+    positionList = getSelectOptionsListFromData(get(positionList, `data`, []), '_id', 'name')
+    let {data: documentTypeList} = useGetAllQuery({key: KEYS.documentType, url: `${URLS.documentType}/list`})
+    documentTypeList = getSelectOptionsListFromData(get(documentTypeList, `data`, []), '_id', 'name')
     const {mutate: createRequest, isLoading} = usePostQuery({listKeyId: KEYS.employee})
 
     const create = ({data}) => {
         createRequest({
             url: URLS.employee,
-            attributes: {...data, dateofmanagerdocument: dayjs(get(data, 'dateofmanagerdocument')),expirationdate:dayjs(get(data, 'expirationdate'))}
+            attributes: {
+                ...data,
+                dateofmanagerdocument: dayjs(get(data, 'dateofmanagerdocument')),
+                expirationdate: dayjs(get(data, 'expirationdate'))
+            }
         }, {
             onSuccess: () => {
                 navigate('/branches/employees')
@@ -56,7 +64,7 @@ const EmployeeAddContainer = () => {
                         <Col xs={4}>
                             <Field name={'photo'} type={'input'}
                                    label={'Photo'}
-                                   params={{required: true}}/>
+                            />
                         </Col>
                         <Col xs={4}>
                             <Field name={'fullname'} type={'input'}
@@ -64,13 +72,13 @@ const EmployeeAddContainer = () => {
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
-                            <Field name={'positions'} type={'input'} label={'Position'}
-                                   params={{required: true}}/>
+                            <Field name={'position'} type={'select'} label={'Position'} options={positionList}
+                            />
                         </Col>
                         <Col xs={4}>
-                            <Field name={'typeofdocumentsformanager'} type={'input'}
+                            <Field name={'typeofdocumentsformanager'} type={'select'} options={documentTypeList}
                                    label={'Document type'}
-                                   params={{required: true}}/>
+                            />
                         </Col>
                         <Col xs={4}>
                             <Field name={'documentnumber'} type={'input-mask'}
@@ -82,25 +90,25 @@ const EmployeeAddContainer = () => {
                         <Col xs={4}>
                             <Field name={'dateofmanagerdocument'} type={'datepicker'}
                                    label={'Document date'}
+                                   params={{required: true}}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field name={'expirationdate'} type={'datepicker'}
                                    label={'Expration date'}
+                                   params={{required: true}}
                             />
                         </Col>
-
 
                         <Col xs={4}>
                             <Field name={'telephonenumber'} type={'input'}
                                    label={'Phone'}
-                                   params={{required: true}}/>
+                            />
                         </Col>
 
                         <Col xs={4}>
                             <Field name={'emailforcontacts'} type={'input'} label={'Email'}
                                    params={{
-                                       required: true,
                                        pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                                    }}/>
                         </Col>

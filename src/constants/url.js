@@ -41,7 +41,7 @@ export const URLS = {
     typeofagent: 'api/agent/type',
     citizenship: 'citizenship',
     genders: 'api/references/gender',
-    position: 'position',
+    position: 'api/employee/pozition',
     typeofdocuments: 'typeofdocuments',
     levelofbranch: 'api/branch/level',
     branchStatus: 'api/branch/status',
@@ -103,4 +103,7 @@ export const URLS = {
     measurementType: 'api/references/measurement-type',
     act: 'api/act',
     actStatus: 'api/act/status',
+    findOrCreateClient: 'api/client/find-or-create',
+    residentType: 'api/references/resident-type/list',
+    documentType: 'api/references/document-type',
 }

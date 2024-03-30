@@ -101,4 +101,7 @@ export const KEYS = {
     act: "act",
     actStatus: "actStatus",
     userStatus: "userStatus",
+    findOrCreateClient: "findOrCreateClient",
+    residentType: "residentType",
+    documentType: "documentType",
 }

@@ -14,7 +14,7 @@ const StyledFormSelect = styled.div`
     border-color: #ef466f;
   }
   .form-select__menu{
-    max-width: 400px;
+    //max-width: 400px;
   }
   .form-select__control--is-disabled{
     background-color: #BABABA;

@@ -18,7 +18,7 @@ const PositionContainer = ({...rest}) => {
         {
             id: 2,
             title: 'Position',
-            path: '/handbook/position',
+            path: '/branches/position',
         }
     ], [])
 
@@ -26,8 +26,9 @@ const PositionContainer = ({...rest}) => {
         setBreadcrumbs(breadcrumbs)
     }, [])
 
-    const ModalBody = ({data,rowId = null}) =>  <>
-        <Field  name={'name'} type={'input'} label={'Название'} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
+    const ModalBody = ({data, rowId = null}) => <>
+        <Field name={'name'} type={'input'} label={'Название'} defaultValue={rowId ? get(data, 'name') : null}
+               params={{required: true}}/>
     </>
     return (
         <>
@@ -42,6 +43,7 @@ const PositionContainer = ({...rest}) => {
                 ]}
                 keyId={KEYS.position}
                 url={URLS.position}
+                listUrl={`${URLS.position}/list`}
                 title={'Position'}
                 responseDataKey={'data'}
             />

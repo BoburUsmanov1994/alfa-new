@@ -3,13 +3,12 @@ import styled from "styled-components";
 import DocumentTypeContainer from "../containers/DocumentTypeContainer";
 
 
-
 const Styled = styled.div`
 `;
 const DocumentTypePage = ({...rest}) => {
     return (
         <Styled {...rest}>
-            <DocumentTypeContainer />
+            <DocumentTypeContainer/>
         </Styled>
     );
 };

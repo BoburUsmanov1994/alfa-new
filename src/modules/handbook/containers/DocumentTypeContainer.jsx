@@ -18,7 +18,7 @@ const DocumentTypeContainer = ({...rest}) => {
         {
             id: 2,
             title: 'Document type',
-            path: '/handbook/genders',
+            path: '/handbook/document-type',
         }
     ], [])
 
@@ -41,8 +41,9 @@ const DocumentTypeContainer = ({...rest}) => {
                         title: 'Название'
                     },
                 ]}
-                keyId={KEYS.typeofdocuments}
-                url={URLS.typeofdocuments}
+                keyId={KEYS.documentType}
+                url={URLS.documentType}
+                listUrl={`${URLS.documentType}/list`}
                 title={'Document type'}
                 responseDataKey={'data'}
             />

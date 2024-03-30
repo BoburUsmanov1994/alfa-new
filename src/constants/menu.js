@@ -156,6 +156,11 @@ export const menuData = [
                 id: 2,
                 title: 'Employees',
                 path: '/branches/employees',
+            },
+            {
+                id: 3,
+                title: 'Position',
+                path: '/branches/position',
             }
         ]
     },
@@ -515,6 +520,11 @@ export const menuData = [
                 id: 44,
                 title: 'Measurement type',
                 path: '/handbook/measurement-type',
+            },
+            {
+                id: 45,
+                title: 'Document type',
+                path: '/handbook/document-type',
             },
             {
                 id: 26,

@@ -169,6 +169,7 @@ const Router = ({...rest}) => {
                             <Route path={"branches"}>
                                 <Route path={"list"} element={<BranchesPage/>}/>
                                 <Route path={"employees"} element={<EmployeesPage/>}/>
+                                <Route path={"position"} element={<PositionPage/>}/>
                                 <Route path={"create"} element={<BranchCreatePage/>}/>
                                 <Route path={"view/:id"} element={<BranchViewPage/>}/>
                                 <Route path={"update/:id"} element={<BranchUpdatePage/>}/>
@@ -219,6 +220,7 @@ const Router = ({...rest}) => {
                                 <Route path={"property-right-type"} element={<PropertyRightTypePage/>}/>
                                 <Route path={"agricultural-type"} element={<AgriculturalTypePage/>}/>
                                 <Route path={"measurement-type"} element={<MeasurementTypePage/>}/>
+                                <Route path={"document-type"} element={<DocumentTypePage/>}/>
                             </Route>
                             <Route path={"policy"}>
                                 <Route path={"create/:product_id"} element={<PolicyCreatePage/>}/>

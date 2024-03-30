@@ -20,6 +20,7 @@ import Modal from "../../../../components/modal";
 import {ContentLoader} from "../../../../components/loader";
 import {useNavigate} from "react-router-dom";
 import Checkbox from "rc-checkbox";
+import {PERSON_TYPE} from "../../../../constants";
 
 const StepOne = ({id = null, ...props}) => {
     const navigate = useNavigate();
@@ -27,8 +28,6 @@ const StepOne = ({id = null, ...props}) => {
 
 
     const [riskItem, setRiskItem] = useState({});
-    const [productGroupId, setProductGroupId] = useState(null);
-    const [productSubGroupId, setProductSubGroupId] = useState(null);
     const [riskTypeId, setRiskTypeId] = useState(null);
     const [product, setProduct] = useState({});
     const [pledgerList, setPledgerList] = useState([]);
@@ -76,7 +75,7 @@ const StepOne = ({id = null, ...props}) => {
 
     const nextStep = ({data}) => {
         const {classeId, risk, riskgroup, ...rest} = data
-        if(get(insurer, 'data.id')) {
+        if (get(insurer, 'data.id')) {
             setAgreement({
                 ...rest,
                 product,
@@ -85,7 +84,7 @@ const StepOne = ({id = null, ...props}) => {
                 pledgers: pledgers.map(({id}) => id)
             });
             props.nextStep();
-        }else{
+        } else {
             toast.warn(t('Пожалуйста, добавьте страхователя'))
         }
     }
@@ -100,26 +99,17 @@ const StepOne = ({id = null, ...props}) => {
         resetPledgers();
         props.firstStep();
     }
-
-    let {data: groups} = useGetAllQuery({key: KEYS.groupsofproducts, url: URLS.groupsofproducts})
-    groups = getSelectOptionsListFromData(get(groups, `data.data`, []), '_id', 'name')
-
-
-    let {data: subGroups} = useGetAllQuery({
-        key: KEYS.subgroupsofproductsFilter,
-        url: URLS.subgroupsofproductsFilter,
-        params: {params: {groupId: productGroupId}},
-        enabled: !!productGroupId
+    let {data: branchList} = useGetAllQuery({
+        key: KEYS.branches,
+        url: `${URLS.branches}/list`,
     })
-    subGroups = getSelectOptionsListFromData(get(subGroups, `data.data`, []), '_id', 'name')
+    branchList = getSelectOptionsListFromData(get(branchList, `data`, []), '_id', 'branchName')
 
     let {data: products} = useGetAllQuery({
         key: KEYS.productsfilter,
-        url: URLS.productsfilter,
-        enabled: !!productSubGroupId,
-        params: {params: {subgroupofproductsId: productSubGroupId}}
+        url: URLS.products,
     })
-    const productsList = getSelectOptionsListFromData(get(products, `data.data`, []), '_id', 'productname')
+    const productsList = getSelectOptionsListFromData(get(products, `data`, []), '_id', 'name')
 
 
     let {data: riskGroups} = useGetAllQuery({key: KEYS.typeofrisk, url: URLS.typeofrisk})
@@ -140,8 +130,6 @@ const StepOne = ({id = null, ...props}) => {
     let {data: insuranceClassesList} = useGetAllQuery({key: KEYS.classes, url: URLS.classes})
     let insuranceClasses = getSelectOptionsListFromData(get(insuranceClassesList, `data.data`, []), '_id', 'name')
 
-    let {data: typeofpersonsList} = useGetAllQuery({key: KEYS.typeofpersons, url: URLS.typeofpersons})
-    let typeofpersons = getSelectOptionsListFromData(get(typeofpersonsList, `data.data`, []), '_id', 'name')
 
     const {mutate: filterRequest, isLoading: filterLoading} = usePostQuery({})
 
@@ -149,17 +137,11 @@ const StepOne = ({id = null, ...props}) => {
         if (includes(['riskgroup', 'classeId', 'risk'], name)) {
             setRiskItem(prev => ({...prev, [name]: value}))
         }
-        if (isEqual(name, 'groupofproductsId')) {
-            setProductGroupId(value)
-        }
-        if (isEqual(name, 'subgroupofproductsId')) {
-            setProductSubGroupId(value)
-        }
         if (isEqual(name, 'riskgroup')) {
             setRiskTypeId(value)
         }
-        if (isEqual(name, 'products')) {
-            setProduct(find(get(products, 'data.oreders', []), p => isEqual(get(p, '_id'), value)))
+        if (isEqual(name, 'product')) {
+            setProduct(find(get(products, 'data', []), p => isEqual(get(p, '_id'), value)))
         }
     }
 
@@ -179,16 +161,20 @@ const StepOne = ({id = null, ...props}) => {
 
     const agentFilter = ({data}, type = 'insurer') => {
         filterRequest({
-            url: isEqual(get(type === 'insurer' ? insurer : pledger, 'type'), 'juridical') ? URLS.orgInfo : URLS.personalInfo,
-            attributes: isEqual(get(type === 'insurer' ? insurer : pledger, 'type'), 'juridical') ? {
-                inn: get(data, 'inn'),
-                typeofpersons: '629202448982798b6996bc32'
+            url: URLS.findOrCreateClient,
+            attributes: isEqual(get(type === 'insurer' ? insurer : pledger, 'type'), PERSON_TYPE.organization) ? {
+                organization:{
+                    inn: get(data, 'person.inn'),
+                },
+                type: PERSON_TYPE.organization
             } : {
-                birthDate: get(data, 'birthDate'),
-                pinfl: get(data, 'pinfl'),
-                passportSeries: get(data, 'passportSeries'),
-                passportNumber: get(data, 'passportNumber'),
-                typeofpersons: '6292025f8982798b6996bc34'
+               person:{
+                   birthDate: get(data, 'person.birthDate'),
+                   phone: get(data, 'person.pinfl'),
+                   seria: get(data, 'person.seria'),
+                   number: get(data, 'person.number'),
+               },
+                type: PERSON_TYPE.person
             }
         }, {
             onSuccess: (data) => {
@@ -216,8 +202,8 @@ const StepOne = ({id = null, ...props}) => {
                     if (isEqual(get(beneficiary, 'type'), 'physical') && get(data, 'data.data.forindividualsdata')) {
                         setBeneficiary({
                             ...beneficiary, openModal: false, data: {
-                               ...get(data, 'data.data.forindividualsdata'),
-                                id:get(data, 'data.data._id')
+                                ...get(data, 'data.data.forindividualsdata'),
+                                id: get(data, 'data.data._id')
                             }
                         })
                     }
@@ -225,7 +211,7 @@ const StepOne = ({id = null, ...props}) => {
                         setBeneficiary({
                             ...beneficiary, openModal: false, data: {
                                 ...get(data, 'data.data.corporateentitiesdata'),
-                                id:get(data, 'data.data._id')
+                                id: get(data, 'data.data._id')
                             }
                         })
                     }
@@ -236,8 +222,8 @@ const StepOne = ({id = null, ...props}) => {
                     if (isEqual(get(pledger, 'type'), 'physical') && get(data, 'data.data.forindividualsdata')) {
                         setPledger({
                             ...pledger, data: {
-                               ...get(data, 'data.data.forindividualsdata'),
-                                id:get(data, 'data.data._id')
+                                ...get(data, 'data.data.forindividualsdata'),
+                                id: get(data, 'data.data._id')
                             }
                         })
                     }
@@ -245,7 +231,7 @@ const StepOne = ({id = null, ...props}) => {
                         setPledger({
                             ...pledger, openModal: false, data: {
                                 ...get(data, 'data.data.corporateentitiesdata'),
-                                id:get(data, 'data.data._id')
+                                id: get(data, 'data.data._id')
                             }
                         })
                     }
@@ -265,11 +251,10 @@ const StepOne = ({id = null, ...props}) => {
             toast.warn('Select pledger')
         }
     }
-    console.log('insurer', insurer)
+    console.log('product', product)
 
     return (
         <Row>
-
             <Col xs={12}>
                 <StepNav step={1}
                          steps={['Продукт', 'Обязательства', 'Расторжение', 'Документооборот']}/>
@@ -278,46 +263,43 @@ const StepOne = ({id = null, ...props}) => {
                 <Form formRequest={nextStep} getValueFromField={setRisk}>
                     <Row>
                         <Col xs={4}>
-                            <Field label={t('Выберите группу продуктов')} options={groups} type={'select'}
-                                   name={'groupofproductsId'} params={{required: true}}
-                                   property={{hasRequiredLabel: true}}
-                                   defaultValue={get(agreement, 'groupofproductsId')}
+                            <Field label={t('Branch')} options={branchList} type={'select'}
+                                   name={'branch'}
+                                   defaultValue={get(agreement, 'branch')}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field label={t('Выберите подгруппу продуктов')} options={subGroups} type={'select'}
-                                   name={'subgroupofproductsId'} params={{required: true}}
-                                   property={{hasRequiredLabel: true}}
-                                   defaultValue={get(agreement, 'subgroupofproductsId')}
-                            />
-                        </Col>
-                        <Col xs={4}>
-                            <Field label={t('Наименование продукта')} options={productsList} type={'select'}
-                                   name={'products'} params={{required: true}}
-                                   property={{hasRequiredLabel: true}}
-                                   defaultValue={get(agreement, 'products')}
-                            />
-                        </Col>
-
-                    </Row>
-                    <Row>
-                        <Col xs={4}>
-                            <Field params={{required:true}} name={'agreementsnumber'} type={'input'}
+                            <Field params={{required: true}} name={'agreementNumber'} type={'input'}
                                    label={'Agreement number'}
+                                   defaultValue={get(agreement, 'agreementNumber')}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field params={{required:true}} name={'startofinsurance'} type={'datepicker'}
+                            <Field params={{required: true}} name={'agreementDate'} type={'datepicker'}
+                                   label={'Agreement date'}
+                                   defaultValue={get(agreement, 'agreementDate')}
+                            />
+                        </Col>
+                        <Col xs={4}>
+                            <Field label={t('Выберите продукта')} options={productsList} type={'select'}
+                                   name={'product'} params={{required: true}}
+                                   property={{hasRequiredLabel: true}}
+                                   defaultValue={get(agreement, 'product')}
+                            />
+                        </Col>
+                        <Col xs={4}>
+                            <Field params={{required: true}} name={'startOfInsurance'} type={'datepicker'}
                                    label={'Начало страхового покрытия'}
+                                   defaultValue={get(agreement, 'startOfInsurance')}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field params={{required:true}} name={'endofinsurance'} type={'datepicker'}
+                            <Field params={{required: true}} name={'endOfInsurance'} type={'datepicker'}
                                    label={'Окончание страхового покрытия'}
+                                   defaultValue={get(agreement, 'endOfInsurance')}
                             />
                         </Col>
                     </Row>
-
                     <Row>
                         <Col xs={12} className={'mb-15'}>
                             <Title>{t("Покрываемые риски")}</Title>
@@ -424,27 +406,28 @@ const StepOne = ({id = null, ...props}) => {
                             <Row>
                                 <Col xs={12}>
                                     <Flex className={'mb-15'}>
-                                        <Button type={'button'} gray={isEqual(get(insurer, 'type'), 'physical')}
-                                                transparent={!isEqual(get(insurer, 'type'), 'physical')}
+                                        <Button type={'button'} gray={isEqual(get(insurer, 'type'), PERSON_TYPE.person)}
+                                                transparent={!isEqual(get(insurer, 'type'), PERSON_TYPE.person)}
                                                 onClick={() => setInsurer(({
                                                     ...insurer,
-                                                    type: 'physical'
+                                                    type: PERSON_TYPE.person
                                                 }))}>{t("Физическое лицо")}</Button>
-                                        <Button type={'button'} gray={isEqual(get(insurer, 'type'), 'juridical')}
-                                                transparent={!isEqual(get(insurer, 'type'), 'juridical')}
+                                        <Button type={'button'}
+                                                gray={isEqual(get(insurer, 'type'), PERSON_TYPE.organization)}
+                                                transparent={!isEqual(get(insurer, 'type'), PERSON_TYPE.organization)}
                                                 onClick={() => setInsurer(({
                                                     ...insurer,
-                                                    type: 'juridical'
+                                                    type: PERSON_TYPE.organization
                                                 }))}
                                                 className={'ml-15'}>{t("Юридическое лицо")}</Button>
                                     </Flex>
                                     <Flex>
-                                        <Field params={{required:true}} type={'input'} name={`clinets`} property={{
+                                        <Field params={{required: true}} type={'input'} name={`clinets`} property={{
                                             placeholder: 'Выбрать',
                                             disabled: true,
                                             hideLabel: true,
                                         }}
-                                               defaultValue={`${get(insurer, 'data.name','')} ${get(insurer, 'data.secondname','')}`}
+                                               defaultValue={`${get(insurer, 'data.name', '')} ${get(insurer, 'data.secondname', '')}`}
                                         /><Button type={'button'}
                                                   onClick={() => setInsurer({...insurer, openModal: true})}
                                                   className={'mb-25 ml-15'}
@@ -454,7 +437,7 @@ const StepOne = ({id = null, ...props}) => {
                                 </Col>
                             </Row>
                         </Col>
-                        {get(product, 'Isfixedbeneficiary', false) && <><Col xs={12} className={'mb-15'}>
+                        {get(product, 'hasFixedBeneficary', false) && <><Col xs={12} className={'mb-15'}>
                             <Title>{t("Выгодоприобритатель")}</Title>
                         </Col>
                             <Col xs={12}>
@@ -522,7 +505,7 @@ const StepOne = ({id = null, ...props}) => {
                                             disabled: true,
                                             hideLabel: true,
                                         }}
-                                               defaultValue={`${get(pledger, 'data.name','')} ${get(pledger, 'data.secondname','')}`}
+                                               defaultValue={`${get(pledger, 'data.name', '')} ${get(pledger, 'data.secondname', '')}`}
                                         /><Button type={'button'}
                                                   className={'mb-25 ml-15'}
                                                   success onClick={() => setPledger({
@@ -546,7 +529,7 @@ const StepOne = ({id = null, ...props}) => {
                                             </td>
                                             <td>
                                                 {
-                                                    `${get(item, 'name','')} ${get(item, 'secondname','')}`
+                                                    `${get(item, 'name', '')} ${get(item, 'secondname', '')}`
                                                 }
                                             </td>
 
@@ -574,18 +557,21 @@ const StepOne = ({id = null, ...props}) => {
                 <Modal title={'Выберите тип страхователя'} visible={get(insurer, 'openModal', false)}
                        hide={(val) => setInsurer({...insurer, openModal: val})}>
                     {filterLoading && <ContentLoader/>}
-                    <Button type={'button'} className={'mt-15'} yellow={isEqual(get(insurer, 'type'), 'physical')}
-                            transparent={!isEqual(get(insurer, 'type'), 'physical')}
-                            onClick={() => setInsurer({...insurer, type: 'physical'})}>Физическое лицо</Button>
-                    <Button type={'button'} className={'ml-15'} yellow={isEqual(get(insurer, 'type'), 'juridical')}
-                            transparent={!isEqual(get(insurer, 'type'), 'juridical')}
-                            onClick={() => setInsurer({...insurer, type: 'juridical'})}>Юридическое лицо</Button>
+                    <Button type={'button'} className={'mt-15'}
+                            yellow={isEqual(get(insurer, 'type'), PERSON_TYPE.person)}
+                            transparent={!isEqual(get(insurer, 'type'), PERSON_TYPE.person)}
+                            onClick={() => setInsurer({...insurer, type: PERSON_TYPE.person})}>Физическое лицо</Button>
+                    <Button type={'button'} className={'ml-15'}
+                            yellow={isEqual(get(insurer, 'type'), PERSON_TYPE.organization)}
+                            transparent={!isEqual(get(insurer, 'type'), PERSON_TYPE.organization)}
+                            onClick={() => setInsurer({...insurer, type: PERSON_TYPE.organization})}>Юридическое
+                        лицо</Button>
                     <Form formRequest={(data) => agentFilter(data, 'insurer')}
                           footer={<><Button>{t("Найдите или добавьте")}</Button></>}>
-                        {isEqual(get(insurer, 'type'), 'physical') ? <Row className={'mt-15'}>
+                        {isEqual(get(insurer, 'type'), PERSON_TYPE.person) ? <Row className={'mt-15'}>
 
                             <Col xs={4}>
-                                <Field params={{required: true}} type={'input-mask'} name={`passportSeries`} property={{
+                                <Field params={{required: true}} type={'input-mask'} name={`person.seria`} property={{
                                     placeholder: 'Серия паспорта',
                                     hideLabel: true,
                                     mask: 'aa',
@@ -595,7 +581,7 @@ const StepOne = ({id = null, ...props}) => {
                             </Col>
 
                             <Col xs={4}>
-                                <Field params={{required: true}} type={'input-mask'} name={`passportNumber`} property={{
+                                <Field params={{required: true}} type={'input-mask'} name={`person.number`} property={{
                                     placeholder: 'Номер паспорта',
                                     hideLabel: true,
                                     mask: '9999999',
@@ -604,21 +590,26 @@ const StepOne = ({id = null, ...props}) => {
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field params={{required: true}} type={'input-mask'} name={`pinfl`} property={{
-                                    placeholder: 'ПИНФЛ',
-                                    hideLabel: true,
-                                    mask: '99999999999999',
-                                    maskChar: '_'
-                                }}
-                                />
-                            </Col>
-                            <Col xs={4}>
                                 <Field property={{
                                     hideLabel: true,
-                                }} name={'birthDate'} type={'datepicker'}
+                                }} name={'person.birthDate'} type={'datepicker'}
                                        label={'birthDate'}
                                        params={{required: true}}
                                 />
+                            </Col>
+                            <Col xs={4} className={'mb-25'}>
+                                <Field
+                                    params={{
+                                        required: true,
+                                        pattern: {
+                                            value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
+                                            message: 'Invalid format'
+                                        }
+                                    }}
+                                    label={'Phone'}
+                                    type={'input'}
+                                    property={{placeholder: '998XXXXXXXXX'}}
+                                    name={'person.phone'}/>
                             </Col>
 
                         </Row> : <Row className={'mt-15'}>
@@ -627,7 +618,7 @@ const StepOne = ({id = null, ...props}) => {
                                 <Field
                                     params={{required: true}}
                                     type={'input-mask'}
-                                    name={`inn`}
+                                    name={`organization.inn`}
                                     property={{
                                         placeholder: 'ИНН',
                                         hideLabel: true,
@@ -717,7 +708,7 @@ const StepOne = ({id = null, ...props}) => {
                           footer={<><Button>{t("Найдите или добавьте")}</Button></>}>
                         {isEqual(get(pledger, 'type'), 'physical') ? <Row className={'mt-15'}>
                             <Col xs={4}>
-                                <Field  params={{required:true}} type={'input-mask'} name={`passportSeries`} property={{
+                                <Field params={{required: true}} type={'input-mask'} name={`passportSeries`} property={{
                                     placeholder: 'Серия паспорта',
                                     hideLabel: true,
                                     mask: 'aa',
@@ -727,7 +718,7 @@ const StepOne = ({id = null, ...props}) => {
                             </Col>
 
                             <Col xs={4}>
-                                <Field  params={{required:true}} type={'input-mask'} name={`passportNumber`} property={{
+                                <Field params={{required: true}} type={'input-mask'} name={`passportNumber`} property={{
                                     placeholder: 'Номер паспорта',
                                     hideLabel: true,
                                     mask: '9999999',
@@ -736,7 +727,7 @@ const StepOne = ({id = null, ...props}) => {
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field  params={{required:true}} type={'input-mask'} name={`pinfl`} property={{
+                                <Field params={{required: true}} type={'input-mask'} name={`pinfl`} property={{
                                     placeholder: 'ПИНФЛ',
                                     hideLabel: true,
                                     mask: '99999999999999',
@@ -755,7 +746,7 @@ const StepOne = ({id = null, ...props}) => {
                         </Row> : <Row className={'mt-15'}>
                             <Col xs={6}>
                                 <Field
-                                    params={{required:true}}
+                                    params={{required: true}}
                                     type={'input-mask'}
                                     name={`inn`}
                                     property={{
