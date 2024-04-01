@@ -45,7 +45,7 @@ const ReasonsContainer = ({...rest}) => {
                 url={URLS.reasons}
                 listUrl={`${URLS.reasons}/list`}
                 title={'Reasons'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

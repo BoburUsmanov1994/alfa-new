@@ -45,7 +45,7 @@ const PaymentStatusContainer = ({...rest}) => {
                 url={URLS.paymentStatus}
                 listUrl={`${URLS.paymentStatus}/list`}
                 title={'Payment status'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

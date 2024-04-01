@@ -46,12 +46,12 @@ const BranchesContainer = ({...rest}) => {
                 url={URLS.branches}
                 listUrl={`${URLS.branches}/list`}
                 title={'Branches'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
                 // viewUrl={'/branches/view'}
                 // createUrl={'/branches/create'}
                 // updateUrl={'/branches/update'}
                 isHideColumn
-                hidePagination
+                // hidePagination
                 hideCreateBtn
                 hideDeleteBtn
             />

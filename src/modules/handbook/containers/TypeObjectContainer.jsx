@@ -44,7 +44,7 @@ const TypeObjectContainer = ({...rest}) => {
                 url={URLS.objectType}
                 listUrl={`${URLS.objectType}/list`}
                 title={'Вид объекта страхования'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

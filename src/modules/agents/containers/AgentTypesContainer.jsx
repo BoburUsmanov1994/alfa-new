@@ -49,7 +49,7 @@ const AgentsContainer = ({...rest}) => {
                 url={URLS.typeofagent}
                 listUrl={`${URLS.typeofagent}/list`}
                 title={'Agent types'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

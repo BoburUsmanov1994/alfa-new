@@ -53,12 +53,12 @@ const RiskContainer = ({...rest}) => {
                     },
                     {
                         id: 3,
-                        key: 'riskType',
+                        key: 'riskType.name',
                         title: 'Tипа риска'
                     },
                     {
                         id: 4,
-                        key: 'insuranceClass',
+                        key: 'insuranceClass.name',
                         title: 'Class'
                     },
                     {
@@ -71,7 +71,7 @@ const RiskContainer = ({...rest}) => {
                 url={URLS.risk}
                 listUrl={`${URLS.risk}/list`}
                 title={'Риск'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

@@ -46,7 +46,7 @@ const PropertyRightTypeContainer = ({...rest}) => {
                 url={URLS.propertyRightType}
                 listUrl={`${URLS.propertyRightType}/list`}
                 title={'Property right type'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
                 hideCreateBtn
                 hideDeleteBtn
             />

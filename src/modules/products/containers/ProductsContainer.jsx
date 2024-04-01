@@ -81,6 +81,7 @@ const ProductsContainer = ({...rest}) => {
                 createUrl={'/products/create'}
                 // updateUrl={'/products/update'}
                 isHideColumn
+                responseDataKey={'data.data'}
 
             />
         </>

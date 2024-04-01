@@ -64,7 +64,7 @@ const JuridicalClientsContainer = ({...rest}) => {
                 url={URLS.clients}
                 listUrl={`${URLS.clients}/list`}
                 title={t('Clients')}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
                 params={{type: PERSON_TYPE.organization}}
                 // viewUrl={'/clients/view'}
                 createUrl={'/clients/juridical/create'}

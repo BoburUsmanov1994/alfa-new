@@ -59,7 +59,7 @@ const DistrictsContainer = ({...rest}) => {
                 url={URLS.districts}
                 listUrl={`${URLS.districts}/list`}
                 title={'Districts'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

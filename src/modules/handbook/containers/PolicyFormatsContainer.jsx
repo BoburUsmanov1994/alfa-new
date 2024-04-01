@@ -44,7 +44,7 @@ const PolicyFormatsContainer = ({...rest}) => {
                 url={URLS.policyFormat}
                 listUrl={`${URLS.policyFormat}/list`}
                 title={'Формат полиса'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

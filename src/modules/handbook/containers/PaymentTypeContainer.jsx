@@ -44,7 +44,7 @@ const PaymentTypeContainer = ({...rest}) => {
                 url={URLS.typeofpayment}
                 listUrl={`${URLS.typeofpayment}/list`}
                 title={'Способ оплаты'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

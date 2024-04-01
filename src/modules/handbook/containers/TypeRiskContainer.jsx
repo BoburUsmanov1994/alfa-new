@@ -44,7 +44,7 @@ const TypeRiskContainer = ({...rest}) => {
                 url={URLS.riskType}
                 listUrl={`${URLS.riskType}/list`}
                 title={'Тип риска'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

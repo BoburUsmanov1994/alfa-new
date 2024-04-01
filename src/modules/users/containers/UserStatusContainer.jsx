@@ -45,7 +45,7 @@ const UserStatusContainer = ({...rest}) => {
                 url={URLS.userStatus}
                 listUrl={`${URLS.userStatus}/list`}
                 title={'User status'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

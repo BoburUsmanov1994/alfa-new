@@ -45,7 +45,7 @@ const DocumentTypeContainer = ({...rest}) => {
                 url={URLS.documentType}
                 listUrl={`${URLS.documentType}/list`}
                 title={'Document type'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

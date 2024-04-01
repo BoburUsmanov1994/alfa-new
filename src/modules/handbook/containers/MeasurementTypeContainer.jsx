@@ -46,7 +46,7 @@ const MeasurementTypeContainer = ({...rest}) => {
                 url={URLS.measurementType}
                 listUrl={`${URLS.measurementType}/list`}
                 title={'Measurement type'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
                 hideCreateBtn
                 hideDeleteBtn
             />

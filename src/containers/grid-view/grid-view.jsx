@@ -71,24 +71,27 @@ const GridView = ({
                       createUrl = null,
                       updateUrl = null,
                       viewUrl = null,
-                      responseDataKey = 'data.data',
+                      responseDataKey = 'data',
                       isHideColumn = false,
                       hidePagination = false,
                       listUrl = null,
                       hideDeleteBtn = false,
                       hideCreateBtn = false,
                       params = {},
+                      hasUpdateBtn = false
                   }) => {
     const navigate = useNavigate()
     const {t} = useTranslation()
     const [openModal, setOpenModal] = useState(false)
     const [rowId, setRowId] = useState(null)
     const [page, setPage] = useState(1)
+    const [limit, setLimit] = useState(10)
     const [columns, setColumns] = useState([])
     const {data, isError, isLoading, isFetching} = usePaginateQuery({
         key: keyId,
         url: listUrl ?? url,
         page,
+        limit,
         params: {params}
     })
     const {mutate: createRequest, isLoading: postLoading} = usePostQuery({listKeyId: keyId})
@@ -168,7 +171,6 @@ const GridView = ({
     if (isError) {
         return <ErrorPage/>
     }
-    console.log('data',data)
     return (
         <Styled>
             <Panel>
@@ -228,7 +230,7 @@ const GridView = ({
 
                 </Row>
                 {isEmpty(get(data, responseDataKey, [])) ? <EmptyPage/> : <>
-                    <div className={'horizontal-scroll'}><GridTable hideDeleteBtn={hideDeleteBtn}
+                    <div className={'horizontal-scroll'}><GridTable hasUpdateBtn={hasUpdateBtn} hideDeleteBtn={hideDeleteBtn}
                         viewUrl={viewUrl}
                         updateUrl={updateUrl}
                         page={page}
@@ -240,7 +242,7 @@ const GridView = ({
                         isFetching={isFetching}
                     /></div>
                     {!hidePagination &&
-                        <Pagination page={page} setPage={setPage} totalItems={get(data, `data.total`, 0)}/>}
+                        <Pagination page={page} setPage={setPage} totalItems={get(data, `data.count`, 0)}/>}
                 </>}
             </Section>
         </Styled>

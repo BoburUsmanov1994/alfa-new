@@ -32,24 +32,25 @@ const TranslationsContainer = ({...rest}) => {
                params={{required: true}}/>
     </>
     return (<>
-            <GridView
-                ModalBody={ModalBody}
-                tableHeaderData={[{
-                    id: 1, key: 'key', title: 'Key'
-                }, {
-                    id: 2, key: 'uz', title: 'Uz'
-                }, {
-                    id: 3, key: 'ru', title: 'Ru'
-                }, {
-                    id: 4, key: 'eng', title: 'En'
-                },]}
-                keyId={KEYS.translations}
-                url={URLS.translations}
-                listUrl={`${URLS.translations}/list`}
-                title={t('Translations')}
-                responseDataKey={'data'}
-            />
-        </>);
+        <GridView
+            ModalBody={ModalBody}
+            tableHeaderData={[{
+                id: 1, key: 'key', title: 'Key'
+            }, {
+                id: 2, key: 'uz', title: 'Uz'
+            }, {
+                id: 3, key: 'ru', title: 'Ru'
+            }, {
+                id: 4, key: 'eng', title: 'En'
+            },]}
+            keyId={KEYS.translations}
+            url={URLS.translations}
+            listUrl={`${URLS.translations}/list`}
+            title={t('Translations')}
+            responseDataKey={'data.data'}
+            hasUpdateBtn
+        />
+    </>);
 };
 
 export default TranslationsContainer;

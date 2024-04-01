@@ -50,7 +50,7 @@ const ContractFormContainer = ({...rest}) => {
                 url={URLS.contractForm}
                 listUrl={`${URLS.contractForm}/list`}
                 title={'Форма контракта'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

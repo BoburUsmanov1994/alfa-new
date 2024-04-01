@@ -108,7 +108,7 @@ const BcoContainer = ({...rest}) => {
                 url={URLS.bco}
                 listUrl={`${URLS.bco}/list`}
                 title={'Bco list'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
 
 

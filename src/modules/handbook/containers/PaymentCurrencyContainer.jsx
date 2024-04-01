@@ -45,7 +45,7 @@ const PaymentCurrencyContainer = ({...rest}) => {
                 url={URLS.paymentCurrency}
                 listUrl={`${URLS.paymentCurrency}/list`}
                 title={'Payment currency'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

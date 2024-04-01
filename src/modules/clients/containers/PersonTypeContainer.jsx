@@ -47,7 +47,7 @@ const PersonTypeContainer = ({...rest}) => {
                 url={URLS.personType}
                 listUrl={`${URLS.personType}/list`}
                 title={t('Тип человека')}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

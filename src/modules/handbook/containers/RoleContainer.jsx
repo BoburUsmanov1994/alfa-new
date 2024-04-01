@@ -45,7 +45,7 @@ const RoleContainer = ({...rest}) => {
                 url={URLS.role}
                 listUrl={`${URLS.role}/list`}
                 title={'Ролевой аккаунт'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

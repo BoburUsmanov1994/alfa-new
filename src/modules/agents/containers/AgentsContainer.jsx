@@ -71,7 +71,7 @@ const AgentsContainer = ({...rest}) => {
                 url={URLS.agents}
                 listUrl={`${URLS.agents}/list`}
                 title={'Страховые агенты'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
                 // viewUrl={'/agents/view'}
                 createUrl={'/agents/create'}
                 // updateUrl={'/agents/update'}

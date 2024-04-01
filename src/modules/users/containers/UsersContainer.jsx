@@ -94,7 +94,7 @@ const UsersContainer = () => {
                 url={URLS.user}
                 listUrl={`${URLS.user}/list`}
                 title={t('All users')}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
                 isHideColumn
 
             />

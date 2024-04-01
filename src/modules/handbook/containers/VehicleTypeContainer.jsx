@@ -46,7 +46,7 @@ const VehicleTypeContainer = ({...rest}) => {
                 url={URLS.vehicleType}
                 listUrl={`${URLS.vehicleType}/list`}
                 title={'Vehicle type'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
                 hideCreateBtn
                 hideDeleteBtn
             />

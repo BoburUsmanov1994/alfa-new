@@ -44,7 +44,7 @@ const TypePoliceContainer = ({...rest}) => {
                 url={URLS.policyType}
                 listUrl={`${URLS.policyType}/list`}
                 title={'Тип полиции'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

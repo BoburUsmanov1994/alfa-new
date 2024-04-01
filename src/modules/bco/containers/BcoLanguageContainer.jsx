@@ -45,7 +45,7 @@ const BcoLanguageContainer = ({...rest}) => {
                 url={URLS.bcoLanguage}
                 listUrl={`${URLS.bcoLanguage}/list`}
                 title={'БСО language'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

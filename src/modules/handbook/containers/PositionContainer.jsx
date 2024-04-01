@@ -45,7 +45,7 @@ const PositionContainer = ({...rest}) => {
                 url={URLS.position}
                 listUrl={`${URLS.position}/list`}
                 title={'Position'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

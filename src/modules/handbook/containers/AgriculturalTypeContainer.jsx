@@ -46,7 +46,7 @@ const AgriculturalTypeContainer = ({...rest}) => {
                 url={URLS.agriculturalType}
                 listUrl={`${URLS.agriculturalType}/list`}
                 title={'Agricultural type'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
                 hideCreateBtn
                 hideDeleteBtn
             />

@@ -50,7 +50,7 @@ const InsuranceClassContainer = ({...rest}) => {
                 url={URLS.insuranceClass}
                 listUrl={`${URLS.insuranceClass}/list`}
                 title={'Класс страхования'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

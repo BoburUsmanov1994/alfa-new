@@ -55,7 +55,7 @@ const ObjectContainer = ({...rest}) => {
                 url={URLS.object}
                 listUrl={`${URLS.object}/list`}
                 title={'Объект страхования'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

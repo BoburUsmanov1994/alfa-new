@@ -101,7 +101,7 @@ const BcoTypeContainer = ({...rest}) => {
                 url={URLS.bcoType}
                 listUrl={`${URLS.bcoType}/list`}
                 title={'BCO types'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

@@ -48,7 +48,7 @@ const ProductSubGroupContainer = ({...rest}) => {
                     },
                     {
                         id: 3,
-                        key: 'group',
+                        key: 'group.name',
                         title: 'Название продукта'
                     },
                 ]}
@@ -56,7 +56,7 @@ const ProductSubGroupContainer = ({...rest}) => {
                 url={URLS.subgroupsofproducts}
                 listUrl={`${URLS.subgroupsofproducts}/list`}
                 title={t('Подгруппы продуктов')}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

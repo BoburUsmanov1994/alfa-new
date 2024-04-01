@@ -46,6 +46,7 @@ const ProductGroupsContainer = ({...rest}) => {
                 url={'api/product/group'}
                 listUrl={'api/product/group/list'}
                 title={t('Группы продуктов')}
+                responseDataKey={'data.data'}
             />
         </>
     );

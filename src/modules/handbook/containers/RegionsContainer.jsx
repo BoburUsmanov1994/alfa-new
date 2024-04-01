@@ -45,7 +45,7 @@ const RegionsContainer = ({...rest}) => {
                 url={URLS.regions}
                 listUrl={`${URLS.regions}/list`}
                 title={'Список регионы'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

@@ -44,7 +44,7 @@ const InsuranceFormContainer = ({...rest}) => {
                 url={URLS.insuranceForm}
                 listUrl={`${URLS.insuranceForm}/list`}
                 title={'Insurance form'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

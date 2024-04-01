@@ -45,7 +45,7 @@ const EndorsementsTypeContainer = ({...rest}) => {
                 url={URLS.endorsementType}
                 listUrl={`${URLS.endorsementType}/list`}
                 title={'Endorsements type'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

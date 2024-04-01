@@ -44,7 +44,7 @@ const SectorTypeContainer = ({...rest}) => {
                 url={URLS.sectorType}
                 listUrl={`${URLS.sectorType}/list`}
                 title={'Тип сектора'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

@@ -44,7 +44,7 @@ const RefundTypeContainer = ({...rest}) => {
                 url={URLS.typeofrefund}
                 listUrl={`${URLS.typeofrefund}/list`}
                 title={'Тип возврата'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

@@ -46,7 +46,7 @@ const ProductStatusContainer = ({...rest}) => {
                 url={URLS.statusofproduct}
                 listUrl={`${URLS.statusofproduct}/list`}
                 title={t('Статус продукта')}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

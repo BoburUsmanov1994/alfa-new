@@ -44,7 +44,7 @@ const SettlementClaimTypeContainer = ({...rest}) => {
                 url={URLS.claimSettlement}
                 listUrl={`${URLS.claimSettlement}/list`}
                 title={'Тип урегулирование претензии'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
 
             />
         </>

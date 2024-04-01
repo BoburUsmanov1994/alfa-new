@@ -45,7 +45,7 @@ const BcoStatusContainer = ({...rest}) => {
                 url={URLS.bcoStatus}
                 listUrl={`${URLS.bcoStatus}/list`}
                 title={'БСО статус'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

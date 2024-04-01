@@ -45,7 +45,7 @@ const BranchStatusContainer = ({...rest}) => {
                 url={URLS.branchStatus}
                 listUrl={`${URLS.branchStatus}/list`}
                 title={'Branch status'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

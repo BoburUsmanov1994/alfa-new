@@ -50,7 +50,7 @@ const AdditionalDocumentsContainer = ({...rest}) => {
                 url={URLS.additionaldocuments}
                 listUrl={`${URLS.additionaldocuments}/list`}
                 title={'Дополнительные документы'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

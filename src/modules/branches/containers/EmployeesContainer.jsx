@@ -70,7 +70,7 @@ const EmployeesContainer = ({...rest}) => {
                 url={URLS.employee}
                 listUrl={`${URLS.employee}/list`}
                 title={'Employees'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
                 // viewUrl={'/branches/employee/view'}
                 createUrl={'/branches/employee/create'}
                 // updateUrl={'/branches/employee/update'}

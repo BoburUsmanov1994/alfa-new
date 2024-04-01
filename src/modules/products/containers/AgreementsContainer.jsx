@@ -52,7 +52,7 @@ const AgreementsContainer = ({...rest}) => {
                     },
                     {
                         id: 2,
-                        key: 'product',
+                        key: 'product.name',
                         title: 'Наименование продукта'
                     },
                     {
@@ -77,7 +77,7 @@ const AgreementsContainer = ({...rest}) => {
                 url={URLS.agreements}
                 listUrl={`${URLS.agreements}/list`}
                 title={t('Agreements')}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
                 // viewUrl={'/agreements/view'}
                 createUrl={'/agreements/create'}
                 // updateUrl={'/agreements/update'}

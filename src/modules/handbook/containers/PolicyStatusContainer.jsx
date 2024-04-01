@@ -45,7 +45,7 @@ const PolicyStatusContainer = ({...rest}) => {
                 url={URLS.bcoPolicyStatus}
                 listUrl={`${URLS.bcoPolicyStatus}/list`}
                 title={'Policy status'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );

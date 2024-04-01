@@ -7,6 +7,7 @@ const usePaginateQuery = ({
                               key = "get-all",
                               url = "/",
                               page = 1,
+                              limit = 10,
                               params = {},
                               showSuccessMsg = false,
                               showErrorMsg = false
@@ -18,7 +19,7 @@ const usePaginateQuery = ({
         data,
         error,
         isFetching
-    } = useQuery([key, page], () => request.get(`${url}?page=${page}`, params), {
+    } = useQuery([key, page], () => request.get(`${url}?page=${page}&limit=${limit}`, params), {
         keepPreviousData: true,
         onSuccess: () => {
             if (showSuccessMsg) {
