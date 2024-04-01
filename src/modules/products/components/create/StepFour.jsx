@@ -167,10 +167,10 @@ const StepFour = ({id = null, ...props}) => {
                                             type={'select'}
                                             property={{
                                                 hideLabel: true,
-                                                bgColor: get(findItem(get(classes, 'data'), get(item, "_id")), 'color')
+                                                bgColor: get(findItem(get(classes, 'data.data'), get(item, "_id")), 'color')
                                             }}
                                             options={classOptions}
-                                            defaultValue={get(findItem(get(classes, 'data'), get(item, "classeId")), '_id')}
+                                            defaultValue={get(findItem(get(classes, 'data.data'), get(item, "classeId")), '_id')}
                                             isDisabled={true}
                                         />
                                     </td>
@@ -236,10 +236,10 @@ const StepFour = ({id = null, ...props}) => {
                                                                                                               type={'select'}
                                                                                                               property={{
                                                                                                                   hideLabel: true,
-                                                                                                                  bgColor: get(findItem(get(classes, 'data'), get(c, "_id")), 'color')
+                                                                                                                  bgColor: get(findItem(get(classes, 'data.data'), get(c, "_id")), 'color')
                                                                                                               }}
                                                                                                               options={classOptions}
-                                                                                                              defaultValue={get(findItem(get(classes, 'data'), get(c, "class")), '_id')}
+                                                                                                              defaultValue={get(findItem(get(classes, 'data.data'), get(c, "class")), '_id')}
                                                                                                               isDisabled={true}
                                         />
                                             <Field key={j}
@@ -290,7 +290,7 @@ const StepFour = ({id = null, ...props}) => {
                                             type={'select'}
                                             property={{hideLabel: true}}
                                             options={risksOptions}
-                                            defaultValue={get(findItem(get(risks, 'data', []), get(item, 'risk')), '_id')}
+                                            defaultValue={get(findItem(get(risks, 'data.data', []), get(item, 'risk')), '_id')}
                                             isDisabled={true}
                                         />
                                     </td>

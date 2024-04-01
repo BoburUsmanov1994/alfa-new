@@ -5,7 +5,7 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, includes, some, values, isEmpty, isEqual, head, isNil,find} from "lodash"
+import {get, includes, some, values, isEmpty, isEqual, head, isNil, find} from "lodash"
 import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
@@ -140,7 +140,7 @@ const StepOne = ({id = null, ...props}) => {
 
 
     const findItem = (list = [], id = null) => {
-        return find(list,l => isEqual(get(l, "_id"), id))
+        return find(list, l => isEqual(get(l, "_id"), id))
     }
     return (
         <Row>
@@ -176,7 +176,7 @@ const StepOne = ({id = null, ...props}) => {
                                    type={'input'}
                                    name={'code'}
                                    property={{placeholder: t('Введите значение')}}
-                                   params={{valueAsNumber: true,required:true}}
+                                   params={{valueAsNumber: true, required: true}}
                                    defaultValue={get(product, 'code', '')}
                             />
                         </Col>
@@ -276,13 +276,13 @@ const StepOne = ({id = null, ...props}) => {
                                         <Col xs={4}>
                                             <Field
                                                 options={insuranceClasses.filter(classItem => isEqual(get(findItem(
-                                                    get(risksListData, 'data', []), get(riskItem, 'risk')
-                                                ), 'insuranceClass'), get(classItem, 'value')))}
+                                                    get(risksListData, 'data.data', []), get(riskItem, 'risk')
+                                                ), 'insuranceClass._id'), get(classItem, 'value')))}
                                                 type={'select'}
                                                 name={'classeId'}
                                                 defaultValue={get(head(insuranceClasses.filter(classItem => isEqual(get(findItem(
-                                                    get(risksListData, 'data', []), get(riskItem, 'risk')
-                                                ), 'insuranceClass', []), get(classItem, 'value')))), 'value')}
+                                                    get(risksListData, 'data.data', []), get(riskItem, 'risk')
+                                                ), 'insuranceClass._id'), get(classItem, 'value')))), 'value')}
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: t('Класс страхования')
@@ -326,7 +326,7 @@ const StepOne = ({id = null, ...props}) => {
                                                     defaultValue={get(item, 'classeId')}
                                                     property={{
                                                         hideLabel: true,
-                                                        bgColor: get(findItem(get(insuranceClassesList, 'data'), get(item, 'classeId')), 'color')
+                                                        bgColor: get(findItem(get(insuranceClassesList, 'data.data'), get(item, 'classeId')), 'color')
                                                     }}
                                                 />
                                             </td>

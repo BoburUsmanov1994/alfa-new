@@ -25,6 +25,7 @@ export const URLS = {
     typeofrefund: 'api/references/refund-type',
     typeoffranchise: 'api/references/franchise-type',
     products: 'api/product/list',
+    product: 'api/product',
     productCreate: 'api/product',
     personType: 'api/references/person-type',
     statusofproduct: 'api/product/status',

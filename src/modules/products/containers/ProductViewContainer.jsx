@@ -23,7 +23,7 @@ const ProductViewContainer = ({id, ...rest}) => {
 
     const navigate = useNavigate();
 
-    let {data,isLoading,isError} = useGetOneQuery({id,key: KEYS.products, url: URLS.products})
+    let {data, isLoading, isError} = useGetOneQuery({id, key: KEYS.product, url: `${URLS.product}/show`})
 
     const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: KEYS.products})
 
@@ -37,14 +37,14 @@ const ProductViewContainer = ({id, ...rest}) => {
         },
         {
             id: 2,
-            title:  get(data,'data.data.productname'),
+            title: get(data, 'data.data.productname'),
             path: '#',
         }
     ], [data])
 
     useEffect(() => {
         setBreadcrumbs(breadcrumbs)
-    }, [get(data,'data.data')])
+    }, [get(data, 'data.data')])
 
     const remove = (val) => {
         Swal.fire({
@@ -69,14 +69,14 @@ const ProductViewContainer = ({id, ...rest}) => {
         });
     }
 
-    const product = get(data,'data.data',{})
+    const product = get(data, 'data', {})
 
-    if(isLoading){
-        return <OverlayLoader />
+    if (isLoading) {
+        return <OverlayLoader/>
     }
     return (
         <>
-            {deleteLoading && <ContentLoader />}
+            {deleteLoading && <ContentLoader/>}
             <Panel>
                 <Row>
                     <Col xs={12}>
@@ -88,8 +88,8 @@ const ProductViewContainer = ({id, ...rest}) => {
                 <Row>
                     <Col xs={12}>
                         <Flex className={'w-100'}>
-                            <Title>{get(product,'productname',t('Product'))}</Title>
-                            <Edit onClick={()=>navigate(`/products/update/${id}`)} className={'cursor-pointer mr-10 ml-15'} size={28} color={'#13D6D1'}/>
+                            <Title>{get(product, 'name', t('Product'))}</Title>
+                            {/*<Edit onClick={()=>navigate(`/products/update/${id}`)} className={'cursor-pointer mr-10 ml-15'} size={28} color={'#13D6D1'}/>*/}
                             <Trash2 onClick={() => remove(id)}
                                     className={'cursor-pointer '} size={28} color={'#dc2626'}/>
                         </Flex>
@@ -101,55 +101,59 @@ const ProductViewContainer = ({id, ...rest}) => {
                         <Table thead={['1', '2']}>
                             <tr>
                                 <td>Категория</td>
-                                <td><strong>{get(product,'groupofproductsId.name','-')}</strong></td>
+                                <td><strong>{get(product, 'group.name', '-')}</strong></td>
                             </tr>
                             <tr>
                                 <td>{t("Под категория")}</td>
-                                <td><strong>{get(product,'subgroupofproductsId.name','-')}</strong></td>
+                                <td><strong>{get(product, 'subGroup.name', '-')}</strong></td>
                             </tr>
                             <tr>
                                 <td>{t("codeproduct")}</td>
-                                <td><strong>{get(product,'codeproduct','-')}</strong></td>
+                                <td><strong>{get(product, 'code', '-')}</strong></td>
                             </tr>
                             <tr>
                                 <td>Работа по версии продукта (Версия продукта)</td>
-                                <td><strong>{get(product,'versionproduct','-')}</strong></td>
+                                <td><strong>{get(product, 'version', '-')}</strong></td>
                             </tr>
                             <tr>
                                 <td>Тип страховщика</td>
-                                <td><strong>{get(product,'typeofinsurerId.name',"-")}</strong></td>
+                                <td><strong>{get(product, 'personType', []).map(({name}) => name).join(" , ")}</strong>
+                                </td>
+
                             </tr>
                             <tr>
                                 <td>Наименование продукта</td>
-                                <td><strong>{get(product,'productname','-')}</strong></td>
+                                <td><strong>{get(product, 'name', '-')}</strong></td>
                             </tr>
                             <tr>
                                 <td>Статус договора</td>
-                                <td><strong>{get(product,'statusofproducts.name','-')}</strong></td>
+                                <td><strong>{get(product, 'status.name', '-')}</strong></td>
                             </tr>
                             <tr>
                                 <td>Требует разрешения</td>
-                                <td><strong>{get(product,'isrequirepermission',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'isRequirePermission', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
                                 <td>Тип полиса</td>
-                                <td><strong>{get(product,'typeofpolice',[]).map(({name})=>name).join(" , ")}</strong></td>
+                                <td><strong>{get(product, 'policyTypes', []).map(({name}) => name).join(" , ")}</strong>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Разрешить несколько агентов</td>
-                                <td><strong>{get(product,'Isagreement',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'allowMultipleAgents', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
                                 <td>Имеет фиксированный превентивных мероприятий</td>
-                                <td><strong>{get(product,'Isfixedpreventivemeasures',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'fixedPreventiveMeasures', false) ? 'Да' : 'Нет'}</strong>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Разрешить иностранную валюту</td>
-                                <td><strong>{get(product,'Isforeigncurrency',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'allowForeignCurrency', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
                                 <td>Разрешение изменение франшизы</td>
-                                <td><strong>{get(product,'Isfranchisechange',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'allowChangeFranchise', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                         </Table>
                     </Col>
@@ -158,55 +162,61 @@ const ProductViewContainer = ({id, ...rest}) => {
                             <tr>
                                 <td>Форма анкеты</td>
 
-                                <td><a href={get(product,'applicationformId','#')} target={'_blank'} download><Download color={'#13D6D1'} /></a></td>
+                                <td><a href={get(product, 'applicationForm.url', '#')} target={'_blank'}
+                                       download><Download color={'#13D6D1'}/></a></td>
                             </tr>
                             <tr>
                                 <td>Договор</td>
-                                <td><a href={get(product,'contractform','#')} target={'_blank'} download><Download color={'#13D6D1'} /></a></td>
+                                <td><a href={get(product, 'contractForm.url', '#')} target={'_blank'} download><Download
+                                    color={'#13D6D1'}/></a></td>
                             </tr>
                             <tr>
                                 <td>Приложения</td>
-                                <td><a href={get(product,'additionaldocuments','#')} target={'_blank'} download><Download color={'#13D6D1'} /></a></td>
+                                <td><a href={get(product, 'contractForm.url', '#')} target={'_blank'}
+                                       download><Download color={'#13D6D1'}/></a></td>
                             </tr>
                             <tr>
                                 <td>Формат полиса</td>
-                                <td><strong>{get(product,'policyformatId.name','-')}</strong></td>
+                                <td><strong>{get(product, 'policyFormat.name', '-')}</strong></td>
                             </tr>
                             <tr>
                                 <td>Имеет фиксированного страхователя</td>
-                                <td><strong>{get(product,'Isfixedpolicyholder',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'hasFixedPolicyHolder', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
                                 <td>Имеет выгодоприобретеля</td>
-                                <td><strong>{get(product,'Isbeneficiary',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'hasBeneficary', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
                                 <td>Имеет фиксированного выгодоприобретеля</td>
-                                <td><strong>{get(product,'Isfixedbeneficiary',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'hasFixedBeneficary', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
                                 <td>Имеет фиксированную страховую сумму</td>
-                                <td><strong>{get(product,'Isfixedfee',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'hasFixedFee', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
                                 <td>Разрешить полис без оплаты</td>
-                                <td><strong>{get(product,'Ispolicywithoutpayment',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'allowPolicyWithoutPayment', false) ? 'Да' : 'Нет'}</strong>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Тип оплаты</td>
-                                <td><strong>{get(product,'typeofpayment',[]).map(({name})=>name).join(" , ")}</strong></td>
+                                <td>
+                                    <strong>{get(product, 'paymentType', []).map(({name}) => name).join(" , ")}</strong>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Имеет фиксированную комиссию</td>
-                                <td><strong>{get(product,'Isfixedfee',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'hasFixedFee', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
                                 <td>Имеет диапазон ставок</td>
-                                <td><strong>{get(product,'Isbettingrange',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'hasBettingRange', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
                                 <td>Имеет франшизу</td>
-                                <td><strong>{get(product,'Isfranchisechange',false) ? 'Да' : 'Нет'}</strong></td>
+                                <td><strong>{get(product, 'allowChangeFranchise', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                         </Table>
                     </Col>

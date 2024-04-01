@@ -110,6 +110,7 @@ const StepFive = ({id = null, ...props}) => {
         resetProduct();
         props.firstStep();
     }
+    console.log('product', product)
 
     return (<>
             {(isLoading || updateLoading) && <OverlayLoader/>}
@@ -130,68 +131,71 @@ const StepFive = ({id = null, ...props}) => {
                                     <tr>
                                         <td>Категория</td>
                                         <td>
-                                            <strong>{get(findItem(groups, get(product, 'groupofproductsId', null)), 'label', '-')}</strong>
+                                            <strong>{get(findItem(groups, get(product, 'group', null)), 'label', '-')}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Под категория</td>
                                         <td>
-                                            <strong>{get(findItem(subGroups, get(product, 'subgroupofproductsId', null)), 'label', '-')}</strong>
+                                            <strong>{get(findItem(subGroups, get(product, 'subGroup', null)), 'label', '-')}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Код назначения</td>
-                                        <td><strong>{get(product, 'codeproduct', '-')}</strong></td>
+                                        <td><strong>{get(product, 'code', '-')}</strong></td>
                                     </tr>
                                     <tr>
                                         <td>Работа по версии продукта (Версия продукта)</td>
-                                        <td><strong>{get(product, 'versionproduct', '-')}</strong></td>
+                                        <td><strong>{get(product, 'version', '-')}</strong></td>
                                     </tr>
                                     <tr>
                                         <td>Тип страховщика</td>
                                         <td>
-                                            <strong>{findItem(persons, get(product, 'typeofpersones', []), true)}</strong>
+                                            <strong>{findItem(persons, get(product, 'personType', []), true)}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Наименование продукта</td>
-                                        <td><strong>{get(product, 'productname', '-')}</strong></td>
+                                        <td><strong>{get(product, 'name', '-')}</strong></td>
                                     </tr>
                                     <tr>
                                         <td>Статус договора</td>
                                         <td>
-                                            <strong>{get(findItem(status, get(product, 'statusofproducts', null)), 'label', '-')}</strong>
+                                            <strong>{get(findItem(status, get(product, 'status', null)), 'label', '-')}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Требует разрешения</td>
-                                        <td><strong>{get(product, 'isrequirepermission', false) ? 'Да' : 'Нет'}</strong>
+                                        <td><strong>{get(product, 'isRequirePermission', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Тип полиса</td>
                                         <td>
-                                            <strong>{findItem(polices, get(product, 'typeofpolice', null), true)}</strong>
+                                            <strong>{findItem(polices, get(product, 'policyTypes', null), true)}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Разрешить несколько агентов</td>
-                                        <td><strong>{get(product, 'Isagreement', false) ? 'Да' : 'Нет'}</strong></td>
+                                        <td><strong>{get(product, 'allowMultipleAgents', false) ? 'Да' : 'Нет'}</strong>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Имеет фиксированный превентивных мероприятий</td>
                                         <td>
-                                            <strong>{get(product, 'Isfixedpreventivemeasures', false) ? 'Да' : 'Нет'}</strong>
+                                            <strong>{get(product, 'fixedPreventiveMeasures', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Разрешить иностранную валюту</td>
-                                        <td><strong>{get(product, 'Isforeigncurrency', false) ? 'Да' : 'Нет'}</strong>
+                                        <td>
+                                            <strong>{get(product, 'allowForeignCurrency', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Разрешение изменение франшизы</td>
-                                        <td><strong>{get(product, 'Isfranchisechange', false) ? 'Да' : 'Нет'}</strong>
+                                        <td>
+                                            <strong>{get(product, 'allowChangeFranchise', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                 </Table>
@@ -202,13 +206,13 @@ const StepFive = ({id = null, ...props}) => {
                                         <td>Форма анкеты</td>
 
                                         <td><a
-                                            href={get(findItem(applicationformdocs, get(product, 'applicationformId', null)), 'url', '#')}
+                                            href={get(findItem(applicationformdocs, get(product, 'applicationForm', null)), 'url', '#')}
                                             target={'_blank'} download><Download color={'#13D6D1'}/></a></td>
                                     </tr>
                                     <tr>
                                         <td>Договор</td>
                                         <td><a
-                                            href={get(findItem(contractform, get(product, 'contractform', null)), 'url', '#')}
+                                            href={get(findItem(contractform, get(product, 'contractForm', null)), 'url', '#')}
                                             target={'_blank'} download><Download color={'#13D6D1'}/></a></td>
                                     </tr>
                                     <tr>
@@ -220,50 +224,53 @@ const StepFive = ({id = null, ...props}) => {
                                     <tr>
                                         <td>Формат полиса</td>
                                         <td>
-                                            <strong>{get(findItem(policyformats, get(product, 'policyformatId', null)), 'label', '-')}</strong>
+                                            <strong>{get(findItem(policyformats, get(product, 'policyFormat', null)), 'label', '-')}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Имеет фиксированного страхователя</td>
-                                        <td><strong>{get(product, 'Isfixedpolicyholder', false) ? 'Да' : 'Нет'}</strong>
+                                        <td>
+                                            <strong>{get(product, 'hasFixedPolicyHolder', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Имеет выгодоприобретеля</td>
-                                        <td><strong>{get(product, 'Isbeneficiary', false) ? 'Да' : 'Нет'}</strong></td>
+                                        <td><strong>{get(product, 'hasBeneficary', false) ? 'Да' : 'Нет'}</strong></td>
                                     </tr>
                                     <tr>
                                         <td>Имеет фиксированного выгодоприобретеля</td>
-                                        <td><strong>{get(product, 'Isfixedbeneficiary', false) ? 'Да' : 'Нет'}</strong>
+                                        <td><strong>{get(product, 'hasFixedBeneficary', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Имеет фиксированную страховую сумму</td>
-                                        <td><strong>{get(product, 'Isfixedfee', false) ? 'Да' : 'Нет'}</strong></td>
+                                        <td><strong>{get(product, 'hasFixedFee', false) ? 'Да' : 'Нет'}</strong></td>
                                     </tr>
                                     <tr>
                                         <td>Разрешить полис без оплаты</td>
                                         <td>
-                                            <strong>{get(product, 'Ispolicywithoutpayment', false) ? 'Да' : 'Нет'}</strong>
+                                            <strong>{get(product, 'allowPolicyWithoutPayment', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Тип оплаты</td>
                                         <td>
-                                            <strong>{findItem(payments, get(product, 'typeofpayment', null), true)}</strong>
+                                            <strong>{findItem(payments, get(product, 'paymentType', null), true)}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Имеет фиксированную комиссию</td>
-                                        <td><strong>{get(product, 'Isfixedfee', false) ? 'Да' : 'Нет'}</strong></td>
+                                        <td><strong>{get(product, 'hasFixedFee', false) ? 'Да' : 'Нет'}</strong></td>
                                     </tr>
                                     <tr>
                                         <td>Имеет диапазон ставок</td>
-                                        <td><strong>{get(product, 'Isbettingrange', false) ? 'Да' : 'Нет'}</strong></td>
+                                        <td><strong>{get(product, 'hasBettingRange', false) ? 'Да' : 'Нет'}</strong>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Имеет франшизу</td>
-                                        <td><strong>{get(product, 'Isfranchisechange', false) ? 'Да' : 'Нет'}</strong>
+                                        <td>
+                                            <strong>{get(product, 'allowChangeFranchise', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                 </Table>

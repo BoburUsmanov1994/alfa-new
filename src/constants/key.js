@@ -24,6 +24,7 @@ export const KEYS = {
     typeofrefund: 'typeofrefund-list',
     typeoffranchise: 'typeoffranchise-list',
     products: 'products-list',
+    product: 'products',
     typeofpersons: 'typeofpersons-list',
     statusofproduct: 'statusofproduct-list',
     agents: 'agents-list',
