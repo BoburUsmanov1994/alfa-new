@@ -48,12 +48,7 @@ const StepOne = ({id = null, ...props}) => {
     }))
     const resetPledgers = useSettingsStore(state => get(state, 'resetPledgers', () => {
     }))
-    const addRiskList = useSettingsStore(state => get(state, 'addRiskList', () => {
-    }))
-    const removeRiskList = useSettingsStore(state => get(state, 'removeRiskList', () => {
-    }))
-    const riskList = useSettingsStore(state => get(state, 'riskList', []))
-    const resetRiskList = useSettingsStore(state => get(state, 'resetRiskList', []))
+
 
     const agreement = useSettingsStore(state => get(state, 'agreement', {}))
     const insurer = useSettingsStore(state => get(state, 'insurer', {}))
@@ -61,15 +56,6 @@ const StepOne = ({id = null, ...props}) => {
     const pledger = useSettingsStore(state => get(state, 'pledger', {}))
     const pledgers = useSettingsStore(state => get(state, 'pledgers', {}))
 
-    useEffect(() => {
-        if (id && isEmpty(riskItem) && !isEmpty(get(agreement, 'riskId', []))) {
-            addRiskList(...get(agreement, 'riskId', []).map(({classeId, risk, riskgroup}) => ({
-                risk: get(risk, '_id'),
-                riskgroup: get(riskgroup, '_id'),
-                classeId: get(classeId, '_id')
-            })))
-        }
-    }, [agreement])
 
     const nextStep = ({data}) => {
         const {classeId, risk, riskgroup, ...rest} = data
@@ -93,7 +79,6 @@ const StepOne = ({id = null, ...props}) => {
 
     const reset = () => {
         resetAgreement();
-        resetRiskList();
         resetPledgers();
         props.firstStep();
     }
@@ -139,17 +124,8 @@ const StepOne = ({id = null, ...props}) => {
             setRiskTypeId(value)
         }
         if (isEqual(name, 'product')) {
-            setProduct(find(get(products, 'data', []), p => isEqual(get(p, '_id'), value)))
+            setProduct(find(get(products, 'data.data', []), p => isEqual(get(p, '_id'), value)))
         }
-    }
-
-    const addRiskItem = () => {
-        if (some(values(riskItem), val => isEmpty(val))) {
-            toast.warn('You have to select all fields')
-        } else {
-            addRiskList({...riskItem, id: riskList.length + 1})
-        }
-        setRiskItem({riskgroup: '', classeId: '', risk: ''})
     }
 
 
@@ -162,7 +138,7 @@ const StepOne = ({id = null, ...props}) => {
             url: URLS.findOrCreateClient,
             attributes: isEqual(get(type === 'insurer' ? insurer : pledger, 'type'), PERSON_TYPE.organization) ? {
                 organization: {
-                    inn: get(data, 'person.inn'),
+                    inn: get(data, 'organization.inn'),
                 },
                 type: PERSON_TYPE.organization
             } : {
@@ -193,7 +169,7 @@ const StepOne = ({id = null, ...props}) => {
                             }
                         })
                     }
-                    if (isEmpty(get(data, 'data.data'))) {
+                    if (isEmpty(get(data, 'data.person'))) {
                         setInsurer({...insurer, openModal: false, data: null})
                     }
                 } else if (isEqual(type, 'beneficiary')) {
@@ -249,8 +225,8 @@ const StepOne = ({id = null, ...props}) => {
             toast.warn('Select pledger')
         }
     }
-    console.log('insurer', insurer)
     console.log('product', product)
+    console.log('insurer', insurer)
 
     return (
         <Row>
@@ -305,93 +281,19 @@ const StepOne = ({id = null, ...props}) => {
                         </Col>
                         <Col xs={12} className={'mb-15'}>
                             <Row>
-                                <Col xs={10}>
-                                    <Row align={'center'}>
-                                        <Col xs={4}>
-                                            <Field
-                                                options={riskGroups}
-                                                type={'select'}
-                                                name={'riskgroup'}
-                                                defaultValue={get(riskItem, 'riskgroup')}
-                                                property={{
-                                                    hideLabel: true,
-                                                    placeholder: t('Выберите группу  риска')
-                                                }}/>
-                                        </Col>
-                                        <Col xs={4}>
-                                            <Field
-                                                options={risks}
-                                                type={'select'}
-                                                name={'risk'}
-                                                defaultValue={get(riskItem, 'risk')}
-                                                property={{
-                                                    hideLabel: true,
-                                                    placeholder: t('Выберите риск')
-                                                }}/>
-                                        </Col>
-                                        <Col xs={4}>
-                                            <Field
-                                                options={insuranceClasses.filter(classItem => includes(get(findItem(
-                                                    get(risksData, 'data.data', []), get(riskItem, 'risk')
-                                                ), 'classesId', []), get(classItem, 'value')))}
-                                                type={'select'}
-                                                name={'classeId'}
-                                                defaultValue={get(head(insuranceClasses.filter(classItem => includes(get(findItem(
-                                                    get(risksData, 'data.data', []), get(riskItem, 'risk')
-                                                ), 'classesId', []), get(classItem, 'value')))), 'value')}
-                                                property={{
-                                                    hideLabel: true,
-                                                    placeholder: t('Класс страхования')
-                                                }}/>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                                <Col xs={2} className={'text-right'}>
-                                    <Button onClick={addRiskItem} type={'button'}>{t("Добавить")}</Button>
-                                </Col>
-                                {(riskList.length > 0 || get(product, 'riskId', []).length > 0) && <Col xs={12}>
+                                {get(product, 'risk', [])?.length > 0 && <Col xs={12}>
                                     <hr/>
                                     <Table hideThead={false}
-                                           thead={[t('Тип риска'), t('Риск'), t('Класс страхования'), t('Delete')]}>
-                                        {[...get(product, 'riskId', []), ...riskList].map((item, i) => <tr key={i + 1}>
+                                           thead={[t('Тип риска'), t('Риск'), t('Класс страхования')]}>
+                                        {get(product, 'risk', [])?.map((item, i) => <tr key={i + 1}>
                                             <td>
-                                                <Field
-                                                    type={'select'}
-                                                    options={riskGroups} name={`riskId[${i}.riskgroup`}
-                                                    isDisabled={true}
-                                                    defaultValue={get(item, 'riskgroup')}
-                                                    property={{hideLabel: true}}
-                                                />
+                                                {get(item, 'riskType.name')}
                                             </td>
                                             <td>
-                                                <Field
-                                                    type={'select'}
-                                                    options={risksList}
-                                                    name={`riskId[${i}.risk`}
-                                                    isDisabled={true}
-                                                    defaultValue={get(item, 'risk')}
-                                                    property={{hideLabel: true}}
-                                                />
+                                                {get(item, 'name')}
                                             </td>
-
                                             <td>
-                                                <Flex justify={'center'}>
-                                                    <Field
-                                                        type={'select'}
-                                                        options={insuranceClasses}
-                                                        name={`riskId[${i}.classeId`}
-                                                        isDisabled={true}
-                                                        defaultValue={get(item, 'classeId')}
-                                                        property={{
-                                                            hideLabel: true,
-                                                            bgColor: get(findItem(get(insuranceClassesList, 'data.data'), get(item, 'classeId')), 'color')
-                                                        }}
-                                                    />
-                                                </Flex>
-                                            </td>
-                                            <td className={'cursor-pointer'}
-                                                onClick={() => removeRiskList(get(item, 'id', null))}>
-                                                {isNil(get(item, '_id')) && <Trash2 color={'#dc2626'}/>}
+                                                {get(item, 'insuranceClass.name')}
                                             </td>
                                         </tr>)}
                                     </Table>
@@ -421,12 +323,12 @@ const StepOne = ({id = null, ...props}) => {
                                                 className={'ml-15'}>{t("Юридическое лицо")}</Button>
                                     </Flex>
                                     <Flex>
-                                        <Field params={{required: true}} type={'input'} name={`clinets`} property={{
+                                        <Field params={{required: true}} type={'input'} name={`insurant`} property={{
                                             placeholder: 'Выбрать',
                                             disabled: true,
                                             hideLabel: true,
                                         }}
-                                               defaultValue={`${get(insurer, 'data.name', '')} ${get(insurer, 'data.secondname', '')}`}
+                                               defaultValue={`${get(insurer, 'data.fullName.lastname', '')} ${get(insurer, 'data.fullName.firstname', '')} ${get(insurer, 'data.fullName.firstname', '')}`}
                                         /><Button type={'button'}
                                                   onClick={() => setInsurer({...insurer, openModal: true})}
                                                   className={'mb-25 ml-15'}
@@ -444,18 +346,19 @@ const StepOne = ({id = null, ...props}) => {
                                 <Row>
                                     <Col xs={12}>
                                         <Flex className={'mb-15'}>
-                                            <Button type={'button'} gray={isEqual(get(beneficiary, 'type'), 'physical')}
-                                                    transparent={!isEqual(get(beneficiary, 'type'), 'physical')}
+                                            <Button type={'button'}
+                                                    gray={isEqual(get(beneficiary, 'type'), PERSON_TYPE.person)}
+                                                    transparent={!isEqual(get(beneficiary, 'type'), PERSON_TYPE.person)}
                                                     onClick={() => setBeneficiary(({
                                                         ...beneficiary,
-                                                        type: 'physical'
+                                                        type: PERSON_TYPE.person
                                                     }))}>{t("Физическое лицо")}</Button>
                                             <Button type={'button'}
-                                                    gray={isEqual(get(beneficiary, 'type'), 'juridical')}
-                                                    transparent={!isEqual(get(beneficiary, 'type'), 'juridical')}
+                                                    gray={isEqual(get(beneficiary, 'type'), PERSON_TYPE.organization)}
+                                                    transparent={!isEqual(get(beneficiary, 'type'), PERSON_TYPE.organization)}
                                                     onClick={() => setBeneficiary(({
                                                         ...beneficiary,
-                                                        type: 'juridical'
+                                                        type: PERSON_TYPE.organization
                                                     }))}
                                                     className={'ml-15'}>{t("Юридическое лицо")}</Button>
                                         </Flex>
@@ -484,17 +387,18 @@ const StepOne = ({id = null, ...props}) => {
                             <Row>
                                 <Col xs={12}>
                                     <Flex className={'mb-15'}>
-                                        <Button type={'button'} gray={isEqual(get(pledger, 'type'), 'physical')}
-                                                transparent={!isEqual(get(pledger, 'type'), 'physical')}
+                                        <Button type={'button'} gray={isEqual(get(pledger, 'type'), PERSON_TYPE.person)}
+                                                transparent={!isEqual(get(pledger, 'type'), PERSON_TYPE.person)}
                                                 onClick={() => setPledger(({
                                                     ...pledger,
-                                                    type: 'physical'
+                                                    type: PERSON_TYPE.person
                                                 }))}>{t("Физическое лицо")}</Button>
-                                        <Button type={'button'} gray={isEqual(get(pledger, 'type'), 'juridical')}
-                                                transparent={!isEqual(get(pledger, 'type'), 'juridical')}
+                                        <Button type={'button'}
+                                                gray={isEqual(get(pledger, 'type'), PERSON_TYPE.organization)}
+                                                transparent={!isEqual(get(pledger, 'type'), PERSON_TYPE.organization)}
                                                 onClick={() => setPledger(({
                                                     ...pledger,
-                                                    type: 'juridical'
+                                                    type: PERSON_TYPE.organization
                                                 }))}
                                                 className={'ml-15'}>{t("Юридическое лицо")}</Button>
                                     </Flex>
@@ -634,19 +538,21 @@ const StepOne = ({id = null, ...props}) => {
                 <Modal title={'Выберите тип выгодоприобритатель'} visible={get(beneficiary, 'openModal', false)}
                        hide={(val) => setBeneficiary({...beneficiary, openModal: val})}>
                     {filterLoading && <ContentLoader/>}
-                    <Button type={'button'} className={'mt-15'} yellow={isEqual(get(beneficiary, 'type'), 'physical')}
-                            transparent={!isEqual(get(beneficiary, 'type'), 'physical')}
-                            onClick={() => setBeneficiary({...beneficiary, type: 'physical'})}>Физическое лицо</Button>
-                    <Button type={'button'} className={'ml-15'} yellow={isEqual(get(beneficiary, 'type'), 'juridical')}
-                            transparent={!isEqual(get(beneficiary, 'type'), 'juridical')}
-                            onClick={() => setBeneficiary({...beneficiary, type: 'juridical'})}>Юридическое
+                    <Button type={'button'} className={'mt-15'}
+                            yellow={isEqual(get(beneficiary, 'type'), PERSON_TYPE.person)}
+                            transparent={!isEqual(get(beneficiary, 'type'), PERSON_TYPE.person)}
+                            onClick={() => setBeneficiary({...beneficiary, type: PERSON_TYPE.person})}>Физическое
+                        лицо</Button>
+                    <Button type={'button'} className={'ml-15'}
+                            yellow={isEqual(get(beneficiary, 'type'), PERSON_TYPE.organization)}
+                            transparent={!isEqual(get(beneficiary, 'type'), PERSON_TYPE.organization)}
+                            onClick={() => setBeneficiary({...beneficiary, type: PERSON_TYPE.organization})}>Юридическое
                         лицо</Button>
                     <Form formRequest={(data) => agentFilter(data, 'beneficiary')}
                           footer={<><Button>{t("Найти")}</Button></>}>
-                        {isEqual(get(beneficiary, 'type'), 'physical') ? <Row className={'mt-15'}>
-
+                        {isEqual(get(beneficiary, 'type'), PERSON_TYPE.person) ? <Row className={'mt-15'}>
                             <Col xs={4}>
-                                <Field type={'input-mask'} name={`passportSeries`} property={{
+                                <Field params={{required: true}} type={'input-mask'} name={`person.seria`} property={{
                                     placeholder: 'Серия паспорта',
                                     hideLabel: true,
                                     mask: 'aa',
@@ -656,7 +562,7 @@ const StepOne = ({id = null, ...props}) => {
                             </Col>
 
                             <Col xs={4}>
-                                <Field type={'input-mask'} name={`passportNumber`} property={{
+                                <Field params={{required: true}} type={'input-mask'} name={`person.number`} property={{
                                     placeholder: 'Номер паспорта',
                                     hideLabel: true,
                                     mask: '9999999',
@@ -665,20 +571,35 @@ const StepOne = ({id = null, ...props}) => {
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field type={'input-mask'} name={`pin`} property={{
-                                    placeholder: 'ПИНФЛ',
+                                <Field property={{
                                     hideLabel: true,
-                                    mask: '99999999999999',
-                                    maskChar: '_'
-                                }}
+                                }} name={'person.birthDate'} type={'datepicker'}
+                                       label={'birthDate'}
+                                       params={{required: true}}
                                 />
                             </Col>
+                            <Col xs={4} className={'mb-25'}>
+                                <Field
+                                    params={{
+                                        required: true,
+                                        pattern: {
+                                            value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
+                                            message: 'Invalid format'
+                                        }
+                                    }}
+                                    label={'Phone'}
+                                    type={'input'}
+                                    property={{placeholder: '998XXXXXXXXX'}}
+                                    name={'person.phone'}/>
+                            </Col>
+
                         </Row> : <Row className={'mt-15'}>
 
                             <Col xs={6}>
                                 <Field
+                                    params={{required: true}}
                                     type={'input-mask'}
-                                    name={`inn`}
+                                    name={`organization.inn`}
                                     property={{
                                         placeholder: 'ИНН',
                                         hideLabel: true,
@@ -697,15 +618,15 @@ const StepOne = ({id = null, ...props}) => {
                        hide={(val) => setPledger({...pledger, openModal: val})}>
                     {filterLoading && <ContentLoader/>}
                     <Button type={'button'} className={'mt-15'} yellow={isEqual(get(pledger, 'type'), 'physical')}
-                            transparent={!isEqual(get(pledger, 'type'), 'physical')}
-                            onClick={() => setPledger({...pledger, type: 'physical'})}>Физическое лицо</Button>
+                            transparent={!isEqual(get(pledger, 'type'), PERSON_TYPE.person)}
+                            onClick={() => setPledger({...pledger, type: PERSON_TYPE.person})}>Физическое лицо</Button>
                     <Button type={'button'} className={'ml-15'} yellow={isEqual(get(pledger, 'type'), 'juridical')}
-                            transparent={!isEqual(get(pledger, 'type'), 'juridical')}
-                            onClick={() => setPledger({...pledger, type: 'juridical'})}>Юридическое
+                            transparent={!isEqual(get(pledger, 'type'), PERSON_TYPE.organization)}
+                            onClick={() => setPledger({...pledger, type: PERSON_TYPE.organization})}>Юридическое
                         лицо</Button>
                     <Form formRequest={(data) => agentFilter(data, 'pledger')}
                           footer={<><Button>{t("Найдите или добавьте")}</Button></>}>
-                        {isEqual(get(pledger, 'type'), 'physical') ? <Row className={'mt-15'}>
+                        {isEqual(get(pledger, 'type'), PERSON_TYPE.person) ? <Row className={'mt-15'}>
                             <Col xs={4}>
                                 <Field params={{required: true}} type={'input-mask'} name={`passportSeries`} property={{
                                     placeholder: 'Серия паспорта',
