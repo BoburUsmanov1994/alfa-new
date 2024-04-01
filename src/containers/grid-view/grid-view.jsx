@@ -4,7 +4,7 @@ import GridTable from "./components/grid-table";
 import GridTableBody from "./components/grid-table-body";
 import {Col, Row} from "react-grid-system";
 import Title from "../../components/ui/title";
-import {get, includes, isEmpty, isEqual} from "lodash"
+import {get, includes, isEmpty, isEqual, entries, last, head, forEach} from "lodash"
 import {
     useDeleteQuery,
     usePaginateQuery,
@@ -78,14 +78,15 @@ const GridView = ({
                       hideDeleteBtn = false,
                       hideCreateBtn = false,
                       params = {},
-                      hasUpdateBtn = false
+                      hasUpdateBtn = false,
+                      isFormData = false
                   }) => {
     const navigate = useNavigate()
     const {t} = useTranslation()
     const [openModal, setOpenModal] = useState(false)
     const [rowId, setRowId] = useState(null)
     const [page, setPage] = useState(1)
-    const [limit, setLimit] = useState(10)
+    const [limit, setLimit] = useState(15)
     const [columns, setColumns] = useState([])
     const {data, isError, isLoading, isFetching} = usePaginateQuery({
         key: keyId,
@@ -105,14 +106,36 @@ const GridView = ({
     }, [tableHeaderData])
 
     const create = ({data}) => {
-        createRequest({url, attributes: data}, {
-            onSuccess: () => {
-                setOpenModal(false)
-            },
-            onError: () => {
-                setOpenModal(false)
-            }
-        })
+        if (isFormData) {
+            const formData = new FormData();
+            forEach(entries(data), (_item) => {
+                formData.append(head(_item), last(_item))
+            })
+            createRequest({
+                url, attributes: formData, config: {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+            }, {
+                onSuccess: () => {
+                    setOpenModal(false)
+                },
+                onError: () => {
+                    setOpenModal(false)
+                }
+            })
+        } else {
+            createRequest({url, attributes: data}, {
+                onSuccess: () => {
+                    setOpenModal(false)
+                },
+                onError: () => {
+                    setOpenModal(false)
+                }
+            })
+        }
+
     }
 
     const update = ({data}) => {
@@ -206,7 +229,7 @@ const GridView = ({
                                             key={get(column, 'id')}>
                                             <span>{t(get(column, 'title'))}</span>
                                             {includes(columns.map(({key}) => key), get(column, 'key')) &&
-                                                <Check size={18}/>}
+                                            <Check size={18}/>}
                                         </li>)
                                     }
 
@@ -230,19 +253,20 @@ const GridView = ({
 
                 </Row>
                 {isEmpty(get(data, responseDataKey, [])) ? <EmptyPage/> : <>
-                    <div className={'horizontal-scroll'}><GridTable hasUpdateBtn={hasUpdateBtn} hideDeleteBtn={hideDeleteBtn}
-                        viewUrl={viewUrl}
-                        updateUrl={updateUrl}
-                        page={page}
-                        TableBody={TableBody}
-                        tableHeaderData={columns}
-                        remove={remove}
-                        openEditModal={openEditModal}
-                        tableBodyData={get(data, responseDataKey, [])}
-                        isFetching={isFetching}
+                    <div className={'horizontal-scroll'}><GridTable hasUpdateBtn={hasUpdateBtn}
+                                                                    hideDeleteBtn={hideDeleteBtn}
+                                                                    viewUrl={viewUrl}
+                                                                    updateUrl={updateUrl}
+                                                                    page={page}
+                                                                    TableBody={TableBody}
+                                                                    tableHeaderData={columns}
+                                                                    remove={remove}
+                                                                    openEditModal={openEditModal}
+                                                                    tableBodyData={get(data, responseDataKey, [])}
+                                                                    isFetching={isFetching}
                     /></div>
                     {!hidePagination &&
-                        <Pagination page={page} setPage={setPage} totalItems={get(data, `data.count`, 0)}/>}
+                    <Pagination page={page} setPage={setPage} totalItems={get(data, `data.count`, 0)}/>}
                 </>}
             </Section>
         </Styled>

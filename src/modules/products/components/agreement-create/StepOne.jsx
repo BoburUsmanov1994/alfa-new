@@ -161,55 +161,55 @@ const StepOne = ({id = null, ...props}) => {
                             }
                         })
                     }
-                    if (isEqual(get(insurer, 'type'), PERSON_TYPE.organization) && get(data, 'data.data.corporateentitiesdata')) {
+                    if (isEqual(get(insurer, 'type'), PERSON_TYPE.organization) && get(data, 'data.organization')) {
                         setInsurer({
                             ...insurer, openModal: false, data: {
-                                ...get(data, 'data.data.corporateentitiesdata'),
-                                id: get(data, 'data.data._id')
+                                ...get(data, 'data.organization'),
+                                id: get(data, 'data._id')
                             }
                         })
                     }
-                    if (isEmpty(get(data, 'data.person'))) {
+                    if (isEmpty(get(data, 'data'))) {
                         setInsurer({...insurer, openModal: false, data: null})
                     }
                 } else if (isEqual(type, 'beneficiary')) {
-                    if (isEqual(get(beneficiary, 'type'), 'physical') && get(data, 'data.data.forindividualsdata')) {
+                    if (isEqual(get(beneficiary, 'type'), PERSON_TYPE.person) && get(data, 'data.person')) {
                         setBeneficiary({
                             ...beneficiary, openModal: false, data: {
-                                ...get(data, 'data.data.forindividualsdata'),
-                                id: get(data, 'data.data._id')
+                                ...get(data, 'data.person'),
+                                id: get(data, 'data._id')
                             }
                         })
                     }
-                    if (isEqual(get(beneficiary, 'type'), 'juridical') && get(data, 'data.data.corporateentitiesdata')) {
+                    if (isEqual(get(beneficiary, 'type'), PERSON_TYPE.organization) && get(data, 'data.organization')) {
                         setBeneficiary({
                             ...beneficiary, openModal: false, data: {
-                                ...get(data, 'data.data.corporateentitiesdata'),
-                                id: get(data, 'data.data._id')
+                                ...get(data, 'data.organization'),
+                                id: get(data, 'data._id')
                             }
                         })
                     }
-                    if (isEmpty(get(data, 'data.data'))) {
+                    if (isEmpty(get(data, 'data'))) {
                         setBeneficiary({...beneficiary, openModal: false, data: null})
                     }
                 } else if (isEqual(type, 'pledger')) {
-                    if (isEqual(get(pledger, 'type'), 'physical') && get(data, 'data.data.forindividualsdata')) {
+                    if (isEqual(get(pledger, 'type'), PERSON_TYPE.person) && get(data, 'data.person')) {
                         setPledger({
                             ...pledger, data: {
-                                ...get(data, 'data.data.forindividualsdata'),
-                                id: get(data, 'data.data._id')
+                                ...get(data, 'data.person'),
+                                id: get(data, 'data._id')
                             }
                         })
                     }
-                    if (isEqual(get(pledger, 'type'), 'juridical') && get(data, 'data.data.corporateentitiesdata')) {
+                    if (isEqual(get(pledger, 'type'), PERSON_TYPE.organization) && get(data, 'data.organization')) {
                         setPledger({
                             ...pledger, openModal: false, data: {
-                                ...get(data, 'data.data.corporateentitiesdata'),
-                                id: get(data, 'data.data._id')
+                                ...get(data, 'data.organization'),
+                                id: get(data, 'data._id')
                             }
                         })
                     }
-                    if (isEmpty(get(data, 'data.data'))) {
+                    if (isEmpty(get(data, 'data'))) {
                         setPledger({...pledger, openModal: false, data: null})
                     }
                 }
@@ -225,8 +225,6 @@ const StepOne = ({id = null, ...props}) => {
             toast.warn('Select pledger')
         }
     }
-    console.log('product', product)
-    console.log('insurer', insurer)
 
     return (
         <Row>
@@ -328,7 +326,7 @@ const StepOne = ({id = null, ...props}) => {
                                             disabled: true,
                                             hideLabel: true,
                                         }}
-                                               defaultValue={`${get(insurer, 'data.fullName.lastname', '')} ${get(insurer, 'data.fullName.firstname', '')} ${get(insurer, 'data.fullName.firstname', '')}`}
+                                               defaultValue={`${get(insurer, 'data.fullName.lastname', '')} ${get(insurer, 'data.fullName.firstname', '')} ${get(insurer, 'data.name', '')}`}
                                         /><Button type={'button'}
                                                   onClick={() => setInsurer({...insurer, openModal: true})}
                                                   className={'mb-25 ml-15'}
@@ -368,7 +366,7 @@ const StepOne = ({id = null, ...props}) => {
                                                 disabled: true,
                                                 hideLabel: true,
                                             }}
-                                                   defaultValue={get(beneficiary, 'data.fullName')}
+                                                   defaultValue={`${get(beneficiary, 'data.fullName.lastname', '')} ${get(beneficiary, 'data.fullName.firstname', '')} ${get(beneficiary, 'data.name', '')}`}
                                             /><Button type={'button'}
                                                       onClick={() => setBeneficiary({...beneficiary, openModal: true})}
                                                       className={'mb-25 ml-15'}
@@ -408,7 +406,7 @@ const StepOne = ({id = null, ...props}) => {
                                             disabled: true,
                                             hideLabel: true,
                                         }}
-                                               defaultValue={`${get(pledger, 'data.name', '')} ${get(pledger, 'data.secondname', '')}`}
+                                               defaultValue={`${get(pledger, 'data.fullName.lastname', '')} ${get(pledger, 'data.fullName.firstname', '')} ${get(pledger, 'data.name', '')}`}
                                         /><Button type={'button'}
                                                   className={'mb-25 ml-15'}
                                                   success onClick={() => setPledger({
@@ -420,7 +418,7 @@ const StepOne = ({id = null, ...props}) => {
                                     </Flex>
 
                                 </Col>
-                                {pledgers.length > 0 && <Col xs={12}>
+                                {pledgers?.length > 0 && <Col xs={12}>
                                     <hr/>
                                     <Table hideThead={false}
                                            thead={[t('Тype'), t('FullName'), t('Delete')]}>
@@ -478,7 +476,8 @@ const StepOne = ({id = null, ...props}) => {
                                     placeholder: 'Серия паспорта',
                                     hideLabel: true,
                                     mask: 'aa',
-                                    maskChar: '_'
+                                    maskChar: '_',
+                                    hideErrorMsg: true
                                 }}
                                 />
                             </Col>
@@ -488,7 +487,8 @@ const StepOne = ({id = null, ...props}) => {
                                     placeholder: 'Номер паспорта',
                                     hideLabel: true,
                                     mask: '9999999',
-                                    maskChar: '_'
+                                    maskChar: '_',
+                                    hideErrorMsg: true
                                 }}
                                 />
                             </Col>
@@ -511,7 +511,7 @@ const StepOne = ({id = null, ...props}) => {
                                     }}
                                     label={'Phone'}
                                     type={'input'}
-                                    property={{placeholder: '998XXXXXXXXX'}}
+                                    property={{placeholder: '998XXXXXXXXX', hideErrorMsg: true}}
                                     name={'person.phone'}/>
                             </Col>
 
@@ -526,7 +526,8 @@ const StepOne = ({id = null, ...props}) => {
                                         placeholder: 'ИНН',
                                         hideLabel: true,
                                         mask: '999999999',
-                                        maskChar: '_'
+                                        maskChar: '_',
+                                        hideErrorMsg: true
                                     }}
                                 />
                             </Col>
@@ -556,7 +557,8 @@ const StepOne = ({id = null, ...props}) => {
                                     placeholder: 'Серия паспорта',
                                     hideLabel: true,
                                     mask: 'aa',
-                                    maskChar: '_'
+                                    maskChar: '_',
+                                    hideErrorMsg: true
                                 }}
                                 />
                             </Col>
@@ -566,7 +568,8 @@ const StepOne = ({id = null, ...props}) => {
                                     placeholder: 'Номер паспорта',
                                     hideLabel: true,
                                     mask: '9999999',
-                                    maskChar: '_'
+                                    maskChar: '_',
+                                    hideErrorMsg: true
                                 }}
                                 />
                             </Col>
@@ -589,7 +592,7 @@ const StepOne = ({id = null, ...props}) => {
                                     }}
                                     label={'Phone'}
                                     type={'input'}
-                                    property={{placeholder: '998XXXXXXXXX'}}
+                                    property={{placeholder: '998XXXXXXXXX', hideErrorMsg: true}}
                                     name={'person.phone'}/>
                             </Col>
 
@@ -604,7 +607,8 @@ const StepOne = ({id = null, ...props}) => {
                                         placeholder: 'ИНН',
                                         hideLabel: true,
                                         mask: '999999999',
-                                        maskChar: '_'
+                                        maskChar: '_',
+                                        hideErrorMsg: true
                                     }}
                                 />
                             </Col>
@@ -632,7 +636,8 @@ const StepOne = ({id = null, ...props}) => {
                                     placeholder: 'Серия паспорта',
                                     hideLabel: true,
                                     mask: 'aa',
-                                    maskChar: '_'
+                                    maskChar: '_',
+                                    hideErrorMsg: true
                                 }}
                                 />
                             </Col>
@@ -642,7 +647,8 @@ const StepOne = ({id = null, ...props}) => {
                                     placeholder: 'Номер паспорта',
                                     hideLabel: true,
                                     mask: '9999999',
-                                    maskChar: '_'
+                                    maskChar: '_',
+                                    hideErrorMsg: true
                                 }}
                                 />
                             </Col>
@@ -651,7 +657,8 @@ const StepOne = ({id = null, ...props}) => {
                                     placeholder: 'ПИНФЛ',
                                     hideLabel: true,
                                     mask: '99999999999999',
-                                    maskChar: '_'
+                                    maskChar: '_',
+                                    hideErrorMsg: true
                                 }}
                                 />
                             </Col>
@@ -673,15 +680,13 @@ const StepOne = ({id = null, ...props}) => {
                                         placeholder: 'ИНН',
                                         hideLabel: true,
                                         mask: '999999999',
-                                        maskChar: '_'
+                                        maskChar: '_',
+                                        hideErrorMsg: true
                                     }}
                                 />
                             </Col>
                         </Row>}
-
                     </Form>
-
-
                 </Modal>
             </Col>
         </Row>

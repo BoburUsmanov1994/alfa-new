@@ -28,11 +28,13 @@ const ApplicationFormDocsContainer = ({...rest}) => {
 
     const ModalBody = ({data,rowId = null}) =>  <>
         <Field  name={'name'} type={'input'} label={'Название документа'} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
-        <Field  name={'url'} type={'input'} label={'Введите URL-адрес'} defaultValue={rowId ? get(data,'url'):null} params={{required: true}} />
+        <Field name={'file'} type={'dropzone'} label={'Выберите файл'} defaultValue={rowId ? get(data, 'file') : null}
+               params={{required: true}}/>
     </>
     return (
         <>
             <GridView
+                isFormData
                 ModalBody={ModalBody}
                 tableHeaderData={[
                     {
@@ -42,8 +44,8 @@ const ApplicationFormDocsContainer = ({...rest}) => {
                     },
                     {
                         id: 3,
-                        key: 'url',
-                        title: 'URL-адрес'
+                        key: 'path',
+                        title: 'Path'
                     },
                 ]}
                 keyId={KEYS.applicationformdocs}

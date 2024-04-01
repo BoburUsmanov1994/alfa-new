@@ -4,7 +4,7 @@ import AgreementCreateContainer from "../containers/AgreementCreateContainer";
 
 const Styled = styled.div`
   .rodal-dialog {
-    min-height: 550px !important;
+    min-height: 400px !important;
   }
 `;
 const AgreementCreatePage = ({...rest}) => {

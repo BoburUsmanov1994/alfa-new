@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import styled from "styled-components";
-import {get, includes, isEmpty} from "lodash";
+import {get} from "lodash";
 import {ErrorMessage} from "@hookform/error-message";
 import Label from "../../../../components/ui/label";
 import classNames from "classnames";
@@ -8,9 +8,6 @@ import Dropzone from 'react-dropzone'
 import {Paperclip} from "react-feather";
 import {usePostQuery} from "../../../../hooks/api";
 import {URLS} from "../../../../constants/url"
-import {KEYS} from "../../../../constants/key"
-import {toast} from "react-toastify";
-import {ContentLoader} from "../../../../components/loader";
 
 const Styled = styled.div`
   .form-input {
@@ -46,6 +43,7 @@ const Styled = styled.div`
     display: flex;
     align-items: center;
     min-width: 175px;
+    width: 100%;
     justify-content: center;
     font-family: 'Gilroy-Medium', sans-serif;
     font-size: 16px;
@@ -82,27 +80,27 @@ const CustomDropzone = ({
     }, [watch(name)]);
 
     const upload = (files) => {
-        const formData = new FormData();
-        formData.append('file', files[0]);
+        // const formData = new FormData();
+        // formData.append('file', files[0]);
+        setValue(name, files[0])
 
-        uploadFile({
-            url: get(property, 'url', URLS.contractform), attributes: formData, config: {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-        }, {
-            onSuccess: ({data}) => {
-                setValue(name, get(data,'data._id'))
-            },
-            onError: () => {
-
-            }
-        })
+        // uploadFile({
+        //     url: get(property, 'url', URLS.contractform), attributes: formData, config: {
+        //         headers: {
+        //             'content-type': 'multipart/form-data'
+        //         }
+        //     }
+        // }, {
+        //     onSuccess: ({data}) => {
+        //         setValue(name, get(data, 'data._id'))
+        //     },
+        //     onError: () => {
+        //
+        //     }
+        // })
     }
     return (
         <Styled {...rest}>
-
             <div className="form-group">
                 {!get(property, 'hideLabel', false) && <Label
                     className={classNames({required: get(property, 'hasRequiredLabel', false)})}>{label ?? name}</Label>}

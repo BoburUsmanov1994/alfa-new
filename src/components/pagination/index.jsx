@@ -40,7 +40,7 @@ flex-wrap: wrap;
 `;
 const Pagination = ({
                         totalItems = 0,
-                        limit = 10,
+                        limit = 15,
                         page = 1,
                         setPage = () => {
                         },
