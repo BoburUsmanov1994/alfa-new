@@ -526,12 +526,17 @@ export const menuData = [
                 title: 'Document type',
                 path: '/handbook/document-type',
             },
-            {
-                id: 26,
-                title: 'Translations',
-                path: '/handbook/translations',
-            },
+            // {
+            //     id: 26,
+            //     title: 'Translations',
+            //     path: '/handbook/translations',
+            // },
         ]
+    },
+    {
+        id: 222,
+        title: 'Translations',
+        path: '/handbook/translations',
     },
     // {
     //     id: 11,

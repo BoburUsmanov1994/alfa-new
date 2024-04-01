@@ -28,10 +28,10 @@ const AgentsCreateContainer = () => {
         if (isEqual(name, 'typeofpersons')) {
             setPersonType(val)
         }
-        if (isEqual(name, 'corporateentitiesdata.region')) {
+        if (isEqual(name, 'organization.region')) {
             setregion(val)
         }
-        if (isEqual(name, 'forindividualsdata.region')) {
+        if (isEqual(name, 'person.region')) {
             setregion(val)
         }
     }
@@ -151,52 +151,52 @@ const AgentsCreateContainer = () => {
                         </Col>
                         {isEqual(personType, PERSON_TYPE.person) && <>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.photo'} type={'input'} label={'Photo'}
+                                <Field name={'person.photo'} type={'input'} label={'Photo'}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.name'} type={'input'} label={'name'}
+                                <Field name={'person.name'} type={'input'} label={'name'}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.secondname'} type={'input'} label={'secondname'}
+                                <Field name={'person.secondname'} type={'input'} label={'secondname'}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.middlename'} type={'input'} label={'middlename'}
+                                <Field name={'person.middlename'} type={'input'} label={'middlename'}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.gender'} type={'select'} label={'Gender'}
+                                <Field name={'person.gender'} type={'select'} label={'Gender'}
                                        options={genders}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.dateofbirth'} dateFormat={"MM/DD/YYYY"}
+                                <Field name={'person.dateofbirth'} dateFormat={"MM/DD/YYYY"}
                                        type={'datepicker'}
                                        label={'dateofbirth'}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.citizenship'} type={'select'} options={citizenshipList}
+                                <Field name={'person.citizenship'} type={'select'} options={citizenshipList}
                                        label={'Citizenship'}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.typeofdocument'} type={'select'}
+                                <Field name={'person.typeofdocument'} type={'select'}
                                        options={documentTypeList}
                                        label={'typeofdocument'}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.passportSeries'} type={'input-mask'}
+                                <Field name={'person.passportSeries'} type={'input-mask'}
                                        label={'Passport seria'}
                                        property={{mask: 'aa', maskChar: '_'}}
                                        params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.passportNumber'} type={'input-mask'}
+                                <Field name={'person.passportNumber'} type={'input-mask'}
                                        label={'Passport number'}
                                        property={{mask: '9999999', maskChar: '_'}}
                                        params={{required: true}}
@@ -204,146 +204,146 @@ const AgentsCreateContainer = () => {
                             </Col>
                             <Col xs={4}>
 
-                                <Field name={'forindividualsdata.pin'} type={'input-mask'} label={'PINFL'}
+                                <Field name={'person.pin'} type={'input-mask'} label={'PINFL'}
                                        property={{mask: '99999999999999', maskChar: '_'}}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.passportissuancedate'} dateFormat={"MM/DD/YYYY"}
+                                <Field name={'person.passportissuancedate'} dateFormat={"MM/DD/YYYY"}
                                        type={'datepicker'}
                                        label={'passportissuancedate'}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.passportissuedby'} type={'input'}
+                                <Field name={'person.passportissuedby'} type={'input'}
                                        label={'passportissuedby'}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.region'} type={'select'} label={'Region'}
+                                <Field name={'person.region'} type={'select'} label={'Region'}
                                        options={regions}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.district'} type={'select'} label={'District'}
+                                <Field name={'person.district'} type={'select'} label={'District'}
                                        options={districts}
                                        params={{required: true}}/>
                             </Col>
 
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.address'} type={'input'}
+                                <Field name={'person.address'} type={'input'}
                                        label={'address'}
                                        params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.postcode'} type={'input'}
+                                <Field name={'person.postcode'} type={'input'}
                                        label={'postcode'}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.telephonenumber'} type={'input'}
+                                <Field name={'person.telephonenumber'} type={'input'}
                                        label={'telephonenumber'}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.emailforcontact'} type={'input'}
+                                <Field name={'person.emailforcontact'} type={'input'}
                                        label={'emailforcontact'}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.personalaccount'} type={'input'}
+                                <Field name={'person.personalaccount'} type={'input'}
                                        label={'personalaccount'}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.transitaccount'} type={'input'}
+                                <Field name={'person.transitaccount'} type={'input'}
                                        label={'transitaccount'}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.mfo'} type={'input'}
+                                <Field name={'person.mfo'} type={'input'}
                                        label={'mfo'}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.nameofbank'} type={'input'}
+                                <Field name={'person.nameofbank'} type={'input'}
                                        label={'nameofbank'}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field name={'forindividualsdata.numberofcard'} type={'input'} label={'numberofcard'}
+                                <Field name={'person.numberofcard'} type={'input'} label={'numberofcard'}
                                 />
                             </Col>
                         </>
                         }
                         {isEqual(personType, PERSON_TYPE.organization) &&
-                        <>
+                            <>
 
-                            <Col xs={4}>
-                                <Field name={'corporateentitiesdata.nameoforganization'} type={'input'}
-                                       label={'nameoforganization'}
-                                       params={{required: true}}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'corporateentitiesdata.oked'} type={'input'} label={'oked'}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'corporateentitiesdata.mfo'} type={'input'} label={'mfo'}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'corporateentitiesdata.nameofbank'} type={'input'} label={'nameofbank'}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'corporateentitiesdata.innofbank'} type={'input'} label={'innofbank'}
-                                />
-                            </Col>
+                                <Col xs={4}>
+                                    <Field name={'organization.nameoforganization'} type={'input'}
+                                           label={'nameoforganization'}
+                                           params={{required: true}}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field name={'organization.oked'} type={'input'} label={'oked'}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field name={'organization.mfo'} type={'input'} label={'mfo'}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field name={'organization.nameofbank'} type={'input'} label={'nameofbank'}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field name={'organization.innofbank'} type={'input'} label={'innofbank'}
+                                    />
+                                </Col>
 
-                            <Col xs={4}>
-                                <Field name={'corporateentitiesdata.scheduledaccount'} type={'input'}
-                                       label={'scheduledaccount'}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'corporateentitiesdata.region'} type={'select'} label={'Region'}
-                                       options={regions}
-                                       params={{required: true}}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'corporateentitiesdata.district'} type={'select'} label={'District'}
-                                       options={districts}
-                                       params={{required: true}}/>
-                            </Col>
+                                <Col xs={4}>
+                                    <Field name={'organization.scheduledaccount'} type={'input'}
+                                           label={'scheduledaccount'}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field name={'organization.region'} type={'select'} label={'Region'}
+                                           options={regions}
+                                           params={{required: true}}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field name={'organization.district'} type={'select'} label={'District'}
+                                           options={districts}
+                                           params={{required: true}}/>
+                                </Col>
 
-                            <Col xs={4}>
-                                <Field name={'corporateentitiesdata.address'} type={'input'}
-                                       label={'address'}
-                                       params={{required: true}}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'corporateentitiesdata.postcode'} type={'input'}
-                                       label={'postcode'}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'corporateentitiesdata.checkingaccount'} type={'input'}
-                                       label={'checkingaccount'}
-                                />
-                            </Col>
-                            <Col xs={8}>
-                                <Field isMulti name={'corporateentitiesdata.employees'} type={'select'}
-                                       options={employeeList}
-                                       label={'Employees'}
-                                       params={{required: true}}
-                                />
-                            </Col>
-                        </>
+                                <Col xs={4}>
+                                    <Field name={'organization.address'} type={'input'}
+                                           label={'address'}
+                                           params={{required: true}}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field name={'organization.postcode'} type={'input'}
+                                           label={'postcode'}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field name={'organization.checkingaccount'} type={'input'}
+                                           label={'checkingaccount'}
+                                    />
+                                </Col>
+                                <Col xs={8}>
+                                    <Field isMulti name={'organization.employees'} type={'select'}
+                                           options={employeeList}
+                                           label={'Employees'}
+                                           params={{required: true}}
+                                    />
+                                </Col>
+                            </>
                         }
                         <Col xs={4}>
                             <Field

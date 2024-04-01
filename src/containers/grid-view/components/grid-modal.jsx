@@ -37,7 +37,7 @@ const GridModal = ({
                    }) => {
     const {t} = useTranslation()
 
-    const {data, isLoading} = useGetOneQuery({id: rowId, key: keyId, url, enabled: !!(rowId),showErrorMsg:false})
+    const {data, isLoading} = useGetOneQuery({id: rowId, key: keyId, url:`${url}/show`, enabled: !!(rowId),showErrorMsg:false})
     return (
         <Styled {...rest}>
             <Rodal visible={visible} onClose={hide}>
@@ -46,7 +46,7 @@ const GridModal = ({
                         rowId ? t('Edit') : t('Send')
                     }
                 </Button>}>
-                    <ModalBody rowId={rowId} data={get(data,`data.${responseDataKey}`,{})}  />
+                    <ModalBody rowId={rowId} data={get(data,`data`,{})}  />
                 </Form>
             </Rodal>
         </Styled>

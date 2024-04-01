@@ -48,22 +48,22 @@ const AgentsContainer = ({...rest}) => {
                     },
                     {
                         id: 4,
-                        key: 'corporateentitiesdata.nameoforganization',
+                        key: 'organization.nameoforganization',
                         title: 'organization name'
                     },
                     {
                         id: 5,
-                        key: 'forindividualsdata.secondname',
+                        key: 'person.secondname',
                         title: 'Lastname'
                     },
                     {
                         id: 55,
-                        key: 'forindividualsdata.name',
+                        key: 'person.name',
                         title: 'Firstname'
                     },
                     {
                         id: 555,
-                        key: 'forindividualsdata.middlename',
+                        key: 'person.middlename',
                         title: 'Middlename'
                     },
                 ]}
