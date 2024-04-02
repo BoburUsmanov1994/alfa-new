@@ -5,7 +5,7 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, includes, isEqual, isNil, range, round, sum, find} from "lodash"
+import {get, includes, isEqual, isNil, range, round, sum, find, entries, head, last} from "lodash"
 import Title from "../../../../components/ui/title";
 import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
@@ -20,21 +20,19 @@ import {useTranslation} from "react-i18next";
 import Modal from "../../../../components/modal";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
+import {INSURANCE_OBJECT_TYPES, PERSON_TYPE} from "../../../../constants";
+import ReactJson from "react-json-view";
 
 const StepTwo = ({id = null, ...props}) => {
     const {t} = useTranslation()
-    const [show, setShow] = useState({
-        duplicatefee: {Isduplicatefee: false},
-        demonstrablecosts: {Isdemonstrablecosts: false}
-    })
     const [diff, setDiff] = useState({accruedinsurancepremium: 0, paidinsurancepremium: 0})
     const [schedule, setSchedule] = useState([])
     const [checkedAll, setCheckedAll] = useState(false)
     const [openObjectModal, setOpenObjectModal] = useState(false)
     const [fields, setFields] = useState({riskOptions: []})
     const [riskFields, setRiskFields] = useState([])
-    const [objectType, _setObjectType] = useState(null)
     const [_fields, _setFields] = useState({})
+    const [_modalFields, _setModalFields] = useState({})
     const setAgreement = useSettingsStore(state => get(state, 'setAgreement', () => {
     }))
     const addObjects = useSettingsStore(state => get(state, 'addObjects', () => {
@@ -58,11 +56,15 @@ const StepTwo = ({id = null, ...props}) => {
             limitofagreement,
             tariffperclasses,
             objectofinsurance,
+            insurancepremium,
+            insurancerate,
+            suminsured,
+            startofinsurance,
             ...rest
         } = data;
         setAgreement({
             ...rest,
-            objectofinsurance: objectofinsurance?.map((_item, i) => ({..._item, details: {...objects?.[i]}}))
+            objectOfInsurance: objects
         });
         props.nextStep();
     }
@@ -77,33 +79,85 @@ const StepTwo = ({id = null, ...props}) => {
         props.firstStep();
     }
 
-    let {data: payments} = useGetAllQuery({key: KEYS.paymentcurrency, url: URLS.paymentcurrency})
+    let {data: payments} = useGetAllQuery({key: KEYS.paymentcurrency, url: `${URLS.paymentCurrency}/list`})
     payments = getSelectOptionsListFromData(get(payments, `data.data`, []), '_id', 'name')
 
 
-    let {data: classes} = useGetAllQuery({key: KEYS.classes, url: URLS.classes})
+    let {data: classes} = useGetAllQuery({key: KEYS.classes, url: `${URLS.insuranceClass}/list`})
     const classOptions = getSelectOptionsListFromData(get(classes, `data.data`, []), '_id', 'name')
 
-    let {data: risks} = useGetAllQuery({key: KEYS.risk, url: URLS.risk})
+    let {data: risks} = useGetAllQuery({key: KEYS.risk, url: `${URLS.risk}/list`})
     let risksOptions = getSelectOptionsListFromData(get(risks, `data.data`, []), '_id', 'name')
 
-    let {data: risksGroup} = useGetAllQuery({key: KEYS.typeofrisk, url: URLS.typeofrisk})
-    let risksGroupOptions = getSelectOptionsListFromData(get(risksGroup, `data.data`, []), '_id', 'name')
 
-    let {data: franchises} = useGetAllQuery({key: KEYS.typeoffranchise, url: URLS.typeoffranchise})
+    let {data: franchises} = useGetAllQuery({key: KEYS.typeoffranchise, url: `${URLS.typeoffranchise}/list`})
     franchises = getSelectOptionsListFromData(get(franchises, `data.data`, []), '_id', 'name')
 
-    let {data: baseFranchises} = useGetAllQuery({key: KEYS.baseoffranchise, url: URLS.baseoffranchise})
+    let {data: baseFranchises} = useGetAllQuery({key: KEYS.baseoffranchise, url: `${URLS.baseoffranchise}/list`})
     baseFranchises = getSelectOptionsListFromData(get(baseFranchises, `data.data`, []), '_id', 'name')
 
-    let {data: typeofobject} = useGetAllQuery({key: KEYS.typeofobject, url: URLS.typeofobject})
-    typeofobject = getSelectOptionsListFromData(get(typeofobject, `data.data`, []), '_id', 'name')
-
-
-    let {data: objectFields} = useGetAllQuery({
-        key: [KEYS.objectFields, objectType], url: `${URLS.objectFields}/${objectType}`,
-        enabled: !!(objectType)
+    const {data: country, isLoading: isLoadingCountry} = useGetAllQuery({
+        key: KEYS.countries, url: `${URLS.countries}/list`
     })
+    const countryList = getSelectOptionsListFromData(get(country, `data.data`, []), '_id', 'name')
+
+    const {data: residentTypes} = useGetAllQuery({
+        key: KEYS.residentTypes, url: `${URLS.residentTypes}/list`
+    })
+    const residentTypeList = getSelectOptionsListFromData(get(residentTypes, `data.data`, []), '_id', 'name')
+
+    const {data: region, isLoading: isLoadingRegion} = useGetAllQuery({
+        key: KEYS.regions, url: `${URLS.regions}/list`
+    })
+    const regionList = getSelectOptionsListFromData(get(region, `data.data`, []), '_id', 'name')
+
+    const {data: district} = useGetAllQuery({
+        key: [KEYS.districts, get(_modalFields, 'objectOfInsurance.region')],
+        url: `${URLS.districts}/list`,
+        params: {
+            params: {
+                region: get(_modalFields, 'objectOfInsurance.region')
+            }
+        },
+        enabled: !!(get(_modalFields, 'objectOfInsurance.region'))
+    })
+    const districtList = getSelectOptionsListFromData(get(district, `data.data`, []), '_id', 'name')
+
+    const {data: genders} = useGetAllQuery({
+        key: KEYS.genders, url: `${URLS.genders}/list`
+    })
+    const genderList = getSelectOptionsListFromData(get(genders, `data.data`, []), '_id', 'name')
+
+    const {data: ownershipForms} = useGetAllQuery({
+        key: KEYS.ownershipForms, url: `${URLS.ownershipForms}/list`
+    })
+    const ownershipFormList = getSelectOptionsListFromData(get(ownershipForms, `data.data`, []), '_id', 'name')
+
+    const {data: vehicleType} = useGetAllQuery({
+        key: KEYS.vehicleType, url: `${URLS.vehicleType}/list`
+    })
+    const vehicleTypeList = getSelectOptionsListFromData(get(vehicleType, `data.data`, []), '_id', 'name')
+
+    const {data: propertyRightType} = useGetAllQuery({
+        key: KEYS.vehicleType, url: `${URLS.propertyRightType}/list`
+    })
+    const propertyRightTypeList = getSelectOptionsListFromData(get(propertyRightType, `data.data`, []), '_id', 'name')
+
+    const {data: propertyType} = useGetAllQuery({
+        key: KEYS.vehicleType, url: `${URLS.propertyType}/list`
+    })
+    const propertyTypeList = getSelectOptionsListFromData(get(propertyType, `data.data`, []), '_id', 'name')
+
+    const {data: agriculturalType} = useGetAllQuery({
+        key: KEYS.vehicleType, url: `${URLS.agriculturalType}/list`
+    })
+    const agriculturalTypeList = getSelectOptionsListFromData(get(agriculturalType, `data.data`, []), '_id', 'name')
+
+    const {data: measurementType} = useGetAllQuery({
+        key: KEYS.vehicleType, url: `${URLS.measurementType}/list`
+    })
+    const measurementTypeList = getSelectOptionsListFromData(get(measurementType, `data.data`, []), '_id', 'name')
+
 
     const setFieldValue = (value, name = "") => {
 
@@ -111,13 +165,6 @@ const StepTwo = ({id = null, ...props}) => {
             setFields(prev => ({...prev, [name]: value}));
         }
 
-        if (includes(['duplicatefee.Isduplicatefee', 'demonstrablecosts.Isdemonstrablecosts'], name)) {
-            setShow(prev => ({...prev, [name]: value}))
-        }
-
-        if (includes(['accruedinsurancepremium', 'paidinsurancepremium'], name)) {
-            setDiff(prev => ({...prev, [name]: value}))
-        }
         _setFields(prev => ({...prev, [name]: value}))
 
     }
@@ -134,27 +181,28 @@ const StepTwo = ({id = null, ...props}) => {
         for (let i = 12; i > 0; i--) {
             let newdate = now.setMonth(now.getMonth() - 1);
             setSchedule(prev => [...prev, {
-                scheduledate: formatDate(newdate),
-                schedulecount: round(Math.abs(get(diff, 'accruedinsurancepremium', 0) - get(diff, 'paidinsurancepremium', 0)) / 12, 2)
+                date: formatDate(newdate),
+                count: round(Math.abs(get(_fields, 'accruedInsurancePremium', 0) - get(_fields, 'paidInsurancePremium', 0)) / 12, 2)
             }])
         }
 
     }
 
     useEffect(() => {
-        if (!isNil(get(agreement, 'riskId', []))) {
-            setRiskFields(get(agreement, 'riskId', []).map(_r => ({
+        if (!isNil(get(agreement, 'product.risk', []))) {
+            setRiskFields(get(agreement, 'product.risk', []).map(_r => ({
                 ..._r,
-                startdate: new Date(),
-                enddate: new Date(),
-                insurancepremium: 0,
-                insurancerate: 0,
-                suminsured: 0
+                startDate: new Date(),
+                endDate: new Date(),
+                insurancePremium: 0,
+                insuranceRate: 0,
+                insuranceSum: 0
             })))
         }
     }, [agreement])
-
-    console.log('_fields', _fields)
+    console.log('agreement', agreement)
+    console.log('risks', risks)
+    console.log('riskFields', riskFields)
     return (
         <Row>
             <Col xs={12}>
@@ -174,55 +222,11 @@ const StepTwo = ({id = null, ...props}) => {
                         <Col xs={12}>
                             <hr/>
                             {objects.length > 0 && <Table hideThead={false}
-                                                          thead={['Object type', '', '', '', '', 'Actions']}>
+                                                          thead={['Object JSON', 'Actions']}>
                                 {objects?.length > 0 && objects.map((obj, i) => <tr key={get(obj, 'id', i)}>
-                                    <td colSpan={5}>
-                                        <Field
-                                            options={typeofobject}
-                                            type={'select'}
-                                            name={`objectofinsurance[${i}].typeofobjects`}
-                                            defaultValue={get(obj, 'typeofobjects')}
-                                            property={{hideLabel: true}}
-                                            isDisabled={true}
-                                        />
+                                    <td style={{width: 500}}>
+                                        {obj && <ReactJson collapsed src={obj}/>}
                                     </td>
-                                    {/*<td>*/}
-                                    {/*    <Field*/}
-                                    {/*        options={[]}*/}
-                                    {/*        type={'select'}*/}
-                                    {/*        name={`objectofinsurance[${i}].objects`}*/}
-                                    {/*        defaultValue={get(obj, 'objects')}*/}
-                                    {/*        property={{hideLabel: true}}*/}
-                                    {/*        isDisabled={true}*/}
-                                    {/*    />*/}
-                                    {/*</td>*/}
-                                    {/*<td>*/}
-                                    {/*    <Field*/}
-                                    {/*        options={regions}*/}
-                                    {/*        type={'select'}*/}
-                                    {/*        name={`objectofinsurance[${i}].region`}*/}
-                                    {/*        defaultValue={get(obj, 'region')}*/}
-                                    {/*        property={{hideLabel: true}}*/}
-                                    {/*        isDisabled={true}*/}
-                                    {/*    />*/}
-                                    {/*</td>*/}
-                                    {/*<td>*/}
-                                    {/*    <Field*/}
-                                    {/*        options={districts}*/}
-                                    {/*        type={'select'}*/}
-                                    {/*        name={`objectofinsurance[${i}].districtsId`}*/}
-                                    {/*        defaultValue={get(obj, 'districtsId')}*/}
-                                    {/*        property={{hideLabel: true}}*/}
-                                    {/*        isDisabled={true}*/}
-                                    {/*    />*/}
-                                    {/*</td>*/}
-                                    {/*<td>*/}
-                                    {/*    <Field type={'number-format-input'}*/}
-                                    {/*           name={`objectofinsurance[${i}].quantity`}*/}
-                                    {/*           property={{hideLabel: true, disabled: true}}*/}
-                                    {/*           defaultValue={get(obj, 'quantity')}*/}
-                                    {/*    />*/}
-                                    {/*</td>*/}
                                     <td className={'cursor-pointer'}
                                         onClick={() => removeObjects(get(obj, 'id', i))}>
                                         <Trash2 color={'#dc2626'}/>
@@ -276,48 +280,18 @@ const StepTwo = ({id = null, ...props}) => {
                         {riskFields.length > 0 && <Col xs={12} className={'mb-25 horizontal-scroll'}>
                             <hr/>
                             <Table hideThead={false}
-                                   thead={['Risk group', 'Risk', 'Класс', 'startdate', 'enddate', 'insurancepremium', 'insurancerate', 'suminsured']}>
+                                   thead={['Risk', 'startdate', 'enddate', 'insurancepremium', 'insurancerate', 'suminsured']}>
                                 {riskFields.map((item, i) => <tr key={i + 1}>
-                                    <td>
-                                        <Flex>
-                                            <Checkbox className={'mr-16'}/>
-                                            <Field
-                                                className={'w-250'}
-                                                name={`riskId[${i}].riskgroup`}
-                                                type={'select'}
-                                                property={{
-                                                    hideLabel: true
-                                                }}
-                                                options={risksGroupOptions}
-                                                defaultValue={get(findItem(get(risksGroup, 'data.data'), get(item, "riskgroup")), '_id')}
-                                                isDisabled={true}
-                                            />
-                                        </Flex>
-                                    </td>
                                     <td>
                                         <Field
                                             className={'w-250'}
-                                            name={`riskId[${i}].risk`}
+                                            name={`riskDetails[${i}].risk`}
                                             type={'select'}
                                             property={{
                                                 hideLabel: true,
                                             }}
                                             options={risksOptions}
-                                            defaultValue={get(findItem(get(risks, 'data.data'), get(item, "risk")), '_id')}
-                                            isDisabled={true}
-                                        />
-                                    </td>
-                                    <td>
-                                        <Field
-                                            className={'w-250'}
-                                            name={`riskId[${i}].classeId`}
-                                            type={'select'}
-                                            property={{
-                                                hideLabel: true,
-                                                bgColor: get(findItem(get(classes, 'data.data'), get(item, "_id")), 'color')
-                                            }}
-                                            options={classOptions}
-                                            defaultValue={get(findItem(get(classes, 'data.data'), get(item, "classeId")), '_id')}
+                                            defaultValue={get(findItem(get(risks, 'data.data'), get(item, "_id")), '_id')}
                                             isDisabled={true}
                                         />
                                     </td>
@@ -326,7 +300,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             property={{
                                                 hideLabel: true,
                                             }}
-                                            name={`riskId[${i}].startdate`} type={'datepicker'}
+                                            name={`riskDetails[${i}].startDate`} type={'datepicker'}
                                         />
                                     </td>
                                     <td>
@@ -334,43 +308,43 @@ const StepTwo = ({id = null, ...props}) => {
                                             property={{
                                                 hideLabel: true,
                                             }}
-                                            name={`riskId[${i}].enddate`} type={'datepicker'}
+                                            name={`riskDetails[${i}].endDate`} type={'datepicker'}
                                         />
                                     </td>
                                     <td>
                                         <Flex justify={'center'}>
                                             <Field
 
-                                                name={`riskId[${i}].insurancepremium`}
+                                                name={`riskDetails[${i}].insurancePremium`}
                                                 type={'number-format-input'}
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: 'ввод значения',
                                                 }}
-                                                defaultValue={round((((dayjs(get(_fields, `riskId[${i}].enddate`)).diff(get(_fields, `riskId[${i}].startdate`), 'day') + 1) / 365) * get(_fields, `riskId[${i}].suminsured`, 0) * get(_fields, `riskId[${i}].insurancerate`, 0) / 100), 2)}
+                                                defaultValue={round((((dayjs(get(_fields, `riskDetails[${i}].endDate`)).diff(get(_fields, `riskDetails[${i}].startDate`), 'day') + 1) / 365) * get(_fields, `riskDetails[${i}].insuranceSum`, 0) * get(_fields, `riskId[${i}].insuranceRate`, 0) / 100), 2)}
                                             />
                                         </Flex>
                                     </td>
                                     <td>
                                         <Flex justify={'flex-end'}>
                                             <Field
-                                                name={`riskId[${i}].insurancerate`}
+                                                name={`riskDetails[${i}].insuranceRate`}
                                                 type={'number-format-input'}
-                                                property={{hideLabel: true, placeholder: 'insurancerate', suffix: ' %'}}
-                                                defaultValue={round((365 * 100 * get(_fields, `riskId[${i}].insurancepremium`, 0) / ((dayjs(get(_fields, `riskId[${i}].enddate`)).diff(get(_fields, `riskId[${i}].startdate`), 'day') + 1) * get(_fields, `riskId[${i}].suminsured`, 0))), 2)}
+                                                property={{hideLabel: true, placeholder: 'insuranceRate', suffix: ' %'}}
+                                                defaultValue={round((365 * 100 * get(_fields, `riskDetails[${i}].insurancePremium`, 0) / ((dayjs(get(_fields, `riskDetails[${i}].endDate`)).diff(get(_fields, `riskDetails[${i}].startDate`), 'day') + 1) * get(_fields, `riskDetails[${i}].insuranceSum`, 0))), 2)}
                                             />
                                         </Flex>
                                     </td>
                                     <td>
                                         <Flex justify={'center'}>
                                             <Field
-                                                name={`riskId[${i}].suminsured`}
+                                                name={`riskDetails[${i}].insuranceSum`}
                                                 type={'number-format-input'}
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: 'ввод значения',
                                                 }}
-                                                defaultValue={get(agreement, `riskId[${i}].suminsured`, 0)}
+                                                defaultValue={get(agreement, `riskDetails[${i}].insuranceSum`, 0)}
                                             />
                                         </Flex>
                                     </td>
@@ -434,23 +408,23 @@ const StepTwo = ({id = null, ...props}) => {
                                 <Col xs={3}>
                                     <Field
                                         className={'mr-16'}
-                                        name={`totalsuminsured`}
+                                        name={`totalInsuranceSum`}
                                         type={'number-format-input'}
                                         label={'Общая страховая сумма'}
                                         property={{
                                             placeholder: 'ввод значения',
                                             disabled: true
                                         }}
-                                        defaultValue={sum(range(0, riskFields?.length).map(i => get(_fields, `riskId[${i}].suminsured`)))}
+                                        defaultValue={sum(range(0, riskFields?.length).map(i => get(_fields, `riskDetails[${i}].insuranceSum`)))}
                                     />
                                 </Col>
                                 <Col xs={3}>
                                     <Field
                                         className={'mr-16'}
-                                        name={`totalinsurancepremium`}
+                                        name={`totalInsurancePremium`}
                                         type={'number-format-input'}
                                         label={'Общая страховая премия'}
-                                        defaultValue={sum(range(0, riskFields?.length).map(i => get(_fields, `riskId[${i}].insurancepremium`)))}
+                                        defaultValue={sum(range(0, riskFields?.length).map(i => get(_fields, `riskDetails[${i}].insurancePremium`)))}
                                         property={{
                                             placeholder: 'ввод значения',
                                             disabled: true
@@ -468,7 +442,7 @@ const StepTwo = ({id = null, ...props}) => {
                             <Row>
                                 <Col xs={6}>
                                     <Field
-                                        name={`accruedinsurancepremium`}
+                                        name={`accruedInsurancePremium`}
                                         type={'number-format-input'}
                                         label={'Начисленная страховая премия'}
                                         property={{
@@ -479,7 +453,7 @@ const StepTwo = ({id = null, ...props}) => {
                                 </Col>
                                 <Col xs={6}>
                                     <Field
-                                        name={`paidinsurancepremium`}
+                                        name={`paidInsurancePremium`}
                                         type={'number-format-input'}
                                         label={'Оплаченная страховая премия'}
                                         property={{
@@ -487,14 +461,14 @@ const StepTwo = ({id = null, ...props}) => {
                                         }}
                                     />
                                 </Col>
-                                {get(agreement, 'product.Isforeigncurrency', false) && <Col xs={3}>
+                                {get(agreement, 'product.allowForeignCurrency', false) && <Col xs={3}>
                                     <Field
                                         options={payments}
                                         property={{isColumn: true}}
                                         label={'Валюта оплаты'}
                                         type={'checkbox'}
-                                        name={'paymentcurrency'}
-                                        defaultValue={get(agreement, 'paymentcurrency')}
+                                        name={'paymentCurrency'}
+                                        defaultValue={get(agreement, 'paymentCurrency')}
                                     />
                                 </Col>}
                                 <Col xs={9}>
@@ -504,11 +478,11 @@ const StepTwo = ({id = null, ...props}) => {
                                                 <Field
                                                     label={t('Комиссия за дубликат')}
                                                     type={'switch'}
-                                                    name={'duplicatefee.Isduplicatefee'}
+                                                    name={'duplicateFee.hasDuplicateFee'}
                                                     params={{required: true}}
                                                 />
-                                                {get(show, 'duplicatefee.Isduplicatefee', false) && <><Field
-                                                    name={`duplicatefee.countoffee`}
+                                                {get(_fields, 'duplicateFee.hasDuplicateFee', false) && <><Field
+                                                    name={`duplicateFee.countOfFee`}
                                                     type={'number-format-input'}
                                                     property={{
                                                         placeholder: 'ввод значения',
@@ -524,7 +498,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                             label: '%'
                                                         }]}
                                                         type={'switch'}
-                                                        name={'duplicatefee.typeoffee'}
+                                                        name={'duplicateFee.typeOfFee'}
                                                         params={{required: true}}
                                                         property={{
                                                             hideLabel: true
@@ -541,17 +515,18 @@ const StepTwo = ({id = null, ...props}) => {
                                                 <Field
                                                     label={t('Доказуемые расходы')}
                                                     type={'switch'}
-                                                    name={'demonstrablecosts.Isdemonstrablecosts'}
+                                                    name={'demonstrableCosts.hasDemonstrableCosts'}
                                                     params={{required: true}}
                                                 />
-                                                {get(show, 'demonstrablecosts.Isdemonstrablecosts', false) && <><Field
-                                                    name={`demonstrablecosts.countoffee`}
-                                                    type={'number-format-input'}
-                                                    property={{
-                                                        placeholder: 'ввод значения',
-                                                        hideLabel: true
-                                                    }}
-                                                />
+                                                {get(_fields, 'demonstrableCosts.hasDemonstrableCosts', false) && <>
+                                                    <Field
+                                                        name={`demonstrableCosts.countOfFee`}
+                                                        type={'number-format-input'}
+                                                        property={{
+                                                            placeholder: 'ввод значения',
+                                                            hideLabel: true
+                                                        }}
+                                                    />
                                                     <Field
                                                         options={[
                                                             {
@@ -564,7 +539,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                             }
                                                         ]}
                                                         type={'switch'}
-                                                        name={'demonstrablecosts.typeoffee'}
+                                                        name={'demonstrableCosts.typeOfFee'}
                                                         params={{required: true}}
                                                         property={{
                                                             hideLabel: true
@@ -590,22 +565,22 @@ const StepTwo = ({id = null, ...props}) => {
                                             property={{
                                                 hideLabel: true,
                                             }}
-                                            name={`premiumpaymentschedule[${i}].scheduledate`}
+                                            name={`paymentSchedule[${i}].date`}
                                             type={'datepicker'}
-                                            defaultValue={get(s, 'scheduledate')}
+                                            defaultValue={get(s, 'date')}
                                             disabled={true}
                                         />
                                     </td>
                                     <td>
                                         <Field
-                                            name={`premiumpaymentschedule[${i}].schedulecount`}
+                                            name={`paymentSchedule[${i}].count`}
                                             type={'number-format-input'}
                                             property={{
                                                 placeholder: 'ввод значения',
                                                 hideLabel: true,
                                                 disabled: true
                                             }}
-                                            defaultValue={get(s, 'schedulecount')}
+                                            defaultValue={get(s, 'count')}
                                         />
                                     </td>
                                 </tr>)}
@@ -614,7 +589,7 @@ const StepTwo = ({id = null, ...props}) => {
                                         <strong>Итого сумма:</strong>
                                     </td>
                                     <td><strong><NumberFormat displayType={'text'} thousandSeparator={" "}
-                                                              value={Math.abs(get(diff, 'accruedinsurancepremium', 0) - get(diff, 'paidinsurancepremium', 0))}/></strong>
+                                                              value={Math.abs(get(_fields, 'accruedInsurancePremium', 0) - get(_fields, 'paidInsurancePremium', 0))}/></strong>
                                     </td>
                                 </tr>
                             </Table>}
@@ -624,11 +599,11 @@ const StepTwo = ({id = null, ...props}) => {
                         <Col xs={12}><Title>Франшиза</Title></Col>
                     </Row>
                     <Row className={'mb-25'}>
-                        {get(agreement, 'riskId', []).length > 0 && <Col xs={12} className={'horizontal-scroll'}>
+                        {get(agreement, 'product.risk', []).length > 0 && <Col xs={12} className={'horizontal-scroll'}>
                             <hr/>
                             <Table hideThead={false}
                                    thead={['Страховой риск', 'Имеет франшизу', 'Строго фиксирована', 'Введите фиксированное значение', 'Укажите тип франшизы', 'Укажите базу франшизы', 'Франшиза']}>
-                                {get(agreement, 'riskId', []).map((item, i) => <tr key={i + 1}>
+                                {get(agreement, 'product.risk', []).map((item, i) => <tr key={i + 1}>
                                     <td>
                                         <Field
                                             className={'w-250'}
@@ -636,7 +611,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             type={'select'}
                                             property={{hideLabel: true}}
                                             options={risksOptions}
-                                            defaultValue={get(findItem(get(risks, 'data.data'), get(item, 'risk')), '_id')}
+                                            defaultValue={get(findItem(get(risks, 'data.data'), get(item, '_id')), '_id')}
                                             isDisabled={true}
                                         />
                                     </td>
@@ -644,10 +619,10 @@ const StepTwo = ({id = null, ...props}) => {
                                         <Flex justify={'center'}>
                                             <Field
                                                 type={'switch'}
-                                                name={`franchise[${i}].Isfranchise`}
-                                                defaultValue={get(agreement, `franchise[${i}].Isfranchise`, false)}
+                                                name={`franchise[${i}].hasFranchise`}
+                                                defaultValue={get(agreement, `franchise[${i}].hasFranchise`, false)}
                                                 property={{hideLabel: true}}
-                                                disabled={!!!(get(agreement, `product.Isfranchisechange`, false))}
+                                                disabled={!!!(get(agreement, `product.allowChangeFranchise`, false))}
 
                                             />
                                         </Flex>
@@ -656,24 +631,24 @@ const StepTwo = ({id = null, ...props}) => {
                                         <Flex justify={'center'}>
                                             <Field
                                                 type={'switch'}
-                                                name={`franchise[${i}].Isfixedfranchise`}
-                                                defaultValue={get(agreement, `franchise[${i}].Isfixedfranchise`, false)}
+                                                name={`franchise[${i}].isFixed`}
+                                                defaultValue={get(agreement, `franchise[${i}].isFixed`, false)}
                                                 property={{hideLabel: true}}
-                                                disabled={!!!(get(fields, `franchise[${i}].Isfranchise`))}
+                                                disabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
                                             />
                                         </Flex>
                                     </td>
                                     <td>
                                         <Flex justify={'center'}>
                                             <Field
-                                                name={`franchise[${i}].fixedvalue`}
+                                                name={`franchise[${i}].fixedValue`}
                                                 type={'number-format-input'}
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: 'ввод значения',
-                                                    disabled: !!!(get(fields, `franchise[${i}].Isfixedfranchise`))
+                                                    disabled: !!!(get(fields, `franchise[${i}].isFixed`))
                                                 }}
-                                                defaultValue={get(agreement, `franchise[${i}].fixedvalue`, 0)}
+                                                defaultValue={get(agreement, `franchise[${i}].fixedValue`, 0)}
                                             />
                                         </Flex>
                                     </td>
@@ -681,12 +656,12 @@ const StepTwo = ({id = null, ...props}) => {
                                         <Flex justify={'center'}>
                                             <Field
                                                 className={'w-250'}
-                                                name={`franchise[${i}].typeoffranchise`}
+                                                name={`franchise[${i}].franchiseType`}
                                                 type={'select'}
                                                 property={{hideLabel: true}}
                                                 options={franchises}
-                                                isDisabled={!!!(get(fields, `franchise[${i}].Isfranchise`))}
-                                                defaultValue={get(agreement, `franchise[${i}].typeoffranchise`)}
+                                                isDisabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
+                                                defaultValue={get(agreement, `franchise[${i}].franchiseType`)}
                                             />
                                         </Flex>
                                     </td>
@@ -694,12 +669,12 @@ const StepTwo = ({id = null, ...props}) => {
                                         <Flex justify={'center'}>
                                             <Field
                                                 className={'w-250'}
-                                                name={`franchise[${i}].baseoffranchise`}
+                                                name={`franchise[${i}].franchiseBase`}
                                                 type={'select'}
                                                 property={{hideLabel: true}}
                                                 options={baseFranchises}
-                                                isDisabled={!!!(get(fields, `franchise[${i}].Isfranchise`))}
-                                                defaultValue={get(agreement, `franchise[${i}].baseoffranchise`)}
+                                                isDisabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
+                                                defaultValue={get(agreement, `franchise[${i}].franchiseBase`)}
                                             />
                                         </Flex>
                                     </td>
@@ -712,7 +687,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: 'Введите значение',
-                                                    disabled: !(get(fields, `franchise[${i}].Isfranchise`) && !get(fields, `franchise[${i}].Isfixedfranchise`))
+                                                    disabled: !(get(fields, `franchise[${i}].hasFranchise`) && !get(fields, `franchise[${i}].isFixed`))
                                                 }}
                                                 defaultValue={get(agreement, `franchise[${i}].franchise`, '')}
                                             />
@@ -734,37 +709,514 @@ const StepTwo = ({id = null, ...props}) => {
                 </Form>
                 <Modal title={'Добавить объект'} visible={openObjectModal}
                        hide={setOpenObjectModal}>
-
-                    <Form formRequest={({data}) => {
-                        addObjects({...data, id: objects.length});
-                        setOpenObjectModal(false)
-                    }}
+                    <Form getValueFromField={(value, name) => _setModalFields(prev => ({...prev, [name]: value}))}
+                          formRequest={({data}) => {
+                              addObjects({...data, id: objects.length});
+                              setOpenObjectModal(false)
+                          }}
                           footer={<><Button>{t("Add")}</Button></>}>
                         <Row className={'mt-15'}>
                             <Col xs={4}>
                                 <Field
-                                    property={{
-                                        onChange: (val) => {
-                                            _setObjectType(val)
-                                        }
-                                    }}
-                                    options={typeofobject}
+                                    options={entries(INSURANCE_OBJECT_TYPES).map(_item => ({
+                                        value: head(_item),
+                                        label: t(last(_item))
+                                    }))}
                                     type={'select'}
-                                    name={`typeofobjects`}
+                                    name={`objectOfInsurance.type`}
+                                    label={t('Object type')}
+                                    params={{required: true}}
                                 />
                             </Col>
                             {
-                                get(objectFields, `data.data`, []).map(_field => <Col xs={4}>
-                                    <Field
-                                        url={get(_field, 'url', '#')}
-                                        label={get(_field, 'label')}
-                                        options={[]}
-                                        type={get(_field, 'type')}
-                                        name={get(_field, 'name')}
-                                    />
-                                </Col>)
-                            }
+                                isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.BORROWER) && <>
+                                    <Col xs={4}>
+                                        <Field
+                                            options={entries(PERSON_TYPE).map(_item => ({
+                                                value: last(_item),
+                                                label: t(last(_item))
+                                            }))}
+                                            type={'select'}
+                                            name={`objectOfInsurance.details.type`}
+                                            label={t('Person type')}
+                                            params={{required: true}}
+                                        />
+                                    </Col>
+                                    {
+                                        isEqual(get(_modalFields, 'objectOfInsurance.details.type'), PERSON_TYPE.person) ? <>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field params={{required: true}}
+                                                       label={'Firstname'}
+                                                       type={'input'}
+                                                       name={'person.fullName.firstname'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field params={{required: true}}
+                                                       label={'Lastname'} type={'input'}
+                                                       name={'person.fullName.lastname'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field params={{required: true}}
+                                                       label={'Middlename'}
+                                                       type={'input'}
+                                                       name={'objectOfInsurance.details.person.fullName.middlename'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field params={{required: true}}
+                                                       label={'Дата выдачи паспорта'}
+                                                       type={'datepicker'}
+                                                       name={'objectOfInsurance.details.person.passportData.startDate'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field params={{required: true}}
+                                                       label={'Кем выдан'}
+                                                       type={'input'}
+                                                       name={'objectOfInsurance.details.person.passportData.issuedBy'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field
+                                                    fullWidth
+                                                    params={{required: true}}
+                                                    options={genderList}
+                                                    label={'Gender'}
+                                                    type={'select'}
+                                                    name={'objectOfInsurance.details.person.gender'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field label={'Passport seria'} params={{required: true}}
+                                                       type={'input-mask'} property={{
+                                                    placeholder: 'Seria',
+                                                    mask: 'aa',
+                                                    maskChar: '_'
+                                                }}
+                                                       name={'objectOfInsurance.details.person.passportData.seria'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field label={'Passport number'} params={{required: true}}
+                                                       type={'input-mask'} property={{
+                                                    placeholder: 'Number',
+                                                    mask: '9999999',
+                                                    maskChar: '_'
+                                                }}
+                                                       name={'objectOfInsurance.details.person.passportData.number'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field label={'ПИНФЛ'} type={'input-mask'} property={{
+                                                    placeholder: 'ПИНФЛ',
+                                                    mask: '99999999999999',
+                                                    maskChar: '_'
+                                                }}
+                                                       name={'objectOfInsurance.details.person.passportData.pinfl'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field
+                                                    params={{
+                                                        required: true,
+                                                        pattern: {
+                                                            value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
+                                                            message: 'Invalid format'
+                                                        }
+                                                    }}
+                                                    label={'Phone'}
+                                                    type={'input'}
+                                                    property={{placeholder: '998XXXXXXXXX'}}
+                                                    name={'objectOfInsurance.details.person.phone'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field
+                                                    label={'Email'}
+                                                    type={'input'}
+                                                    name={'objectOfInsurance.details.person.email'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field
+                                                    params={{required: true}}
+                                                    options={residentTypeList}
+                                                    label={'Resident type'}
+                                                    type={'select'}
+                                                    name={'objectOfInsurance.details.person.residentType'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field
+                                                    noMaxWidth
+                                                    params={{required: true}}
+                                                    label={'Address'}
+                                                    type={'input'}
+                                                    name={'objectOfInsurance.details.person.address'}/>
+                                            </Col>
 
+                                        </> : <>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field params={{required: true}}
+                                                       label={'Наименование'} type={'input'}
+                                                       name={'objectOfInsurance.details.organization.name'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field label={'Inn'} params={{required: true}} type={'input-mask'}
+                                                       property={{
+                                                           placeholder: 'Inn',
+                                                           mask: '999999999',
+                                                           maskChar: '_'
+                                                       }}
+                                                       name={'objectOfInsurance.details.organization.inn'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field label={'Руководитель'} type={'input'}
+                                                       name={'objectOfInsurance.details.organization.representativeName'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field label={'Должность'} type={'input'}
+                                                       name={'objectOfInsurance.details.organization.position'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field label={'Email'} type={'input'}
+                                                       name={'objectOfInsurance.details.organization.email'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field params={{
+                                                    required: true,
+                                                    pattern: {
+                                                        value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
+                                                        message: 'Invalid format'
+                                                    }
+                                                }}
+                                                       property={{placeholder: '998XXXXXXXXX'}}
+                                                       label={'Телефон'} type={'input'}
+                                                       name={'objectOfInsurance.details.organization.phone'}/>
+                                            </Col>
+                                            <Col xs={4}><Field
+                                                label={'Oked'} params={{required: true, valueAsString: true}}
+                                                type={'input'}
+                                                name={'objectOfInsurance.details.organization.oked'}/></Col>
+
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field label={'Расчетный счет'} type={'input'}
+                                                       name={'objectOfInsurance.details.organization.checkingAccount'}/>
+                                            </Col>
+                                            <Col xs={4}><Field label={'Форма собственности'}
+                                                               options={ownershipFormList}
+                                                               type={'select'}
+                                                               name={'objectOfInsurance.details.organization.ownershipForm'}/></Col>
+
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field
+                                                    noMaxWidth
+                                                    params={{required: true}}
+                                                    label={'Address'}
+                                                    type={'input'}
+                                                    name={'objectOfInsurance.details.organization.address'}/>
+                                            </Col>
+
+                                        </>
+                                    }
+
+                                </>
+                            }
+                            {
+                                isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.VEHICLE) && <>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={residentTypeList}
+                                            label={'Resident type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.residency'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Регистрационный номер'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.registrationNumber'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Марка ТС'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.carMake'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Модель ТС'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.carModel'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            options={vehicleTypeList}
+                                            params={{required: true}}
+                                            label={'Vehicle type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.carType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Год выпуска'}
+                                            type={'datepicker'}
+                                            name={'objectOfInsurance.details.manufactureYear'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Номер кузова'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.bodyNumber'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Номер двигателя'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.engineNumber'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true, valueAsNumber: true}}
+                                            property={{type: 'number'}}
+                                            label={'Грузоподъемность'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cargoCapacity'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true, valueAsNumber: true}}
+                                            property={{type: 'number'}}
+                                            label={'Количество мест сидения'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.seatNumber'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Номер тех.паспорта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.techPassportNumber'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Серия тех.паспорта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.techPassportSeries'}/>
+                                    </Col>
+                                </>}
+                            {
+                                isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.PROPERTY) && <>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            options={propertyRightTypeList}
+                                            label={'Property right type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.propertyRightType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={residentTypeList}
+                                            label={'Resident type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.ownerResidency'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Кадастровый номер'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cadastralNumber'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Дата кадастрового документа'}
+                                            type={'datepicker'}
+                                            name={'objectOfInsurance.details.cadastralDocDate'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={propertyTypeList}
+                                            label={'Property type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.propertyClassification'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Описание имущества'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.propertyDescription'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Почтовый индекс'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.postcode'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Адрес имущества'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.address'}/>
+                                    </Col>
+                                </>}
+                            {
+                                isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.AGRICULTURE) && <>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={residentTypeList}
+                                            label={'Resident type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.ownerResidency'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={agriculturalTypeList}
+                                            label={'Agricultural type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.agriculturalObjectType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Наименование объекта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.objectName'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Описание объекта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.objectDescription'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={measurementTypeList}
+                                            label={'Measurement type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.measurementType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Объем страхования'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.insuranceVolume'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Почтовый индекс'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.postcode'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Адрес имущества'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.address'}/>
+                                    </Col>
+                                </>}
+                            {
+                                isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.OTHEROBJECT) && <>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={residentTypeList}
+                                            label={'Resident type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.ownerResidency'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={agriculturalTypeList}
+                                            label={'Agricultural type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.agriculturalObjectType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Наименование объекта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.objectName'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Описание объекта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.objectDescription'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={measurementTypeList}
+                                            label={'Measurement type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.measurementType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Объем страхования'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.insuranceVolume'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Почтовый индекс'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.postcode'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Адрес имущества'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.address'}/>
+                                    </Col>
+                                </>}
+                            <Col xs={4}>
+                                <Field
+                                    type={'number-format-input'}
+                                    name={`objectOfInsurance.quantity`}
+                                    label={t('Quantity')}
+                                    params={{required: true}}
+                                />
+                            </Col>
+                            <Col xs={4}>
+                                <Field
+                                    options={countryList}
+                                    defaultValue={210}
+                                    type={'select'}
+                                    name={`objectOfInsurance.country`}
+                                    label={t('Country')}
+                                    params={{required: true}}
+                                />
+                            </Col>
+                            <Col xs={4}>
+                                <Field
+                                    options={regionList}
+                                    type={'select'}
+                                    name={`objectOfInsurance.region`}
+                                    label={t('Region')}
+                                    params={{required: true}}
+                                />
+                            </Col>
+                            <Col xs={4}>
+                                <Field
+                                    options={districtList}
+                                    type={'select'}
+                                    name={`objectOfInsurance.district`}
+                                    label={t('District')}
+                                    params={{required: true}}
+                                />
+                            </Col>
                         </Row>
                     </Form>
                 </Modal>

@@ -14,7 +14,7 @@ import {URLS} from "../../../../constants/url";
 import {OverlayLoader} from "../../../../components/loader";
 import {useNavigate} from "react-router-dom";
 
-const StepFour = ({id = null,...props}) => {
+const StepFour = ({id = null, ...props}) => {
     const navigate = useNavigate()
     const {t} = useTranslation()
 
@@ -32,8 +32,6 @@ const StepFour = ({id = null,...props}) => {
     const agreement = useSettingsStore(state => get(state, 'agreement', {}))
 
 
-
-
     const nextStep = ({data}) => {
         if (id) {
             // updateProduct({url: `${URLS.products}/${id}`, attributes: product}, {
@@ -47,7 +45,8 @@ const StepFour = ({id = null,...props}) => {
             //     }
             // })
         } else {
-            createAgreement({url: URLS.agreements, attributes: {...agreement,...data}}, {
+            const {product, ...rest} = agreement
+            createAgreement({url: URLS.agreements, attributes: {...rest, ...data, product: get(product, '_id')}}, {
                 onSuccess: () => {
                     resetAgreement();
                     navigate('/agreements')
@@ -71,21 +70,14 @@ const StepFour = ({id = null,...props}) => {
     }
 
 
-
-
-
-
-    console.log('agreement',agreement)
-
-
     return (
         <Row>
             {(isLoading) && <OverlayLoader/>}
             <Col xs={12}>
-                <StepNav step={4} steps={['Продукт','Обязательства','Расторжение','Документооборот']}/>
+                <StepNav step={4} steps={['Продукт', 'Обязательства', 'Расторжение', 'Документооборот']}/>
             </Col>
             <Col xs={12}>
-                <Form formRequest={nextStep} >
+                <Form formRequest={nextStep}>
                     <Row className={'mb-15'}>
                         <Col xs={12}>
                             <Title>Анкета заявления</Title>
@@ -93,33 +85,33 @@ const StepFour = ({id = null,...props}) => {
                     </Row>
                     <Row>
                         <Col xs={3}>
-                            <Field name={'applicationdate'}
+                            <Field name={'applicationDate'}
                                    type={'datepicker'}
                                    label={'Анкета заявления'}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field
-                                name={`appregistrationnumber`}
+                                name={`registrationNumber`}
                                 type={'input'}
                                 label={'Номер регистрации'}
                             />
                         </Col>
                         <Col xs={3}>
-                            <Field name={'applicationdate'} type={'datepicker'}
+                            <Field name={'applicationDate'} type={'datepicker'}
                                    label={'Дата заявления'}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field
-                                name={`whoaccepted`}
+                                name={`whoAccepted`}
                                 type={'input'}
                                 label={'Кем принято'}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field
-                                name={`copyofdocuments`}
+                                name={`copyOfDocuments`}
                                 type={'dropzone'}
                                 label={'Скан копии документов'}
                             />
@@ -137,25 +129,13 @@ const StepFour = ({id = null,...props}) => {
                             <Field
                                 label={t('Генеральный договор')}
                                 type={'switch'}
-                                name={'generalagreement'}
+                                name={'hasGeneralAgreement'}
                                 params={{required: true}}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field
-                                name={`numberofcontract`}
-                                type={'input'}
-                                label={'Номер договора'}
-                            />
-                        </Col>
-                        <Col xs={3}>
-                            <Field name={'agreementdate'} type={'datepicker'}
-                                   label={'Дата договора'}
-                            />
-                        </Col>
-                        <Col xs={3}>
-                            <Field
-                                name={`copyofdocuments`}
+                                name={`copyOfAgreement`}
                                 type={'dropzone'}
                                 label={'Скан копии договоров'}
                             />
@@ -169,7 +149,7 @@ const StepFour = ({id = null,...props}) => {
                     <Row>
                         <Col xs={3}>
                             <Field
-                                name={`documents.editaneldocumentation`}
+                                name={`documents`}
                                 type={'dropzone'}
                                 label={'Скан копии документов'}
                             />

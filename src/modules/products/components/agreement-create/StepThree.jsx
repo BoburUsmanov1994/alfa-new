@@ -17,6 +17,7 @@ import Table from "../../../../components/table";
 import {Trash2} from "react-feather";
 
 const StepThree = ({...props}) => {
+    const [fields, setFields] = useState({})
     const {t} = useTranslation()
 
     const [openCommissionModal, setOpenCommissionModal] = useState(false);
@@ -34,8 +35,8 @@ const StepThree = ({...props}) => {
     const agreement = useSettingsStore(state => get(state, 'agreement', {}))
     const commissions = useSettingsStore(state => get(state, 'commissions', []))
 
-    let {data: agents} = useGetAllQuery({key: KEYS.agents, url: URLS.agents})
-    agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', 'forindividualsdata.secondname')
+    let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.agents}/list`})
+    agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', ['organization.nameoforganization', 'person.secondname', 'person.name'])
 
     const nextStep = ({data}) => {
         setAgreement(data);
@@ -51,9 +52,7 @@ const StepThree = ({...props}) => {
         props.firstStep();
     }
 
-    let {data: reasons} = useGetAllQuery({key: KEYS.reasons, url: URLS.reasons})
-    reasons = getSelectOptionsListFromData(get(reasons, `data.data`, []), '_id', 'name')
-
+    console.log('agreement', agreement)
 
     return (
         <Row>
@@ -61,49 +60,8 @@ const StepThree = ({...props}) => {
                 <StepNav step={3} steps={['Продукт', 'Обязательства', 'Расторжение', 'Документооборот']}/>
             </Col>
             <Col xs={12}>
-                <Form formRequest={nextStep}>
-                    {/*<Row className={'mb-15'}>*/}
-                    {/*    <Col xs={12}>*/}
-                    {/*        <Title>Расторжение</Title>*/}
-                    {/*    </Col>*/}
-                    {/*</Row>*/}
-                    {/*<Row>*/}
-                    {/*    <Col xs={3}>*/}
-                    {/*        <Field name={'termination.terminationdate'} type={'datepicker'}*/}
-                    {/*               label={'Дата расторжения'}*/}
-                    {/*        />*/}
-                    {/*    </Col>*/}
-                    {/*    <Col xs={3}>*/}
-                    {/*        <Field*/}
-                    {/*            name={`termination.chargedamountreturned`}*/}
-                    {/*            type={'number-format-input'}*/}
-                    {/*            label={'Начисленная сумма к возврату'}*/}
-                    {/*            property={{*/}
-                    {/*                placeholder: 'ввод значения',*/}
-                    {/*            }}*/}
-                    {/*        />*/}
-                    {/*    </Col>*/}
-                    {/*    <Col xs={3}>*/}
-                    {/*        <Field*/}
-                    {/*            name={`termination.amountreturned`}*/}
-                    {/*            type={'number-format-input'}*/}
-                    {/*            label={'Возвращенная сумма'}*/}
-                    {/*            property={{*/}
-                    {/*                placeholder: 'ввод значения',*/}
-                    {/*            }}*/}
-                    {/*        />*/}
-                    {/*    </Col>*/}
-                    {/*    <Col xs={3}>*/}
-                    {/*        <Field*/}
-                    {/*            options={reasons}*/}
-                    {/*            type={'select'}*/}
-                    {/*            name={`termination.reason`}*/}
-                    {/*            label={'Причина'}*/}
-                    {/*            property={{*/}
-                    {/*                placeholder: 'Выберите'*/}
-                    {/*            }}/>*/}
-                    {/*    </Col>*/}
-                    {/*</Row>*/}
+                <Form getValueFromField={(value, name) => setFields(prev => ({...prev, [name]: value}))}
+                      formRequest={nextStep}>
                     <Row className={'mb-15'}>
                         <Col xs={12}>
                             <Title>Комиссия</Title>
@@ -123,8 +81,8 @@ const StepThree = ({...props}) => {
                                             className={'w-250'}
                                             options={agents}
                                             type={'select'}
-                                            name={`commission[${i}].agents`}
-                                            defaultValue={get(obj, 'agents')}
+                                            name={`commission[${i}].agent`}
+                                            defaultValue={get(obj, 'agent')}
                                             property={{hideLabel: true}}
                                             isDisabled={true}
                                         />
@@ -132,40 +90,40 @@ const StepThree = ({...props}) => {
                                     <td>
                                         <Field
                                             type={'number-format-input'}
-                                            name={`commission[${i}].percentageremuneration`}
-                                            defaultValue={get(obj, 'percentageremuneration')}
+                                            name={`commission[${i}].percentageRemuneration`}
+                                            defaultValue={get(obj, 'percentageRemuneration')}
                                             property={{hideLabel: true, disabled: true}}
                                         />
                                     </td>
                                     <td>
                                         <Field
                                             type={'number-format-input'}
-                                            name={`commission[${i}].accruedcommissionamount`}
-                                            defaultValue={get(obj, 'accruedcommissionamount')}
+                                            name={`commission[${i}].accruedCommissionAmount`}
+                                            defaultValue={get(obj, 'accruedCommissionAmount')}
                                             property={{hideLabel: true, disabled: true}}
                                         />
                                     </td>
                                     <td>
                                         <Field
                                             type={'number-format-input'}
-                                            name={`commission[${i}].commissionamountpaid`}
-                                            defaultValue={get(obj, 'commissionamountpaid')}
+                                            name={`commission[${i}].paidcommissionAmount`}
+                                            defaultValue={get(obj, 'paidcommissionAmount')}
                                             property={{hideLabel: true, disabled: true}}
                                         />
                                     </td>
                                     <td>
                                         <Field
                                             type={'input'}
-                                            name={`commission[${i}].accruedcommissionrefund`}
-                                            defaultValue={get(obj, 'accruedcommissionrefund')}
+                                            name={`commission[${i}].accruedCommissionRefund`}
+                                            defaultValue={get(obj, 'accruedCommissionRefund')}
                                             property={{hideLabel: true, disabled: true}}
                                         />
                                     </td>
                                     <td>
                                         <Field
                                             type={'input'}
-                                            name={`commission[${i}].returnedcommission`}
-                                            defaultValue={get(obj, 'returnedcommission')}
+                                            name={`commission[${i}].returnedCommission`}
+                                            defaultValue={get(obj, 'returnedCommission')}
                                             property={{hideLabel: true, disabled: true}}
                                         />
                                     </td>
@@ -187,7 +145,7 @@ const StepThree = ({...props}) => {
                     <Row>
                         <Col xs={3}>
                             <Field
-                                name={`rpm.perdeductionsRPM`}
+                                name={`rpm.perDeductionsRPM`}
                                 type={'number-format-input'}
                                 label={'Процент отчислений в РПМ'}
                                 property={{
@@ -198,10 +156,13 @@ const StepThree = ({...props}) => {
                         </Col>
                         <Col xs={3}>
                             <Field
-                                name={`rpm.amountdeductionsRPM`}
+                                disabled
+                                name={`rpm.amountDeductionsRPM`}
                                 type={'number-format-input'}
                                 label={'Сумма отчислений в РПМ'}
+                                defaultValue={get(fields, 'rpm.perDeductionsRPM') * get(agreement, 'totalInsurancePremium') / 100}
                                 property={{
+                                    disabled: true,
                                     placeholder: 'ввод значения',
                                 }}
                             />
@@ -231,35 +192,35 @@ const StepThree = ({...props}) => {
                                 <Field
                                     options={agents}
                                     type={'select'}
-                                    name={`agents`}
+                                    name={`agent`}
                                 />
                             </Col>
 
                             <Col xs={4}>
                                 <Field type={'number-format-input'}
-                                       name={`percentageremuneration`}
+                                       name={`percentageRemuneration`}
                                        property={{suffix: '%'}}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field type={'number-format-input'}
-                                       name={`accruedcommissionamount`}
+                                       name={`accruedCommissionAmount`}
                                        property={{suffix: '%'}}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field type={'number-format-input'}
-                                       name={`commissionamountpaid`}
+                                       name={`paidcommissionAmount`}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field type={'input'}
-                                       name={`accruedcommissionrefund`}
+                                       name={`accruedCommissionRefund`}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field type={'input'}
-                                       name={`returnedcommission`}
+                                       name={`returnedCommission`}
                                 />
                             </Col>
                         </Row>

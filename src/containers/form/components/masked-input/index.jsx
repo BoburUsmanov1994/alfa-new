@@ -4,6 +4,7 @@ import {get, hasIn,  isFunction} from "lodash";
 import {ErrorMessage} from "@hookform/error-message";
 import Label from "../../../../components/ui/label";
 import InputMask from 'react-input-mask';
+import classNames from "classnames";
 
 const Styled = styled.div`
   .masked-input {
@@ -63,7 +64,7 @@ const MaskedInput = ({
     return (
         <Styled {...rest}>
             <div className="form-group">
-                {!get(property,'hideLabel',false) && <Label>{label ?? name}</Label>}
+                {!get(property,'hideLabel',false) && <Label className={classNames({required:get(property,'hasRequiredLabel',get(params,'required'))})}>{label ?? name}</Label>}
                 <Controller
                     as={InputMask}
                     control={control}

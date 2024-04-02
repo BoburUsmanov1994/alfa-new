@@ -78,7 +78,7 @@ const Switcher = ({
         <Styled {...rest}>
             <div className="form-group">
                 {!get(property, 'hideLabel', false) && <Label
-                    className={classNames({required: get(property, 'hasRequiredLabel', false)})}>{label ?? name}</Label>}
+                    className={classNames({required: get(property, 'hasRequiredLabel', get(params,'required'))})}>{label ?? name}</Label>}
                 <Flex>
                     <span>{get(head(options), 'label', '-')}</span>
                     <Switch

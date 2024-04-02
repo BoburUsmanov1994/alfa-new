@@ -2,3 +2,11 @@ export  const PERSON_TYPE={
     person:'PERSON',
     organization:'ORGANIZATION'
 }
+
+export  const INSURANCE_OBJECT_TYPES={
+    BORROWER:'BORROWER',
+    VEHICLE:'VEHICLE',
+    PROPERTY:'PROPERTY',
+    AGRICULTURE:'AGRICULTURE',
+    OTHEROBJECT:'OTHEROBJECT ',
+}

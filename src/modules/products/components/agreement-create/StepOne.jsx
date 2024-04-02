@@ -1,11 +1,11 @@
-import React, {useState, memo, useEffect} from 'react';
+import React, {useState, memo} from 'react';
 import {Col, Row} from "react-grid-system";
 import StepNav from "../../../../components/step-nav";
 import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, includes, some, values, isEmpty, isEqual, head, find, isNil} from "lodash"
+import {get, isEmpty, isEqual, find} from "lodash"
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
@@ -18,23 +18,22 @@ import {useTranslation} from "react-i18next";
 import Flex from "../../../../components/flex"
 import Modal from "../../../../components/modal";
 import {ContentLoader} from "../../../../components/loader";
-import {useNavigate} from "react-router-dom";
 import {PERSON_TYPE} from "../../../../constants";
 
 const StepOne = ({id = null, ...props}) => {
     const {t} = useTranslation()
 
-
-    const [riskItem, setRiskItem] = useState({});
-    const [riskTypeId, setRiskTypeId] = useState(null);
     const [product, setProduct] = useState({});
-    const [pledgerList, setPledgerList] = useState([]);
 
     const setAgreement = useSettingsStore(state => get(state, 'setAgreement', () => {
     }))
     const setInsurer = useSettingsStore(state => get(state, 'setInsurer', () => {
     }))
+    const resetInsurer = useSettingsStore(state => get(state, 'resetInsurer', () => {
+    }))
     const setBeneficiary = useSettingsStore(state => get(state, 'setBeneficiary', () => {
+    }))
+    const resetBeneficiary = useSettingsStore(state => get(state, 'resetBeneficiary', () => {
     }))
     const setPledger = useSettingsStore(state => get(state, 'setPledger', () => {
     }))
@@ -63,7 +62,7 @@ const StepOne = ({id = null, ...props}) => {
             setAgreement({
                 ...rest,
                 product,
-                clinets: get(insurer, 'data.id'),
+                insurant: get(insurer, 'data.id'),
                 beneficiary: get(beneficiary, 'data.id'),
                 pledgers: pledgers.map(({id}) => id)
             });
@@ -80,6 +79,9 @@ const StepOne = ({id = null, ...props}) => {
     const reset = () => {
         resetAgreement();
         resetPledgers();
+        resetPledger();
+        resetInsurer();
+        resetBeneficiary();
         props.firstStep();
     }
     let {data: branchList} = useGetAllQuery({
@@ -95,43 +97,14 @@ const StepOne = ({id = null, ...props}) => {
     const productsList = getSelectOptionsListFromData(get(products, `data.data`, []), '_id', 'name')
 
 
-    let {data: riskGroups} = useGetAllQuery({key: KEYS.typeofrisk, url: URLS.typeofrisk})
-    riskGroups = getSelectOptionsListFromData(get(riskGroups, `data.data`, []), '_id', 'name')
-
-
-    let {data: risksList} = useGetAllQuery({key: KEYS.risk, url: URLS.risk})
-    risksList = getSelectOptionsListFromData(get(risksList, `data.data`, []), '_id', 'name')
-
-    let {data: risksData} = useGetAllQuery({
-        key: KEYS.riskFilter,
-        url: URLS.riskFilter,
-        params: {params: {typeofrisksId: riskTypeId}},
-        enabled: !!riskTypeId
-    })
-    let risks = getSelectOptionsListFromData(get(risksData, `data.data`, []), '_id', 'name')
-
-    let {data: insuranceClassesList} = useGetAllQuery({key: KEYS.classes, url: URLS.classes})
-    let insuranceClasses = getSelectOptionsListFromData(get(insuranceClassesList, `data.data`, []), '_id', 'name')
-
-
     const {mutate: filterRequest, isLoading: filterLoading} = usePostQuery({})
 
     const setRisk = (value, name) => {
-        if (includes(['riskgroup', 'classeId', 'risk'], name)) {
-            setRiskItem(prev => ({...prev, [name]: value}))
-        }
-        if (isEqual(name, 'riskgroup')) {
-            setRiskTypeId(value)
-        }
         if (isEqual(name, 'product')) {
             setProduct(find(get(products, 'data.data', []), p => isEqual(get(p, '_id'), value)))
         }
     }
 
-
-    const findItem = (list = [], id = null) => {
-        return find(list, l => isEqual(get(l, "_id"), id))
-    }
 
     const agentFilter = ({data}, type = 'insurer') => {
         filterRequest({
@@ -195,7 +168,7 @@ const StepOne = ({id = null, ...props}) => {
                 } else if (isEqual(type, 'pledger')) {
                     if (isEqual(get(pledger, 'type'), PERSON_TYPE.person) && get(data, 'data.person')) {
                         setPledger({
-                            ...pledger, data: {
+                            ...pledger, openModal: false, data: {
                                 ...get(data, 'data.person'),
                                 id: get(data, 'data._id')
                             }
@@ -225,6 +198,7 @@ const StepOne = ({id = null, ...props}) => {
             toast.warn('Select pledger')
         }
     }
+    console.log('pledgers',pledgers)
 
     return (
         <Row>
@@ -430,7 +404,7 @@ const StepOne = ({id = null, ...props}) => {
                                             </td>
                                             <td>
                                                 {
-                                                    `${get(item, 'name', '')} ${get(item, 'secondname', '')}`
+                                                    `${get(item, 'fullName.lastname', '')} ${get(item, 'fullName.firstname', '')} ${get(item, 'name', '')}`
                                                 }
                                             </td>
 
@@ -632,7 +606,7 @@ const StepOne = ({id = null, ...props}) => {
                           footer={<><Button>{t("Найдите или добавьте")}</Button></>}>
                         {isEqual(get(pledger, 'type'), PERSON_TYPE.person) ? <Row className={'mt-15'}>
                             <Col xs={4}>
-                                <Field params={{required: true}} type={'input-mask'} name={`passportSeries`} property={{
+                                <Field params={{required: true}} type={'input-mask'} name={`person.seria`} property={{
                                     placeholder: 'Серия паспорта',
                                     hideLabel: true,
                                     mask: 'aa',
@@ -643,7 +617,7 @@ const StepOne = ({id = null, ...props}) => {
                             </Col>
 
                             <Col xs={4}>
-                                <Field params={{required: true}} type={'input-mask'} name={`passportNumber`} property={{
+                                <Field params={{required: true}} type={'input-mask'} name={`person.number`} property={{
                                     placeholder: 'Номер паспорта',
                                     hideLabel: true,
                                     mask: '9999999',
@@ -653,29 +627,35 @@ const StepOne = ({id = null, ...props}) => {
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field params={{required: true}} type={'input-mask'} name={`pinfl`} property={{
-                                    placeholder: 'ПИНФЛ',
-                                    hideLabel: true,
-                                    mask: '99999999999999',
-                                    maskChar: '_',
-                                    hideErrorMsg: true
-                                }}
-                                />
-                            </Col>
-                            <Col xs={4}>
                                 <Field property={{
                                     hideLabel: true,
-                                }} name={'birthDate'} type={'datepicker'}
+                                }} name={'person.birthDate'} type={'datepicker'}
                                        label={'birthDate'}
                                        params={{required: true}}
                                 />
                             </Col>
+                            <Col xs={4} className={'mb-25'}>
+                                <Field
+                                    params={{
+                                        required: true,
+                                        pattern: {
+                                            value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
+                                            message: 'Invalid format'
+                                        }
+                                    }}
+                                    label={'Phone'}
+                                    type={'input'}
+                                    property={{placeholder: '998XXXXXXXXX', hideErrorMsg: true}}
+                                    name={'person.phone'}/>
+                            </Col>
+
                         </Row> : <Row className={'mt-15'}>
+
                             <Col xs={6}>
                                 <Field
                                     params={{required: true}}
                                     type={'input-mask'}
-                                    name={`inn`}
+                                    name={`organization.inn`}
                                     property={{
                                         placeholder: 'ИНН',
                                         hideLabel: true,

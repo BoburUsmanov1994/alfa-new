@@ -75,7 +75,7 @@ const CheckboxComponent = ({
     return (<Styled isColumn={get(property,'isColumn',false)} {...rest}>
         <div className="form-group">
             <Label
-                className={classNames('checkbox-label', {required: get(property, 'hasRequiredLabel', false)})}>{label ?? name}</Label>
+                className={classNames('checkbox-label', {required: get(property, 'hasRequiredLabel', get(params,'required'))})}>{label ?? name}</Label>
             <CheckboxGroup onChange={(val) => setValues(val)}
                            defaultValue={defaultValue}
 

@@ -10,8 +10,8 @@ const Styled = styled.div`
     width: unset !important;
     max-width: 50%;
     min-width: 750px;
-    min-height: 350px !important;
-    max-height: 50vh !important;
+    min-height: fit-content !important;
+    //max-height: 50vh !important;
     overflow-y: auto;
   }
 

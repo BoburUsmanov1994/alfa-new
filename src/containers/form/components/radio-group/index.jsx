@@ -66,7 +66,7 @@ const RadioGroupComponent = ({
         <Styled {...rest}>
             <div className="form-group">
                 <Label
-                    className={classNames('checkbox-label', {required: get(property, 'hasRequiredLabel', false)})}>{label ?? name}</Label>
+                    className={classNames('checkbox-label', {required: get(property, 'hasRequiredLabel', get(params,'required'))})}>{label ?? name}</Label>
                 <RadioGroup  onChange={setVal} value={val}>
 
                     {

@@ -80,7 +80,7 @@ const InputRange = ({
         <Styled {...rest}>
             <div className="form-group">
                 <Label
-                    className={classNames({required: get(property, 'hasRequiredLabel', false)})}>{label ?? name}</Label>
+                    className={classNames({required: get(property, 'hasRequiredLabel', get(params,'required'))})}>{label ?? name}</Label>
                 <div className={'range-input'}>
                     <Slider
                         trackStyle={[{background: '#13D6D1'}]}

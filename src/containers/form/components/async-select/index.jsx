@@ -73,7 +73,7 @@ const AsyncSelect = ({
     const [options, setOptions] = useState([])
     const [search, setSearch] = useState('')
     const {data, isLoading: loading} = useGetAllQuery({
-        key: [keyId, search,url], url: url, params: {
+        key: [keyId, search, url], url: url, params: {
             params: {
                 limit,
                 // name: isDisabledSearch ? null : search
@@ -94,7 +94,6 @@ const AsyncSelect = ({
 
     const debouncedChangeHandler = debounce(changeHandler, 500)
 
-
     const loadOptions = async (inputValue) => {
         await debouncedChangeHandler(inputValue)
         return options;
@@ -102,7 +101,7 @@ const AsyncSelect = ({
     return (
         <div className={clsx(`form-group ${classNames}`)}>
             {!get(property, 'hideLabel', false) && <Label
-                className={clsx({required: get(property, 'hasRequiredLabel', false)})}>{label ?? name}</Label>}
+                className={clsx({required: get(property, 'hasRequiredLabel', get(params, 'required'))})}>{label ?? name}</Label>}
             <Controller
                 as={RAsyncSelect}
                 control={control}
@@ -128,9 +127,9 @@ const AsyncSelect = ({
                 />}
             />
             {errors[name]?.type == 'required' &&
-            <span className={'form-error'}>{t('Заполните обязательное поле')}</span>}
+                <span className={'form-error'}>{t('Заполните обязательное поле')}</span>}
             {errors[name]?.type == 'validation' &&
-            <span className={'form-error'}>{get(errors, `${name}.message`)}</span>}
+                <span className={'form-error'}>{get(errors, `${name}.message`)}</span>}
         </div>
     );
 };

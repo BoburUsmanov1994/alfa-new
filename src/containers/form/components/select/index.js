@@ -149,7 +149,7 @@ const FormSelect = ({
         <>
             <div className="form-group">
                 {!get(property, 'hideLabel', false) && <Label
-                    className={classNames({required: get(property, 'hasRequiredLabel', false)})}>{label ?? name}</Label>}
+                    className={classNames({required: get(property, 'hasRequiredLabel', get(params,'required'))})}>{label ?? name}</Label>}
 
                 <StyledFormSelect {...props} large={get(property,'large',false)} fullWidth={get(property,'fullWidth',false)} bgColor={get(property,'bgColor')}>
                     <Controller

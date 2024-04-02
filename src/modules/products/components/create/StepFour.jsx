@@ -46,7 +46,7 @@ const StepFour = ({id = null, ...props}) => {
     }
 
     let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.agents}/list`})
-    agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', ['corporateentitiesdata.nameoforganization', 'forindividualsdata.secondname', 'forindividualsdata.name'])
+    agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', ['organization.nameoforganization', 'person.secondname', 'person.name'])
 
 
     let {data: classes} = useGetAllQuery({key: KEYS.classes, url: `${URLS.insuranceClass}/list`})
@@ -325,7 +325,7 @@ const StepFour = ({id = null, ...props}) => {
                                                     placeholder: 'ввод значения',
                                                     disabled: !!!(get(fields, `franchise[${i}].isFixed`))
                                                 }}
-                                                defaultValue={get(product, `franchise[${i}].isFixed`, 0)}
+                                                defaultValue={get(product, `franchise[${i}].fixedValue`, 0)}
                                             />
                                         </Flex>
                                     </td>
@@ -339,7 +339,7 @@ const StepFour = ({id = null, ...props}) => {
                                                 params={{required: true}}
                                                 options={franchises}
                                                 isDisabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
-                                                defaultValue={get(product, `franchise[${i}].hasFranchise`)}
+                                                defaultValue={get(product, `franchise[${i}].franchiseType`)}
                                             />
                                         </Flex>
                                     </td>

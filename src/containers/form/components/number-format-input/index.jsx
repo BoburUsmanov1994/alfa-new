@@ -4,6 +4,7 @@ import {get, isEmpty, isFunction} from "lodash";
 import {ErrorMessage} from "@hookform/error-message";
 import Label from "../../../../components/ui/label";
 import NumberFormat from 'react-number-format';
+import classNames from "classnames";
 
 const Styled = styled.div`
   .masked-input {
@@ -70,7 +71,7 @@ const NumberFormatInput = ({
     return (
         <Styled {...rest}>
             <div className="form-group">
-                {!get(property,'hideLabel',false) && <Label>{label ?? name}</Label>}
+                {!get(property,'hideLabel',false) && <Label className={classNames({required:get(property,'hasRequiredLabel',get(params,'required'))})}>{label ?? name}</Label>}
                 <Controller
                     as={NumberFormat}
                     control={control}
@@ -97,13 +98,13 @@ const NumberFormatInput = ({
                     name={name}
                     render={({messages = `${label} is required`}) => {
 
-                        if (errors[name].type == 'required') {
+                        if (errors[name]?.type == 'required') {
                             messages = `${label} is required`;
                         }
-                        if (errors[name].type == 'pattern') {
+                        if (errors[name]?.type == 'pattern') {
                             messages = `${label} is not valid`;
                         }
-                        if (errors[name].type == 'manual') {
+                        if (errors[name]?.type == 'manual') {
                             messages = `${label} ${errors[name].message}`;
                         }
                         return <small className="form-error-message"> {messages}</small>;

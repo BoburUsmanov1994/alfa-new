@@ -54,7 +54,7 @@ const Input = ({
     return (
         <Styled {...rest}>
             <div className="form-group">
-                {!get(property,'hideLabel',false) && <Label className={classNames({required:get(property,'hasRequiredLabel',false)})}>{label ?? name}</Label>}
+                {!get(property,'hideLabel',false) && <Label className={classNames({required:get(property,'hasRequiredLabel',get(params,'required'))})}>{label ?? name}</Label>}
                 <input
                     className={classNames('form-input',{error:get(errors,`${name}`,false)})}
                     name={name}
