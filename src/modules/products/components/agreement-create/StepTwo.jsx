@@ -25,13 +25,13 @@ import ReactJson from "react-json-view";
 
 const StepTwo = ({id = null, ...props}) => {
     const {t} = useTranslation()
-    const [diff, setDiff] = useState({accruedinsurancepremium: 0, paidinsurancepremium: 0})
     const [schedule, setSchedule] = useState([])
     const [checkedAll, setCheckedAll] = useState(false)
     const [openObjectModal, setOpenObjectModal] = useState(false)
     const [riskFields, setRiskFields] = useState([])
     const [_fields, _setFields] = useState({})
     const [_modalFields, _setModalFields] = useState({})
+    const [premium, setPremium] = useState(0)
     const setAgreement = useSettingsStore(state => get(state, 'setAgreement', () => {
     }))
     const addObjects = useSettingsStore(state => get(state, 'addObjects', () => {
@@ -314,6 +314,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: 'ввод значения',
+                                                    onChange: (val) => setPremium(val)
                                                 }}
                                                 defaultValue={round((((dayjs(get(_fields, `riskDetails[${i}].endDate`)).diff(get(_fields, `riskDetails[${i}].startDate`), 'day') + 1) / 365) * get(_fields, `riskDetails[${i}].insuranceSum`, 0) * get(_fields, `riskDetails[${i}].insuranceRate`, 0) / 100), 2)}
                                             />
@@ -418,7 +419,7 @@ const StepTwo = ({id = null, ...props}) => {
                                         name={`totalInsurancePremium`}
                                         type={'number-format-input'}
                                         label={'Общая страховая премия'}
-                                        defaultValue={sum(range(0, riskFields?.length).map(i => get(_fields, `riskDetails[${i}].insurancePremium`)))}
+                                        defaultValue={premium}
                                         property={{
                                             placeholder: 'ввод значения',
                                             disabled: true
