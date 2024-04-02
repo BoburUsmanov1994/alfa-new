@@ -68,8 +68,7 @@ const StepFour = ({id = null, ...props}) => {
         resetAgreement();
         props.firstStep();
     }
-
-
+    
     return (
         <Row>
             {(isLoading) && <OverlayLoader/>}

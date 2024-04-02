@@ -29,7 +29,6 @@ const StepTwo = ({id = null, ...props}) => {
     const [schedule, setSchedule] = useState([])
     const [checkedAll, setCheckedAll] = useState(false)
     const [openObjectModal, setOpenObjectModal] = useState(false)
-    const [fields, setFields] = useState({riskOptions: []})
     const [riskFields, setRiskFields] = useState([])
     const [_fields, _setFields] = useState({})
     const [_modalFields, _setModalFields] = useState({})
@@ -161,10 +160,6 @@ const StepTwo = ({id = null, ...props}) => {
 
     const setFieldValue = (value, name = "") => {
 
-        if (includes('riskOptions', name) || includes(name, 'franchise')) {
-            setFields(prev => ({...prev, [name]: value}));
-        }
-
         _setFields(prev => ({...prev, [name]: value}))
 
     }
@@ -200,9 +195,8 @@ const StepTwo = ({id = null, ...props}) => {
             })))
         }
     }, [agreement])
-    console.log('agreement', agreement)
-    console.log('risks', risks)
-    console.log('riskFields', riskFields)
+
+    console.log('fields', _fields)
     return (
         <Row>
             <Col xs={12}>
@@ -280,7 +274,7 @@ const StepTwo = ({id = null, ...props}) => {
                         {riskFields.length > 0 && <Col xs={12} className={'mb-25 horizontal-scroll'}>
                             <hr/>
                             <Table hideThead={false}
-                                   thead={['Risk', 'startdate', 'enddate', 'insurancepremium', 'insurancerate', 'suminsured']}>
+                                   thead={['Risk', 'startdate', 'enddate', 'Insurance premium', 'Insurance rate', 'Insurance sum']}>
                                 {riskFields.map((item, i) => <tr key={i + 1}>
                                     <td>
                                         <Field
@@ -321,7 +315,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                     hideLabel: true,
                                                     placeholder: 'ввод значения',
                                                 }}
-                                                defaultValue={round((((dayjs(get(_fields, `riskDetails[${i}].endDate`)).diff(get(_fields, `riskDetails[${i}].startDate`), 'day') + 1) / 365) * get(_fields, `riskDetails[${i}].insuranceSum`, 0) * get(_fields, `riskId[${i}].insuranceRate`, 0) / 100), 2)}
+                                                defaultValue={round((((dayjs(get(_fields, `riskDetails[${i}].endDate`)).diff(get(_fields, `riskDetails[${i}].startDate`), 'day') + 1) / 365) * get(_fields, `riskDetails[${i}].insuranceSum`, 0) * get(_fields, `riskDetails[${i}].insuranceRate`, 0) / 100), 2)}
                                             />
                                         </Flex>
                                     </td>
@@ -634,7 +628,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 name={`franchise[${i}].isFixed`}
                                                 defaultValue={get(agreement, `franchise[${i}].isFixed`, false)}
                                                 property={{hideLabel: true}}
-                                                disabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
+                                                disabled={!!!(get(_fields, `franchise[${i}].hasFranchise`))}
                                             />
                                         </Flex>
                                     </td>
@@ -646,7 +640,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: 'ввод значения',
-                                                    disabled: !!!(get(fields, `franchise[${i}].isFixed`))
+                                                    disabled: !!!(get(_fields, `franchise[${i}].isFixed`))
                                                 }}
                                                 defaultValue={get(agreement, `franchise[${i}].fixedValue`, 0)}
                                             />
@@ -660,7 +654,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 type={'select'}
                                                 property={{hideLabel: true}}
                                                 options={franchises}
-                                                isDisabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
+                                                isDisabled={!!!(get(_fields, `franchise[${i}].hasFranchise`))}
                                                 defaultValue={get(agreement, `franchise[${i}].franchiseType`)}
                                             />
                                         </Flex>
@@ -673,7 +667,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 type={'select'}
                                                 property={{hideLabel: true}}
                                                 options={baseFranchises}
-                                                isDisabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
+                                                isDisabled={!!!(get(_fields, `franchise[${i}].hasFranchise`))}
                                                 defaultValue={get(agreement, `franchise[${i}].franchiseBase`)}
                                             />
                                         </Flex>
@@ -687,7 +681,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: 'Введите значение',
-                                                    disabled: !(get(fields, `franchise[${i}].hasFranchise`) && !get(fields, `franchise[${i}].isFixed`))
+                                                    disabled: !(get(_fields, `franchise[${i}].hasFranchise`) && !get(_fields, `franchise[${i}].isFixed`))
                                                 }}
                                                 defaultValue={get(agreement, `franchise[${i}].franchise`, '')}
                                             />
