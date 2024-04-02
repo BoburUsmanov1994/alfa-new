@@ -33,19 +33,21 @@ const DistributionContainer = ({
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const [idList, setIdList] = useState([])
-    let {data: transactions, isLoading} = useGetAllQuery({key: KEYS.transactions, url: URLS.transactions,params: {
+    let {data: transactions, isLoading} = useGetAllQuery({
+        key: KEYS.transactions, url: `${URLS.transactions}/list`, params: {
             params: {
                 limit: 1000
             }
-        }})
+        }
+    })
     let {data: branches, isLoading: isLoadingBranches} = useGetAllQuery({
-        key: KEYS.branches, url: URLS.branches, params: {
+        key: KEYS.branches, url: `${URLS.branches}/list`, params: {
             params: {
                 limit: 100
             }
         }
     })
-    branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchname')
+    branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
 
     const {
         mutate: distributeRequest,
@@ -72,15 +74,14 @@ const DistributionContainer = ({
     const create = (data) => {
         if (isEmpty(idList)) {
             toast.warn("Please select transaction")
-        }else if(isNil(get(params,'branchId'))){
+        } else if (isNil(get(params, 'branchId'))) {
             toast.warn("Please select branch")
-        }
-        else {
+        } else {
             distributeRequest({
-                url:URLS.transactionDistribute,
-                attributes:{
-                    transactionIds:idList,
-                    branchId:get(params,'branchId')
+                url: URLS.transactionDistribute,
+                attributes: {
+                    transactionIds: idList,
+                    branchId: get(params, 'branchId')
                 }
             })
             navigate(`/accounting/policy`)
