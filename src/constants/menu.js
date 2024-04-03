@@ -161,7 +161,17 @@ export const menuData = [
                 id: 3,
                 title: 'Position',
                 path: '/branches/position',
-            }
+            },
+            {
+                id: 31,
+                title: 'Branch level',
+                path: '/handbook/branch-level',
+            },
+            {
+                id: 32,
+                title: 'Branch status',
+                path: '/handbook/branch-status',
+            },
         ]
     },
     {
@@ -456,16 +466,7 @@ export const menuData = [
                 title: 'Genders',
                 path: '/handbook/genders',
             },
-            {
-                id: 31,
-                title: 'Branch level',
-                path: '/handbook/branch-level',
-            },
-            {
-                id: 32,
-                title: 'Branch status',
-                path: '/handbook/branch-status',
-            },
+
             {
                 id: 34,
                 title: 'Reasons',
