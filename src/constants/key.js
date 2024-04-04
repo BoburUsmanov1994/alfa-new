@@ -36,6 +36,7 @@ export const KEYS = {
     translations: 'translations',
     typeofagent: 'typeofagent',
     accountroles: 'accountroles',
+    bank: 'bank',
     accountstatus: 'accountstatus',
     citizenship: 'citizenship',
     genders: 'genders',

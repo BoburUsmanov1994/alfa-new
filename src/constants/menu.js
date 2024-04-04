@@ -118,6 +118,11 @@ export const menuData = [
                 title: 'Agent status',
                 path: '/agents/status',
             },
+            {
+                id: 5,
+                title: 'Bank',
+                path: '/agents/bank',
+            },
         ]
     },
     {
@@ -140,6 +145,7 @@ export const menuData = [
                 title: 'Account status',
                 path: '/accounts/status',
             },
+
         ]
     },
     {

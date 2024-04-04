@@ -30,6 +30,7 @@ export const URLS = {
     personType: 'api/references/person-type',
     statusofproduct: 'api/product/status',
     agents: 'api/agent',
+    bank: 'api/bank',
     typeofpayment: 'api/references/payment-type',
     baseoffranchise: 'api/references/franchise-base',
     subgroupsofproductsFilter: 'api/product/subgroup/list',

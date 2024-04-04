@@ -44,6 +44,8 @@ import BcoStatusPage from "../modules/bco/pages/BcoStatusPage";
 import BcoLanguagePage from "../modules/bco/pages/BcoLanguagePage";
 import BcoPolicyStatusPage from "../modules/bco/pages/BcoPolicyStatusPage";
 import UserStatusPage from "../modules/users/pages/UserStatusPage";
+import BankPage from "../modules/agents/pages/BankPage";
+import BankCreatePage from "../modules/agents/pages/BankCreatePage";
 //lazy load
 const TypeObjectPage = lazy(() => import("../modules/handbook/pages/TypeObjectPage"));
 const ObjectPage = lazy(() => import("../modules/handbook/pages/ObjectPage"));
@@ -151,6 +153,8 @@ const Router = ({...rest}) => {
                                 <Route path={"create"} element={<AgentCreatePage/>}/>
                                 <Route path={"update/:id"} element={<AgentUpdatePage/>}/>
                                 <Route path={"view/:id"} element={<AgentViewPage/>}/>
+                                <Route path={"bank"} element={<BankPage/>}/>
+                                <Route path={"bank/create"} element={<BankCreatePage/>}/>
                             </Route>
                             <Route path={"accounting"}>
                                 <Route path={"import-payment-documents"} element={<ImportPaymentDocumentsPage/>}/>
