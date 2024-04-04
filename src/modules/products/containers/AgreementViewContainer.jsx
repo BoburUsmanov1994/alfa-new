@@ -27,18 +27,19 @@ const AgentViewContainer = ({...rest}) => {
     const navigate = useNavigate();
     const [selectedPolice, setSelectedPolice] = useState(null);
     const [transactionId, setTransactionId] = useState(null);
-    let {data, isLoading, isError} = useGetOneQuery({id, key: KEYS.agreements, url: URLS.agreements})
+    let {data, isLoading} = useGetOneQuery({id, key: KEYS.agreements, url: `${URLS.agreements}/show`})
     let {data: policyData, isLoading: policyIsLoading} = useGetAllQuery({
         id, key: KEYS.policyFilter, url: URLS.policyFilter, params: {
             params: {
-                agreementsId: id
+                agreementId: id
             }
         }
     })
     let {data: endorsementData, isLoading: endorsementIsLoading} = useGetOneQuery({
         id,
         key: KEYS.endorsementFilter,
-        url: URLS.endorsementFilter
+        url: URLS.endorsementFilter,
+        enabled: false
     })
     const {mutate: sentToFondRequest, isLoadingSendToFond} = usePostQuery({listKeyId: KEYS.agreements})
     const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: KEYS.policyFilter})
@@ -48,11 +49,15 @@ const AgentViewContainer = ({...rest}) => {
     } = useDeleteQuery({listKeyId: KEYS.endorsementFilter})
 
     const user = useStore(state => get(state, 'user'))
-    let {data: transactions, isLoading:_isLoading} = useGetAllQuery({key: KEYS.transactions, url: URLS.transactions,enabled:!!(get(user,'branch_Id.id')),params:{params:{
+    let {data: transactions, isLoading: _isLoading} = useGetAllQuery({
+        key: KEYS.transactions, url: URLS.transactions, enabled: !!(get(user, 'branch_Id.id')), params: {
+            params: {
                 branch: get(user, 'branch_Id.id'),
-                limit:100
-            }}})
-    const {mutate: attachRequest, isLoading:isLoadingAttach} = usePostQuery({listKeyId: KEYS.policyFilter})
+                limit: 100
+            }
+        }
+    })
+    const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: KEYS.policyFilter})
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [
@@ -76,7 +81,7 @@ const AgentViewContainer = ({...rest}) => {
         const {attachmentSum} = data;
         attachRequest({
             url: URLS.transactionAttach,
-            attributes: {transactionId: transactionId, policyId:get(selectedPolice,'id'), attachmentSum}
+            attributes: {transactionId: transactionId, policyId: get(selectedPolice, 'id'), attachmentSum}
         }, {
             onSuccess: () => {
                 setTransactionId(null)
@@ -144,8 +149,6 @@ const AgentViewContainer = ({...rest}) => {
         return <OverlayLoader/>
     }
 
-    console.log('s',selectedPolice)
-
     return (
         <>
             <Section>
@@ -157,61 +160,54 @@ const AgentViewContainer = ({...rest}) => {
                     <Col xs={6}>
                         <Table thead={['1', '2']}>
                             <tr>
-                                <td>{t("groupofproductsId")}</td>
-                                <td><strong>{get(data, "data.data.groupofproductsId.name")}</strong></td>
+                                <td>{t("Product")}</td>
+                                <td><strong>{get(data, "data.product.name")}</strong></td>
                             </tr>
                             <tr>
-                                <td>{t("subgroupofproductsId")}</td>
-                                <td><strong>{get(data, "data.data.subgroupofproductsId.name")}</strong></td>
+                                <td>{t("Agreement number")}</td>
+                                <td><strong>{get(data, "data.agreementNumber")}</strong></td>
                             </tr>
                             <tr>
-                                <td>{t("products")}</td>
-                                <td><strong>{get(data, "data.data.products.productname")}</strong></td>
-                            </tr>
-                            <tr>
-                                <td>{t("startofinsurance")}</td>
+                                <td>{t("Agreement date")}</td>
                                 <td>
-                                    <strong>{dayjs(get(data, "data.data.startofinsurance")).format("DD/MM/YYYY")}</strong>
+                                    <strong>{dayjs(get(data, "data.agreementDate")).format("DD/MM/YYYY")}</strong>
                                 </td>
                             </tr>
                             <tr>
-                                <td>{t("endofinsurance")}</td>
-                                <td><strong>{dayjs(get(data, "data.data.endofinsurance")).format("DD/MM/YYYY")}</strong>
+                                <td>{t("Application date")}</td>
+                                <td>
+                                    <strong>{dayjs(get(data, "data.applicationDate")).format("DD/MM/YYYY")}</strong>
                                 </td>
                             </tr>
-
                             <tr>
-                                <td>{t("clinets")}</td>
-                                <td><strong>{get(data, "data.data.clinets.forindividualsdata.name")}</strong></td>
+                                <td>{t("Insurance start date")}</td>
+                                <td>
+                                    <strong>{dayjs(get(data, "data.startOfInsurance")).format("DD/MM/YYYY")}</strong>
+                                </td>
                             </tr>
-
 
                         </Table>
                     </Col>
                     <Col xs={6}>
                         <Table thead={['1', '2']}>
                             <tr>
-                                <td>{t("whoaccepted")}</td>
-                                <td><strong>{get(data, "data.data.whoaccepted")}</strong></td>
+                                <td>{t("Total insurance sum")}</td>
+                                <td><strong><NumberFormat displayType={'text'} thousandSeparator={" "}
+                                                          value={get(data, "data.totalInsuranceSum", 0)}/></strong></td>
                             </tr>
                             <tr>
-                                <td>{t("totalinsurancepremium")}</td>
+                                <td>{t("Total premium")}</td>
                                 <td><strong><NumberFormat displayType={'text'} thousandSeparator={" "}
-                                                          value={get(data, "data.data.totalinsurancepremium")}/></strong></td>
+                                                          value={get(data, "data.totalInsurancePremium", 0)}/></strong>
+                                </td>
                             </tr>
                             <tr>
-                                <td>{t("totalsuminsured")}</td>
-                                <td><strong><NumberFormat displayType={'text'} thousandSeparator={" "}
-                                                                                                  value={get(data, "data.data.totalsuminsured")}/></strong></td>
-                            </tr>
-                            <tr>
-                                <td>{t("paidinsurancepremium")}</td>
-                                <td><strong><NumberFormat displayType={'text'} thousandSeparator={" "}
-                                                                                                       value={get(data, "data.data.paidinsurancepremium")}/></strong></td>
+                                <td>{t("Registration number")}</td>
+                                <td><strong>{t(get(data, "data.registrationNumber"))}</strong></td>
                             </tr>
                             <tr>
                                 <td>{t("Status")}</td>
-                                <td><strong>{t(get(data, "data.data.status"))}</strong></td>
+                                <td><strong>{t(get(data, "data.status"))}</strong></td>
                             </tr>
                         </Table>
                     </Col>
@@ -234,26 +230,27 @@ const AgentViewContainer = ({...rest}) => {
                                        thead={['Policy number', 'Issue date', 'Attached sum', 'Status', 'Action']}>
                                     {get(policyData, "data.data", []).map((item, i) => <tr key={i + 1}>
                                         <td>
-                                            {get(item, 'policy_number', '-')}
+                                            {get(item, 'number', '-')}
                                         </td>
                                         <td>
-                                            {dayjs(get(item, 'dateofissue')).format('DD/MM/YYYY')}
+                                            {dayjs(get(item, 'issueDate')).format('DD/MM/YYYY')}
                                         </td>
                                         <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                                           value={get(item, "attachedSum")}/></td>
-                                        <td>{get(item, "status")}</td>
+                                        <td>{get(item, "fondStatus")}</td>
 
                                         <td className={''}
                                         >
-                                            {get(item, "status") === 'new' &&
-                                                <DollarSign onClick={() => setSelectedPolice(item)} className={'cursor-pointer'}
-                                                            color={'#71BC70'}/>}
-                                            {get(item, "status") === 'new' &&
-                                                <Send className={'cursor-pointer ml-15'} color={'#13D6D1'}
-                                                      onClick={() => sendToFond(id, get(item, '_id'))}/>}
-                                            {get(item, "status") === 'new' &&
-                                                <Trash2 onClick={() => remove(get(item, '_id', null))}
-                                                        className={'ml-15 cursor-pointer'} color={'#dc2626'}/>}
+                                            {get(item, "fondStatus") === 'new' &&
+                                            <DollarSign onClick={() => setSelectedPolice(item)}
+                                                        className={'cursor-pointer'}
+                                                        color={'#71BC70'}/>}
+                                            {get(item, "fondStatus") === 'new' &&
+                                            <Send className={'cursor-pointer ml-15'} color={'#13D6D1'}
+                                                  onClick={() => sendToFond(id, get(item, '_id'))}/>}
+                                            {get(item, "fondStatus") === 'new' &&
+                                            <Trash2 onClick={() => remove(get(item, '_id', null))}
+                                                    className={'ml-15 cursor-pointer'} color={'#dc2626'}/>}
                                         </td>
                                     </tr>)}
                                 </Table>
@@ -296,13 +293,14 @@ const AgentViewContainer = ({...rest}) => {
                     </Col>
                 </Row>
             </Section>
-            <Modal title={'Распределение к полису'} visible={!isNil(selectedPolice)} hide={() => setSelectedPolice(null)}>
+            <Modal title={'Распределение к полису'} visible={!isNil(selectedPolice)}
+                   hide={() => setSelectedPolice(null)}>
                 {
-                    isLoadingAttach && <ContentLoader />
+                    isLoadingAttach && <ContentLoader/>
                 }
                 {
                     <Table bordered hideThead={false}
-                           thead={['', '№',  'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления']}>{get(transactions, 'data.data', []).map((item, i) =>
+                           thead={['', '№', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления']}>{get(transactions, 'data.data', []).map((item, i) =>
                         <tr key={get(item, '_id')}>
                             <td><Checkbox checked={isEqual(transactionId, get(item, '_id'))} onChange={(e) => {
                                 if (e.target?.checked) {
@@ -320,11 +318,13 @@ const AgentViewContainer = ({...rest}) => {
                 {transactionId && <Form formRequest={attach} footer={<Button type={'submit'}>Прикрепить</Button>}>
                     <Row className={'mt-15'}>
                         <Col xs={6}>
-                            <Field defaultValue={sumBy(get(selectedPolice,'riskId',[]),'insurancepremium')} label={'Сумма оплаты по полису:'} property={{disabled: true}}
+                            <Field defaultValue={sumBy(get(selectedPolice, 'riskId', []), 'insurancepremium')}
+                                   label={'Сумма оплаты по полису:'} property={{disabled: true}}
                                    type={'number-format-input'} name={'sumInsurancePremium'}/>
                         </Col>
                         <Col xs={6}>
-                            <Field defaultValue={get(selectedPolice,'attachedSum',0)} property={{disabled: true}} type={'number-format-input'}
+                            <Field defaultValue={get(selectedPolice, 'attachedSum', 0)} property={{disabled: true}}
+                                   type={'number-format-input'}
                                    name={'attachedSum'} label={'Сумма прикреплённых средств:'}/>
                         </Col>
                         <Col xs={6}>

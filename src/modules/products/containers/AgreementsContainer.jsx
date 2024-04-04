@@ -78,7 +78,7 @@ const AgreementsContainer = ({...rest}) => {
                 listUrl={`${URLS.agreements}/list`}
                 title={t('Agreements')}
                 responseDataKey={'data.data'}
-                // viewUrl={'/agreements/view'}
+                viewUrl={'/agreements/view'}
                 createUrl={'/agreements/create'}
                 // updateUrl={'/agreements/update'}
                 isHideColumn
