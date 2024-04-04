@@ -32,9 +32,9 @@ const PolicyDistributionContainer = ({
     }))
     const user = useStore(state => get(state, 'user'))
     let {data: transactions, isLoading: _isLoading} = useGetAllQuery({
-        key: KEYS.transactions, url: `${URLS.transactions}/list`,  params: {
+        key: KEYS.transactions, url: `${URLS.transactions}/list`, enabled:!!(get(user, 'branch._id')), params: {
             params: {
-                branch: get(user, 'branch_Id.id'),
+                branch: get(user, 'branch._id'),
                 limit: 100
             }
         }
