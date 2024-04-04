@@ -80,8 +80,9 @@ const DistributionContainer = ({
             distributeRequest({
                 url: URLS.transactionDistribute,
                 attributes: {
-                    transactionIds: idList,
-                    branchId: get(params, 'branchId')
+                    attach: true,
+                    transactions: idList,
+                    branch: get(params, 'branchId')
                 }
             })
             navigate(`/accounting/policy`)

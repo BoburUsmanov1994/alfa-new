@@ -46,6 +46,7 @@ import BcoPolicyStatusPage from "../modules/bco/pages/BcoPolicyStatusPage";
 import UserStatusPage from "../modules/users/pages/UserStatusPage";
 import BankPage from "../modules/agents/pages/BankPage";
 import BankCreatePage from "../modules/agents/pages/BankCreatePage";
+import AccountPage from "../modules/accounting/pages/AccountPage";
 //lazy load
 const TypeObjectPage = lazy(() => import("../modules/handbook/pages/TypeObjectPage"));
 const ObjectPage = lazy(() => import("../modules/handbook/pages/ObjectPage"));
@@ -169,6 +170,7 @@ const Router = ({...rest}) => {
                                 <Route path={"warehouse/create"} element={<AddPoliceBlankPage/>}/>
                                 <Route path={"bco-type"} element={<BcoTypePage/>}/>
                                 <Route path={"bco-blanks"} element={<BcoBlankPage/>}/>
+                                <Route path={"account"} element={<AccountPage/>}/>
                             </Route>
                             <Route path={"branches"}>
                                 <Route path={"list"} element={<BranchesPage/>}/>

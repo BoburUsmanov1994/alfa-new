@@ -195,11 +195,11 @@ export const menuData = [
             //     title: 'Распределение',
             //     path: '/accounting/distribution',
             // },
-            // {
-            //     id: 3,
-            //     title: 'Тип распределения',
-            //     path: '/accounting/distribution-type',
-            // },
+            {
+                id: 3,
+                title: 'Тип распределения',
+                path: '/accounting/distribution-type',
+            },
             {
                 id: 4,
                 title: 'К полису',
@@ -210,32 +210,16 @@ export const menuData = [
                 title: 'ACTS',
                 path: '/accounting/act',
             },
-            // {
-            //     id: 55,
-            //     title: 'BCO list',
-            //     path: '/accounting/bco',
-            // },
-            // {
-            //     id: 6,
-            //     title: 'BCO Type',
-            //     path: '/accounting/bco-type',
-            // },
-            // {
-            //     id: 66,
-            //     title: 'BCO language',
-            //     path: '/handbook/bco-language-policy',
-            // },
-            // {
-            //     id: 666,
-            //     title: 'BCO blanks',
-            //     path: '/accounting/bco-blanks',
-            // },
+            {
+                id: 55,
+                title: 'Счета',
+                path: '/accounting/account',
+            },
             {
                 id: 7,
                 title: 'Warehouse',
                 path: '/accounting/warehouse',
             }
-
         ]
     },
     {
@@ -472,7 +456,6 @@ export const menuData = [
                 title: 'Genders',
                 path: '/handbook/genders',
             },
-
             {
                 id: 34,
                 title: 'Reasons',

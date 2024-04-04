@@ -64,7 +64,6 @@ export const KEYS = {
     transactions: 'transactions',
     transactionlog: 'transactionlog',
     transactionExcel: 'transactionExcel',
-    typeofdistribute: 'typeofdistribute',
     statusbcopolicy: 'statusbcopolicy',
     actstatus: 'actstatus',
     acts: 'acts',
@@ -106,4 +105,6 @@ export const KEYS = {
     findOrCreateClient: "findOrCreateClient",
     residentType: "residentType",
     documentType: "documentType",
+    account: "account",
+    distributeType: "distributeType",
 }

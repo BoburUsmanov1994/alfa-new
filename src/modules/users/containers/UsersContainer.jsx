@@ -16,8 +16,8 @@ const UsersContainer = () => {
     branchList = getSelectOptionsListFromData(get(branchList, `data.data`, []), '_id', 'branchName')
     let {data: employeeList} = useGetAllQuery({key: KEYS.employee, url: `${URLS.employee}/list`})
     employeeList = getSelectOptionsListFromData(get(employeeList, `data.data`, []), '_id', 'fullname')
-    let {data: agentList} = useGetAllQuery({key: KEYS.agents, url: `${URLS.agents}/list`})
-    agentList = getSelectOptionsListFromData(get(agentList, `data.data`, []), '_id', 'name')
+    let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.agents}/list`})
+    agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', ['organization.nameoforganization', 'person.secondname', 'person.name'])
     let {data: roles} = useGetAllQuery({key: KEYS.role, url: `${URLS.role}/list`})
     roles = getSelectOptionsListFromData(get(roles, `data.data`, []), '_id', 'name')
     let {data: status} = useGetAllQuery({key: KEYS.userStatus, url: `${URLS.userStatus}/list`})
@@ -51,7 +51,7 @@ const UsersContainer = () => {
                        defaultValue={rowId ? get(data, 'employee._id') : null} params={{required: true}}/>
             </Col>
             <Col xs={6}>
-                <Field name={'agent'} type={'select'} label={'Agent'} options={agentList}
+                <Field name={'agent'} type={'select'} label={'Agent'} options={agents}
                        defaultValue={rowId ? get(data, 'agent._id') : null} params={{required: true}}/>
             </Col>
             <Col xs={6}>

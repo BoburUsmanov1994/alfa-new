@@ -5,6 +5,8 @@ import GridView from "../../../containers/grid-view/grid-view";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import Field from "../../../containers/form/field";
+import {useGetAllQuery} from "../../../hooks/api";
+import {getSelectOptionsListFromData} from "../../../utils";
 
 const DistributionTypeContainer = ({...rest}) => {
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
@@ -21,19 +23,23 @@ const DistributionTypeContainer = ({...rest}) => {
             path: '#',
         }
     ], [])
+    let {data: accounts} = useGetAllQuery({
+        key: KEYS.account, url: `${URLS.account}/list`
+    })
+    accounts = getSelectOptionsListFromData(get(accounts, `data.data`, []), '_id', 'account_name')
 
     useEffect(() => {
         setBreadcrumbs(breadcrumbs)
     }, [])
 
     const ModalBody = ({data, rowId = null}) => <>
-        <Field name={'nameofoperations'} type={'input'} label={'Название'} defaultValue={rowId ? get(data, 'nameofoperations') : null}
+        <Field name={'name'} type={'input'} label={'Название'} defaultValue={rowId ? get(data, 'name') : null}
                params={{required: true}}/>
-        <Field name={'debt_account_ID'} type={'input'} label={'Debit code'}
-               defaultValue={rowId ? get(data, 'debt_account_ID') : null}
-               params={{required: true}}/>
-        <Field name={'cred_account_ID'} type={'input'} label={'Credit code'}
-               defaultValue={rowId ? get(data, 'cred_account_ID') : null}
+        <Field name={'debt_account'} type={'select'} label={'Debit account'}
+               defaultValue={rowId ? get(data, 'debt_account') : null}
+               params={{required: true}} options={accounts}/>
+        <Field name={'cred_account'} type={'select'} label={'Credit account'} options={accounts}
+               defaultValue={rowId ? get(data, 'cred_account') : null}
                params={{required: true}}/>
     </>
     return (
@@ -43,24 +49,25 @@ const DistributionTypeContainer = ({...rest}) => {
                 tableHeaderData={[
                     {
                         id: 1,
-                        key: 'nameofoperations',
+                        key: 'name',
                         title: 'Название'
                     },
                     {
                         id: 2,
-                        key: 'debt_account_ID',
+                        key: 'debt_account',
                         title: 'Debit code'
                     },
                     {
                         id: 3,
-                        key: 'cred_account_ID',
+                        key: 'cred_account',
                         title: 'Credit code'
                     },
                 ]}
-                keyId={KEYS.typeofdistribute}
-                url={URLS.typeofdistribute}
+                keyId={KEYS.distributeType}
+                url={URLS.distributeType}
+                listUrl={`${URLS.distributeType}/list`}
                 title={'Тип распределения'}
-                responseDataKey={'data'}
+                responseDataKey={'data.data'}
             />
         </>
     );
