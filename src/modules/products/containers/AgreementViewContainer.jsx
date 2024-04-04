@@ -260,10 +260,10 @@ const AgentViewContainer = ({...rest}) => {
                     </Col>
                     <Col xs={6}>
                         <Row align={'center'}>
-                            <Col xs={8}> <Title sm>Индосаменты</Title></Col>
-                            <Col xs={4} className={'text-right'}> <Button
-                                onClick={() => navigate(`/endorsement/create/${id}`)} green type={'button'}>Добавить
-                                индосаменты</Button></Col>
+                            <Col xs={12}> <Title sm>Индосаменты</Title></Col>
+                            {/*<Col xs={4} className={'text-right'}> <Button*/}
+                            {/*    onClick={() => navigate(`/endorsement/create/${id}`)} green type={'button'}>Добавить*/}
+                            {/*    индосаменты</Button></Col>*/}
                         </Row>
                         <Row className={'mt-15'}>
                             {get(endorsementData, "data.data", []).length > 0 && <Col xs={12}>
