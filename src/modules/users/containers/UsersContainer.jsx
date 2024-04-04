@@ -57,7 +57,7 @@ const UsersContainer = () => {
             <Col xs={6}>
                 <Field name={'username'} type={'input'} label={'Username'}
                        defaultValue={rowId ? get(data, 'username') : null}
-                       params={{required: true}} />
+                       params={{required: true}}/>
             </Col>
             <Col xs={6}>
                 <Field name={'password'} type={'input'} label={'Password'}

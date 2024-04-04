@@ -178,7 +178,7 @@ const FormSelect = ({
                     />
 
                 </StyledFormSelect>
-                <ErrorMessage
+                {!get(property,'hideErrorMsg',false) && <ErrorMessage
                     errors={errors}
                     name={name}
                     render={({messages = `${label} is required`}) => {
@@ -194,7 +194,7 @@ const FormSelect = ({
                         }
                         return <small className="form-error-message"> {messages}</small>;
                     }}
-                />
+                />}
             </div>
 
         </>

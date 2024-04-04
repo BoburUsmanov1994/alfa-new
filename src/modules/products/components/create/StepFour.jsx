@@ -335,7 +335,7 @@ const StepFour = ({id = null, ...props}) => {
                                                 className={'w-250'}
                                                 name={`franchise[${i}].franchiseType`}
                                                 type={'select'}
-                                                property={{hideLabel: true}}
+                                                property={{hideLabel: true, hideErrorMsg: true}}
                                                 params={{required: true}}
                                                 options={franchises}
                                                 isDisabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
@@ -349,7 +349,7 @@ const StepFour = ({id = null, ...props}) => {
                                                 className={'w-250'}
                                                 name={`franchise[${i}].franchiseBase`}
                                                 type={'select'}
-                                                property={{hideLabel: true}}
+                                                property={{hideLabel: true, hideErrorMsg: true}}
                                                 params={{required: true}}
                                                 options={baseFranchises}
                                                 isDisabled={!!!(get(fields, `franchise[${i}].hasFranchise`))}
