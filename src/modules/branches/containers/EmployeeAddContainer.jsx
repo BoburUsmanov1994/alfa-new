@@ -23,7 +23,15 @@ const EmployeeAddContainer = () => {
     let {data: documentTypeList} = useGetAllQuery({key: KEYS.documentType, url: `${URLS.documentType}/list`})
     documentTypeList = getSelectOptionsListFromData(get(documentTypeList, `data.data`, []), '_id', 'name')
     const {mutate: createRequest, isLoading} = usePostQuery({listKeyId: KEYS.employee})
-
+    let {data: branchList} = useGetAllQuery({
+        key: KEYS.branches,
+        url: `${URLS.branches}/list`,
+    })
+    branchList = getSelectOptionsListFromData(get(branchList, `data.data`, []), '_id', 'branchName')
+    const {data: genders} = useGetAllQuery({
+        key: KEYS.genders, url: `${URLS.genders}/list`
+    })
+    const genderList = getSelectOptionsListFromData(get(genders, `data.data`, []), '_id', 'name')
     const create = ({data}) => {
         createRequest({
             url: URLS.employee,
@@ -62,28 +70,22 @@ const EmployeeAddContainer = () => {
                       footer={<Button type={"submit"} lg>Add</Button>} formRequest={(values) => create(values)}>
                     <Row className={'mb-15'}>
                         <Col xs={4}>
-                            <Field name={'photo'} type={'input'}
-                                   label={'Photo'}
-                            />
-                        </Col>
-                        <Col xs={4}>
                             <Field name={'fullname'} type={'input'}
                                    label={'Fullname'}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
                             <Field name={'position'} type={'select'} label={'Position'} options={positionList}
-                            />
+                                   params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
                             <Field name={'typeofdocumentsformanager'} type={'select'} options={documentTypeList}
                                    label={'Document type'}
+                                   params={{required: true}}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field name={'documentnumber'} type={'input-mask'}
-                                   label={'Passport'}
-                                   property={{mask: 'aa9999999', maskChar: '_'}}
+                            <Field name={'documentnumber'} type={'input'}
                                    params={{required: true}}
                             />
                         </Col>
@@ -99,20 +101,46 @@ const EmployeeAddContainer = () => {
                                    params={{required: true}}
                             />
                         </Col>
-
                         <Col xs={4}>
                             <Field name={'telephonenumber'} type={'input'}
                                    label={'Phone'}
+                                   params={{required: true}}
                             />
                         </Col>
 
                         <Col xs={4}>
                             <Field name={'emailforcontacts'} type={'input'} label={'Email'}
                                    params={{
+                                       required: true,
                                        pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                                    }}/>
                         </Col>
-
+                        <Col xs={4}>
+                            <Field name={'branch'} type={'select'} label={'Branch'} options={branchList}
+                                   params={{required: true}}/>
+                        </Col>
+                        <Col xs={4}>
+                            <Field name={'branch'} type={'select'} label={'Gender'} options={genderList}
+                                   params={{required: true}}/>
+                        </Col>
+                        <Col xs={4}>
+                            <Field params={{required: true}} name={'passportSeries'} type={'input-mask'}
+                                   label={'Passport seria'}
+                                   property={{mask: 'aa', maskChar: '_'}}
+                            />
+                        </Col>
+                        <Col xs={4}>
+                            <Field params={{required: true}} name={'passportNumber'} type={'input-mask'}
+                                   label={'Passport number'}
+                                   property={{mask: '9999999', maskChar: '_'}}
+                            />
+                        </Col>
+                        <Col xs={4}>
+                            <Field params={{required: true}} name={'pin'} type={'input-mask'}
+                                   label={'PIN'}
+                                   property={{mask: '99999999999999', maskChar: '_'}}
+                            />
+                        </Col>
                     </Row>
                 </Form>
             </Section>

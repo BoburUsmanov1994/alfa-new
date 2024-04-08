@@ -4,6 +4,9 @@ import WarehouseContainer from "../containers/WarehouseContainer";
 
 
 const Styled = styled.div`
+  .rodal-dialog{
+    width: 650px !important;
+  }
 `;
 const WarehousePage = ({...rest}) => {
     return (

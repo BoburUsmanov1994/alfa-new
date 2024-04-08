@@ -1,10 +1,11 @@
 import React from 'react';
-import DistributionContainer from "../../accounting/containers/DistributionContainer";
 import styled from "styled-components";
 import BcoTypeContainer from "../containers/BcoTypeContainer";
 
 const Styled = styled.div`
-
+.rodal-dialog{
+  width: 650px !important;
+}
 `;
 const BcoTypePage = ({
                          ...rest

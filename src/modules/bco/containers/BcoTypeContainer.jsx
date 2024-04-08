@@ -7,6 +7,7 @@ import {URLS} from "../../../constants/url";
 import Field from "../../../containers/form/field";
 import {useGetAllQuery} from "../../../hooks/api";
 import {getSelectOptionsListFromData} from "../../../utils";
+import {Col, Row} from "react-grid-system";
 
 const BcoTypeContainer = ({...rest}) => {
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
@@ -46,26 +47,38 @@ const BcoTypeContainer = ({...rest}) => {
         setBreadcrumbs(breadcrumbs)
     }, [])
 
-    const ModalBody = ({data, rowId = null}) => <>
-        <Field name={'policy_type_name'} type={'input'} label={'Название'}
-               defaultValue={rowId ? get(data, 'policy_type_name') : null}
-               params={{required: true}}/>
-        <Field name={'policy_size_id'} options={policyFormatList} type={'select'} label={'Policy size'}
-               defaultValue={rowId ? get(data, 'policy_size_id') : null}
-               params={{required: true}}/>
-        <Field isMulti name={'language'} options={languageList} type={'select'} label={'Language'}
-               defaultValue={rowId ? get(data, 'language') : null}
-               params={{required: true}}/>
-        <Field name={'policy_series'} type={'input'} label={'Policy series'}
-               defaultValue={rowId ? get(data, 'policy_series') : null}
-               params={{required: true}}/>
-        <Field name={'policy_number_of_digits'} type={'input'} label={'Digit number'}
-               defaultValue={rowId ? get(data, 'policy_number_of_digits') : null}
-               params={{required: true, valueAsNumber: true}}/>
-        <Field name={'statusofpolicy'} options={bcoStatusList} type={'select'} label={'Policy status'}
-               defaultValue={rowId ? get(data, 'statusofpolicy') : null}
-               params={{required: true}}/>
-    </>
+    const ModalBody = ({data, rowId = null}) => <Row>
+        <Col xs={6}>
+            <Field name={'policy_type_name'} type={'input'} label={'Название'}
+                   defaultValue={rowId ? get(data, 'policy_type_name') : null}
+                   params={{required: true}}/>
+        </Col>
+        <Col xs={6}>
+            <Field name={'policy_size_id'} options={policyFormatList} type={'select'} label={'Policy size'}
+                   defaultValue={rowId ? get(data, 'policy_size_id') : null}
+                   params={{required: true}}/>
+        </Col>
+        <Col xs={6}>
+            <Field isMulti name={'language'} options={languageList} type={'select'} label={'Language'}
+                   defaultValue={rowId ? get(data, 'language') : null}
+                   params={{required: true}}/>
+        </Col>
+        <Col xs={6}>
+            <Field name={'policy_series'} type={'input'} label={'Policy series'}
+                   defaultValue={rowId ? get(data, 'policy_series') : null}
+                   params={{required: true}}/>
+        </Col>
+        <Col xs={6}>
+            <Field name={'policy_number_of_digits'} type={'input'} label={'Digit number'}
+                   defaultValue={rowId ? get(data, 'policy_number_of_digits') : null}
+                   params={{required: true, valueAsNumber: true}}/>
+        </Col>
+        <Col xs={6}>
+            <Field name={'status'} options={bcoStatusList} type={'select'} label={'Policy status'}
+                   defaultValue={rowId ? get(data, 'status') : null}
+                   params={{required: true}}/>
+        </Col>
+    </Row>
     return (
         <>
             <GridView
@@ -78,18 +91,20 @@ const BcoTypeContainer = ({...rest}) => {
                     },
                     {
                         id: 2,
-                        key: 'policy_size_id',
+                        key: 'policy_size_id.name',
                         title: 'Size'
                     },
                     {
                         id: 3,
-                        key: 'statusofpolicy',
+                        key: 'status.name',
                         title: 'Status'
                     },
                     {
                         id: 33,
                         key: 'language',
                         title: 'Language',
+                        isArray: true,
+                        arrayKey: 'name'
                     },
                     {
                         id: 4,

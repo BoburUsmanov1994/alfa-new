@@ -130,14 +130,14 @@ const BCOContainer = ({...rest}) => {
                                     <td>{i + 1}</td>
                                     <td>{get(item, 'act_number')}</td>
                                     <td>{dayjs(get(item, 'act_date')).format('DD/MM/YYYY')}</td>
-                                    <td>{get(item, 'sender_branch_id.branchname')}</td>
-                                    <td>{get(item, 'sender_employee_id.email')}</td>
-                                    <td>{get(item, 'receiver_branch_id.branchname')}</td>
-                                    <td>{get(item, 'receiver_employee_id.email')}</td>
+                                    <td>{get(item, 'sender_branch_id.branchName')}</td>
+                                    <td>{get(item, 'sender_employee_id.fullname')}</td>
+                                    <td>{get(item, 'receiver_branch_id.branchName')}</td>
+                                    <td>{get(item, 'receiver_employee_id.fullname')}</td>
                                     <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                                       value={sum(get(item, 'bco_data', []).map(({blank_counts}) => blank_counts))}/>
                                     </td>
-                                    <td>{get(item, 'statusofact.name')}</td>
+                                    <td>{get(item, 'statusofact')}</td>
                                     <td><Check onClick={() => {
                                         setAcceptModal(true);
                                         setId(get(item, '_id'));

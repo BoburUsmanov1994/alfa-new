@@ -29,41 +29,6 @@ export const menuData = [
                 title: 'Статус продукта',
                 path: '/products/product-status',
             },
-            // {
-            //     id: 20,
-            //     title: 'Agent product',
-            //     path: '/products/agent-product',
-            // },
-            // {
-            //     id: 21,
-            //     title: 'Tenge bank contracts',
-            //     path: '/products/tengebank-contracts',
-            // },
-            // {
-            //     id: 22,
-            //     title: 'Agreements',
-            //     path: '/agreements',
-            // },
-            // {
-            //     id: 2,
-            //     title: 'Классы страхования',
-            //     path: '/products/insurance-classes',
-            // },
-            // {
-            //     id: 3,
-            //     title: 'Риски',
-            //     path: '/products/risks',
-            // },
-            // {
-            //     id: 6,
-            //     title: 'Страховые продукты',
-            //     path: '/products/insurance-products',
-            // },
-            // {
-            //     id: 7,
-            //     title: 'Вординги',
-            //     path: '/products/wordings',
-            // },
         ]
     },
     {
@@ -206,20 +171,11 @@ export const menuData = [
                 path: '/accounting/policy',
             },
             {
-                id: 5,
-                title: 'ACTS',
-                path: '/accounting/act',
-            },
-            {
                 id: 55,
                 title: 'Счета',
                 path: '/accounting/account',
             },
-            {
-                id: 7,
-                title: 'Warehouse',
-                path: '/accounting/warehouse',
-            }
+
         ]
     },
     {
@@ -252,6 +208,26 @@ export const menuData = [
                 title: 'БСО язык',
                 path: '/bco/language',
             },
+            {
+                id: 5,
+                title: 'БСО blanks',
+                path: '/accounting/bco-blanks',
+            },
+            {
+                id: 6,
+                title: 'ACTS',
+                path: '/accounting/act',
+            },
+            {
+                id: 7,
+                title: 'Act status',
+                path: '/bco/act-status',
+            },
+            {
+                id: 8,
+                title: 'Warehouse',
+                path: '/accounting/warehouse',
+            }
         ]
     },
 

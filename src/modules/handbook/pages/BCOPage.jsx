@@ -4,15 +4,15 @@ import BCOContainer from "../containers/BCOContainer";
 
 
 const Styled = styled.div`
-  .rodal-dialog{
-    height: 150px !important;
+  .rodal-dialog {
+    //height: 150px !important;
     width: 200px !important;
   }
 `;
 const BCOPage = ({...rest}) => {
     return (
         <Styled {...rest}>
-            <BCOContainer />
+            <BCOContainer/>
         </Styled>
     );
 };

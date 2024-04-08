@@ -18,15 +18,14 @@ import {useNavigate} from "react-router-dom";
 import {Trash2} from "react-feather";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
+import GridView from "../../../containers/grid-view";
+import Field from "../../../containers/form/field";
+import {getSelectOptionsListFromData} from "../../../utils";
 
 const WarehouseContainer = ({...rest}) => {
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const {t} = useTranslation()
-    const navigate = useNavigate();
-    let {data: acts, isLoading: actsIsLoading} = useGetAllQuery({key: KEYS.warehouse, url: URLS.warehouse})
-
-   const {mutate:deleteRequest,isLoading} = useDeleteQuery({listKeyId:KEYS.warehouse})
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
@@ -43,68 +42,90 @@ const WarehouseContainer = ({...rest}) => {
     useEffect(() => {
         setBreadcrumbs(breadcrumbs)
     }, [])
+    let {data: bcoTypeList} = useGetAllQuery({
+        key: KEYS.typeofbco,
+        url: `${URLS.bcoType}/list`
+    })
+    bcoTypeList = getSelectOptionsListFromData(get(bcoTypeList, `data.data`, []), '_id', 'policy_type_name')
 
-    if (actsIsLoading) {
-        return <OverlayLoader/>
-    }
+    let {data: bcoStatusList} = useGetAllQuery({
+        key: KEYS.statusoftypebco,
+        url: `${URLS.bcoStatus}/list`
+    })
+    bcoStatusList = getSelectOptionsListFromData(get(bcoStatusList, `data.data`, []), '_id', 'name')
 
-    const remove = (id) => {
-        Swal.fire({
-            position: 'center',
-            icon: 'error',
-            backdrop: 'rgba(0,0,0,0.9)',
-            background: 'none',
-            title: t('Are you sure?'),
-            showConfirmButton: true,
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#13D6D1',
-            confirmButtonText: t('Delete'),
-            cancelButtonText:t('Cancel'),
-            customClass: {
-                title: 'title-color',
-            },
-        }).then((result) => {
-            if (result.isConfirmed) {
-                deleteRequest({url: `${URLS.warehouse}/${id}`})
-            }
-        });
-    }
+    let {data: branchList} = useGetAllQuery({key: KEYS.branches, url: `${URLS.branches}/list`})
+    branchList = getSelectOptionsListFromData(get(branchList, `data.data`, []), '_id', 'branchName')
+    const ModalBody = ({data, rowId = null}) => <Row>
+        <Col xs={6}>
+            <Field name={'bco_type'} options={bcoTypeList} type={'select'} label={'Bco type'}
+                   defaultValue={rowId ? get(data, 'bco_type') : null}
+                   params={{required: true}}/>
+        </Col>
+        <Col xs={6}>
+            <Field name={'policy_number_of_digits_start'} type={'input'} label={'Policy number digit start'}
+                   defaultValue={rowId ? get(data, 'policy_number_of_digits_start') : null}
+                   params={{required: true, valueAsNumber: true}}/>
+        </Col>
+        <Col xs={6}>
+            <Field name={'policy_number_of_digits_end'} type={'input'} label={'Policy number digit end'}
+                   defaultValue={rowId ? get(data, 'policy_number_of_digits_end') : null}
+                   params={{required: true, valueAsNumber: true}}/>
+        </Col>
+        <Col xs={6}>
+            <Field name={'policy_count'} type={'input'} label={'Policy count'}
+                   defaultValue={rowId ? get(data, 'policy_count') : null}
+                   params={{required: true, valueAsNumber: true}}/>
+        </Col>
+        <Col xs={6}>
+            <Field name={'branch'} options={branchList} type={'select'} label={'Branch'}
+                   defaultValue={rowId ? get(data, 'branch') : null}
+            />
+        </Col>
+        <Col xs={6}>
+            <Field name={'status'} options={bcoStatusList} type={'select'} label={'Policy status'}
+                   defaultValue={rowId ? get(data, 'status') : null}
+                   params={{required: true}}/>
+        </Col>
+    </Row>
     return (
         <>
-            <Section>
-                <Row className={'mb-20'} align={'center'}>
-                    <Col xs={12}>
-                        <Title>Журнал БСО</Title>
-                    </Col>
-                </Row>
-                <Row className={'mb-25'}>
-                    <Col xs={12} className={'horizontal-scroll'}>
-                        {isEmpty(get(acts, 'data.data', [])) ? <EmptyPage/> :
-                            <Table bordered hideThead={false}
-                                   thead={['№', 'Тип полиса', 'Начальный №', 'Конечный №', 'Количество', 'Формат полиса', 'Серия полиса', 'Дата приёма на склад', 'Количество цифр на номере полиса','Action']}>{get(acts, 'data.data', []).map((item, i) =>
-                                <tr key={get(item, '_id')}>
-                                    <td>{i + 1}</td>
-                                    <td>{get(item, 'policy_type_id.policy_type_name')}</td>
-                                    <td>{get(item, 'policy_number_of_digits_start')}</td>
-                                    <td>{get(item, 'policy_number_of_digits_end')}</td>
-                                    <td>{get(item, 'policy_count')}</td>
-                                    <td>{get(item, 'policy_type_id.policy_size_id.name')}</td>
-                                    <td>{get(item, 'policy_type_id.policy_series')}</td>
-                                    <td>{dayjs(get(item, 'createdAt')).format('DD-MM-YYYY')}</td>
-                                    <td>{get(item, 'policy_type_id.policy_number_of_digits')}</td>
-                                    <td><Trash2 onClick={()=>remove(get(item,'_id'))} className={'cursor-pointer'} color={'red'} /></td>
-                                </tr>)}</Table>}
-                    </Col>
-                </Row>
-                <Row className={'mb-20'}>
-                    <Col xs={12}>
-                        <Button onClick={() => navigate("/accounting/warehouse/create")} type={'button'}
-                                className={'mr-16'}
-                        > Add police blank</Button>
-                    </Col>
-                </Row>
-            </Section>
+            <GridView
+                ModalBody={ModalBody}
+                tableHeaderData={[
+                    {
+                        id: 1,
+                        key: 'bco_type.policy_type_name',
+                        title: 'Bco'
+                    },
+                    {
+                        id: 3,
+                        key: 'status.name',
+                        title: 'Status'
+                    },
+                    {
+                        id: 4,
+                        key: 'policy_number_of_digits_start',
+                        title: 'Start digit'
+                    },
+                    {
+                        id: 5,
+                        key: 'policy_number_of_digits_end',
+                        title: 'End digit'
+                    },
+                    {
+                        id: 5,
+                        key: 'policy_count',
+                        title: 'Count'
+                    },
+                ]}
+                keyId={KEYS.warehouse}
+                url={URLS.warehouse}
+                listUrl={`${URLS.warehouse}/list`}
+                title={'Warehouse'}
+                responseDataKey={'data.data'}
+
+            />
         </>
     );
 };

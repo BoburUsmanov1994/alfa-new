@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {useStore} from "../../../store";
-import {filter, find, get, head, includes, isEmpty, isEqual, isNil, last} from "lodash";
+import {filter, find, get, head, includes, isEmpty, isEqual, isNil, last, range} from "lodash";
 import {useGetAllQuery, usePostQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
@@ -47,6 +47,9 @@ const AddActContainer = ({...rest}) => {
     })
     let bcoListSelect = getSelectOptionsListFromData(get(bcoList, `data.data`, []), '_id', 'policy_type_name')
 
+    let {data: employeeList} = useGetAllQuery({key: KEYS.employee, url: `${URLS.employee}/list`})
+    employeeList = getSelectOptionsListFromData(get(employeeList, `data.data`, []), '_id', 'fullname')
+
     const {
         mutate: createRequest,
         isLoading: isLoadingPost
@@ -84,9 +87,8 @@ const AddActContainer = ({...rest}) => {
             url: URLS.acts,
             attributes: {
                 ...data,
-                bco_data: bcoListData.map(({policy_type_id, ...rest}) => ({
+                bco_data: bcoListData.map(({...rest}) => ({
                     ...rest,
-                    policy_type_id: get(policy_type_id, '_id')
                 })),
             }
         }, {
@@ -99,25 +101,13 @@ const AddActContainer = ({...rest}) => {
         })
     }
     const checkBlank = ({data}) => {
-        const {policy_blank_number_from, policy_blank_number_to, ...rest} = data
-        checkBlankRequest({
-                url: URLS.checkBlank,
-                attributes: {
-                    policy_blank_number_to: parseInt(policy_blank_number_to),
-                    policy_blank_number_from: parseInt(policy_blank_number_from),
-                    ...rest,
-                }
-            },
-            {
-                onSuccess: ({data}) => {
-                    setBcoListData(prev => [...prev, get(data, 'data', {})])
-                    setOpen(false)
-                }
-            })
+        setBcoListData(prev => [...prev, data])
+        setOpen(false)
     }
     if (bcoStatusListIsLoading || isLoadingBranches || isLoadingBcoList) {
         return <OverlayLoader/>
     }
+    console.log('bcoListData', bcoListData)
     return (
         <>
             {
@@ -130,48 +120,54 @@ const AddActContainer = ({...rest}) => {
                     </Col>
                 </Row>
                 <Row className={'mb-20'}>
-                    <Col xs={6}>
+                    <Col xs={12}>
                         <Form getValueFromField={(value, name) => setFormParams(prev => ({...prev, [name]: value}))}
                               formRequest={create}
                               footer={<Button type={'submit'} className={'mr-16'}> Добавить</Button>}>
                             <Row className={'mb-25'}>
-                                <Col xs={6}><Field type={'input'} label={'Номер акта'} name={'act_number'}/></Col>
-                                <Col xs={6}><Field type={'select'} label={'Статус'} name={'statusofact'}
-                                                   options={bcoStatusList}/></Col>
-                                <Col xs={6}><Field type={'datepicker'} label={'Дата акта'} name={'act_date'}/></Col>
-                                <Col xs={6}><Field type={'datepicker'} label={'Дата статуса'}
-                                                   name={'status_date'}/></Col>
-                            </Row>
-                            <Row className={'mb-25'} align={'center'}>
-                                <Col xs={12}>
-                                    <Title sm>Отправитель</Title>
-                                </Col>
-                            </Row>
-                            <Row className={'mb-25'}>
-                                <Col xs={6}><Field type={'select'} label={'Филиал'} name={'sender_branch_id'}
-                                                   options={branchesList}/></Col>
-                                <Col xs={6}><Field type={'select'} label={'Работник'} name={'sender_employee_id'}
-                                                   options={getBranchEmpList(get(branches, 'data.data', []), get(formParams, 'sender_branch_id'))}/></Col>
+                                <Col xs={4}><Field type={'input'} label={'Номер акта'} name={'act_number'}
+                                                   params={{required: true}}/></Col>
+                                <Col xs={4}><Field type={'select'} label={'Статус'} name={'statusofact'}
+                                                   options={bcoStatusList} params={{required: true}}/></Col>
+                                <Col xs={4}><Field type={'datepicker'} label={'Дата акта'} name={'act_date'}
+                                                   params={{required: true}}/></Col>
+                                <Col xs={6}>
+                                    <Row className={'mb-25'} align={'center'}>
+                                        <Col xs={12}>
+                                            <Title sm>Отправитель</Title>
+                                        </Col>
+                                    </Row>
+                                    <Row className={'mb-25'}>
+                                        <Col xs={6}><Field type={'select'} label={'Филиал'} name={'sender_branch_id'}
+                                                           options={branchesList}/></Col>
+                                        <Col xs={6}><Field type={'select'} label={'Работник'}
+                                                           name={'sender_employee_id'}
+                                                           options={employeeList}/></Col>
 
-                            </Row>
-                            <Row className={'mb-25'} align={'center'}>
-                                <Col xs={12}>
-                                    <Title sm>Получатель</Title>
+                                    </Row>
+                                </Col>
+                                <Col xs={6}>
+                                    <Row className={'mb-25'} align={'center'}>
+                                        <Col xs={12}>
+                                            <Title sm>Получатель</Title>
+                                        </Col>
+                                    </Row>
+                                    <Row className={'mb-25'}>
+                                        <Col xs={6}><Field type={'select'} label={'Филиал'} name={'receiver_branch_id'}
+                                                           options={branchesList}/></Col>
+                                        <Col xs={6}><Field type={'select'} label={'Работник'}
+                                                           name={'receiver_employee_id'}
+                                                           options={employeeList}/></Col>
+                                    </Row>
                                 </Col>
                             </Row>
-                            <Row className={'mb-25'}>
-                                <Col xs={6}><Field type={'select'} label={'Филиал'} name={'receiver_branch_id'}
-                                                   options={branchesList}/></Col>
-                                <Col xs={6}><Field type={'select'} label={'Работник'} name={'receiver_employee_id'}
-                                                   options={getBranchEmpList(get(branches, 'data.data', []), get(formParams, 'receiver_branch_id'))}/></Col>
-                            </Row>
+
                             <Row className={'mb-25'} align={'center'}>
                                 <Col xs={12}>
                                     <Flex justify={'space-between'}>
                                         <Title sm>Передаваемые полиса</Title>
                                         <Button type={'button'} onClick={() => setOpen(true)}>Add police blank</Button>
                                     </Flex>
-
                                 </Col>
                             </Row>
                             <Row className={'mb-20'}>
@@ -181,13 +177,12 @@ const AddActContainer = ({...rest}) => {
                                                thead={['№', 'Тип полиса', 'Начальный №', 'Конечный №', 'Blank numbers', 'Количество', 'Action']}>{bcoListData.map((item, i) =>
                                             <tr key={get(item, '_id')}>
                                                 <td>{i + 1}</td>
-                                                <td>{get(item, 'policy_type_id.policy_type_name', '-')}</td>
+                                                <td>{get(item, 'policy_type_id', '-')}</td>
                                                 <td>{get(item, 'policy_blank_number_from')}</td>
                                                 <td>{get(item, 'policy_blank_number_to')}</td>
-
                                                 <td>
                                                     <div style={{maxHeight: '25vh', overflowY: 'scroll'}}>
-                                                        {get(item, 'blanks', []).map(_blank => <div>{_blank}</div>)}
+                                                        {get(item, 'blank_number', []).map(_blank => <div>{_blank}</div>)}
                                                     </div>
                                                 </td>
                                                 <td><NumberFormat displayType={'text'} thousandSeparator={" "}
@@ -195,7 +190,7 @@ const AddActContainer = ({...rest}) => {
                                                 </td>
                                                 <td>
                                                     <Trash2 onClick={() => {
-                                                        setBcoListData(filter(bcoListData, (_item) => !isEqual(get(_item, 'policy_type_id._id'), get(item, 'policy_type_id._id'))))
+                                                        setBcoListData(filter(bcoListData, (_item) => !isEqual(get(_item, 'policy_type_id'), get(item, 'policy_type_id'))))
                                                     }} className={'cursor-pointer'} color={'red'}/>
                                                 </td>
 
@@ -209,13 +204,24 @@ const AddActContainer = ({...rest}) => {
                     <Form formRequest={(val) => checkBlank(val)} footer={<Button type={'submit'}>Send</Button>}>
                         <Row className={'mt-15'}>
                             <Col xs={6}>
-                                <Field options={bcoListSelect} type={'select'} name={'policy_type_id'}/>
+                                <Field label={'Тип полиса'} options={bcoListSelect} type={'select'} name={'policy_type_id'}
+                                       params={{required: true}}/>
                             </Col>
                             <Col xs={6}>
-                                <Field type={'input'} name={'policy_blank_number_from'}/>
+                                <Field label={'Начальный №'} type={'input'} name={'policy_blank_number_from'}
+                                       params={{required: true, valueAsNumber: true}} property={{type: 'number'}}/>
                             </Col>
                             <Col xs={6}>
-                                <Field type={'input'} name={'policy_blank_number_to'}/>
+                                <Field label={'Конечный №'} type={'input'} name={'policy_blank_number_to'}
+                                       params={{required: true, valueAsNumber: true}} property={{type: 'number'}}/>
+                            </Col>
+                            <Col xs={6}>
+                                <Field label={'Blank numbers'} isMulti options={range(0, 1000).map(index => ({value: index, label: index}))}
+                                       type={'select'} name={'blank_number'} params={{required: true}}/>
+                            </Col>
+                            <Col xs={6}>
+                                <Field label={'Количество'} type={'input'} name={'blank_counts'}
+                                       params={{required: true, valueAsNumber: true}} property={{type: 'number'}}/>
                             </Col>
                         </Row>
                     </Form>

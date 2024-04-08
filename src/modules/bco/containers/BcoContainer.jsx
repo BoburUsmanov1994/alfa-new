@@ -34,17 +34,28 @@ const BcoContainer = ({...rest}) => {
         url: `${URLS.bcoType}/list`
     })
     policyList = getSelectOptionsListFromData(get(policyList, `data.data`, []), '_id', 'policy_type_name')
+
+    let {data: branchList} = useGetAllQuery({
+        key: KEYS.branches,
+        url: `${URLS.branches}/list`,
+    })
+    branchList = getSelectOptionsListFromData(get(branchList, `data.data`, []), '_id', 'branchName')
+
     let {data: policyBlankList} = useGetAllQuery({
         key: KEYS.policyblank,
         url: `${URLS.policyblank}/list`
     })
+
     policyBlankList = getSelectOptionsListFromData(get(policyBlankList, `data.data`, []), '_id', 'blank_number')
+
+    let {data: employeeList} = useGetAllQuery({key: KEYS.employee, url: `${URLS.employee}/list`})
+    employeeList = getSelectOptionsListFromData(get(employeeList, `data.data`, []), '_id', 'fullname')
 
     let {data: actList} = useGetAllQuery({
         key: KEYS.act,
         url: `${URLS.act}/list`
     })
-    actList = getSelectOptionsListFromData(get(actList, `data.data`, []), '_id', 'name')
+    actList = getSelectOptionsListFromData(get(actList, `data.data`, []), '_id', 'act_number')
     useEffect(() => {
         setBreadcrumbs(breadcrumbs)
     }, [])
@@ -52,29 +63,29 @@ const BcoContainer = ({...rest}) => {
     const ModalBody = ({data, rowId = null}) => <>
         <Row>
             <Col xs={6}>
-                <Field name={'policy_type_id'} type={'select'} options={policyList} label={'Bco type'}
-                       defaultValue={rowId ? get(data, 'policy_type_id') : null}
+                <Field name={'bcoType'} type={'select'} options={policyList} label={'Bco type'}
+                       defaultValue={rowId ? get(data, 'bcoType') : null}
                        params={{required: true}}/>
             </Col>
             <Col xs={6}>
-                <Field name={'policy_blank_number_from'} property={{type: 'number'}}
-                       label={'Policy number from'} defaultValue={rowId ? get(data, 'policy_blank_number_from') : null}
+                <Field name={'branch'} type={'select'} options={branchList} label={'Branch'}
+                       defaultValue={rowId ? get(data, 'branch') : null}
                        params={{required: true}}/>
             </Col>
             <Col xs={6}>
-                <Field name={'policy_blank_number_to'} type={'input'} property={{type: 'number'}}
-                       label={'Policy number to'} defaultValue={rowId ? get(data, 'policy_blank_number_to') : null}
+                <Field name={'employee'} type={'select'} options={employeeList} label={'Employee'}
+                       defaultValue={rowId ? get(data, 'employee') : null}
                        params={{required: true}}/>
             </Col>
             <Col xs={6}>
-                <Field isMulti name={'blank_number'} type={'select'} options={policyBlankList}
-                       label={'Policy blank'} defaultValue={rowId ? get(data, 'blank_number') : null}
+                <Field isMulti name={'blanks'} type={'select'} options={policyBlankList}
+                       label={'Policy blank'} defaultValue={rowId ? get(data, 'blanks') : null}
                        params={{required: true}}/>
             </Col>
             <Col xs={6}>
-                <Field name={'act_id'} type={'select'} options={actList}
-                       label={'Act'} defaultValue={rowId ? get(data, 'act_id') : null}
-                       params={{required: true}}/>
+                <Field name={'act'} type={'select'} options={actList}
+                       label={'Act'} defaultValue={rowId ? get(data, 'act') : null}
+                />
             </Col>
         </Row>
 
@@ -87,20 +98,25 @@ const BcoContainer = ({...rest}) => {
                 tableHeaderData={[
                     {
                         id: 1,
-                        key: 'branch_id.branchname',
+                        key: 'branch.branchName',
                         title: 'Branch'
                     },
                     {
                         id: 2,
-                        key: 'employee_id.name',
+                        key: 'employee.fullname',
                         title: 'Employee'
                     },
                     {
                         id: 3,
-                        key: 'policy_blank_number',
+                        key: 'blanks',
                         title: 'Policy blank numbers',
                         isArray: true,
                         arrayKey: 'blank_number'
+                    },
+                    {
+                        id: 3,
+                        key: 'bcoType.policy_type_name',
+                        title: 'Bco type',
                     },
 
                 ]}
