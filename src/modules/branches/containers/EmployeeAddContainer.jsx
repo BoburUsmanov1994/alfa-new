@@ -107,7 +107,6 @@ const EmployeeAddContainer = () => {
                                    params={{required: true}}
                             />
                         </Col>
-
                         <Col xs={4}>
                             <Field name={'emailforcontacts'} type={'input'} label={'Email'}
                                    params={{
