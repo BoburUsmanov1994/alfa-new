@@ -27,12 +27,13 @@ const PolicyDistributionContainer = ({
     const [agreementId, setAgreementId] = useState(null);
     const [transactionId, setTransactionId] = useState(null);
     const [policyId, setPolicyId] = useState(null);
+    const [attachmentSum, setAttachmentSum] = useState(0);
     const {t} = useTranslation()
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const user = useStore(state => get(state, 'user'))
     let {data: transactions, isLoading: _isLoading} = useGetAllQuery({
-        key: KEYS.transactions, url: `${URLS.transactions}/list`, enabled:!!(get(user, 'branch._id')), params: {
+        key: KEYS.transactions, url: `${URLS.transactions}/list`, enabled: !!(get(user, 'branch._id')), params: {
             params: {
                 branch: get(user, 'branch._id'),
                 limit: 100
@@ -41,16 +42,27 @@ const PolicyDistributionContainer = ({
     })
     let {data: agreements} = useGetAllQuery({
         key: KEYS.transactionAgreements,
-        url: `${URLS.transactionAgreements}/${transactionId}`,
-        enabled: !!(transactionId)
+        url: `${URLS.agreements}/list`,
+        params: {
+            params: {
+                branch: get(user, 'branch._id'),
+                limit: 100
+            },
+        },
+        enabled: !!(get(user, 'branch._id'))
     })
-    agreements = getSelectOptionsListFromData(get(agreements, `data.data`, []), 'id', 'agreementsnumber')
+    agreements = getSelectOptionsListFromData(get(agreements, `data.data`, []), '_id', 'agreementNumber')
     let {data: policies} = useGetAllQuery({
-        key: [KEYS.transactionPolicies, agreementId],
-        url: `${URLS.transactionPolicies}/${agreementId}`,
+        key: [KEYS.policy, agreementId],
+        url: `${URLS.policy}/list`,
+        params: {
+            params: {
+                agreementId
+            }
+        },
         enabled: !!(agreementId)
     })
-    let policyList = getSelectOptionsListFromData(get(policies, `data.data`, []), '_id', 'policy_number')
+    let policyList = getSelectOptionsListFromData(get(policies, `data.data`, []), '_id', 'number')
 
     const {mutate: attachRequest, isLoading} = usePostQuery({listKeyId: KEYS.transactions})
 
@@ -75,7 +87,32 @@ const PolicyDistributionContainer = ({
         const {attachmentSum} = data;
         attachRequest({
             url: URLS.transactionAttach,
-            attributes: {transactionId: transactionId, policyId, attachmentSum}
+            attributes: {
+                attach: true,
+                transaction: transactionId,
+                agreement: agreementId,
+                policy: policyId,
+                attachmentSum
+            }
+        }, {
+            onSuccess: () => {
+                setTransactionId(null)
+            },
+            onError: () => {
+
+            }
+        })
+    }
+    const detach = () => {
+        attachRequest({
+            url: URLS.transactionAttach,
+            attributes: {
+                attach: false,
+                transaction: transactionId,
+                agreement: agreementId,
+                policy: policyId,
+                attachmentSum
+            }
         }, {
             onSuccess: () => {
                 setTransactionId(null)
@@ -88,6 +125,7 @@ const PolicyDistributionContainer = ({
     if (_isLoading) {
         return <OverlayLoader/>
     }
+
 
     return (
         <Section>
@@ -154,9 +192,13 @@ const PolicyDistributionContainer = ({
             </Row>}
             <Row className={'mb-20'}>
                 <Col xs={12}>
-                    {transactionId && agreementId && policyId && <Form formRequest={attach} footer={<Flex>
+                    {transactionId && agreementId && policyId && <Form formRequest={attach} getValueFromField={(value, name) => {
+                        if (name === 'attachmentSum') {
+                            setAttachmentSum(value)
+                        }
+                    }} footer={<Flex>
                         <Button type={'submit'} className={'mr-16'}>Прикрепить</Button>
-                        <Button type={'button'} danger> Открепить средства</Button>
+                        <Button onClick={detach} type={'button'} danger> Открепить средства</Button>
                     </Flex>}>
                         <Field
                             defaultValue={get(find(get(policies, `data.data`, []), (_item) => isEqual(get(_item, "_id"), policyId)), 'sumInsurancePremium', 0)}

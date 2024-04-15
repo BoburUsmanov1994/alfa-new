@@ -13,6 +13,7 @@ import {ContentLoader, OverlayLoader} from "../../../components/loader";
 import {Navigate, useNavigate} from "react-router-dom";
 import {get} from "lodash"
 import {getSelectOptionsListFromData} from "../../../utils";
+import {useStore} from "../../../store";
 
 
 const CreateContainer = ({
@@ -22,6 +23,7 @@ const CreateContainer = ({
     const {t} = useTranslation();
     const navigate = useNavigate();
     const [filter, setFilter] = useState({})
+    const user = useStore(state => get(state, 'user', null))
     let {data: agreementData, isLoading} = useGetOneQuery({
         id: product_id,
         key: KEYS.agreements,
@@ -43,9 +45,15 @@ const CreateContainer = ({
 
     let {data: policyBlankList} = useGetAllQuery({
         key: KEYS.policyblank,
+        params:{
+            params:{
+                branch:get(user, 'branch._id'),
+                employee:get(user, 'employee')
+            }
+        },
         url: `/api/bco/policy-blank/list`,
     })
-    policyBlankList = getSelectOptionsListFromData(get(policyBlankList, `data.data`, []), '_id', 'blank')
+    policyBlankList = getSelectOptionsListFromData(get(policyBlankList, `data.data`, []), '_id', 'blank.blank_number')
     let {data: payments} = useGetAllQuery({key: KEYS.typeofpayment, url: 'api/references/payment-type/list'})
     payments = getSelectOptionsListFromData(get(payments, `data.data`, []), '_id', 'name')
 

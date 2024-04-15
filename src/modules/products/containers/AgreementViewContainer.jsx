@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {Row, Col} from "react-grid-system";
 import Section from "../../../components/section";
 import Title from "../../../components/ui/title";
-import {get, isEqual, isNil, sumBy} from "lodash";
+import {get, includes, isEqual, isNil, sumBy} from "lodash";
 import {useDeleteQuery, useGetAllQuery, useGetOneQuery, usePostQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
@@ -52,7 +52,7 @@ const AgentViewContainer = ({...rest}) => {
     let {data: transactions, isLoading: _isLoading} = useGetAllQuery({
         key: KEYS.transactions, url: URLS.transactions, enabled: !!(get(user, 'branch_Id.id')), params: {
             params: {
-                branch: get(user, 'branch_Id.id'),
+                branch: get(user, 'branch._id'),
                 limit: 100
             }
         }
@@ -81,7 +81,13 @@ const AgentViewContainer = ({...rest}) => {
         const {attachmentSum} = data;
         attachRequest({
             url: URLS.transactionAttach,
-            attributes: {transactionId: transactionId, policyId: get(selectedPolice, 'id'), attachmentSum}
+            attributes: {
+                attach: true,
+                transaction: transactionId,
+                policy: get(selectedPolice, '_id'),
+                attachmentSum,
+                agreement: get(selectedPolice, 'agreement')
+            }
         }, {
             onSuccess: () => {
                 setTransactionId(null)
@@ -92,7 +98,7 @@ const AgentViewContainer = ({...rest}) => {
             }
         })
     }
-
+    console.log('selectedPolice', selectedPolice)
 
     const remove = (id) => {
         Swal.fire({
@@ -241,16 +247,16 @@ const AgentViewContainer = ({...rest}) => {
 
                                         <td className={''}
                                         >
-                                            {get(item, "fondStatus") === 'new' &&
-                                            <DollarSign onClick={() => setSelectedPolice(item)}
-                                                        className={'cursor-pointer'}
-                                                        color={'#71BC70'}/>}
-                                            {get(item, "fondStatus") === 'new' &&
-                                            <Send className={'cursor-pointer ml-15'} color={'#13D6D1'}
-                                                  onClick={() => sendToFond(id, get(item, '_id'))}/>}
-                                            {get(item, "fondStatus") === 'new' &&
-                                            <Trash2 onClick={() => remove(get(item, '_id', null))}
-                                                    className={'ml-15 cursor-pointer'} color={'#dc2626'}/>}
+                                            {includes(['new', 'partialPaid'], get(item, "fondStatus")) &&
+                                                <DollarSign onClick={() => setSelectedPolice(item)}
+                                                            className={'cursor-pointer'}
+                                                            color={'#71BC70'}/>}
+                                            {includes(['new', 'partialPaid'], get(item, "fondStatus")) &&
+                                                <Send className={'cursor-pointer ml-15'} color={'#13D6D1'}
+                                                      onClick={() => sendToFond(id, get(item, '_id'))}/>}
+                                            {includes(['new'], get(item, "fondStatus")) &&
+                                                <Trash2 onClick={() => remove(get(item, '_id', null))}
+                                                        className={'ml-15 cursor-pointer'} color={'#dc2626'}/>}
                                         </td>
                                     </tr>)}
                                 </Table>

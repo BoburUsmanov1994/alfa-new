@@ -48,11 +48,11 @@ const UsersContainer = () => {
             </Col>
             <Col xs={6}>
                 <Field name={'employee'} type={'select'} label={'Employee'} options={employeeList}
-                       defaultValue={rowId ? get(data, 'employee._id') : null} params={{required: true}}/>
+                       defaultValue={rowId ? get(data, 'employee._id') : null} />
             </Col>
             <Col xs={6}>
                 <Field name={'agent'} type={'select'} label={'Agent'} options={agents}
-                       defaultValue={rowId ? get(data, 'agent._id') : null} params={{required: true}}/>
+                       defaultValue={rowId ? get(data, 'agent._id') : null} />
             </Col>
             <Col xs={6}>
                 <Field name={'username'} type={'input'} label={'Username'}

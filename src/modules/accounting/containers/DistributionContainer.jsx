@@ -71,7 +71,7 @@ const DistributionContainer = ({
         setBreadcrumbs(breadcrumbs)
     }, [])
 
-    const create = (data) => {
+    const create = (attach = true) => {
         if (isEmpty(idList)) {
             toast.warn("Please select transaction")
         } else if (isNil(get(params, 'branchId'))) {
@@ -80,7 +80,7 @@ const DistributionContainer = ({
             distributeRequest({
                 url: URLS.transactionDistribute,
                 attributes: {
-                    attach: true,
+                    attach: attach,
                     transactions: idList,
                     branch: get(params, 'branchId')
                 }
@@ -103,7 +103,8 @@ const DistributionContainer = ({
             <Row className={'mb-20'}>
                 <Col xs={12}>
                     <Flex justify={'flex-end'}>
-                        <Button type={'button'} className={'mr-16'} danger> Открепить</Button>
+                        <Button onClick={() => create(false)} type={'button'} className={'mr-16'}
+                                danger> Открепить</Button>
                         <Button type={'button'} onClick={create} className={'mr-16'}>Распределить</Button>
                         <Form getValueFromField={(value, name) => {
                             if (includes(['branchId'], name)) {

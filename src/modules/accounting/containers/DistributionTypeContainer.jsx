@@ -54,12 +54,12 @@ const DistributionTypeContainer = ({...rest}) => {
                     },
                     {
                         id: 2,
-                        key: 'debt_account',
+                        key: 'debt_account.account_ID',
                         title: 'Debit code'
                     },
                     {
                         id: 3,
-                        key: 'cred_account',
+                        key: 'cred_account.account_ID',
                         title: 'Credit code'
                     },
                 ]}
