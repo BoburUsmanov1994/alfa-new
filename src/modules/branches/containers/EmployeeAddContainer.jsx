@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Row, Col} from "react-grid-system";
 import Search from "../../../components/search";
 import Panel from "../../../components/panel";
@@ -18,6 +18,7 @@ import {getSelectOptionsListFromData} from "../../../utils";
 
 const EmployeeAddContainer = () => {
     const navigate = useNavigate();
+    const [regionId, setRegionId] = useState(null)
     let {data: positionList} = useGetAllQuery({key: KEYS.position, url: `${URLS.position}/list`})
     positionList = getSelectOptionsListFromData(get(positionList, `data.data`, []), '_id', 'name')
     let {data: documentTypeList} = useGetAllQuery({key: KEYS.documentType, url: `${URLS.documentType}/list`})
@@ -32,13 +33,26 @@ const EmployeeAddContainer = () => {
         key: KEYS.genders, url: `${URLS.genders}/list`
     })
     const genderList = getSelectOptionsListFromData(get(genders, `data.data`, []), '_id', 'name')
+
+    let {data: regions} = useGetAllQuery({key: KEYS.regions, url: `${URLS.regions}/list`})
+    regions = getSelectOptionsListFromData(get(regions, `data.data`, []), '_id', 'name')
+
+    const {data: district} = useGetAllQuery({
+        key: [KEYS.districts, regionId],
+        url: `${URLS.districts}/list`,
+        params: {
+            params: {
+                region: regionId
+            }
+        },
+        enabled: !!(regionId)
+    })
+    const districtList = getSelectOptionsListFromData(get(district, `data.data`, []), '_id', 'name')
     const create = ({data}) => {
         createRequest({
             url: URLS.employee,
             attributes: {
                 ...data,
-                dateofmanagerdocument: dayjs(get(data, 'dateofmanagerdocument')),
-                expirationdate: dayjs(get(data, 'expirationdate'))
             }
         }, {
             onSuccess: () => {
@@ -119,7 +133,7 @@ const EmployeeAddContainer = () => {
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
-                            <Field name={'branch'} type={'select'} label={'Gender'} options={genderList}
+                            <Field name={'gender'} type={'select'} label={'Gender'} options={genderList}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
@@ -136,9 +150,33 @@ const EmployeeAddContainer = () => {
                         </Col>
                         <Col xs={4}>
                             <Field params={{required: true}} name={'pin'} type={'input-mask'}
-                                   label={'PIN'}
+                                   label={'PINFL'}
                                    property={{mask: '99999999999999', maskChar: '_'}}
                             />
+                        </Col>
+                        <Col xs={4}>
+                            <Field property={{onChange: (val) => setRegionId(val)}} name={'region'} type={'select'}
+                                   label={'Region'} options={regions}
+                                   params={{required: true}}/>
+                        </Col>
+                        <Col xs={4}>
+                            <Field name={'district'} type={'select'} label={'District'} options={districtList}
+                                   params={{required: true}}/>
+                        </Col>
+                        <Col xs={4}>
+                            <Field name={'address'} type={'input'}
+                                   label={'Address'}
+                                   params={{required: true}}/>
+                        </Col>
+                        <Col xs={4}>
+                            <Field name={'job_title'} type={'input'}
+                                   label={'Job title'}
+                                   params={{required: true}}/>
+                        </Col>
+                        <Col xs={4}>
+                            <Field name={'dateofbirth'} type={'datepicker'}
+                                   label={'Date of birth'}
+                                   params={{required: true}}/>
                         </Col>
                     </Row>
                 </Form>
