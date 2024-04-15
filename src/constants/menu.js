@@ -175,6 +175,11 @@ export const menuData = [
                 title: 'Счета',
                 path: '/accounting/account',
             },
+            {
+                id: 6,
+                title: 'Transaction logs',
+                path: '/accounting/transaction-logs',
+            },
 
         ]
     },

@@ -107,4 +107,5 @@ export const KEYS = {
     documentType: "documentType",
     account: "account",
     distributeType: "distributeType",
+    transactionLogs: "transactionLogs",
 }

@@ -43,9 +43,9 @@ const CreateContainer = ({
 
     let {data: policyBlankList} = useGetAllQuery({
         key: KEYS.policyblank,
-        url: `api/policy/blank/list`,
+        url: `/api/bco/policy-blank/list`,
     })
-    policyBlankList = getSelectOptionsListFromData(get(policyBlankList, `data.data`, []), '_id', 'blank_number')
+    policyBlankList = getSelectOptionsListFromData(get(policyBlankList, `data.data`, []), '_id', 'blank')
     let {data: payments} = useGetAllQuery({key: KEYS.typeofpayment, url: 'api/references/payment-type/list'})
     payments = getSelectOptionsListFromData(get(payments, `data.data`, []), '_id', 'name')
 

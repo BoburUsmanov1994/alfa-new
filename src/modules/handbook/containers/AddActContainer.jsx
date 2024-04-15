@@ -174,26 +174,17 @@ const AddActContainer = ({...rest}) => {
                                 <Col xs={12} className={'horizontal-scroll'}>
                                     {isEmpty(bcoListData) ? <EmptyPage/> :
                                         <Table bordered hideThead={false}
-                                               thead={['№', 'Тип полиса', 'Начальный №', 'Конечный №', 'Blank numbers', 'Количество', 'Action']}>{bcoListData.map((item, i) =>
+                                               thead={['№', 'Тип полиса', 'Начальный №', 'Конечный №', 'Action']}>{bcoListData.map((item, i) =>
                                             <tr key={get(item, '_id')}>
                                                 <td>{i + 1}</td>
-                                                <td>{get(item, 'policy_type_id', '-')}</td>
+                                                <td>{get(item, 'bco_type', '-')}</td>
                                                 <td>{get(item, 'policy_blank_number_from')}</td>
                                                 <td>{get(item, 'policy_blank_number_to')}</td>
-                                                <td>
-                                                    <div style={{maxHeight: '25vh', overflowY: 'scroll'}}>
-                                                        {get(item, 'blank_number', []).map(_blank => <div>{_blank}</div>)}
-                                                    </div>
-                                                </td>
-                                                <td><NumberFormat displayType={'text'} thousandSeparator={" "}
-                                                                  value={get(item, 'blank_counts') || 0}/>
-                                                </td>
                                                 <td>
                                                     <Trash2 onClick={() => {
                                                         setBcoListData(filter(bcoListData, (_item) => !isEqual(get(_item, 'policy_type_id'), get(item, 'policy_type_id'))))
                                                     }} className={'cursor-pointer'} color={'red'}/>
                                                 </td>
-
                                             </tr>)}</Table>}
                                 </Col>
                             </Row>
@@ -204,24 +195,16 @@ const AddActContainer = ({...rest}) => {
                     <Form formRequest={(val) => checkBlank(val)} footer={<Button type={'submit'}>Send</Button>}>
                         <Row className={'mt-15'}>
                             <Col xs={6}>
-                                <Field label={'Тип полиса'} options={bcoListSelect} type={'select'} name={'policy_type_id'}
+                                <Field label={'Тип полиса'} options={bcoListSelect} type={'select'} name={'bco_type'}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={6}>
                                 <Field label={'Начальный №'} type={'input'} name={'policy_blank_number_from'}
-                                       params={{required: true, valueAsNumber: true}} property={{type: 'number'}}/>
+                                       params={{required: true}}/>
                             </Col>
                             <Col xs={6}>
                                 <Field label={'Конечный №'} type={'input'} name={'policy_blank_number_to'}
-                                       params={{required: true, valueAsNumber: true}} property={{type: 'number'}}/>
-                            </Col>
-                            <Col xs={6}>
-                                <Field label={'Blank numbers'} isMulti options={range(0, 1000).map(index => ({value: index, label: index}))}
-                                       type={'select'} name={'blank_number'} params={{required: true}}/>
-                            </Col>
-                            <Col xs={6}>
-                                <Field label={'Количество'} type={'input'} name={'blank_counts'}
-                                       params={{required: true, valueAsNumber: true}} property={{type: 'number'}}/>
+                                       params={{required: true}}/>
                             </Col>
                         </Row>
                     </Form>

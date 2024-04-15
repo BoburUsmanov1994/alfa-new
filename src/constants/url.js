@@ -109,4 +109,5 @@ export const URLS = {
     residentType: 'api/references/resident-type/list',
     documentType: 'api/references/document-type',
     account: 'api/account',
+    transactionLogs: 'api/transaction/log',
 }
