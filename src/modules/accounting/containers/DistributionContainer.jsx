@@ -105,7 +105,7 @@ const DistributionContainer = ({
                     <Flex justify={'flex-end'}>
                         <Button onClick={() => create(false)} type={'button'} className={'mr-16'}
                                 danger> Открепить</Button>
-                        <Button type={'button'} onClick={create} className={'mr-16'}>Распределить</Button>
+                        <Button type={'button'} onClick={()=>create(true)} className={'mr-16'}>Распределить</Button>
                         <Form getValueFromField={(value, name) => {
                             if (includes(['branchId'], name)) {
                                 setParams(prev => ({...prev, [name]: value}))
