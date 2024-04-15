@@ -155,11 +155,11 @@ export const menuData = [
                 title: 'Импорт платёжные документы',
                 path: '/accounting/import-payment-documents',
             },
-            // {
-            //     id: 2,
-            //     title: 'Распределение',
-            //     path: '/accounting/distribution',
-            // },
+            {
+                id: 2,
+                title: 'Распределение',
+                path: '/accounting/distribution',
+            },
             {
                 id: 3,
                 title: 'Тип распределения',
