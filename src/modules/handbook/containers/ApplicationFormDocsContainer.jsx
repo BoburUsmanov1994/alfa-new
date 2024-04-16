@@ -5,6 +5,8 @@ import GridView from "../../../containers/grid-view/grid-view";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import Field from "../../../containers/form/field";
+import config from "../../../config";
+import {Download} from "react-feather";
 
 const ApplicationFormDocsContainer = ({...rest}) => {
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
@@ -45,7 +47,10 @@ const ApplicationFormDocsContainer = ({...rest}) => {
                     {
                         id: 3,
                         key: 'path',
-                        title: 'Path'
+                        title: 'File',
+                        render:(_tr)=>{
+                            return <a href={`${config.FILE_URL}/${get(_tr,'path')}`} target={'_self'}><Download /></a>
+                        }
                     },
                 ]}
                 keyId={KEYS.applicationformdocs}

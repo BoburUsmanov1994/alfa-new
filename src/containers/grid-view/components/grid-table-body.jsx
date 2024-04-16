@@ -1,5 +1,5 @@
 import React from 'react';
-import {get, isArray} from "lodash";
+import {get, isArray,isFunction} from "lodash";
 import {Trash2, Edit, Eye} from "react-feather";
 import {useNavigate} from "react-router-dom";
 import NumberFormat from 'react-number-format';
@@ -32,7 +32,7 @@ const GridTableBody = ({
                                     item => get(item, get(td, 'arrayKey', 'name'))
                                 ).join(" , ") : get(td, 'hasNumberFormat', false) ?
                                     <NumberFormat displayType={'text'} thousandSeparator={" "}
-                                                  value={get(tr, `${get(td, 'key')}`, 0)}/> : get(td, 'date', false) ? dayjs(get(tr, `${get(td, 'key')}`, new Date())).format(get(td, 'dateFormat', "DD.MM.YYYY")) : get(tr, `${get(td, 'key')}`, '-')
+                                                  value={get(tr, `${get(td, 'key')}`, 0)}/> : get(td, 'date', false) ? dayjs(get(tr, `${get(td, 'key')}`, new Date())).format(get(td, 'dateFormat', "DD.MM.YYYY")) : isFunction(get(td, 'render')) ? get(td, 'render')(tr) :get(tr, `${get(td, 'key')}`, '-')
                             }
                         </td>)
                     }
