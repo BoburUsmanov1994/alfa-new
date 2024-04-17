@@ -65,7 +65,7 @@ const StepTwo = ({id = null, ...props}) => {
         } = data;
         setAgreement({
             ...rest,
-            objectOfInsurance: objects
+            objectOfInsurance: objects.map(_item => get(_item, 'objectOfInsurance'))
         });
         props.nextStep();
     }
@@ -200,6 +200,7 @@ const StepTwo = ({id = null, ...props}) => {
 
     console.log('agreement', agreement)
     console.log('_fields', _fields)
+    console.log('objects', objects)
     return (
         <Row>
             <Col xs={12}>
@@ -612,7 +613,8 @@ const StepTwo = ({id = null, ...props}) => {
                         <Col xs={12}><Title>Франшиза</Title></Col>
                     </Row>
                     <Row className={'mb-25'}>
-                        {get(agreement, 'product.franchise', []).length > 0 && <Col xs={12} className={'horizontal-scroll'}>
+                        {get(agreement, 'product.franchise', []).length > 0 &&
+                        <Col xs={12} className={'horizontal-scroll'}>
                             <hr/>
                             <Table hideThead={false}
                                    thead={['Страховой риск', 'Имеет франшизу', 'Строго фиксирована', 'Введите фиксированное значение', 'Укажите тип франшизы', 'Укажите базу франшизы', 'Франшиза']}>
@@ -761,12 +763,12 @@ const StepTwo = ({id = null, ...props}) => {
                                                 <Field params={{required: true}}
                                                        label={'Firstname'}
                                                        type={'input'}
-                                                       name={'person.fullName.firstname'}/>
+                                                       name={'objectOfInsurance.details.person.fullName.firstname'}/>
                                             </Col>
                                             <Col xs={4} className={'mb-25'}>
                                                 <Field params={{required: true}}
                                                        label={'Lastname'} type={'input'}
-                                                       name={'person.fullName.lastname'}/>
+                                                       name={'objectOfInsurance.details.person.fullName.lastname'}/>
                                             </Col>
                                             <Col xs={4} className={'mb-25'}>
                                                 <Field params={{required: true}}

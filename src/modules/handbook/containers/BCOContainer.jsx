@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {useStore} from "../../../store";
 import {sum, get, includes, isEmpty, isEqual} from "lodash";
-import {useDeleteQuery, useGetAllQuery, usePutQuery} from "../../../hooks/api";
+import {useDeleteQuery, useGetAllQuery, usePostQuery, usePutQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import {ContentLoader, OverlayLoader} from "../../../components/loader";
@@ -41,7 +41,7 @@ const BCOContainer = ({...rest}) => {
         }
     })
     const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: KEYS.acts})
-    const {mutate: updateRequest, isLoading: putLoading} = usePutQuery({listKeyId: KEYS.acts})
+    const {mutate: postRequest, isLoading: postLoading} = usePostQuery({listKeyId: KEYS.acts})
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
@@ -82,22 +82,27 @@ const BCOContainer = ({...rest}) => {
         });
     }
 
-    const acceptOrCancel = ({data}) => {
-        updateRequest({
-            url: `${URLS.acts}/${id}`,
-            attributes: {
-                ...data
-            }
-        }, {
-            onSuccess: () => {
-                setId(null);
-                setAcceptModal(false);
+
+    const acceptOrDeny = (_id, _accept = true) => {
+        Swal.fire({
+            position: 'center',
+            icon: _accept ? 'success' : 'error',
+            backdrop: 'rgba(0,0,0,0.9)',
+            background: 'none',
+            title: t('Are you sure?'),
+            showConfirmButton: true,
+            // showCancelButton: true,
+            confirmButtonColor: _accept ? '#13D6D1' : '#d33',
+            // cancelButtonColor: '#13D6D1',
+            confirmButtonText: _accept ? t('Accept') : t('Deny'),
+            customClass: {
+                title: 'title-color',
             },
-            onError: () => {
-                setId(null);
-                setAcceptModal(false);
+        }).then((result) => {
+            if (result.isConfirmed) {
+                postRequest({url: `${URLS.acceptOrDenyAct}/${_id}?accept=${_accept}`})
             }
-        })
+        });
     }
 
     if (actsIsLoading) {
@@ -120,7 +125,7 @@ const BCOContainer = ({...rest}) => {
                                 } else {
                                     setIdList([])
                                 }
-                            }}/>, '№', 'Номер акта', 'Дата акта', 'Отправитель(Филиал)', 'Отправитель(Работник)', 'Получатель(Филиал)', 'Получатель(Работник)', 'Общее количество полисов', 'Status', 'Actions']}>{get(acts, 'data.data', []).map((item, i) =>
+                            }}/>, '№', 'Номер акта', 'Дата акта', 'Отправитель(Филиал)', 'Отправитель(Работник)', 'Получатель(Филиал)', 'Получатель(Работник)', 'Общее количество полисов', 'Status', 'Is Accepted?', 'Actions']}>{get(acts, 'data.data', []).map((item, i) =>
                                 <tr key={get(item, '_id')}>
                                     <td><Checkbox checked={includes(idList, get(item, '_id'))} onChange={(e) => {
                                         if (e.target?.checked) {
@@ -140,23 +145,23 @@ const BCOContainer = ({...rest}) => {
                                                       value={sum(get(item, 'bco_data', []).map(({blank_counts}) => blank_counts))}/>
                                     </td>
                                     <td>{get(item, 'statusofact.name')}</td>
+                                    <td>{get(item, 'isAccept') ? 'Yes' : 'No'}</td>
                                     <td>
-                                        {isEqual(get(user, 'employee'), get(item, 'receiver_employee_id')) && <><Check
-                                            onClick={() => {
-                                                setAcceptModal(true);
-                                                setId(get(item, '_id'));
-                                            }} size={20}
-                                            className={'cursor-pointer mr-10'} color={'green'}/>
+                                        {isEqual(get(user, 'employee._id'), get(item, 'receiver_employee_id._id')) && !get(item, 'isAccept') && <>
+                                            <Check
+                                                onClick={() => {
+                                                    acceptOrDeny(get(item, '_id'), true)
+                                                }} size={20}
+                                                className={'cursor-pointer mr-10'} color={'green'}/>
                                             <X onClick={() => {
-                                                setAcceptModal(true);
-                                                setId(get(item, '_id'));
+                                                acceptOrDeny(get(item, '_id'), false)
                                             }
                                             } size={20}
                                                className={'cursor-pointer mr-10'} color={'red'}/></>}
-                                        {(isEqual(get(user, 'employee'), get(item, 'sender_employee_id')) || isEqual(get(user, 'employee'), get(item, 'creator'))) && <>
-                                            <Edit2
-                                                onClick={() => navigate('/accounting/act/create')} size={18}
-                                                className={'cursor-pointer mr-10'} color={'blue'}/>
+                                        {(isEqual(get(user, 'employee._id'), get(item, 'sender_employee_id._id')) || isEqual(get(user, 'employee._id'), get(item, 'creator'))) && <>
+                                            {/*<Edit2*/}
+                                            {/*    onClick={() => navigate('/accounting/act/create')} size={18}*/}
+                                            {/*    className={'cursor-pointer mr-10'} color={'blue'}/>*/}
                                             <Trash2
                                                 onCLick={() => removeItem(get(item, '_id'))} size={18}
                                                 className={'cursor-pointer'}

@@ -52,7 +52,7 @@ const EmployeesContainer = ({...rest}) => {
                     },
                     {
                         id: 4,
-                        key: 'position',
+                        key: 'position.name',
                         title: 'Position'
                     },
                     {

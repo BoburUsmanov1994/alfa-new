@@ -48,7 +48,8 @@ const CreateContainer = ({
         params:{
             params:{
                 branch:get(user, 'branch._id'),
-                employee:get(user, 'employee')
+                employee:get(user, 'employee._id'),
+                is_used:false
             }
         },
         url: `/api/bco/policy-blank/list`,

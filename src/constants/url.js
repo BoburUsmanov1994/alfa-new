@@ -110,4 +110,5 @@ export const URLS = {
     documentType: 'api/references/document-type',
     account: 'api/account',
     transactionLogs: 'api/transaction/log',
+    acceptOrDenyAct: 'api/act/action',
 }

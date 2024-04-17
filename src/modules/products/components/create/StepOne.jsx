@@ -165,7 +165,7 @@ const StepOne = ({id = null, ...props}) => {
                                    type={'input'}
                                    name={'code'}
                                    property={{placeholder: t('Введите значение')}}
-                                   params={{valueAsNumber: true, required: true}}
+                                   params={{required: true}}
                                    defaultValue={get(product, 'code', '')}
                             />
                         </Col>
