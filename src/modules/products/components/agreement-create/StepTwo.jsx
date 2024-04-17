@@ -5,7 +5,7 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, includes, isEqual, isNil, range, round, sum, find, entries, head, last} from "lodash"
+import {get, includes, isEqual, isNil, range, round, sum, find, entries, head, last,values} from "lodash"
 import Title from "../../../../components/ui/title";
 import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
@@ -33,7 +33,7 @@ const StepTwo = ({id = null, ...props}) => {
     const [riskFields, setRiskFields] = useState([])
     const [_fields, _setFields] = useState({})
     const [_modalFields, _setModalFields] = useState({})
-    const [premium, setPremium] = useState(0)
+    const [premium, setPremium] = useState({})
     const setAgreement = useSettingsStore(state => get(state, 'setAgreement', () => {
     }))
     const addObjects = useSettingsStore(state => get(state, 'addObjects', () => {
@@ -201,6 +201,7 @@ const StepTwo = ({id = null, ...props}) => {
     console.log('agreement', agreement)
     console.log('_fields', _fields)
     console.log('objects', objects)
+    console.log('preimum', premium)
     return (
         <Row>
             <Col xs={12}>
@@ -320,7 +321,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: 'ввод значения',
-                                                    onChange: (val) => setPremium(val)
+                                                    onChange: (val) => setPremium(prev=>({...prev,[i]:val}))
                                                 }}
                                                 defaultValue={round((((dayjs(get(_fields, `riskDetails[${i}].endDate`)).diff(get(_fields, `riskDetails[${i}].startDate`), 'day') + 1) / 365) * get(_fields, `riskDetails[${i}].insuranceSum`, 0) * get(_fields, `riskDetails[${i}].insuranceRate`, 0) / 100), 2)}
                                             />
@@ -425,7 +426,7 @@ const StepTwo = ({id = null, ...props}) => {
                                         name={`totalInsurancePremium`}
                                         type={'number-format-input'}
                                         label={'Общая страховая премия'}
-                                        defaultValue={premium}
+                                        defaultValue={round(sum(values(premium)),2)}
                                         property={{
                                             placeholder: 'ввод значения',
                                             disabled: true
@@ -556,8 +557,8 @@ const StepTwo = ({id = null, ...props}) => {
                             <Flex className={'w-100'} justify={'space-between'}>
                                 <Title sm>График оплаты премии</Title>
                                 <Button onClick={() => {
-                                    if (premium > 0) {
-                                        if (sum(range(0, count).map(_index => get(_fields, `paymentSchedule[${_index}].count`))) < premium) {
+                                    if (round(sum(values(premium)),2) > 0) {
+                                        if (sum(range(0, count).map(_index => get(_fields, `paymentSchedule[${_index}].count`))) < round(sum(values(premium)),2)) {
                                             setCount(prev => ++prev)
                                         } else {
                                             toast.warn(t('Total amount cannot be greater than insurance premium!'))
