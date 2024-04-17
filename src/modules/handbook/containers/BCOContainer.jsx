@@ -158,12 +158,12 @@ const BCOContainer = ({...rest}) => {
                                             }
                                             } size={20}
                                                className={'cursor-pointer mr-10'} color={'red'}/></>}
-                                        {(isEqual(get(user, 'employee._id'), get(item, 'sender_employee_id._id')) || isEqual(get(user, 'employee._id'), get(item, 'creator'))) && <>
+                                        {(isEqual(get(user, 'employee._id'), get(item, 'sender_employee_id._id')) || isEqual(get(user, 'employee._id'), get(item, 'creator'))) && !get(item, 'isAccept') && <>
                                             {/*<Edit2*/}
                                             {/*    onClick={() => navigate('/accounting/act/create')} size={18}*/}
                                             {/*    className={'cursor-pointer mr-10'} color={'blue'}/>*/}
                                             <Trash2
-                                                onCLick={() => removeItem(get(item, '_id'))} size={18}
+                                                onClick={() => removeItem(get(item, '_id'))} size={18}
                                                 className={'cursor-pointer'}
                                                 color={'red'}/></>}</td>
                                 </tr>)}</Table>}
