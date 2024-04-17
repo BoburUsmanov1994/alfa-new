@@ -13,7 +13,7 @@ import {URLS} from "../../../../constants/url";
 import {formatDate, getSelectOptionsListFromData} from "../../../../utils";
 import Table from "../../../../components/table";
 import Flex from "../../../../components/flex";
-import {Trash2} from "react-feather";
+import {Plus, Trash2} from "react-feather";
 import Checkbox from "rc-checkbox";
 import 'rc-checkbox/assets/index.css';
 import {useTranslation} from "react-i18next";
@@ -22,10 +22,12 @@ import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
 import {INSURANCE_OBJECT_TYPES, PERSON_TYPE} from "../../../../constants";
 import ReactJson from "react-json-view";
+import {toast} from "react-toastify";
 
 const StepTwo = ({id = null, ...props}) => {
     const {t} = useTranslation()
     const [schedule, setSchedule] = useState([])
+    const [count, setCount] = useState(0)
     const [checkedAll, setCheckedAll] = useState(false)
     const [openObjectModal, setOpenObjectModal] = useState(false)
     const [riskFields, setRiskFields] = useState([])
@@ -187,8 +189,8 @@ const StepTwo = ({id = null, ...props}) => {
         if (!isNil(get(agreement, 'product.risk', []))) {
             setRiskFields(get(agreement, 'product.risk', []).map(_r => ({
                 ..._r,
-                startDate: new Date(),
-                endDate: new Date(),
+                startDate: get(agreement, 'startOfInsurance'),
+                endDate: get(agreement, 'endOfInsurance'),
                 insurancePremium: 0,
                 insuranceRate: 0,
                 insuranceSum: 0
@@ -196,7 +198,8 @@ const StepTwo = ({id = null, ...props}) => {
         }
     }, [agreement])
 
-    console.log('fields', _fields)
+    console.log('agreement', agreement)
+    console.log('_fields', _fields)
     return (
         <Row>
             <Col xs={12}>
@@ -295,6 +298,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 hideLabel: true,
                                             }}
                                             name={`riskDetails[${i}].startDate`} type={'datepicker'}
+                                            defaultValue={get(item, 'startDate')}
                                         />
                                     </td>
                                     <td>
@@ -303,6 +307,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 hideLabel: true,
                                             }}
                                             name={`riskDetails[${i}].endDate`} type={'datepicker'}
+                                            defaultValue={get(item, 'endDate')}
                                         />
                                     </td>
                                     <td>
@@ -549,11 +554,21 @@ const StepTwo = ({id = null, ...props}) => {
                         <Col xs={5}>
                             <Flex className={'w-100'} justify={'space-between'}>
                                 <Title sm>График оплаты премии</Title>
-                                <Button onClick={setGraphic} type={'button'}>Установить график</Button>
+                                <Button onClick={() => {
+                                    if (premium > 0) {
+                                        if (sum(range(0, count).map(_index => get(_fields, `paymentSchedule[${_index}].count`))) < premium) {
+                                            setCount(prev => ++prev)
+                                        } else {
+                                            toast.warn(t('Total amount cannot be greater than insurance premium!'))
+                                        }
+                                    } else {
+                                        toast.warn(t('Insurance premium  should be greater than 0!'))
+                                    }
+                                }} type={'button'}><Plus/></Button>
                             </Flex>
                             <hr className={'mt-15'}/>
-                            {schedule.length > 0 && <Table hideThead>
-                                {schedule.map((s, i) => <tr key={i}>
+                            {count > 0 && <Table hideThead>
+                                {range(0, count).map((s, i) => <tr key={i}>
                                     <td>
                                         <Field
                                             className={'mr-16'}
@@ -562,8 +577,6 @@ const StepTwo = ({id = null, ...props}) => {
                                             }}
                                             name={`paymentSchedule[${i}].date`}
                                             type={'datepicker'}
-                                            defaultValue={get(s, 'date')}
-                                            disabled={true}
                                         />
                                     </td>
                                     <td>
@@ -573,18 +586,23 @@ const StepTwo = ({id = null, ...props}) => {
                                             property={{
                                                 placeholder: 'ввод значения',
                                                 hideLabel: true,
-                                                disabled: true
                                             }}
-                                            defaultValue={get(s, 'count')}
                                         />
+                                    </td>
+                                    <td>
+                                        <Trash2 onClick={() => setCount(prev => --prev)}
+                                                className={'cursor-pointer '} size={20} color={'#dc2626'}/>
                                     </td>
                                 </tr>)}
                                 <tr>
                                     <td>
                                         <strong>Итого сумма:</strong>
                                     </td>
-                                    <td><strong><NumberFormat displayType={'text'} thousandSeparator={" "}
-                                                              value={Math.abs(get(_fields, 'accruedInsurancePremium', 0) - get(_fields, 'paidInsurancePremium', 0))}/></strong>
+                                    {/*<td colSpan={2}><strong><NumberFormat displayType={'text'} thousandSeparator={" "}*/}
+                                    {/*                          value={Math.abs(get(_fields, 'accruedInsurancePremium', 0) - get(_fields, 'paidInsurancePremium', 0))}/></strong>*/}
+                                    {/*</td>*/}
+                                    <td colSpan={2}><strong> <NumberFormat displayType={'text'} thousandSeparator={" "}
+                                                                           value={sum(range(0, count).map(_index => get(_fields, `paymentSchedule[${_index}].count`)))}/></strong>
                                     </td>
                                 </tr>
                             </Table>}
@@ -594,11 +612,11 @@ const StepTwo = ({id = null, ...props}) => {
                         <Col xs={12}><Title>Франшиза</Title></Col>
                     </Row>
                     <Row className={'mb-25'}>
-                        {get(agreement, 'product.risk', []).length > 0 && <Col xs={12} className={'horizontal-scroll'}>
+                        {get(agreement, 'product.franchise', []).length > 0 && <Col xs={12} className={'horizontal-scroll'}>
                             <hr/>
                             <Table hideThead={false}
                                    thead={['Страховой риск', 'Имеет франшизу', 'Строго фиксирована', 'Введите фиксированное значение', 'Укажите тип франшизы', 'Укажите базу франшизы', 'Франшиза']}>
-                                {get(agreement, 'product.risk', []).map((item, i) => <tr key={i + 1}>
+                                {get(agreement, 'product.franchise', []).map((item, i) => <tr key={i + 1}>
                                     <td>
                                         <Field
                                             className={'w-250'}
@@ -606,7 +624,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             type={'select'}
                                             property={{hideLabel: true}}
                                             options={risksOptions}
-                                            defaultValue={get(findItem(get(risks, 'data.data'), get(item, '_id')), '_id')}
+                                            defaultValue={get(item, 'risk')}
                                             isDisabled={true}
                                         />
                                     </td>
@@ -615,7 +633,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             <Field
                                                 type={'switch'}
                                                 name={`franchise[${i}].hasFranchise`}
-                                                defaultValue={get(agreement, `franchise[${i}].hasFranchise`, false)}
+                                                defaultValue={get(item, `hasFranchise`)}
                                                 property={{hideLabel: true}}
                                                 disabled={!!!(get(agreement, `product.allowChangeFranchise`, false))}
 
@@ -627,7 +645,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             <Field
                                                 type={'switch'}
                                                 name={`franchise[${i}].isFixed`}
-                                                defaultValue={get(agreement, `franchise[${i}].isFixed`, false)}
+                                                defaultValue={get(item, `isFixed`)}
                                                 property={{hideLabel: true}}
                                                 disabled={!!!(get(_fields, `franchise[${i}].hasFranchise`))}
                                             />
@@ -643,7 +661,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                     placeholder: 'ввод значения',
                                                     disabled: !!!(get(_fields, `franchise[${i}].isFixed`))
                                                 }}
-                                                defaultValue={get(agreement, `franchise[${i}].fixedValue`, 0)}
+                                                defaultValue={get(item, `fixedValue`)}
                                             />
                                         </Flex>
                                     </td>
@@ -656,7 +674,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 property={{hideLabel: true}}
                                                 options={franchises}
                                                 isDisabled={!!!(get(_fields, `franchise[${i}].hasFranchise`))}
-                                                defaultValue={get(agreement, `franchise[${i}].franchiseType`)}
+                                                defaultValue={get(item, `franchiseType`)}
                                             />
                                         </Flex>
                                     </td>
@@ -669,7 +687,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 property={{hideLabel: true}}
                                                 options={baseFranchises}
                                                 isDisabled={!!!(get(_fields, `franchise[${i}].hasFranchise`))}
-                                                defaultValue={get(agreement, `franchise[${i}].franchiseBase`)}
+                                                defaultValue={get(item, `franchiseBase`)}
                                             />
                                         </Flex>
                                     </td>
@@ -684,7 +702,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                     placeholder: 'Введите значение',
                                                     disabled: !(get(_fields, `franchise[${i}].hasFranchise`) && !get(_fields, `franchise[${i}].isFixed`))
                                                 }}
-                                                defaultValue={get(agreement, `franchise[${i}].franchise`, '')}
+                                                defaultValue={get(item, `franchise`)}
                                             />
                                         </Flex>
                                     </td>
@@ -1176,14 +1194,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             name={'objectOfInsurance.details.address'}/>
                                     </Col>
                                 </>}
-                            <Col xs={4}>
-                                <Field
-                                    type={'number-format-input'}
-                                    name={`objectOfInsurance.quantity`}
-                                    label={t('Quantity')}
-                                    params={{required: true}}
-                                />
-                            </Col>
+
                             <Col xs={4}>
                                 <Field
                                     options={countryList}

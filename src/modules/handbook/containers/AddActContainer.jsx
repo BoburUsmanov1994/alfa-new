@@ -47,17 +47,29 @@ const AddActContainer = ({...rest}) => {
     })
     let bcoListSelect = getSelectOptionsListFromData(get(bcoList, `data.data`, []), '_id', 'policy_type_name')
 
-    let {data: employeeList} = useGetAllQuery({key: KEYS.employee, url: `${URLS.employee}/list`})
-    employeeList = getSelectOptionsListFromData(get(employeeList, `data.data`, []), '_id', 'fullname')
+    let {data: senderEmployeeList} = useGetAllQuery({
+        key: [KEYS.employee, get(formParams, 'sender_branch_id')], url: `${URLS.employee}/list`, params: {
+            params: {
+                branch: get(formParams, 'sender_branch_id')
+            }
+        }
+    })
+    senderEmployeeList = getSelectOptionsListFromData(get(senderEmployeeList, `data.data`, []), '_id', 'fullname')
+
+    let {data: receiverEmployeeList} = useGetAllQuery({
+        key: [KEYS.employee, get(formParams, 'receiver_branch_id')], url: `${URLS.employee}/list`, params: {
+            params: {
+                branch: get(formParams, 'receiver_branch_id')
+            }
+        }
+    })
+    receiverEmployeeList = getSelectOptionsListFromData(get(receiverEmployeeList, `data.data`, []), '_id', 'fullname')
 
     const {
         mutate: createRequest,
         isLoading: isLoadingPost
     } = usePostQuery({listKeyId: KEYS.transactionlog})
-    const {
-        mutate: checkBlankRequest,
-        isLoading: isLoadingCheckBlank
-    } = usePostQuery({listKeyId: KEYS.checkBlank})
+
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
@@ -75,12 +87,6 @@ const AddActContainer = ({...rest}) => {
         setBreadcrumbs(breadcrumbs)
     }, [])
 
-    const getBranchEmpList = (branchList = [], branchId = null) => {
-        if (isNil(branchId) || isEmpty(branchList)) {
-            return [];
-        }
-        return getSelectOptionsListFromData(get(find(branchList, ({_id}) => _id == branchId), 'employees', []), '_id', 'fullname')
-    }
 
     const create = ({data}) => {
         createRequest({
@@ -107,7 +113,7 @@ const AddActContainer = ({...rest}) => {
     if (bcoStatusListIsLoading || isLoadingBranches || isLoadingBcoList) {
         return <OverlayLoader/>
     }
-    console.log('bcoListData', bcoListData)
+    console.log(formParams)
     return (
         <>
             {
@@ -142,7 +148,7 @@ const AddActContainer = ({...rest}) => {
                                                            options={branchesList}/></Col>
                                         <Col xs={6}><Field type={'select'} label={'Работник'}
                                                            name={'sender_employee_id'}
-                                                           options={employeeList}/></Col>
+                                                           options={senderEmployeeList}/></Col>
 
                                     </Row>
                                 </Col>
@@ -157,7 +163,7 @@ const AddActContainer = ({...rest}) => {
                                                            options={branchesList}/></Col>
                                         <Col xs={6}><Field type={'select'} label={'Работник'}
                                                            name={'receiver_employee_id'}
-                                                           options={employeeList}/></Col>
+                                                           options={receiverEmployeeList}/></Col>
                                     </Row>
                                 </Col>
                             </Row>

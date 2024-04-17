@@ -12,6 +12,7 @@ const AgreementsContainer = ({...rest}) => {
 
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
+    const user = useStore(state => get(state, 'user'))
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
@@ -73,6 +74,7 @@ const AgreementsContainer = ({...rest}) => {
                         title: 'Status',
                     },
                 ]}
+                params={{branch:get(user, 'branch._id')}}
                 keyId={KEYS.agreements}
                 url={URLS.agreements}
                 listUrl={`${URLS.agreements}/list`}

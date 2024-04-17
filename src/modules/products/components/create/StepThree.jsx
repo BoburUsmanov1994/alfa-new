@@ -225,14 +225,6 @@ const StepThree = ({...props}) => {
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field label={'Форматы полисов'}
-                                   type={'select'}
-                                   name={'policyFormat'}
-                                   options={policyformats}
-                                   defaultValue={get(product,'policyFormat')}
-                            />
-                        </Col>
-                        <Col xs={4}>
                             <Field label={'Вид урегулирования претензии'}
                                    type={'select'}
                                    name={'claimSettlementType'}

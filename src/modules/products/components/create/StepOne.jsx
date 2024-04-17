@@ -19,9 +19,8 @@ import {useTranslation} from "react-i18next";
 const StepOne = ({id = null, ...props}) => {
     const {t} = useTranslation()
 
-    const [riskItem, setRiskItem] = useState({});
+    const [riskItem, setRiskItem] = useState({riskType: null, risk: null, classeId: null});
     const [productGroupId, setProductGroupId] = useState(null);
-    const [riskTypeId, setRiskTypeId] = useState(null);
 
     const setProduct = useSettingsStore(state => get(state, 'setProduct', () => {
     }))
@@ -40,9 +39,9 @@ const StepOne = ({id = null, ...props}) => {
 
     useEffect(() => {
         if (id && isEmpty(riskItem) && !isEmpty(get(product, 'riskId', []))) {
-            addRiskList(...get(product, 'riskId', []).map(({classeId, risk, riskgroup}) => ({
+            addRiskList(...get(product, 'riskId', []).map(({classeId, risk, riskType}) => ({
                 risk: get(risk, '_id'),
-                riskgroup: get(riskgroup, '_id'),
+                riskType: get(riskType, '_id'),
                 classeId: get(classeId, '_id'),
             })))
         }
@@ -102,40 +101,30 @@ const StepOne = ({id = null, ...props}) => {
     let risksList = getSelectOptionsListFromData(get(risksListData, `data.data`, []), '_id', 'name')
 
     let {data: risksData} = useGetAllQuery({
-        id: riskTypeId,
+        id: get(riskItem, 'riskType'),
         key: KEYS.riskFilter,
         url: `${URLS.risk}/list`,
         params: {
             params: {
-                riskType: riskTypeId
+                riskType: get(riskItem, 'riskType')
             }
         },
-        enabled: !!riskTypeId
+        enabled: !!get(riskItem, 'riskType')
     })
     let risks = getSelectOptionsListFromData(get(risksData, `data.data`, []), '_id', 'name')
 
     let {data: insuranceClassesList} = useGetAllQuery({key: KEYS.classes, url: `${URLS.insuranceClass}/list`})
     let insuranceClasses = getSelectOptionsListFromData(get(insuranceClassesList, `data.data`, []), '_id', 'name')
 
-    const setRisk = (value, name) => {
-        if (includes(['riskType', 'classeId', 'risk'], name)) {
-            setRiskItem(prev => ({...prev, [name]: value}))
-        }
-        if (isEqual(name, 'group')) {
-            setProductGroupId(value)
-        }
-        if (isEqual(name, 'riskType')) {
-            setRiskTypeId(value)
-        }
-    }
 
     const addRiskItem = () => {
         if (some(values(riskItem), val => isNil(val))) {
-            toast.warn('You have to select all fields')
+            toast.warn(t('You have to select all fields'))
         } else {
             addRiskList({...riskItem, id: riskList.length + 1})
+            setRiskItem({riskType: null, risk: null,classeId: null})
         }
-        setRiskItem({riskgroup: null, classeId: null, risk: null})
+
     }
 
 
@@ -148,12 +137,12 @@ const StepOne = ({id = null, ...props}) => {
                 <StepNav step={1}/>
             </Col>
             <Col xs={12}>
-                <Form formRequest={nextStep} getValueFromField={setRisk}>
+                <Form formRequest={nextStep}>
                     <Row>
                         <Col xs={3}>
                             <Field label={t('Выберите категорию')} options={groups} type={'select'}
                                    name={'group'} params={{required: true}}
-                                   property={{hasRequiredLabel: true}}
+                                   property={{onChange: (val)=>setProductGroupId(val)}}
                                    defaultValue={get(product, 'group')}
                             />
                         </Col>
@@ -259,7 +248,8 @@ const StepOne = ({id = null, ...props}) => {
                                                 defaultValue={get(riskItem, 'riskType')}
                                                 property={{
                                                     hideLabel: true,
-                                                    placeholder: t('Выберите группу  риска')
+                                                    placeholder: t('Выберите группу  риска'),
+                                                    onChange: (val) => setRiskItem(prev => ({...prev, riskType: val}))
                                                 }}/>
                                         </Col>
                                         <Col xs={4}>
@@ -270,22 +260,23 @@ const StepOne = ({id = null, ...props}) => {
                                                 defaultValue={get(riskItem, 'risk')}
                                                 property={{
                                                     hideLabel: true,
-                                                    placeholder: t('Выберите риск')
+                                                    placeholder: t('Выберите риск'),
+                                                    onChange: (val) => setRiskItem(prev => ({...prev, risk: val}))
                                                 }}/>
                                         </Col>
                                         <Col xs={4}>
                                             <Field
-                                                options={insuranceClasses.filter(classItem => isEqual(get(findItem(
-                                                    get(risksListData, 'data.data', []), get(riskItem, 'risk')
-                                                ), 'insuranceClass._id'), get(classItem, 'value')))}
+                                                isDisabled
+                                                options={insuranceClasses}
                                                 type={'select'}
                                                 name={'classeId'}
-                                                defaultValue={get(head(insuranceClasses.filter(classItem => isEqual(get(findItem(
+                                                defaultValue={get(riskItem, 'risk') ? get(findItem(
                                                     get(risksListData, 'data.data', []), get(riskItem, 'risk')
-                                                ), 'insuranceClass._id'), get(classItem, 'value')))), 'value')}
+                                                ), 'insuranceClass._id') : null}
                                                 property={{
                                                     hideLabel: true,
-                                                    placeholder: t('Класс страхования')
+                                                    placeholder: t('Класс страхования'),
+                                                    onChange: (val) => setRiskItem(prev => ({...prev, classeId: val}))
                                                 }}/>
                                         </Col>
                                     </Row>

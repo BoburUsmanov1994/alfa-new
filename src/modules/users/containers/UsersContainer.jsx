@@ -40,11 +40,11 @@ const UsersContainer = () => {
         <Row>
             <Col xs={6}>
                 <Field name={'name'} type={'input'} label={'Name'} defaultValue={rowId ? get(data, 'name') : null}
-                       params={{required: true}}/>
+                       />
             </Col>
             <Col xs={6}>
                 <Field name={'branch'} type={'select'} label={'Branch'} options={branchList}
-                       defaultValue={rowId ? get(data, 'branch._id') : null} params={{required: true}}/>
+                       defaultValue={rowId ? get(data, 'branch._id') : null} />
             </Col>
             <Col xs={6}>
                 <Field name={'employee'} type={'select'} label={'Employee'} options={employeeList}

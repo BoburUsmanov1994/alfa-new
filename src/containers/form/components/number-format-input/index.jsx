@@ -82,7 +82,7 @@ const NumberFormatInput = ({
                         <NumberFormat
                             {...field}
                             value={val}
-                            className={`masked-input ${!isEmpty(errors) ? "error" : ''}`}
+                            className={`masked-input ${get(errors, `${name}`) ? "error" : ''}`}
                             placeholder={get(property, "placeholder")}
                             suffix={get(property, "suffix",'')}
                             thousandSeparator={get(property, "thousandSeparator"," ")}

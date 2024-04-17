@@ -54,8 +54,6 @@ const WarehouseContainer = ({...rest}) => {
     })
     bcoStatusList = getSelectOptionsListFromData(get(bcoStatusList, `data.data`, []), '_id', 'name')
 
-    let {data: branchList} = useGetAllQuery({key: KEYS.branches, url: `${URLS.branches}/list`})
-    branchList = getSelectOptionsListFromData(get(branchList, `data.data`, []), '_id', 'branchName')
     const ModalBody = ({data, rowId = null}) => <Row>
         <Col xs={6}>
             <Field name={'bco_type'} options={bcoTypeList} type={'select'} label={'Bco type'}
@@ -71,16 +69,6 @@ const WarehouseContainer = ({...rest}) => {
             <Field name={'policy_number_of_digits_end'} type={'input'} label={'Policy number digit end'}
                    defaultValue={rowId ? get(data, 'policy_number_of_digits_end') : null}
                    params={{required: true, valueAsNumber: true}}/>
-        </Col>
-        <Col xs={6}>
-            <Field name={'policy_count'} type={'input'} label={'Policy count'}
-                   defaultValue={rowId ? get(data, 'policy_count') : null}
-                   params={{required: true, valueAsNumber: true}}/>
-        </Col>
-        <Col xs={6}>
-            <Field name={'branch'} options={branchList} type={'select'} label={'Branch'}
-                   defaultValue={rowId ? get(data, 'branch') : null}
-            />
         </Col>
         <Col xs={6}>
             <Field name={'status'} options={bcoStatusList} type={'select'} label={'Policy status'}

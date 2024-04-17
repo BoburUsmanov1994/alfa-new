@@ -120,15 +120,17 @@ const FormSelect = ({
             } else {
                 setSelectedValue(defaultValue)
             }
+        }else{
+            setSelectedValue(null)
         }
 
     }, [defaultValue])
 
     const handleChange = (value) => {
         if(isMulti){
-            setSelectedValue(value.map(item => item.value))
+            setSelectedValue(value.map(item => item?.value))
         }else {
-            setSelectedValue(value.value);
+            setSelectedValue(value?.value);
         }
     }
 
@@ -158,6 +160,7 @@ const FormSelect = ({
                         rules={params}
                         render={() => (
                             <Select
+                                isClearable={get(property,'isClearable',true)}
                                 clearIndicator={true}
                                 options={options}
                                 disabled={disabled}

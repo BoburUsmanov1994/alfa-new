@@ -4,7 +4,7 @@ import StepNav from "../../../../components/step-nav";
 import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
-import {useSettingsStore} from "../../../../store";
+import {useSettingsStore, useStore} from "../../../../store";
 import {get, head, includes} from "lodash"
 import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
@@ -19,6 +19,7 @@ import {Trash2} from "react-feather";
 const StepThree = ({...props}) => {
     const [fields, setFields] = useState({})
     const {t} = useTranslation()
+    const user = useStore(state => get(state, 'user'))
 
     const [openCommissionModal, setOpenCommissionModal] = useState(false);
     const addCommissions = useSettingsStore(state => get(state, 'addCommissions', () => {
@@ -35,7 +36,12 @@ const StepThree = ({...props}) => {
     const agreement = useSettingsStore(state => get(state, 'agreement', {}))
     const commissions = useSettingsStore(state => get(state, 'commissions', []))
 
-    let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.agents}/list`})
+    let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.agents}/list`,params:{
+        params:{
+            branch: get(user, 'branch._id'),
+            limit:100
+        }
+        }})
     agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', ['organization.nameoforganization', 'person.secondname', 'person.name'])
 
     const nextStep = ({data}) => {
@@ -52,7 +58,6 @@ const StepThree = ({...props}) => {
         props.firstStep();
     }
 
-    console.log('agreement', agreement)
 
     return (
         <Row>
@@ -205,7 +210,6 @@ const StepThree = ({...props}) => {
                             <Col xs={4}>
                                 <Field type={'number-format-input'}
                                        name={`accruedCommissionAmount`}
-                                       property={{suffix: '%'}}
                                 />
                             </Col>
                             <Col xs={4}>

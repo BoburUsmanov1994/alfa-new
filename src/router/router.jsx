@@ -48,7 +48,6 @@ import BankPage from "../modules/agents/pages/BankPage";
 import BankCreatePage from "../modules/agents/pages/BankCreatePage";
 import AccountPage from "../modules/accounting/pages/AccountPage";
 import BcoActStatusPage from "../modules/bco/pages/BcoActStatusPage";
-import TransactionLogsContainer from "../modules/accounting/containers/TransactionLogsContainer";
 import TransactionLogsPage from "../modules/accounting/pages/TransactionLogsPage";
 //lazy load
 const TypeObjectPage = lazy(() => import("../modules/handbook/pages/TypeObjectPage"));

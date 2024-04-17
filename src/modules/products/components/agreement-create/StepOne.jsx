@@ -4,7 +4,7 @@ import StepNav from "../../../../components/step-nav";
 import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
-import {useSettingsStore} from "../../../../store";
+import {useSettingsStore, useStore} from "../../../../store";
 import {get, isEmpty, isEqual, find} from "lodash"
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
@@ -13,17 +13,20 @@ import {getSelectOptionsListFromData} from "../../../../utils";
 import Title from "../../../../components/ui/title";
 import {toast} from "react-toastify";
 import Table from "../../../../components/table";
-import {Trash2} from "react-feather";
+import {Download, Trash2} from "react-feather";
 import {useTranslation} from "react-i18next";
 import Flex from "../../../../components/flex"
 import Modal from "../../../../components/modal";
 import {ContentLoader} from "../../../../components/loader";
 import {PERSON_TYPE} from "../../../../constants";
+import config from "../../../../config";
 
 const StepOne = ({id = null, ...props}) => {
     const {t} = useTranslation()
-
+    const [productGroupId, setProductGroupId] = useState(null);
+    const [productSubGroupId, setProductSubGroupId] = useState(null);
     const [product, setProduct] = useState({});
+    const user = useStore(state => get(state, 'user'))
 
     const setAgreement = useSettingsStore(state => get(state, 'setAgreement', () => {
     }))
@@ -57,7 +60,7 @@ const StepOne = ({id = null, ...props}) => {
 
 
     const nextStep = ({data}) => {
-        const {classeId, risk, riskgroup, ...rest} = data
+        const {classeId, risk, riskgroup,group,subGroup, ...rest} = data
         if (get(insurer, 'data.id')) {
             setAgreement({
                 ...rest,
@@ -90,11 +93,34 @@ const StepOne = ({id = null, ...props}) => {
     })
     branchList = getSelectOptionsListFromData(get(branchList, `data.data`, []), '_id', 'branchName')
 
+
+    let {data: groups} = useGetAllQuery({key: KEYS.groupsofproducts, url: `${URLS.groupsofproducts}/list`})
+    groups = getSelectOptionsListFromData(get(groups, `data.data`, []), '_id', 'name')
+
+    let {data: subGroups} = useGetAllQuery({
+        key: [KEYS.subgroupsofproductsFilter,productGroupId],
+        url: URLS.subgroupsofproductsFilter,
+        params: {
+            params: {
+                group: productGroupId
+            }
+        },
+        enabled: !!productGroupId
+    })
+    subGroups = getSelectOptionsListFromData(get(subGroups, `data.data`, []), '_id', 'name')
     let {data: products} = useGetAllQuery({
-        key: KEYS.productsfilter,
+        key: [KEYS.productsfilter,productSubGroupId],
         url: URLS.products,
+        params: {
+            params: {
+                subGroup: productSubGroupId
+            }
+        },
+        enabled: !!productSubGroupId
     })
     const productsList = getSelectOptionsListFromData(get(products, `data.data`, []), '_id', 'name')
+
+
 
 
     const {mutate: filterRequest, isLoading: filterLoading} = usePostQuery({})
@@ -198,7 +224,6 @@ const StepOne = ({id = null, ...props}) => {
             toast.warn('Select pledger')
         }
     }
-    console.log('pledgers',pledgers)
 
     return (
         <Row>
@@ -210,9 +235,9 @@ const StepOne = ({id = null, ...props}) => {
                 <Form formRequest={nextStep} getValueFromField={setRisk}>
                     <Row>
                         <Col xs={4}>
-                            <Field label={t('Branch')} options={branchList} type={'select'}
+                            <Field isDisabled label={t('Branch')} options={branchList} type={'select'}
                                    name={'branch'}
-                                   defaultValue={get(agreement, 'branch')}
+                                   defaultValue={get(user, 'branch._id')}
                             />
                         </Col>
                         <Col xs={4}>
@@ -228,9 +253,20 @@ const StepOne = ({id = null, ...props}) => {
                             />
                         </Col>
                         <Col xs={4}>
+                            <Field label={t('Выберите категорию')} options={groups} type={'select'}
+                                   name={'group'}
+                                   property={{onChange: (val)=>setProductGroupId(val)}}
+                            />
+                        </Col>
+                        <Col xs={4}>
+                            <Field label={t('Выберите подкатегорию')} options={subGroups} type={'select'}
+                                   name={'subGroup'}
+                                   property={{onChange: (val)=>setProductSubGroupId(val)}}
+                            />
+                        </Col>
+                        <Col xs={4}>
                             <Field label={t('Выберите продукта')} options={productsList} type={'select'}
                                    name={'product'} params={{required: true}}
-                                   property={{hasRequiredLabel: true}}
                                    defaultValue={get(agreement, 'product')}
                             />
                         </Col>
@@ -248,6 +284,23 @@ const StepOne = ({id = null, ...props}) => {
                         </Col>
                     </Row>
                     <Row>
+                        {!isEmpty(product) && <><Col xs={12} className={'mb-15'}>
+                            <Title>{t("Шаблоны")}</Title>
+                        </Col>
+                        <Col xs={12} className={'mb-15'}>
+                            <Row>
+                                <Col xs={4}>
+                                    <a  href={`${config.FILE_URL}/${get(product,'path')}`} target={'_self'}><Flex>   <span>Форма заявки</span> <Download  className={'mr-8'}/></Flex></a>
+                                </Col>
+                                <Col xs={4}>
+                                    <a  href={`${config.FILE_URL}/${get(product,'path')}`} target={'_self'}><Flex>   <span>Форма договора</span> <Download  className={'mr-8'}/></Flex></a>
+                                </Col>
+                                <Col xs={4}>
+                                    <a  href={`${config.FILE_URL}/${get(product,'path')}`} target={'_self'}><Flex>   <span>Форма приложение</span> <Download  className={'mr-8'}/></Flex></a>
+                                </Col>
+                            </Row>
+                        </Col>
+                        </>}
                         <Col xs={12} className={'mb-15'}>
                             <Title>{t("Покрываемые риски")}</Title>
                         </Col>
