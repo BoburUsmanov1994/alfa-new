@@ -295,7 +295,7 @@ const StepOne = ({id = null, ...props}) => {
                                         <span>Форма анкеты</span>
 
                                         <Download className={'cursor-pointer mr-8'}
-                                                      onClick={() => request.get(`${URLS.applicationForm}/file/${get(product, 'applicationForm._id')}`).then((res) => saveFile(res))}
+                                                      onClick={() => request.get(`${URLS.applicationForm}/file/${get(product, 'applicationForm._id')}`,{ responseType: 'blob' }).then((res) => saveFile(res))}
                                                       color={'#13D6D1'}/>
                                     </>}
 
@@ -304,7 +304,7 @@ const StepOne = ({id = null, ...props}) => {
                                     {get(product, 'contractForm._id') && <>
                                         <span>Договор</span>
                                         <Download className={'cursor-pointer mr-8'}
-                                                      onClick={() => request.get(`${URLS.contractForm}/file/${get(product, 'contractForm._id')}`).then((res) => saveFile(res))}
+                                                      onClick={() => request.get(`${URLS.contractForm}/file/${get(product, 'contractForm._id')}`,{ responseType: 'blob' }).then((res) => saveFile(res))}
                                                       color={'#13D6D1'}/>
                                     </>}
 
@@ -313,7 +313,7 @@ const StepOne = ({id = null, ...props}) => {
                                     {get(product, 'additionalDocuments._id') && <>
                                         <span>Приложения</span>
                                             <Download className={'cursor-pointer mr-8'}
-                                                      onClick={() => request.get(`${URLS.additionaldocuments}/file/${get(product, 'additionalDocuments._id')}`).then((res) => saveFile(res))}
+                                                      onClick={() => request.get(`${URLS.additionaldocuments}/file/${get(product, 'additionalDocuments._id')}`,{ responseType: 'blob' }).then((res) => saveFile(res))}
                                                       color={'#13D6D1'}/>
                                     </>}
                                 </Col>

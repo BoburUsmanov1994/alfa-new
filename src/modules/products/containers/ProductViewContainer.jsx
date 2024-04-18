@@ -166,20 +166,20 @@ const ProductViewContainer = ({id, ...rest}) => {
                                 <td>Форма анкеты</td>
 
                                 <td><Download className={'cursor-pointer'}
-                                              onClick={() => request.get(`${URLS.applicationForm}/file/${get(product, 'applicationForm._id')}`).then((res) => saveFile(res))}
+                                              onClick={() => request.get(`${URLS.applicationForm}/file/${get(product, 'applicationForm._id')}`,{ responseType: 'blob' }).then((res) => saveFile(res))}
                                               color={'#13D6D1'}/></td>
                             </tr>}
                             {get(product, 'contractForm._id') && <tr>
                                 <td>Договор</td>
                                 <td><Download className={'cursor-pointer'}
-                                              onClick={() => request.get(`${URLS.contractForm}/file/${get(product, 'contractForm._id')}`).then((res) => saveFile(res))}
+                                              onClick={() => request.get(`${URLS.contractForm}/file/${get(product, 'contractForm._id')}`,{ responseType: 'blob' }).then((res) => saveFile(res))}
                                               color={'#13D6D1'}/></td>
                             </tr>}
                             {get(product, 'additionalDocuments._id') && <tr>
                                 <td>Приложения</td>
                                 <td>
                                     <Download className={'cursor-pointer'}
-                                              onClick={() => request.get(`${URLS.additionaldocuments}/file/${get(product, 'additionalDocuments._id')}`).then((res) => saveFile(res))}
+                                              onClick={() => request.get(`${URLS.additionaldocuments}/file/${get(product, 'additionalDocuments._id')}`,{ responseType: 'blob' }).then((res) => saveFile(res))}
                                               color={'#13D6D1'}/></td>
                             </tr>}
                             <tr>
