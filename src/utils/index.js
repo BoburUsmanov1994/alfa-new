@@ -51,8 +51,9 @@ const getFieldType = (type = 'String') => {
     return 'input';
 }
 
-const saveFile = (file, name = dayjs(), extension = 'xlsx') => {
+const saveFile = (file, name = dayjs(), extension = 'docx') => {
     const blob = new Blob([file.data]);
+    console.log('blob',blob)
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = `${name}.${extension}`;
