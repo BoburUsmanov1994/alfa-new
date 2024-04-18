@@ -31,17 +31,6 @@ const CreateContainer = ({
     })
     const {mutate: createPolicy, isLoading: isLoadingPolicy} = usePostQuery({listKeyId: KEYS.agreements})
 
-    let {data: policyTypeList} = useGetAllQuery({key: KEYS.typeofbco, url: 'api/references/policy-type/list'})
-    policyTypeList = getSelectOptionsListFromData(get(policyTypeList, `data.data`, []), '_id', 'name')
-
-    let {data: policyStatusList} = useGetAllQuery({key: KEYS.statusofpolicy, url: 'api/bco/policy-status/list'})
-    policyStatusList = getSelectOptionsListFromData(get(policyStatusList, `data.data`, []), '_id', 'name')
-
-    let {data: paymentStatusList} = useGetAllQuery({
-        key: KEYS.statusofpayment,
-        url: 'api/references/payment-status/list'
-    })
-    paymentStatusList = getSelectOptionsListFromData(get(paymentStatusList, `data.data`, []), '_id', 'name')
 
     let {data: policyBlankList} = useGetAllQuery({
         key: KEYS.policyblank,
@@ -55,8 +44,6 @@ const CreateContainer = ({
         url: `/api/bco/policy-blank/list`,
     })
     policyBlankList = getSelectOptionsListFromData(get(policyBlankList, `data.data`, []), '_id', 'blank.blank_number')
-    let {data: payments} = useGetAllQuery({key: KEYS.typeofpayment, url: 'api/references/payment-type/list'})
-    payments = getSelectOptionsListFromData(get(payments, `data.data`, []), '_id', 'name')
 
     let {data: documents} = useGetAllQuery({key: ['documents_policy'], url: 'api/references/additional-documents/list'})
     documents = getSelectOptionsListFromData(get(documents, `data.data`, []), '_id', 'name')
@@ -79,6 +66,7 @@ const CreateContainer = ({
     if (isLoading) {
         return <OverlayLoader/>;
     }
+    console.log('agreementData',agreementData)
     return (
         <Section>
             {isLoadingPolicy && <ContentLoader/>}
@@ -101,54 +89,54 @@ const CreateContainer = ({
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field label={t('Number')} type={'datepicker'}
+                                <Field label={t('Issue date')} type={'datepicker'}
                                        name={'issueDate'} params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field label={t('Start')} type={'datepicker'}
+                                <Field defaultValue={get(agreementData,'data.startOfInsurance')} label={t('Start')} type={'datepicker'}
                                        name={'startDate'} params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field label={t('End')} type={'datepicker'}
+                                <Field defaultValue={get(agreementData,'data.endOfInsurance')} label={t('End')} type={'datepicker'}
                                        name={'endDate'} params={{required: true}}
                                 />
                             </Col>
-                            <Col xs={4}>
-                                <Field label={t('Type')} options={policyTypeList} type={'select'}
-                                       name={'type'}
-                                />
-                            </Col>
+                            {/*<Col xs={4}>*/}
+                            {/*    <Field label={t('Type')} options={policyTypeList} type={'select'}*/}
+                            {/*           name={'type'}*/}
+                            {/*    />*/}
+                            {/*</Col>*/}
                             <Col xs={4}>
                                 <Field label={t('Policy blank')} options={policyBlankList} type={'select'}
                                        name={'blank'}
                                 />
                             </Col>
-                            <Col xs={4}>
-                                <Field label={t('Invoice')} type={'input'}
-                                       name={'invois'}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field
-                                    type={'select'}
-                                    name={`paymentType`}
-                                    options={payments}
-                                />
-                            </Col>
+                            {/*<Col xs={4}>*/}
+                            {/*    <Field label={t('Invoice')} type={'input'}*/}
+                            {/*           name={'invois'}*/}
+                            {/*    />*/}
+                            {/*</Col>*/}
+                            {/*<Col xs={4}>*/}
+                            {/*    <Field*/}
+                            {/*        type={'select'}*/}
+                            {/*        name={`paymentType`}*/}
+                            {/*        options={payments}*/}
+                            {/*    />*/}
+                            {/*</Col>*/}
 
-                            <Col xs={4}>
-                                <Field label={t('Policy status')} options={policyStatusList} type={'select'}
-                                       name={'status'}
-                                />
-                            </Col>
+                            {/*<Col xs={4}>*/}
+                            {/*    <Field label={t('Policy status')} options={policyStatusList} type={'select'}*/}
+                            {/*           name={'status'}*/}
+                            {/*    />*/}
+                            {/*</Col>*/}
 
-                            <Col xs={4}>
-                                <Field label={t('Payment status')} options={paymentStatusList} type={'select'}
-                                       name={'paymentStatus'}
-                                />
-                            </Col>
+                            {/*<Col xs={4}>*/}
+                            {/*    <Field label={t('Payment status')} options={paymentStatusList} type={'select'}*/}
+                            {/*           name={'paymentStatus'}*/}
+                            {/*    />*/}
+                            {/*</Col>*/}
 
                             <Col xs={4}>
                                 <Field

@@ -62,11 +62,6 @@ const ProductsContainer = ({...rest}) => {
                         isArray: true
                     },
                     {
-                        id: 6,
-                        key: 'insuranceForm.name',
-                        title: 'Формат полиса',
-                    },
-                    {
                         id: 7,
                         key: 'fixedPremium',
                         title: 'Страховая сумма',

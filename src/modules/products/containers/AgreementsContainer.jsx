@@ -6,6 +6,7 @@ import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import Field from "../../../containers/form/field";
 import {useTranslation} from "react-i18next";
+import dayjs from "dayjs";
 
 const AgreementsContainer = ({...rest}) => {
     const {t} = useTranslation()
@@ -37,7 +38,8 @@ const AgreementsContainer = ({...rest}) => {
                     {
                         id: 1111,
                         key: 'agreementDate',
-                        title: 'agreementDate'
+                        title: 'agreementDate',
+                        render: (val) => dayjs(get(val, 'agreementDate')).format("DD.MM.YYYY")
                     },
                     {
                         id: 11,
@@ -74,7 +76,7 @@ const AgreementsContainer = ({...rest}) => {
                         title: 'Status',
                     },
                 ]}
-                params={{branch:get(user, 'branch._id')}}
+                params={{branch: get(user, 'branch._id')}}
                 keyId={KEYS.agreements}
                 url={URLS.agreements}
                 listUrl={`${URLS.agreements}/list`}

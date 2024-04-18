@@ -9,7 +9,7 @@ import {get, isEmpty, isEqual, find} from "lodash"
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
-import {getSelectOptionsListFromData} from "../../../../utils";
+import {getSelectOptionsListFromData, saveFile} from "../../../../utils";
 import Title from "../../../../components/ui/title";
 import {toast} from "react-toastify";
 import Table from "../../../../components/table";
@@ -20,6 +20,7 @@ import Modal from "../../../../components/modal";
 import {ContentLoader} from "../../../../components/loader";
 import {PERSON_TYPE} from "../../../../constants";
 import config from "../../../../config";
+import {request} from "../../../../services/api";
 
 const StepOne = ({id = null, ...props}) => {
     const {t} = useTranslation()
@@ -290,13 +291,31 @@ const StepOne = ({id = null, ...props}) => {
                         <Col xs={12} className={'mb-15'}>
                             <Row>
                                 <Col xs={4}>
-                                    <a  href={`${config.FILE_URL}/${get(product,'path')}`} target={'_self'}><Flex>   <span>Форма заявки</span> <Download  className={'mr-8'}/></Flex></a>
+                                    {get(product, 'applicationForm._id') && <>
+                                        <span>Форма анкеты</span>
+
+                                        <Download className={'cursor-pointer mr-8'}
+                                                      onClick={() => request.get(`${URLS.applicationForm}/file/${get(product, 'applicationForm._id')}`).then((res) => saveFile(res))}
+                                                      color={'#13D6D1'}/>
+                                    </>}
+
                                 </Col>
                                 <Col xs={4}>
-                                    <a  href={`${config.FILE_URL}/${get(product,'path')}`} target={'_self'}><Flex>   <span>Форма договора</span> <Download  className={'mr-8'}/></Flex></a>
+                                    {get(product, 'contractForm._id') && <>
+                                        <span>Договор</span>
+                                        <Download className={'cursor-pointer mr-8'}
+                                                      onClick={() => request.get(`${URLS.contractForm}/file/${get(product, 'contractForm._id')}`).then((res) => saveFile(res))}
+                                                      color={'#13D6D1'}/>
+                                    </>}
+
                                 </Col>
                                 <Col xs={4}>
-                                    <a  href={`${config.FILE_URL}/${get(product,'path')}`} target={'_self'}><Flex>   <span>Форма приложение</span> <Download  className={'mr-8'}/></Flex></a>
+                                    {get(product, 'additionalDocuments._id') && <>
+                                        <span>Приложения</span>
+                                            <Download className={'cursor-pointer mr-8'}
+                                                      onClick={() => request.get(`${URLS.additionaldocuments}/file/${get(product, 'additionalDocuments._id')}`).then((res) => saveFile(res))}
+                                                      color={'#13D6D1'}/>
+                                    </>}
                                 </Col>
                             </Row>
                         </Col>

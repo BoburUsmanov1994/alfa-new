@@ -11,8 +11,9 @@ import {useGetAllQuery, usePostQuery, usePutQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {OverlayLoader} from "../../../../components/loader";
 import {URLS} from "../../../../constants/url";
-import {getSelectOptionsListFromData} from "../../../../utils";
+import {getSelectOptionsListFromData, saveFile} from "../../../../utils";
 import {Download} from "react-feather";
+import {request} from "../../../../services/api";
 
 const StepFive = ({id = null, ...props}) => {
 
@@ -202,31 +203,26 @@ const StepFive = ({id = null, ...props}) => {
                             </Col>
                             <Col xs={6}>
                                 <Table thead={['1', '2']}>
-                                    <tr>
+                                    {get(product, 'applicationForm') && <tr>
                                         <td>Форма анкеты</td>
 
-                                        <td><a
-                                            href={get(findItem(applicationformdocs, get(product, 'applicationForm', null)), 'url', '#')}
-                                            target={'_blank'} download><Download color={'#13D6D1'}/></a></td>
-                                    </tr>
-                                    <tr>
+                                        <td><Download className={'cursor-pointer'}
+                                                      onClick={() => request.get(`${URLS.applicationForm}/file/${get(product, 'applicationForm')}`).then((res) => saveFile(res))}
+                                                      color={'#13D6D1'}/></td>
+                                    </tr>}
+                                    {get(product, 'contractForm') && <tr>
                                         <td>Договор</td>
-                                        <td><a
-                                            href={get(findItem(contractform, get(product, 'contractForm', null)), 'url', '#')}
-                                            target={'_blank'} download><Download color={'#13D6D1'}/></a></td>
-                                    </tr>
-                                    <tr>
+                                        <td><Download className={'cursor-pointer'}
+                                                      onClick={() => request.get(`${URLS.contractForm}/file/${get(product, 'contractForm')}`).then((res) => saveFile(res))}
+                                                      color={'#13D6D1'}/></td>
+                                    </tr>}
+                                    {get(product, 'additionalDocuments') && <tr>
                                         <td>Приложения</td>
-                                        <td><a
-                                            href={get(findItem(additionaldocuments, get(product, 'additionaldocuments', null)), 'url', '#')}
-                                            target={'_blank'} download><Download color={'#13D6D1'}/></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Формат полиса</td>
                                         <td>
-                                            <strong>{get(findItem(policyformats, get(product, 'policyFormat', null)), 'label', '-')}</strong>
-                                        </td>
-                                    </tr>
+                                            <Download className={'cursor-pointer'}
+                                                      onClick={() => request.get(`${URLS.additionaldocuments}/file/${get(product, 'additionalDocuments')}`).then((res) => saveFile(res))}
+                                                      color={'#13D6D1'}/></td>
+                                    </tr>}
                                     <tr>
                                         <td>Имеет фиксированного страхователя</td>
                                         <td>

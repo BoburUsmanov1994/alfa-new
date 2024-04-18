@@ -139,9 +139,9 @@ const PolicyDistributionContainer = ({
                 <Col xs={12} className={'horizontal-scroll'}>
                     {
                         <Table bordered hideThead={false}
-                               thead={['', '№', 'Статус прикрепления', 'Филиал', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления', 'Снято на договор', 'Детали платежа', 'ИНН отправителя', 'ИНН банка отправителя', 'МФО отправителя', 'Р/С отправителя', 'ИНН банка получателя', 'МФО банка получателя', 'Р/С получателя', 'Дата ввода']}>{get(transactions, 'data.data', []).map((item, i) =>
+                               thead={['', '№', 'Статус прикрепления', 'Филиал', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления', 'Снято на договор','Available sum', 'Детали платежа', 'ИНН отправителя', 'ИНН банка отправителя', 'МФО отправителя', 'Р/С отправителя', 'ИНН банка получателя', 'МФО банка получателя', 'Р/С получателя', 'Дата ввода']}>{get(transactions, 'data.data', []).map((item, i) =>
                             <tr key={get(item, '_id')}>
-                                <td><Checkbox checked={isEqual(transactionId, get(item, '_id'))} onChange={(e) => {
+                                <td><Checkbox disabled={!get(item,'available_sum')} checked={isEqual(transactionId, get(item, '_id'))} onChange={(e) => {
                                     if (e.target?.checked) {
                                         setTransactionId(get(item, '_id'))
                                     } else {
@@ -157,6 +157,8 @@ const PolicyDistributionContainer = ({
                                                   value={get(item, 'payment_amount', 0)}/></td>
                                 <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                                   value={get(item, 'attached_sum', 0)}/></td>
+                                <td><NumberFormat displayType={'text'} thousandSeparator={" "}
+                                                  value={get(item, 'available_sum', 0)}/></td>
                                 <td>{get(item, 'payment_details')}</td>
                                 <td>{get(item, 'sender_taxpayer_number')}</td>
                                 <td>{get(item, 'sender_bank_taxpayer_number')}</td>

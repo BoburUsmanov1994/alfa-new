@@ -112,7 +112,7 @@ const StepTwo = ({...props}) => {
                                     <Field label={'Имеет приложение'} type={'switch'} name={'hasAdditionalDocuments'}
                                            defaultValue={get(product,'hasAdditionalDocuments',false)} />
                                 </Flex>
-                                {get(show, 'hasAdditionalDocuments', false) && <Field type={'select'} name={'contractForm'} options={getSelectOptionsListFromData(get(additionaldocuments,'data.data',[]),'_id','name')} />}
+                                {get(show, 'hasAdditionalDocuments', false) && <Field type={'select'} name={'additionalDocuments'} options={getSelectOptionsListFromData(get(additionaldocuments,'data.data',[]),'_id','name')} />}
                             </Col>
                         </Row>
                         <Row>

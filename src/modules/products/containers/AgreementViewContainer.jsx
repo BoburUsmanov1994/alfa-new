@@ -50,7 +50,7 @@ const AgentViewContainer = ({...rest}) => {
 
     const user = useStore(state => get(state, 'user'))
     let {data: transactions, isLoading: _isLoading} = useGetAllQuery({
-        key: KEYS.transactions, url: URLS.transactions, enabled: !!(get(user, 'branch_Id.id')), params: {
+        key: KEYS.transactions, url: `${URLS.transactions}/list`, enabled: !!(get(user, 'branch._id')), params: {
             params: {
                 branch: get(user, 'branch._id'),
                 limit: 100
@@ -251,7 +251,7 @@ const AgentViewContainer = ({...rest}) => {
                                                 <DollarSign onClick={() => setSelectedPolice(item)}
                                                             className={'cursor-pointer'}
                                                             color={'#71BC70'}/>}
-                                            {includes(['new', 'partialPaid'], get(item, "fondStatus")) &&
+                                            {includes([ 'paid'], get(item, "fondStatus")) &&
                                                 <Send className={'cursor-pointer ml-15'} color={'#13D6D1'}
                                                       onClick={() => sendToFond(id, get(item, '_id'))}/>}
                                             {includes(['new'], get(item, "fondStatus")) &&
@@ -306,9 +306,9 @@ const AgentViewContainer = ({...rest}) => {
                 }
                 {
                     <Table bordered hideThead={false}
-                           thead={['', '№', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления']}>{get(transactions, 'data.data', []).map((item, i) =>
+                           thead={['', '№', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления','Available sum']}>{get(transactions, 'data.data', []).map((item, i) =>
                         <tr key={get(item, '_id')}>
-                            <td><Checkbox checked={isEqual(transactionId, get(item, '_id'))} onChange={(e) => {
+                            <td><Checkbox disabled={!get(item, 'available_sum', 0)} checked={isEqual(transactionId, get(item, '_id'))} onChange={(e) => {
                                 if (e.target?.checked) {
                                     setTransactionId(get(item, '_id'))
                                 } else {
@@ -320,6 +320,8 @@ const AgentViewContainer = ({...rest}) => {
                             <td>{get(item, 'sender_name')}</td>
                             <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                               value={get(item, 'payment_amount', 0)}/></td>
+                            <td><NumberFormat displayType={'text'} thousandSeparator={" "}
+                                              value={get(item, 'available_sum', 0)}/></td>
                         </tr>)}</Table>}
                 {transactionId && <Form formRequest={attach} footer={<Button type={'submit'}>Прикрепить</Button>}>
                     <Row className={'mt-15'}>

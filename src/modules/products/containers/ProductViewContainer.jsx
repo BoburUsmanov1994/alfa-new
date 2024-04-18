@@ -6,7 +6,7 @@ import Panel from "../../../components/panel";
 import Search from "../../../components/search";
 import Title from "../../../components/ui/title";
 import Section from "../../../components/section";
-import {useDeleteQuery, useGetOneQuery} from "../../../hooks/api";
+import {useDeleteQuery, useGetAllQuery, useGetOneQuery, usePostQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import {ContentLoader, OverlayLoader} from "../../../components/loader";
@@ -16,6 +16,9 @@ import Flex from "../../../components/flex";
 import {useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
+import config from "../../../config";
+import {request} from "../../../services/api";
+import {saveFile} from "../../../utils";
 
 
 const ProductViewContainer = ({id, ...rest}) => {
@@ -159,26 +162,26 @@ const ProductViewContainer = ({id, ...rest}) => {
                     </Col>
                     <Col xs={6}>
                         <Table thead={['1', '2']}>
-                            <tr>
+                            {get(product, 'applicationForm._id') && <tr>
                                 <td>Форма анкеты</td>
 
-                                <td><a href={get(product, 'applicationForm.url', '#')} target={'_blank'}
-                                       download><Download color={'#13D6D1'}/></a></td>
-                            </tr>
-                            <tr>
+                                <td><Download className={'cursor-pointer'}
+                                              onClick={() => request.get(`${URLS.applicationForm}/file/${get(product, 'applicationForm._id')}`).then((res) => saveFile(res))}
+                                              color={'#13D6D1'}/></td>
+                            </tr>}
+                            {get(product, 'contractForm._id') && <tr>
                                 <td>Договор</td>
-                                <td><a href={get(product, 'contractForm.url', '#')} target={'_blank'} download><Download
-                                    color={'#13D6D1'}/></a></td>
-                            </tr>
-                            <tr>
+                                <td><Download className={'cursor-pointer'}
+                                              onClick={() => request.get(`${URLS.contractForm}/file/${get(product, 'contractForm._id')}`).then((res) => saveFile(res))}
+                                              color={'#13D6D1'}/></td>
+                            </tr>}
+                            {get(product, 'additionalDocuments._id') && <tr>
                                 <td>Приложения</td>
-                                <td><a href={get(product, 'contractForm.url', '#')} target={'_blank'}
-                                       download><Download color={'#13D6D1'}/></a></td>
-                            </tr>
-                            <tr>
-                                <td>Формат полиса</td>
-                                <td><strong>{get(product, 'policyFormat.name', '-')}</strong></td>
-                            </tr>
+                                <td>
+                                    <Download className={'cursor-pointer'}
+                                              onClick={() => request.get(`${URLS.additionaldocuments}/file/${get(product, 'additionalDocuments._id')}`).then((res) => saveFile(res))}
+                                              color={'#13D6D1'}/></td>
+                            </tr>}
                             <tr>
                                 <td>Имеет фиксированного страхователя</td>
                                 <td><strong>{get(product, 'hasFixedPolicyHolder', false) ? 'Да' : 'Нет'}</strong></td>
