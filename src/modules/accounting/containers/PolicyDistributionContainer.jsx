@@ -203,7 +203,7 @@ const PolicyDistributionContainer = ({
                         <Button onClick={detach} type={'button'} danger> Открепить средства</Button>
                     </Flex>}>
                         <Field
-                            defaultValue={get(find(get(policies, `data.data`, []), (_item) => isEqual(get(_item, "_id"), policyId)), 'sumInsurancePremium', 0)}
+                            defaultValue={get(find(get(policies, `data.data`, []), (_item) => isEqual(get(_item, "_id"), policyId)), 'insurancePremium', 0)}
                             property={{disabled: true}} type={'number-format-input'} name={'sumInsurancePremium'}
                             label={'Сумма оплаты по полису:'}/>
                         <Field

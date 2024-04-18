@@ -34,11 +34,11 @@ const CreateContainer = ({
 
     let {data: policyBlankList} = useGetAllQuery({
         key: KEYS.policyblank,
-        params:{
-            params:{
-                branch:get(user, 'branch._id'),
-                employee:get(user, 'employee._id'),
-                is_used:false
+        params: {
+            params: {
+                branch: get(user, 'branch._id'),
+                employee: get(user, 'employee._id'),
+                is_used: false
             }
         },
         url: `/api/bco/policy-blank/list`,
@@ -66,7 +66,7 @@ const CreateContainer = ({
     if (isLoading) {
         return <OverlayLoader/>;
     }
-    console.log('agreementData',agreementData)
+    console.log('agreementData', agreementData)
     return (
         <Section>
             {isLoadingPolicy && <ContentLoader/>}
@@ -94,12 +94,14 @@ const CreateContainer = ({
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field defaultValue={get(agreementData,'data.startOfInsurance')} label={t('Start')} type={'datepicker'}
+                                <Field defaultValue={get(agreementData, 'data.startOfInsurance')} label={t('Start')}
+                                       type={'datepicker'}
                                        name={'startDate'} params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field defaultValue={get(agreementData,'data.endOfInsurance')} label={t('End')} type={'datepicker'}
+                                <Field defaultValue={get(agreementData, 'data.endOfInsurance')} label={t('End')}
+                                       type={'datepicker'}
                                        name={'endDate'} params={{required: true}}
                                 />
                             </Col>
@@ -144,6 +146,18 @@ const CreateContainer = ({
                                     type={'select'}
                                     name={`documents`}
                                     options={documents}
+                                />
+                            </Col>
+                            <Col xs={4}>
+                                <Field  defaultValue={get(agreementData, 'data.totalInsuranceSum')}
+                                       label={t('insuranceSum')} type={'number-format-input'}
+                                       name={'insuranceSum'} property={{disabled:true}}
+                                />
+                            </Col>
+                            <Col xs={4}>
+                                <Field  defaultValue={get(agreementData, 'data.totalInsurancePremium')}
+                                       label={t('insurancePremium')} type={'number-format-input'}
+                                       name={'insurancePremium'} property={{disabled:true}}
                                 />
                             </Col>
                         </Row>
