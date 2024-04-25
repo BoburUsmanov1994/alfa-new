@@ -43,7 +43,7 @@ const AgentsContainer = ({...rest}) => {
                     },
                     {
                         id: 3,
-                        key: 'typeofagent',
+                        key: 'typeofagent.name',
                         title: 'Agent type'
                     },
                     {
