@@ -111,6 +111,10 @@ const AgreementViewPage = lazy(() => import("../modules/products/pages/Agreement
 const PolicyCreatePage = lazy(() => import("../modules/policy/pages/CreatePage"));
 
 
+const OsgorListPage = lazy(() => import("../modules/insurance/osgor/pages/ListPage"));
+const OsgorCreatePage = lazy(() => import("../modules/insurance/osgor/pages/CreatePage"));
+
+
 const Router = ({...rest}) => {
     return (
         <BrowserRouter>
@@ -241,6 +245,10 @@ const Router = ({...rest}) => {
                                 <Route path={"language"} element={<BcoLanguagePage/>}/>
                                 <Route path={"policy-status"} element={<BcoPolicyStatusPage/>}/>
                                 <Route path={"act-status"} element={<BcoActStatusPage/>}/>
+                            </Route>
+                            <Route path={"insurance"}>
+                                <Route path={"osgor"} element={<OsgorListPage/>}/>
+                                <Route path={"osgor/create"} element={<OsgorCreatePage/>}/>
                             </Route>
                             <Route path={"endorsement"}>
                                 <Route path={"create/:product_id"} element={<EndorsementCreatePage/>}/>

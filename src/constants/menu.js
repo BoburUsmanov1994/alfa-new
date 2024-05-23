@@ -183,6 +183,7 @@ export const menuData = [
 
         ]
     },
+
     {
         id: 2,
         title: 'БСО',
@@ -235,86 +236,33 @@ export const menuData = [
             }
         ]
     },
-
-
-    // {
-    //     id: 4,
-    //     title: 'Страховой',
-    //     path: '/insurance',
-    //     submenu: [
-    //         {
-    //             id: 1,
-    //             title: 'Прямое страхование',
-    //             path: '/insurance/direct-insurance',
-    //         },
-    //         {
-    //             id: 2,
-    //             title: 'Входящее перестрахование',
-    //             path: '/insurance/incoming-reinsurance',
-    //         },
-    //         {
-    //             id: 3,
-    //             title: 'Исходящее перестрахование',
-    //             path: '/insurance/outgoing-reinsurance',
-    //         },
-    //         {
-    //             id: 4,
-    //             title: 'Обмен данными',
-    //             path: '/insurance/data-exchange',
-    //         }
-    //     ]
-    // },
-    // {
-    //     id: 5,
-    //     title: 'Претензионый портфель',
-    //     path: '/portfolio',
-    //     submenu: [
-    //         {
-    //             id: 1,
-    //             title: 'Документооборот по претензиям',
-    //             path: '/portfolio/paperwork',
-    //         },
-    //         {
-    //             id: 2,
-    //             title: 'Страховые дела',
-    //             path: '/portfolio/insurance-cases',
-    //         },
-    //         {
-    //             id: 3,
-    //             title: 'Страховой комитет',
-    //             path: '/portfolio/insurance-committee',
-    //         },
-    //         {
-    //             id: 4,
-    //             title: 'Регрессы / Суброгация',
-    //             path: '/insurance/recourses-subrogation',
-    //         }
-    //     ]
-    // },
-    // {
-    //     id: 6,
-    //     title: 'Бланки полисов',
-    //     path: '/policy-blanks',
-    //     submenu: [
-    //         {
-    //             id: 1,
-    //             title: 'Распределение бланков',
-    //             path: '/policy-blanks/form-distribution',
-    //         },
-    //         {
-    //             id: 2,
-    //             title: 'Отчет по бланкам',
-    //             path: '/policy-blanks/form-report',
-    //         },
-    //     ]
-    // },
-
-
-    // {
-    //     id: 9,
-    //     title: 'Отчёты',
-    //     path: '/reports',
-    // },
+    {
+        id: 300,
+        title: 'Страховой',
+        path: '/insurance',
+        submenu: [
+            {
+                id: 1,
+                title: 'ОСГОР',
+                path: '/insurance/osgor',
+            },
+            {
+                id: 2,
+                title: 'ОСГОП',
+                path: '/insurance/osgop',
+            },
+            {
+                id: 3,
+                title: 'ОСАГО',
+                path: '/insurance/osago',
+            },
+            {
+                id: 4,
+                title: 'СМР',
+                path: '/insurance/smr',
+            }
+        ]
+    },
 
     {
         id: 10,
