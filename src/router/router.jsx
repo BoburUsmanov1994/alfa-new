@@ -249,6 +249,12 @@ const Router = ({...rest}) => {
                             <Route path={"insurance"}>
                                 <Route path={"osgor"} element={<OsgorListPage/>}/>
                                 <Route path={"osgor/create"} element={<OsgorCreatePage/>}/>
+                                <Route path={"osgop"} element={<OsgorListPage/>}/>
+                                <Route path={"osgop/create"} element={<OsgorCreatePage/>}/>
+                                <Route path={"osago"} element={<OsgorListPage/>}/>
+                                <Route path={"osago/create"} element={<OsgorCreatePage/>}/>
+                                <Route path={"smr"} element={<OsgorListPage/>}/>
+                                <Route path={"smr/create"} element={<OsgorCreatePage/>}/>
                             </Route>
                             <Route path={"endorsement"}>
                                 <Route path={"create/:product_id"} element={<EndorsementCreatePage/>}/>
