@@ -115,6 +115,10 @@ const OsgorListPage = lazy(() => import("../modules/insurance/osgor/pages/ListPa
 const OsgorCreatePage = lazy(() => import("../modules/insurance/osgor/pages/CreatePage"));
 const OsgorViewPage = lazy(() => import("../modules/insurance/osgor/pages/ViewPage"));
 
+const OsgopListPage = lazy(() => import("../modules/insurance/osgop/pages/ListPage"));
+const OsgopCreatePage = lazy(() => import("../modules/insurance/osgop/pages/CreatePage"));
+const OsgopViewPage = lazy(() => import("../modules/insurance/osgop/pages/ViewPage"));
+
 
 const Router = ({...rest}) => {
     return (
@@ -251,8 +255,9 @@ const Router = ({...rest}) => {
                                 <Route path={"osgor"} element={<OsgorListPage/>}/>
                                 <Route path={"osgor/create"} element={<OsgorCreatePage/>}/>
                                 <Route path={"osgor/view/:form_id"} element={<OsgorViewPage/>}/>
-                                <Route path={"osgop"} element={<OsgorListPage/>}/>
-                                <Route path={"osgop/create"} element={<OsgorCreatePage/>}/>
+                                <Route path={"osgop"} element={<OsgopListPage/>}/>
+                                <Route path={"osgop/create"} element={<OsgopCreatePage/>}/>
+                                <Route path={"osgop/view/:osgop_formId"} element={<OsgopViewPage/>}/>
                                 <Route path={"osago"} element={<OsgorListPage/>}/>
                                 <Route path={"osago/create"} element={<OsgorCreatePage/>}/>
                                 <Route path={"smr"} element={<OsgorListPage/>}/>

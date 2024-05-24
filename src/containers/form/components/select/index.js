@@ -1,10 +1,10 @@
-import React, {useEffect, useState,memo} from 'react';
-import styled,{css} from "styled-components";
+import React, {useEffect, useState, memo} from 'react';
+import styled, {css} from "styled-components";
 import Select, {components} from "react-select";
 import caretDown from "../../../../assets/images/caret-down.png";
 import {ErrorMessage} from "@hookform/error-message";
 import Label from "../../../../components/ui/label";
-import {get, includes, isEmpty, isNil,isFunction} from "lodash";
+import {get, includes, isEmpty, isNil, isFunction} from "lodash";
 import classNames from "classnames";
 
 const StyledFormSelect = styled.div`
@@ -13,31 +13,37 @@ const StyledFormSelect = styled.div`
   .error__control {
     border-color: #ef466f;
   }
-  .form-select__menu{
+
+  .form-select__menu {
     //max-width: 400px;
   }
-  .form-select__control--is-disabled{
+
+  .form-select__control--is-disabled {
     background-color: #BABABA;
   }
-  .form-select__control{
+
+  .form-select__control {
     background-color: ${({bgColor}) => bgColor ?? ''};
     border-color: ${({bgColor}) => bgColor ?? ''};
-    .form-select__single-value{
+
+    .form-select__single-value {
       color: #000;
     }
-    .form-select__indicators{
+
+    .form-select__indicators {
       display: ${({bgColor}) => bgColor ? 'none' : ''};;
     }
   }
-  ${({fullWidth})=>fullWidth && css`
-    .form-select__control{
+
+  ${({fullWidth}) => fullWidth && css`
+    .form-select__control {
       max-width: 100% !important;
       min-width: 400px !important;
     }
   `}
 
 
-  
+
 `;
 
 const DropdownIndicator = props => {
@@ -112,7 +118,7 @@ const FormSelect = ({
     const [selectedValue, setSelectedValue] = useState(null)
 
     useEffect(() => {
-        if(!isNil(defaultValue)) {
+        if (!isNil(defaultValue)) {
             if (isMulti) {
                 if (!isEmpty(defaultValue)) {
                     setSelectedValue(defaultValue)
@@ -120,47 +126,48 @@ const FormSelect = ({
             } else {
                 setSelectedValue(defaultValue)
             }
-        }else{
+        } else {
             setSelectedValue(null)
         }
 
     }, [defaultValue])
 
     const handleChange = (value) => {
-        if(isMulti){
+        if (isMulti) {
             setSelectedValue(value.map(item => item?.value))
-        }else {
+        } else {
             setSelectedValue(value?.value);
         }
     }
 
-    useEffect(()=>{
-        setValue(name,selectedValue)
-    },[selectedValue])
+    useEffect(() => {
+        setValue(name, selectedValue)
+    }, [selectedValue])
 
     useEffect(() => {
         getValueFromField(getValues(name), name);
-        if(watch(name)){
-            if(isFunction(get(property,'onChange'))){
-                get(property,'onChange')(watch(name))
+        if (watch(name)) {
+            if (isFunction(get(property, 'onChange'))) {
+                get(property, 'onChange')(watch(name))
             }
         }
-    }, [watch(name),selectedValue]);
+    }, [watch(name), selectedValue]);
 
     return (
         <>
             <div className="form-group">
                 {!get(property, 'hideLabel', false) && <Label
-                    className={classNames({required: get(property, 'hasRequiredLabel', get(params,'required'))})}>{label ?? name}</Label>}
+                    className={classNames({required: get(property, 'hasRequiredLabel', get(params, 'required'))})}>{label ?? name}</Label>}
 
-                <StyledFormSelect {...props} large={get(property,'large',false)} fullWidth={get(property,'fullWidth',false)} bgColor={get(property,'bgColor')}>
+                <StyledFormSelect {...props} large={get(property, 'large', false)}
+                                  fullWidth={get(property, 'fullWidth', false)} bgColor={get(property, 'bgColor')}>
                     <Controller
                         control={control}
                         name={name}
                         rules={params}
                         render={() => (
                             <Select
-                                isClearable={get(property,'isClearable',true)}
+                                isClearable={get(property, 'isClearable', true)}
                                 clearIndicator={true}
                                 options={options}
                                 disabled={disabled}
@@ -169,11 +176,11 @@ const FormSelect = ({
                                 styles={customStyles}
                                 components={{DropdownIndicator}}
                                 isMulti={isMulti}
-                                isDisabled={isDisabled}
-                                className={classNames('form-select',{isDisabled:isDisabled})}
+                                isDisabled={isDisabled || disabled}
+                                className={classNames('form-select', {isDisabled: isDisabled})}
                                 classNamePrefix={classNames('form-select', {error: get(errors, `${name}`, false)})}
                                 value={
-                                    isMulti ? options.filter(option=>includes(selectedValue,option.value)) : options.filter(option =>
+                                    isMulti ? options.filter(option => includes(selectedValue, option.value)) : options.filter(option =>
                                         option.value === selectedValue)
                                 }
                             />
@@ -181,7 +188,7 @@ const FormSelect = ({
                     />
 
                 </StyledFormSelect>
-                {!get(property,'hideErrorMsg',false) && <ErrorMessage
+                {!get(property, 'hideErrorMsg', false) && <ErrorMessage
                     errors={errors}
                     name={name}
                     render={({messages = `${label} is required`}) => {

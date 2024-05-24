@@ -137,7 +137,7 @@ export const URLS = {
     isDisabledProvider: 'api/provider/is-disabled',
     insuranceTerms: 'api/references/insurance-terms',
     agencies: 'api/references/agencies',
-    vehicleTypes: 'api/references/vehicle-types',
+    vehicleTypes: 'api/references/vehicle-type',
     activityAndRisk: 'api/references/activity-and-risks',
     osgorCalculate: 'api/osgor/calculate',
     getRatio: 'api/osgop/ratio',

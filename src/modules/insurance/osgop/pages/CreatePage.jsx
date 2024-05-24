@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-import CreateContainer from "../../containers/osgop/CreateContainer";
+import CreateContainer from "../containers/CreateContainer";
 
 const Styled = styled.div`
   .form-group {

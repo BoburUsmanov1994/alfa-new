@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-import ViewContainer from "../../containers/osgop/ViewContainer";
+import ViewContainer from "../containers/ViewContainer";
 import {useParams} from "react-router-dom";
 
 const Styled = styled.div`

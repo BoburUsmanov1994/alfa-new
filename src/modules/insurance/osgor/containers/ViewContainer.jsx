@@ -186,7 +186,6 @@ const ViewContainer = ({form_id = null}) => {
         return <OverlayLoader/>
     }
 
-    console.log('data', data)
     return (<>
         {(isLoadingFond || deleteLoading || isLoadingConfirmPayed) && <OverlayLoader/>}
         <Panel>
