@@ -73,7 +73,10 @@ const CreateContainer = ({...rest}) => {
         setBreadcrumbs(breadcrumbs)
     }, [])
 
-    const {data: filials, isLoading: isLoadingFilials} = useGetAllQuery({key: KEYS.branches, url: `${URLS.branches}/list`})
+    const {data: filials, isLoading: isLoadingFilials} = useGetAllQuery({
+        key: KEYS.branches,
+        url: `${URLS.branches}/list`
+    })
     const filialList = getSelectOptionsListFromData(get(filials, `data.data`, []), '_id', 'branchName')
 
     const {data: insuranceTerms, isLoading: isLoadingInsuranceTerms} = useGetAllQuery({
@@ -94,7 +97,7 @@ const CreateContainer = ({...rest}) => {
     const {data: genders} = useGetAllQuery({
         key: KEYS.genders, url: `${URLS.genders}/list`
     })
-    const genderList = getSelectOptionsListFromData(get(genders, `data.data`, []), 'id', 'name')
+    const genderList = getSelectOptionsListFromData(get(genders, `data.data`, []), '_id', 'name')
 
     const {data: residentTypes} = useGetAllQuery({
         key: KEYS.residentTypes, url: `${URLS.residentTypes}/list`
@@ -104,12 +107,12 @@ const CreateContainer = ({...rest}) => {
     const {data: okeds} = useGetAllQuery({
         key: KEYS.okeds, url: `${URLS.okeds}`
     })
-    const okedList = getSelectOptionsListFromData(get(okeds, `data.result`, []), 'id', 'name')
+    const okedList = get(okeds, `data`, []).map(_item => ({value: _item, label: _item}))
 
     const {data: ownershipForms} = useGetAllQuery({
         key: KEYS.ownershipForms, url: `${URLS.ownershipForms}/list`
     })
-    const ownershipFormList = getSelectOptionsListFromData(get(ownershipForms, `data.data`, []), 'id', 'name')
+    const ownershipFormList = getSelectOptionsListFromData(get(ownershipForms, `data.data`, []), '_id', 'name')
 
     const {data: areaTypes} = useGetAllQuery({
         key: KEYS.areaTypes, url: URLS.areaTypes
@@ -130,7 +133,7 @@ const CreateContainer = ({...rest}) => {
 
     const {data: agents} = useGetAllQuery({
         key: [KEYS.agents, agencyId],
-        url:`${ URLS.agents}/list`,
+        url: `${URLS.agents}/list`,
         params: {
             params: {
                 branch: agencyId
@@ -138,7 +141,7 @@ const CreateContainer = ({...rest}) => {
         },
         enabled: !!(agencyId)
     })
-    const agentsList = getSelectOptionsListFromData(get(agents, `data.data`, []), 'id', ['organization.nameoforganization', 'person.secondname', 'person.name'])
+    const agentsList = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', ['organization.nameoforganization', 'person.secondname', 'person.name'])
 
     const {data: activity} = useGetAllQuery({
         key: [KEYS.activityAndRisk, oked],
@@ -151,8 +154,8 @@ const CreateContainer = ({...rest}) => {
         enabled: !!(oked)
     })
     const activityList = getSelectOptionsListFromData([{
-        oked: get(activity, `data.result.oked`),
-        name: get(activity, `data.result.name`)
+        oked: get(activity, `data.oked`),
+        name: get(activity, `data.name`)
     }], 'oked', 'name')
 
     const {
@@ -178,7 +181,7 @@ const CreateContainer = ({...rest}) => {
             },
             {
                 onSuccess: ({data}) => {
-                    setPerson(get(data, 'result'))
+                    setPerson(data)
                 }
             }
         )
@@ -191,7 +194,7 @@ const CreateContainer = ({...rest}) => {
             },
             {
                 onSuccess: ({data}) => {
-                    setOrganization(get(data, 'result'))
+                    setOrganization(data)
                 }
             }
         )
@@ -212,7 +215,7 @@ const CreateContainer = ({...rest}) => {
             },
             {
                 onSuccess: ({data}) => {
-                    setInsurancePremium(get(data, 'result.insurancePremium'))
+                    setInsurancePremium(get(data, 'insurancePremium'))
                 }
             }
         )
@@ -239,10 +242,10 @@ const CreateContainer = ({...rest}) => {
         if (isEqual(name, 'insurant.person.oked')) {
             setOked(value)
         }
-        if (isEqual(name, 'agencyId')) {
+        if (isEqual(name, 'branch')) {
             setAgencyId(value)
         }
-        if (isEqual(name, 'agentId')) {
+        if (isEqual(name, 'agent')) {
             setAgentId(value)
         }
         if (isEqual(name, 'policies[0].endDate')) {
@@ -263,14 +266,14 @@ const CreateContainer = ({...rest}) => {
             rpmPercent,
             rpmSum,
             policies,
-            agentId,
+            agent,
             insurant: insurantType,
             ...rest
         } = data
         createRequest({
                 url: URLS.osgorCreate, attributes: {
-                    agentId: String(agentId),
-                    regionId: isEqual(insurant, 'person') ? get(insurantType, 'person.regionId') : get(insurantType, 'organization.regionId'),
+                    agent: String(agent),
+                    regionId: parseInt(isEqual(insurant, 'person') ? get(insurantType, 'person.regionId') : get(insurantType, 'organization.regionId')),
                     sum: get(head(policies), 'insuranceSum', 0),
                     contractStartDate: get(head(policies), 'startDate'),
                     contractEndDate: get(head(policies), 'endDate'),
@@ -278,7 +281,7 @@ const CreateContainer = ({...rest}) => {
                         person: {
                             passportData: get(insurantType, 'person.passportData'),
                             fullName: get(insurantType, 'person.fullName'),
-                            regionId: get(insurantType, 'person.regionId'),
+                            regionId: parseInt(get(insurantType, 'person.regionId')),
                             gender: get(insurantType, 'person.gender'),
                             birthDate: get(insurantType, 'person.birthDate'),
                             address: get(insurantType, 'person.address'),
@@ -293,6 +296,7 @@ const CreateContainer = ({...rest}) => {
                             ...get(insurantType, 'organization'),
                             oked: String(get(insurantType, 'organization.oked')),
                             email: isEmpty(get(insurantType, 'organization.email')) ? undefined : get(insurantType, 'organization.email'),
+                            regionId: parseInt(get(insurantType, 'organization.regionId')),
                         }
                     },
                     policies: [
@@ -310,8 +314,8 @@ const CreateContainer = ({...rest}) => {
             },
             {
                 onSuccess: ({data: response}) => {
-                    if (get(response, 'result.osgor_formId')) {
-                        navigate(`/insurance/osgor/view/${get(response, 'result.osgor_formId')}`);
+                    if (get(response, 'osgor_formId')) {
+                        navigate(`/insurance/osgor/view/${get(response, 'osgor_formId')}`);
                     } else {
                         navigate(`/insurance/osgor`);
                     }
@@ -323,7 +327,7 @@ const CreateContainer = ({...rest}) => {
         if (risk && fotSum && insuranceTerm) {
             calculatePremium()
         }
-    }, [risk, fotSum, insuranceTerm,policeEndDate])
+    }, [risk, fotSum, insuranceTerm, policeEndDate])
     if (isLoadingFilials || isLoadingInsuranceTerms || isLoadingCountry || isLoadingRegion) {
         return <OverlayLoader/>
     }
@@ -361,7 +365,7 @@ const CreateContainer = ({...rest}) => {
                                     <Col xs={7}><Field isDisabled defaultValue={get(user, 'branch._id')}
                                                        label={'Filial'} params={{required: true}} options={filialList}
                                                        property={{hideLabel: true}} type={'select'}
-                                                       name={'agencyId'}/></Col>
+                                                       name={'branch'}/></Col>
                                 </Row>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Серия договора:</Col>
@@ -421,7 +425,7 @@ const CreateContainer = ({...rest}) => {
                                     <Col xs={5}>Дача окончания покрытия: </Col>
                                     <Col xs={7}><Field
                                         params={{required: true}}
-                                        defaultValue={insuranceTerm != 6 ? getEndDateByInsuranceTerm(find(get(insuranceTerms, `data.data`, []), (_insuranceTerm) => get(_insuranceTerm, 'id') == insuranceTerm), policeStartDate): null}
+                                        defaultValue={insuranceTerm != 6 ? getEndDateByInsuranceTerm(find(get(insuranceTerms, `data.data`, []), (_insuranceTerm) => get(_insuranceTerm, 'id') == insuranceTerm), policeStartDate) : null}
                                         disabled={!isEqual(insuranceTerm, 6)}
                                         property={{
                                             hideLabel: true,
@@ -560,7 +564,7 @@ const CreateContainer = ({...rest}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         options={countryList}
-                                        defaultValue={get(person, 'birthCountry','210')}
+                                        defaultValue={'210'}
                                         label={'Country'}
                                         type={'select'}
                                         name={'insurant.person.countryId'}/>
@@ -568,6 +572,7 @@ const CreateContainer = ({...rest}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         options={regionList}
+                                        params={{valueAsNumber:true}}
                                         defaultValue={get(person, 'regionId')}
                                         label={'Region'}
                                         type={'select'}
@@ -717,14 +722,14 @@ const CreateContainer = ({...rest}) => {
                             <Col xs={3} className={'mb-25'}>
                                 <Field
                                     params={{required: true}}
-                                    options={getSelectOptionsListFromData(get(activity, 'data.result.risks', []), 'number', 'number')}
+                                    options={getSelectOptionsListFromData(get(activity, 'data.risks', []), 'number', 'number')}
                                     label={'Класс проф. риска'}
                                     type={'select'}
                                     name={'policies[0].risk'}/>
                             </Col>
                             <Col xs={3} className={'mb-25'}>
                                 <Field
-                                    defaultValue={get(find(get(activity, 'data.result.risks', []), _risk => get(_risk, 'number') == risk), 'coeficient')}
+                                    defaultValue={get(find(get(activity, 'data.risks', []), _risk => get(_risk, 'number') == risk), 'coeficient')}
                                     property={{disabled: true}}
                                     label={'Коэффициент страхового тарифа'}
                                     type={'input'}
@@ -748,14 +753,14 @@ const CreateContainer = ({...rest}) => {
                         </Row>
                         <Row gutterWidth={60} className={'mt-15'}>
                             <Col xs={12} className={'mb-15'}><Title>Агентсткое вознограждение и РПМ</Title></Col>
-                            <Col xs={8}>
+                            <Col xs={6}>
                                 <Row>
                                     <Col xs={12} className={'mb-25'}>
                                         <Field
                                             options={[...agentsList]}
                                             label={'Агент'}
                                             type={'select'}
-                                            name={'agentId'}/>
+                                            name={'agent'}/>
                                     </Col>
 
                                     <Col xs={6} className={'mb-25'}>

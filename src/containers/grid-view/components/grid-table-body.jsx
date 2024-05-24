@@ -16,7 +16,8 @@ const GridTableBody = ({
                            viewUrl = null,
                            updateUrl = null,
                            hideDeleteBtn = false,
-                           hasUpdateBtn = false
+                           hasUpdateBtn = false,
+                           dataKey
                        }) => {
     const navigate = useNavigate();
     return (
@@ -36,7 +37,7 @@ const GridTableBody = ({
                             }
                         </td>)
                     }
-                    <td>{viewUrl && <Eye onClick={() => navigate(`${viewUrl}/${get(tr, '_id', null)}`)}
+                    <td>{viewUrl && <Eye onClick={() => navigate(`${viewUrl}/${get(tr, dataKey, null)}`)}
                                          className={'cursor-pointer mr-10'} size={20} color={'#78716c'}/>}
                         {hasUpdateBtn && <Edit
                             onClick={() => {

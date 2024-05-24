@@ -95,7 +95,7 @@ const ListContainer = ({...rest}) => {
                 url={URLS.osgorList}
                 listUrl={URLS.osgorList}
                 title={t('Osgor agreements list')}
-                responseDataKey={'result.docs'}
+                responseDataKey={'data.docs'}
                 viewUrl={'/insurance/osgor/view'}
                 createUrl={'/insurance/osgor/create'}
                 updateUrl={'/insurance/osgor/update'}

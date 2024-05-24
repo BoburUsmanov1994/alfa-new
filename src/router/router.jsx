@@ -113,6 +113,7 @@ const PolicyCreatePage = lazy(() => import("../modules/policy/pages/CreatePage")
 
 const OsgorListPage = lazy(() => import("../modules/insurance/osgor/pages/ListPage"));
 const OsgorCreatePage = lazy(() => import("../modules/insurance/osgor/pages/CreatePage"));
+const OsgorViewPage = lazy(() => import("../modules/insurance/osgor/pages/ViewPage"));
 
 
 const Router = ({...rest}) => {
@@ -249,6 +250,7 @@ const Router = ({...rest}) => {
                             <Route path={"insurance"}>
                                 <Route path={"osgor"} element={<OsgorListPage/>}/>
                                 <Route path={"osgor/create"} element={<OsgorCreatePage/>}/>
+                                <Route path={"osgor/view/:form_id"} element={<OsgorViewPage/>}/>
                                 <Route path={"osgop"} element={<OsgorListPage/>}/>
                                 <Route path={"osgop/create"} element={<OsgorCreatePage/>}/>
                                 <Route path={"osago"} element={<OsgorListPage/>}/>

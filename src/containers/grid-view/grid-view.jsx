@@ -79,7 +79,8 @@ const GridView = ({
                       hideCreateBtn = false,
                       params = {},
                       hasUpdateBtn = false,
-                      isFormData = false
+                      isFormData = false,
+                      dataKey = '_id'
                   }) => {
     const navigate = useNavigate()
     const {t} = useTranslation()
@@ -229,7 +230,7 @@ const GridView = ({
                                             key={get(column, 'id')}>
                                             <span>{t(get(column, 'title'))}</span>
                                             {includes(columns.map(({key}) => key), get(column, 'key')) &&
-                                            <Check size={18}/>}
+                                                <Check size={18}/>}
                                         </li>)
                                     }
 
@@ -264,9 +265,10 @@ const GridView = ({
                                                                     openEditModal={openEditModal}
                                                                     tableBodyData={get(data, responseDataKey, [])}
                                                                     isFetching={isFetching}
+                                                                    dataKey={dataKey}
                     /></div>
                     {!hidePagination &&
-                    <Pagination page={page} setPage={setPage} totalItems={get(data, `data.count`, 0)}/>}
+                        <Pagination page={page} setPage={setPage} totalItems={get(data, `data.count`, 0)}/>}
                 </>}
             </Section>
         </Styled>

@@ -27,9 +27,9 @@ const ViewContainer = ({form_id = null}) => {
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [{
-        id: 1, title: 'OSGOR list', path: '/osgor/list',
+        id: 1, title: 'ОСГОР ', path: '/insurance/osgor',
     }, {
-        id: 2, title: 'OSGOR view', path: '/osgor/list',
+        id: 2, title: 'ОСГОР', path: '/insurance/osgor',
     }], [])
 
 
@@ -47,85 +47,86 @@ const ViewContainer = ({form_id = null}) => {
         enabled: !!(form_id)
     })
 
-    const {data: filials, isLoading: isLoadingFilials} = useGetAllQuery({key: KEYS.agencies, url: URLS.agencies})
-    const filialList = getSelectOptionsListFromData(get(filials, `data.result`, []), 'id', 'name')
+    const {data: filials, isLoading: isLoadingFilials} = useGetAllQuery({
+        key: KEYS.branches,
+        url: `${URLS.branches}/list`
+    })
+    const filialList = getSelectOptionsListFromData(get(filials, `data.data`, []), '_id', 'branchName')
 
     const {data: insuranceTerms, isLoading: isLoadingInsuranceTerms} = useGetAllQuery({
         key: KEYS.insuranceTerms, url: URLS.insuranceTerms
     })
-    const insuranceTermsList = getSelectOptionsListFromData(get(insuranceTerms, `data.result`, []), 'id', 'name')
+    const insuranceTermsList = getSelectOptionsListFromData(get(insuranceTerms, `data.data`, []), 'id', 'name')
 
     const {data: okeds} = useGetAllQuery({
         key: KEYS.okeds, url: URLS.okeds
     })
-    const okedList = getSelectOptionsListFromData(get(okeds, `data.result`, []), 'id', 'name')
+    const okedList = get(okeds, `data`, []).map(_item => ({value: _item, label: _item}))
 
     const {data: region, isLoading: isLoadingRegion} = useGetAllQuery({
-        key: KEYS.regions, url: URLS.regions
+        key: KEYS.regions, url: `${URLS.regions}/list`
     })
-    const regionList = getSelectOptionsListFromData(get(region, `data.result`, []), 'id', 'name')
+    const regionList = getSelectOptionsListFromData(get(region, `data.data`, []), 'id', 'name')
 
     const {data: ownershipForms} = useGetAllQuery({
-        key: KEYS.ownershipForms, url: URLS.ownershipForms
+        key: KEYS.ownershipForms, url: `${URLS.ownershipForms}/list`
     })
-    const ownershipFormList = getSelectOptionsListFromData(get(ownershipForms, `data.result`, []), 'id', 'name')
+    const ownershipFormList = getSelectOptionsListFromData(get(ownershipForms, `data.data`, []), '_id', 'name')
 
     const {data: genders} = useGetAllQuery({
-        key: KEYS.genders, url: URLS.genders
+        key: KEYS.genders, url: `${URLS.genders}/list`
     })
-    const genderList = getSelectOptionsListFromData(get(genders, `data.result`, []), 'id', 'name')
+    const genderList = getSelectOptionsListFromData(get(genders, `data.data`, []), '_id', 'name')
 
     const {data: country, isLoading: isLoadingCountry} = useGetAllQuery({
-        key: KEYS.countries, url: URLS.countries
+        key: KEYS.countries, url: `${URLS.countries}/list`
     })
-    const countryList = getSelectOptionsListFromData(get(country, `data.result`, []), 'id', 'name')
+    const countryList = getSelectOptionsListFromData(get(country, `data.data`, []), 'id', 'name')
 
     const {data: residentTypes} = useGetAllQuery({
-        key: KEYS.residentTypes, url: URLS.residentTypes
+        key: KEYS.residentTypes, url: `${URLS.residentTypes}/list`
     })
-    const residentTypeList = getSelectOptionsListFromData(get(residentTypes, `data.result`, []), 'id', 'name')
+    const residentTypeList = getSelectOptionsListFromData(get(residentTypes, `data.data`, []), 'id', 'name')
 
     const {data: agents} = useGetAllQuery({
-        key: [KEYS.agents, get(data,'data.result.agencyId')],
-        url: URLS.agents,
+        key: [KEYS.agents, get(data, 'data.branch')],
+        url: `${URLS.agents}/list`,
         params: {
             params: {
-                branch: get(data,'data.result.agencyId')
+                branch: get(data, 'data.branch')
             }
         },
-        enabled: !!(get(data,'data.result.agencyId'))
+        enabled: !!(get(data, 'data.branch'))
     })
-    const agentsList = getSelectOptionsListFromData(get(agents, `data.result`, []), 'id', 'name')
+    const agentsList = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', ['organization.nameoforganization', 'person.secondname', 'person.name'])
 
     const {data: activity} = useGetAllQuery({
         key: [KEYS.activityAndRisk],
         url: URLS.activityAndRisk,
         params: {
             params: {
-                oked:get(data, 'data.result.insurant.organization.oked') ?? get(data, 'data.result.insurant.person.oked')
+                oked: get(data, 'data.insurant.organization.oked') ?? get(data, 'data.insurant.person.oked')
             }
         },
-        enabled: !!(get(data, 'data.result.insurant.organization.oked') || get(data, 'data.result.insurant.person.oked'))
+        enabled: !!(get(data, 'data.insurant.organization.oked') || get(data, 'data.insurant.person.oked'))
     })
     const activityList = getSelectOptionsListFromData([{
-        oked: get(activity, `data.result.oked`),
-        name: get(activity, `data.result.name`)
+        oked: get(activity, `data.oked`),
+        name: get(activity, `data.name`)
     }], 'oked', 'name')
-
 
     const {
         mutate: sendFond, isLoading: isLoadingFond
     } = usePostQuery({listKeyId: KEYS.osgorView})
     const {
-        mutate:confirmPayedRequest, isLoading: isLoadingConfirmPayed
+        mutate: confirmPayedRequest, isLoading: isLoadingConfirmPayed
     } = usePostQuery({listKeyId: KEYS.osgorView})
 
     const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: KEYS.osgorDelete})
 
     const send = () => {
         sendFond({
-                url: `${URLS.osgorSendFond}?osgor_formId=${form_id}`, attributes: {
-                }
+                url: `${URLS.osgorSendFond}?osgor_formId=${form_id}`, attributes: {}
             },
             {
                 onSuccess: ({data}) => {
@@ -138,12 +139,12 @@ const ViewContainer = ({form_id = null}) => {
     const confirmPayed = () => {
         confirmPayedRequest({
                 url: URLS.osgorConfirmPayment, attributes: {
-                    uuid:get(data, 'data.result.uuid'),
-                    polisUuid:get(head(get(data, 'data.result.policies',[])),'uuid'),
-                    paidAt:dayjs(get(head(get(data, 'data.result.policies',[])),'issueDate')).format("YYYY-MM-DD HH:mm:ss"),
-                    insurancePremium:get(head(get(data, 'data.result.policies',[])),'insurancePremium'),
-                    startDate:get(head(get(data, 'data.result.policies',[])),'startDate'),
-                    endDate:get(head(get(data, 'data.result.policies',[])),'endDate')
+                    uuid: get(data, 'data.uuid'),
+                    polisUuid: get(head(get(data, 'data.policies', [])), 'uuid'),
+                    paidAt: dayjs(get(head(get(data, 'data.policies', [])), 'issueDate')).format("YYYY-MM-DD HH:mm:ss"),
+                    insurancePremium: get(head(get(data, 'data.policies', [])), 'insurancePremium'),
+                    startDate: get(head(get(data, 'data.policies', [])), 'startDate'),
+                    endDate: get(head(get(data, 'data.policies', [])), 'endDate')
                 }
             },
             {
@@ -174,7 +175,7 @@ const ViewContainer = ({form_id = null}) => {
             if (result.isConfirmed) {
                 deleteRequest({url: `${URLS.osgorDelete}?osgor_formId=${form_id}`}, {
                     onSuccess: () => {
-                        navigate('/osgor')
+                        navigate('/insurance/osgor')
                     }
                 })
             }
@@ -185,7 +186,7 @@ const ViewContainer = ({form_id = null}) => {
         return <OverlayLoader/>
     }
 
-
+    console.log('data', data)
     return (<>
         {(isLoadingFond || deleteLoading || isLoadingConfirmPayed) && <OverlayLoader/>}
         <Panel>
@@ -204,48 +205,58 @@ const ViewContainer = ({form_id = null}) => {
             <Row>
                 <Col xs={12}>
                     <Form
-                        footer={!isEqual(get(data, 'data.result.status'), 'payed') && <Flex className={'mt-32'}>{(isEqual(get(data, 'data.result.status'), 'new') || isEqual(get(data, 'data.result.status'), 'edited')) && <><Button onClick={remove}
-                                                                                                                                                                                                                                      danger type={'button'}
-                                                                                                                                                                                                                                      className={'mr-16'}>Удалить</Button>
-                            <Button onClick={() => navigate(`/osgor/update/${form_id}`)} yellow type={'button'}
-                                    className={'mr-16'}>Изменить</Button></>}
-                            <Button onClick={(isEqual(get(data, 'data.result.status'),'new') || isEqual(get(data, 'data.result.status'),'edited')) ? () =>send() : ()=>{}} gray={!(isEqual(get(data, 'data.result.status'),'new') || isEqual(get(data, 'data.result.status'),'edited'))} type={'button'} className={'mr-16'}>Отправить в
+                        footer={!isEqual(get(data, 'data.status'), 'payed') && <Flex
+                            className={'mt-32'}>{(isEqual(get(data, 'data.status'), 'new') || isEqual(get(data, 'data.status'), 'edited')) && <>
+                            <Button onClick={remove}
+                                    danger type={'button'}
+                                    className={'mr-16'}>Удалить</Button>
+                            {/*<Button onClick={() => navigate(`/osgor/update/${form_id}`)} yellow type={'button'}*/}
+                            {/*        className={'mr-16'}>Изменить</Button>*/}
+
+                        </>}
+                            <Button
+                                onClick={(isEqual(get(data, 'data.status'), 'new') || isEqual(get(data, 'data.status'), 'edited')) ? () => send() : () => {
+                                }}
+                                gray={!(isEqual(get(data, 'data.status'), 'new') || isEqual(get(data, 'data.status'), 'edited'))}
+                                type={'button'} className={'mr-16'}>Отправить в
                                 Фонд</Button>
-                            <Button onClick={isEqual(get(data, 'data.result.status'),'sent') ? ()=>confirmPayed():()=>{}}
-                                    type={'button'} gray={!isEqual(get(data, 'data.result.status'),'sent')} className={'mr-16'}>Подтвердить
+                            <Button onClick={isEqual(get(data, 'data.status'), 'sent') ? () => confirmPayed() : () => {
+                            }}
+                                    type={'button'} gray={!isEqual(get(data, 'data.status'), 'sent')}
+                                    className={'mr-16'}>Подтвердить
                                 оплату</Button></Flex>}>
                         <Row gutterWidth={60} className={'mt-32'}>
                             <Col xs={4} style={{borderRight: '1px solid #DFDFDF'}}>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Статус</Col>
-                                    <Col xs={7}><Button green>{get(data, 'data.result.status')}</Button></Col>
+                                    <Col xs={7}><Button green>{get(data, 'data.status')}</Button></Col>
                                 </Row>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Филиал </Col>
-                                    <Col xs={7}><Field defaultValue={get(data, 'data.result.agencyId')} disabled
+                                    <Col xs={7}><Field defaultValue={get(data, 'data.branch')} isDisabled
                                                        params={{required: true}} options={filialList}
                                                        property={{hideLabel: true}} type={'select'}
                                                        name={'agencyId'}/></Col>
                                 </Row>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Серия договора:</Col>
-                                    <Col xs={7}><Field defaultValue={get(data, 'data.result.seria')}
+                                    <Col xs={7}><Field defaultValue={get(data, 'data.seria')}
                                                        property={{hideLabel: true, disabled: true}} type={'input'}
                                                        name={'seria'}/></Col>
                                 </Row>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Номер договора: </Col>
-                                    <Col xs={7}><Field defaultValue={get(data, 'data.result.number')}
+                                    <Col xs={7}><Field defaultValue={get(data, 'data.number')}
                                                        params={{required: true}}
                                                        property={{hideLabel: true, disabled: true}}
                                                        type={'input'}
                                                        name={'number'}/></Col>
                                 </Row>
                                 {
-                                    isEqual(get(data, 'data.result.status'), 'payed') && <>
+                                    isEqual(get(data, 'data.status'), 'payed') && <>
                                         <Row align={'center'} className={'mb-25'}>
                                             <Col xs={5}>Серия полиса: </Col>
-                                            <Col xs={7}><Field defaultValue={get(data, 'data.result.policies[0].seria')}
+                                            <Col xs={7}><Field defaultValue={get(data, 'data.policies[0].seria')}
                                                                params={{required: true}}
                                                                property={{hideLabel: true, disabled: true}}
                                                                type={'input'}
@@ -253,7 +264,7 @@ const ViewContainer = ({form_id = null}) => {
                                         </Row>
                                         <Row align={'center'} className={'mb-25'}>
                                             <Col xs={5}>Номер полиса: </Col>
-                                            <Col xs={7}><Field defaultValue={get(data, 'data.result.policies[0].number')}
+                                            <Col xs={7}><Field defaultValue={get(data, 'data.policies[0].number')}
                                                                params={{required: true}}
                                                                property={{hideLabel: true, disabled: true}}
                                                                type={'input'}
@@ -262,11 +273,11 @@ const ViewContainer = ({form_id = null}) => {
                                     </>
                                 }
                                 {
-                                    (isEqual(get(data, 'data.result.status'), 'sent') || isEqual(get(data, 'data.result.status'), 'payed')) && <>
+                                    (isEqual(get(data, 'data.status'), 'sent') || isEqual(get(data, 'data.status'), 'payed')) && <>
                                         <Row align={'center'} className={'mb-25'}>
                                             <Col xs={5}>Дата отправки в Фонд: </Col>
                                             <Col xs={7}><Field
-                                                defaultValue={get(data, 'data.result.sentDate')} disabled
+                                                defaultValue={get(data, 'data.sentDate')} disabled
                                                 property={{
                                                     hideLabel: true,
                                                     dateFormat: 'yyyy-MM-dd'
@@ -283,7 +294,7 @@ const ViewContainer = ({form_id = null}) => {
 
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Страховая сумма: </Col>
-                                    <Col xs={7}><Field defaultValue={get(data, 'data.result.policies[0].insuranceSum')}
+                                    <Col xs={7}><Field defaultValue={get(data, 'data.policies[0].insuranceSum')}
                                                        property={{hideLabel: true, disabled: true}}
                                                        type={'number-format-input'}
                                                        name={'policies[0].insuranceSum'}/></Col>
@@ -291,16 +302,17 @@ const ViewContainer = ({form_id = null}) => {
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Страховая премия: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.result.policies[0].insurancePremium')}
+                                        defaultValue={get(data, 'data.policies[0].insurancePremium')}
                                         property={{hideLabel: true, disabled: true}}
                                         type={'number-format-input'}
                                         name={'policies[0].insurancePremium'}/></Col>
                                 </Row>
                                 {
-                                    isEqual(get(data, 'data.result.status'), 'payed') &&  <Row align={'center'} className={'mb-25'}>
+                                    isEqual(get(data, 'data.status'), 'payed') &&
+                                    <Row align={'center'} className={'mb-25'}>
                                         <Col xs={5}>Оплачено: </Col>
                                         <Col xs={7}><Field
-                                            defaultValue={get(data, 'data.result.policies[0].insurancePremium')}
+                                            defaultValue={get(data, 'data.policies[0].insurancePremium')}
                                             property={{hideLabel: true, disabled: true}}
                                             type={'number-format-input'}
                                             name={'policies[0].insurancePremium'}/></Col>
@@ -312,8 +324,8 @@ const ViewContainer = ({form_id = null}) => {
                             <Col xs={4}>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Срок страхования:</Col>
-                                    <Col xs={7}><Field disabled
-                                                       defaultValue={get(data, 'data.result.policies[0].insuranceTermId')}
+                                    <Col xs={7}><Field isDisabled
+                                                       defaultValue={get(data, 'data.policies[0].insuranceTermId')}
                                                        options={insuranceTermsList} params={{required: true}}
                                                        label={'Insurance term'} property={{hideLabel: true}}
                                                        type={'select'}
@@ -322,7 +334,7 @@ const ViewContainer = ({form_id = null}) => {
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Дата начала покрытия: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.result.policies[0].startDate')} disabled
+                                        defaultValue={get(data, 'data.policies[0].startDate')} disabled
                                         property={{
                                             hideLabel: true,
                                             dateFormat: 'dd.MM.yyyy'
@@ -333,13 +345,13 @@ const ViewContainer = ({form_id = null}) => {
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Дача окончания покрытия: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.result.policies[0].endDate')} disabled
+                                        defaultValue={get(data, 'data.policies[0].endDate')} disabled
                                         property={{hideLabel: true, dateFormat: 'dd.MM.yyyy'}} type={'datepicker'}
                                         name={'policies[0].endDate'}/></Col>
                                 </Row>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Дата выдачи полиса: </Col>
-                                    <Col xs={7}><Field defaultValue={get(data, 'data.result.policies[0].issueDate')}
+                                    <Col xs={7}><Field defaultValue={get(data, 'data.policies[0].issueDate')}
                                                        disabled property={{hideLabel: true, dateFormat: 'dd.MM.yyyy'}}
                                                        type={'datepicker'}
                                                        name={'policies[0].issueDate'}/></Col>
@@ -354,10 +366,10 @@ const ViewContainer = ({form_id = null}) => {
                                         <Flex>
                                             <h4 className={'mr-16'}>Страхователь</h4>
                                             <Button
-                                                gray={!get(data, 'data.result.insurant.person')} className={'mr-16'}
+                                                gray={!get(data, 'data.insurant.person')} className={'mr-16'}
                                                 type={'button'}>Физ. лицо</Button>
                                             <Button
-                                                gray={!get(data, 'data.result.insurant.organization')} type={'button'}>Юр.
+                                                gray={!get(data, 'data.insurant.organization')} type={'button'}>Юр.
                                                 лицо</Button>
                                         </Flex>
                                     </Col>
@@ -367,30 +379,30 @@ const ViewContainer = ({form_id = null}) => {
                             <Col xs={12}>
                                 <hr className={'mt-15 mb-15'}/>
                             </Col>
-                            {get(data, 'data.result.insurant.person') && <>
+                            {get(data, 'data.insurant.person') && <>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field property={{disabled: true}}
-                                           defaultValue={get(data, 'data.result.insurant.person.fullName.firstname')}
+                                           defaultValue={get(data, 'data.insurant.person.fullName.firstname')}
                                            label={'Firstname'}
                                            type={'input'}
                                            name={'insurant.person.fullName.firstname'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field property={{disabled: true}}
-                                           defaultValue={get(data, 'data.result.insurant.person.fullName.lastname')}
+                                           defaultValue={get(data, 'data.insurant.person.fullName.lastname')}
                                            label={'Lastname'} type={'input'}
                                            name={'insurant.person.fullName.lastname'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field property={{disabled: true}}
-                                           defaultValue={get(data, 'data.result.insurant.person.fullName.middlename')}
+                                           defaultValue={get(data, 'data.insurant.person.fullName.middlename')}
                                            label={'Middlename'}
                                            type={'input'}
                                            name={'insurant.person.fullName.middlename'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field property={{disabled: true}}
-                                           defaultValue={get(data, 'data.result.insurant.person.passportData.pinfl')}
+                                           defaultValue={get(data, 'data.insurant.person.passportData.pinfl')}
                                            label={'ПИНФЛ'} type={'input'}
                                            name={'insurant.person.passportData.pinfl'}/>
                                 </Col>
@@ -399,7 +411,7 @@ const ViewContainer = ({form_id = null}) => {
                                         mask: 'aa',
                                         placeholder: 'AA',
                                         maskChar: '_'
-                                    }} defaultValue={get(data, 'data.result.insurant.person.passportData.seria')}
+                                    }} defaultValue={get(data, 'data.insurant.person.passportData.seria')}
                                            label={'Passport seria'} type={'input-mask'}
                                            name={'insurant.person.passportData.seria'}/>
                                 </Col>
@@ -408,22 +420,22 @@ const ViewContainer = ({form_id = null}) => {
                                         mask: '9999999',
                                         placeholder: '1234567',
                                         maskChar: '_',
-                                    }} defaultValue={get(data, 'data.result.insurant.person.passportData.number')}
+                                    }} defaultValue={get(data, 'data.insurant.person.passportData.number')}
                                            label={'Passport number'} type={'input-mask'}
                                            name={'insurant.person.passportData.number'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         disabled
-                                        defaultValue={get(data, 'data.result.insurant.person.birthDate')}
+                                        defaultValue={get(data, 'data.insurant.person.birthDate')}
                                         label={'Birth date'}
                                         type={'datepicker'}
                                         name={'insurant.person.birthDate'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        disabled
-                                        defaultValue={get(data, 'data.result.insurant.person.gender')}
+                                        isDisabled
+                                        defaultValue={get(data, 'data.insurant.person.gender')}
                                         options={genderList}
                                         label={'Gender'}
                                         type={'select'}
@@ -431,27 +443,27 @@ const ViewContainer = ({form_id = null}) => {
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        disabled
+                                        isDisabled
                                         options={countryList}
-                                        defaultValue={get(data, 'data.result.insurant.person.countryId')}
+                                        defaultValue={get(data, 'data.insurant.person.countryId')}
                                         label={'Country'}
                                         type={'select'}
                                         name={'insurant.person.countryId'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        disabled
+                                        isDisabled
                                         options={regionList}
-                                        defaultValue={get(data, 'data.result.insurant.person.regionId')}
+                                        defaultValue={String(get(data, 'data.insurant.person.regionId'))}
                                         label={'Region'}
                                         type={'select'}
                                         name={'insurant.person.regionId'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        disabled
+                                        isDisabled
                                         options={residentTypeList}
-                                        defaultValue={get(data, 'data.result.insurant.person.residentType')}
+                                        defaultValue={get(data, 'data.insurant.person.residentType')}
                                         label={'Resident type'}
                                         type={'select'}
                                         name={'insurant.person.residentType'}/>
@@ -459,7 +471,7 @@ const ViewContainer = ({form_id = null}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         property={{disabled: true}}
-                                        defaultValue={get(data, 'data.result.insurant.person.address')}
+                                        defaultValue={get(data, 'data.insurant.person.address')}
                                         label={'Address'}
                                         type={'input'}
                                         name={'insurant.person.address'}/>
@@ -467,7 +479,7 @@ const ViewContainer = ({form_id = null}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         property={{disabled: true}}
-                                        defaultValue={get(data, 'data.result.insurant.person.phone')}
+                                        defaultValue={get(data, 'data.insurant.person.phone')}
                                         label={'Phone'}
                                         type={'input'}
                                         name={'insurant.person.phone'}/>
@@ -475,15 +487,15 @@ const ViewContainer = ({form_id = null}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         property={{disabled: true}}
-                                        defaultValue={get(data, 'data.result.insurant.person.email')}
+                                        defaultValue={get(data, 'data.insurant.person.email')}
                                         label={'Email'}
                                         type={'input'}
                                         name={'insurant.person.email'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        disabled
-                                        defaultValue={parseInt(get(data, 'data.result.insurant.person.oked'))}
+                                        isDisabled
+                                        defaultValue={get(data, 'data.insurant.person.oked')}
                                         options={okedList}
                                         label={'Oked'}
                                         type={'select'}
@@ -491,10 +503,10 @@ const ViewContainer = ({form_id = null}) => {
                                 </Col>
 
                             </>}
-                            {get(data, 'data.result.insurant.organization') && <>
+                            {get(data, 'data.insurant.organization') && <>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field disabled props={{required: true}} label={'INN'}
-                                           defaultValue={get(data, 'data.result.insurant.organization.inn')} property={{
+                                           defaultValue={get(data, 'data.insurant.organization.inn')} property={{
                                         mask: '999999999',
                                         placeholder: 'Inn',
                                         maskChar: '_'
@@ -503,57 +515,57 @@ const ViewContainer = ({form_id = null}) => {
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field property={{disabled: true}} props={{required: true}}
-                                           defaultValue={get(data, 'data.result.insurant.organization.name')}
+                                           defaultValue={get(data, 'data.insurant.organization.name')}
                                            label={'Наименование'} type={'input'}
                                            name={'insurant.organization.name'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field property={{disabled: true}}
-                                           defaultValue={get(data, 'data.result.insurant.organization.representativeName')}
+                                           defaultValue={get(data, 'data.insurant.organization.representativeName')}
                                            label={'Руководитель'} type={'input'}
                                            name={'insurant.organization.representativeName'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field property={{disabled: true}}
-                                           defaultValue={get(data, 'data.result.insurant.organization.position')}
+                                           defaultValue={get(data, 'data.insurant.organization.position')}
                                            label={'Должность'} type={'input'}
                                            name={'insurant.organization.position'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field property={{disabled: true}}
-                                           defaultValue={get(data, 'data.result.insurant.organization.phone')}
+                                           defaultValue={get(data, 'data.insurant.organization.phone')}
                                            props={{required: true}}
                                            label={'Телефон'} type={'input'}
                                            name={'insurant.organization.phone'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field property={{disabled: true}}
-                                           defaultValue={get(data, 'data.result.insurant.organization.email')}
+                                           defaultValue={get(data, 'data.insurant.organization.email')}
                                            label={'Email'} type={'input'}
                                            name={'insurant.organization.email'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        disabled
+                                        isDisabled
                                         options={okedList}
-                                        defaultValue={get(data, 'data.result.insurant.organization.oked')}
+                                        defaultValue={get(data, 'data.insurant.organization.oked')}
                                         label={'ОКЭД'}
                                         type={'select'}
                                         name={'insurant.organization.oked'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field property={{disabled: true}}
-                                           defaultValue={get(data, 'data.result.insurant.organization.checkingAccount')}
+                                           defaultValue={get(data, 'data.insurant.organization.checkingAccount')}
                                            label={'Расчетный счет'} type={'input'}
                                            name={'insurant.organization.checkingAccount'}/>
                                 </Col>
-                                <Col xs={3}><Field disabled
-                                                   defaultValue={get(data, 'data.result.insurant.organization.regionId')}
+                                <Col xs={3}><Field isDisabled
+                                                   defaultValue={String(get(data, 'data.insurant.organization.regionId'))}
                                                    label={'Область'} params={{required: true}} options={regionList}
                                                    type={'select'}
                                                    name={'insurant.organization.regionId'}/></Col>
-                                <Col xs={3}><Field disabled
-                                                   defaultValue={get(data, 'data.result.insurant.organization.ownershipFormId')}
+                                <Col xs={3}><Field isDisabled
+                                                   defaultValue={get(data, 'data.insurant.organization.ownershipFormId')}
                                                    label={'Форма собственности'} params={{required: true}}
                                                    options={ownershipFormList}
                                                    type={'select'}
@@ -564,8 +576,8 @@ const ViewContainer = ({form_id = null}) => {
                             <Col xs={12} className={'mb-15'}><Title>Вид деятельности</Title></Col>
                             <Col xs={3} className={'mb-25'}>
                                 <Field
-                                    disabled
-                                    defaultValue={get(head(activityList),'value')}
+                                    isDisabled
+                                    defaultValue={get(head(activityList), 'value')}
                                     options={activityList}
                                     label={'Вид деятельности (по правилам)'}
                                     type={'select'}
@@ -573,16 +585,16 @@ const ViewContainer = ({form_id = null}) => {
                             </Col>
                             <Col xs={3} className={'mb-25'}>
                                 <Field
-                                    disabled
-                                    defaultValue={get(data, 'data.result.policies[0].risk')}
-                                    options={getSelectOptionsListFromData(get(activity, 'data.result.risks', []), 'number', 'number')}
+                                    isDisabled
+                                    defaultValue={get(data, 'data.policies[0].risk')}
+                                    options={getSelectOptionsListFromData(get(activity, 'data.risks', []), 'number', 'number')}
                                     label={'Класс проф. риска'}
                                     type={'select'}
                                     name={'risk'}/>
                             </Col>
                             <Col xs={3} className={'mb-25'}>
                                 <Field
-                                    defaultValue={get(data, 'data.result.policies[0].insuranceRate', 0)}
+                                    defaultValue={get(data, 'data.policies[0].insuranceRate', 0)}
                                     property={{disabled: true}}
                                     label={'Коэффициент страхового тарифа'}
                                     type={'input'}
@@ -591,7 +603,7 @@ const ViewContainer = ({form_id = null}) => {
                             <Col xs={3} className={'mb-25'}>
                                 <Field
                                     property={{disabled: true}}
-                                    defaultValue={get(data, 'data.result.policies[0].funeralExpensesSum', 0)}
+                                    defaultValue={get(data, 'data.policies[0].funeralExpensesSum', 0)}
                                     label={'Расходы на погребение'}
                                     type={'number-format-input'}
                                     name={'funeralExpensesSum'}/>
@@ -599,7 +611,7 @@ const ViewContainer = ({form_id = null}) => {
                             <Col xs={3} className={'mb-25'}>
                                 <Field
                                     property={{disabled: true}}
-                                    defaultValue={get(data, 'data.result.policies[0].fot', 0)}
+                                    defaultValue={get(data, 'data.policies[0].fot', 0)}
                                     label={'Фонд оплаты труда'}
                                     type={'number-format-input'}
                                     name={'fot'}/>
@@ -607,21 +619,21 @@ const ViewContainer = ({form_id = null}) => {
                         </Row>
                         <Row gutterWidth={60} className={'mt-15'}>
                             <Col xs={12} className={'mb-15'}><Title>Агентсткое вознограждение и РПМ</Title></Col>
-                            <Col xs={8}>
+                            <Col xs={6}>
                                 <Row>
                                     <Col xs={12} className={'mb-25'}>
                                         <Field
-                                            disabled
-                                            defaultValue={get(data,'data.result.agentId')}
+                                            isDisabled
+                                            defaultValue={get(data, 'data.agent')}
                                             options={[...agentsList]}
                                             label={'Агент'}
                                             type={'select'}
-                                            name={'agentId'}/>
+                                            name={'agent'}/>
                                     </Col>
 
                                     <Col xs={6} className={'mb-25'}>
                                         <Field
-                                            defaultValue={get(data,'data.result.policies[0].agentReward',25)}
+                                            defaultValue={get(data, 'data.policies[0].agentReward', 25)}
                                             property={{disabled: true}}
                                             label={'Вознограждение %'}
                                             type={'input'}
@@ -637,7 +649,7 @@ const ViewContainer = ({form_id = null}) => {
                                     </Col>
                                     <Col xs={6} className={'mb-25'}>
                                         <Field
-                                            defaultValue={round(get(data,'data.result.agentId')=='0' ? 0  : 25 * get(data,'data.result.policies[0].insurancePremium') / 100, 2)}
+                                            defaultValue={round(get(data, 'data.agent') == '0' ? 0 : 25 * get(data, 'data.policies[0].insurancePremium') / 100, 2)}
                                             property={{disabled: true}}
                                             label={'Сумма'}
                                             type={'number-format-input'}
@@ -645,7 +657,7 @@ const ViewContainer = ({form_id = null}) => {
                                     </Col>
                                     <Col xs={6} className={'mb-25'}>
                                         <Field
-                                            defaultValue={round(5 *  get(data,'data.result.policies[0].insurancePremium') / 100, 2)}
+                                            defaultValue={round(5 * get(data, 'data.policies[0].insurancePremium') / 100, 2)}
                                             property={{disabled: true}}
                                             label={'Сумма'}
                                             type={'number-format-input'}
