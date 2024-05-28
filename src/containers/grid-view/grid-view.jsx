@@ -80,7 +80,8 @@ const GridView = ({
                       params = {},
                       hasUpdateBtn = false,
                       isFormData = false,
-                      dataKey = '_id'
+                      dataKey = '_id',
+                      deleteUrl = null
                   }) => {
     const navigate = useNavigate()
     const {t} = useTranslation()
@@ -175,7 +176,11 @@ const GridView = ({
             },
         }).then((result) => {
             if (result.isConfirmed) {
-                deleteRequest({url: `${url}/${id}`})
+                if (deleteUrl) {
+                    deleteRequest({url: `${deleteUrl}/${id}`})
+                } else {
+                    deleteRequest({url: `${url}/${id}`})
+                }
             }
         });
     }
@@ -230,7 +235,7 @@ const GridView = ({
                                             key={get(column, 'id')}>
                                             <span>{t(get(column, 'title'))}</span>
                                             {includes(columns.map(({key}) => key), get(column, 'key')) &&
-                                                <Check size={18}/>}
+                                            <Check size={18}/>}
                                         </li>)
                                     }
 
@@ -268,7 +273,7 @@ const GridView = ({
                                                                     dataKey={dataKey}
                     /></div>
                     {!hidePagination &&
-                        <Pagination page={page} setPage={setPage} totalItems={get(data, `data.count`, 0)}/>}
+                    <Pagination page={page} setPage={setPage} totalItems={get(data, `data.count`, 0)}/>}
                 </>}
             </Section>
         </Styled>

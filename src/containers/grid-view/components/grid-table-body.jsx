@@ -42,13 +42,13 @@ const GridTableBody = ({
                         {hasUpdateBtn && <Edit
                             onClick={() => {
                                 if (updateUrl) {
-                                    navigate(`${updateUrl}/${get(tr, '_id', null)}`)
+                                    navigate(`${updateUrl}/${get(tr, dataKey, null)}`)
                                     return
                                 }
-                                openEditModal(get(tr, '_id', null))
+                                openEditModal(get(tr, dataKey, null))
                             }} className={'cursor-pointer mr-10'} size={20}
                             color={'#13D6D1'}/>}
-                        {!hideDeleteBtn && <Trash2 onClick={() => remove(get(tr, '_id', null))}
+                        {!hideDeleteBtn && <Trash2 onClick={() => remove(get(tr, dataKey, null))}
                                                    className={'cursor-pointer '} size={20} color={'#dc2626'}/>}</td>
                 </tr>)
             }

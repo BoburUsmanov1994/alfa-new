@@ -8,27 +8,36 @@ import {Radio, RadioGroup} from '@chakra-ui/react'
 
 
 const Styled = styled.div`
+  .form-group {
+    display: flex;
+    align-items: center;
+  }
+
   .chakra-radio__control {
     width: 18px;
     height: 18px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    border:1px solid #13D6D1;
+    border: 1px solid #13D6D1;
     background-clip: content-box;
     padding: 2px;
-    &[data-checked]{
+
+    &[data-checked] {
       background-color: #13D6D1;
     }
   }
-  .chakra-radio-group{
+
+  .chakra-radio-group {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
   }
-  .chakra-radio{
+
+  .chakra-radio {
     margin-right: 15px;
-    margin-bottom: 10px;
-    &:last-child{
+
+    &:last-child {
       margin-right: 0;
       margin-bottom: 0;
     }
@@ -54,28 +63,20 @@ const RadioGroupComponent = ({
                                  options = [],
                                  ...rest
                              }) => {
-    const [val, setVal] = useState(null)
-    useEffect(() => {
-        setVal(defaultValue);
-    }, [defaultValue])
-
-    useEffect(() => {
-        setValue(name, val)
-    }, [val])
+    const [val, setVal] = useState(defaultValue)
     return (
         <Styled {...rest}>
             <div className="form-group">
                 <Label
-                    className={classNames('checkbox-label', {required: get(property, 'hasRequiredLabel', get(params,'required'))})}>{label ?? name}</Label>
-                <RadioGroup  onChange={setVal} value={val}>
+                    className={classNames('checkbox-label mr-10 mb-0', {required: get(property, 'hasRequiredLabel', false)})}>{label ?? name}</Label>
+                <RadioGroup value={parseInt(val)} onChange={setVal}>
 
                     {
-                        options && options.map((option, i) => <Radio  key={i + 1} value={get(option, 'value')}>{
+                        options && options.map((option, i) => <Radio key={i + 1} value={get(option, 'value')}>{
                             get(option, 'label')
                         }</Radio>)
                     }
                 </RadioGroup>
-
                 <ErrorMessage
                     errors={errors}
                     name={name}

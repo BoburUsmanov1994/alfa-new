@@ -119,6 +119,14 @@ const OsgopListPage = lazy(() => import("../modules/insurance/osgop/pages/ListPa
 const OsgopCreatePage = lazy(() => import("../modules/insurance/osgop/pages/CreatePage"));
 const OsgopViewPage = lazy(() => import("../modules/insurance/osgop/pages/ViewPage"));
 
+const OsagoListPage = lazy(() => import("../modules/insurance/osago/pages/OsagaListPage"));
+const OsagoCreatePage = lazy(() => import("../modules/insurance/osago/pages/OsagaCreatePage"));
+const OsagoViewPage = lazy(() => import("../modules/insurance/osago/pages/OsagaViewPage"));
+
+const SmrListPage = lazy(() => import("../modules/insurance/smr/pages/ListPage"));
+const SmrUpdatePage = lazy(() => import("../modules/insurance/smr/pages/UpdatePage"));
+const SmrViewPage = lazy(() => import("../modules/insurance/smr/pages/ViewPage"));
+
 
 const Router = ({...rest}) => {
     return (
@@ -258,10 +266,12 @@ const Router = ({...rest}) => {
                                 <Route path={"osgop"} element={<OsgopListPage/>}/>
                                 <Route path={"osgop/create"} element={<OsgopCreatePage/>}/>
                                 <Route path={"osgop/view/:osgop_formId"} element={<OsgopViewPage/>}/>
-                                <Route path={"osago"} element={<OsgorListPage/>}/>
-                                <Route path={"osago/create"} element={<OsgorCreatePage/>}/>
-                                <Route path={"smr"} element={<OsgorListPage/>}/>
-                                <Route path={"smr/create"} element={<OsgorCreatePage/>}/>
+                                <Route path={"osago"} element={<OsagoListPage/>}/>
+                                <Route path={"osago/create"} element={<OsagoCreatePage/>}/>
+                                <Route path={"osago/view/:application_number"} element={<OsagoViewPage/>}/>
+                                <Route path={"smr"} element={<SmrListPage/>}/>
+                                <Route path={"smr/view/:contract_id"} element={<SmrViewPage/>}/>
+                                <Route path={"smr/update/:contract_id"} element={<SmrUpdatePage/>}/>
                             </Route>
                             <Route path={"endorsement"}>
                                 <Route path={"create/:product_id"} element={<EndorsementCreatePage/>}/>

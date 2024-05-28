@@ -107,6 +107,10 @@ const GlobalStyles = createGlobalStyle`
     margin-right: 16px !important;
   }
 
+  .mt-30 {
+    margin-top: 30px !important;
+  }
+
   .mt-32 {
     margin-top: 32px !important;
   }
@@ -221,7 +225,7 @@ const Theme = ({children}) => {
     return (
         <ThemeProvider theme={{}}>
             <GlobalStyles/>
-            <ToastContainer />
+            <ToastContainer/>
             <Wrapper>
                 {children}
             </Wrapper>
