@@ -37,7 +37,7 @@ const SmrDistributeContainer = ({
     const user = useStore(state => get(state, 'user'))
 
     let {data: transactions, isLoading: _isLoading} = useGetAllQuery({
-        key: KEYS.smrList, url: `${URLS.smrList}`, enabled: !!(get(user, 'branch._id')), params: {
+        key: KEYS.smrList, url: `${URLS.smrList}`, params: {
             params: {
                 branch: get(user, 'branch._id'),
                 limit: 100
