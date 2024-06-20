@@ -183,4 +183,6 @@ export const KEYS = {
     smrContractForm: 'smrContractForm',
     getPolisFile: 'getPolisFile',
     calculate: 'calculate',
+    smrAttach: 'smrAttach',
+    smrDistribute: 'smrDistribute',
 }

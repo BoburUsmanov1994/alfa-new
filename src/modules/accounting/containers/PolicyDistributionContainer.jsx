@@ -135,6 +135,7 @@ const PolicyDistributionContainer = ({
                     <Title>Распределение к полису</Title>
                 </Col>
             </Row>
+
             <Row className={'mb-20'}>
                 <Col xs={12} className={'horizontal-scroll'}>
                     {

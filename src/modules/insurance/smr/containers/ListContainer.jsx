@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 
 const ListContainer = ({...rest}) => {
     const {t} = useTranslation()
+    const user = useStore(state => get(state, 'user', null))
 
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
@@ -43,9 +44,9 @@ const ListContainer = ({...rest}) => {
                 tableHeaderData={[
                     {
                         id: 1,
-                        key: 'seria',
+                        key: 'insurant',
                         title: 'Наименование',
-                        render: ({row}) => get(row, 'insurant.name')
+                        render: (tr) => get(tr, 'insurant.name')
                     },
                     {
                         id: 2,
@@ -54,38 +55,39 @@ const ListContainer = ({...rest}) => {
                     },
                     {
                         id: 3,
-                        key: 'contract_number',
+                        key: 'contract_id',
                         title: 'Номер договора',
+                        render: (tr) => get(tr, 'policy.number')
                     },
                     {
                         id: 4,
                         key: 'policy',
                         title: 'Серия полиса',
-                        render: ({row}) => get(row, 'policy.seria')
+                        render: (tr) => get(tr, 'policy.seria')
                     },
                     {
                         id: 5,
                         key: 'insurant',
                         title: 'Номер полиса',
-                        render: ({row}) => get(row, 'policy.number')
+                        render: (tr) => get(tr, 'policy.number')
                     },
                     {
                         id: 7,
                         key: 'policy.ins_sum',
                         title: 'Insurance sum',
-                        render: ({value}) => <NumberFormat displayType={'text'} thousandSeparator={' '} value={value}/>
+                        render: (tr) => <NumberFormat displayType={'text'} thousandSeparator={' '} value={get(tr,'policy.ins_sum')}/>
                     },
                     {
                         id: 6,
                         key: 'policy.ins_premium',
                         title: 'Insurance premium',
-                        render: ({value,row}) => <NumberFormat displayType={'text'} thousandSeparator={' '} value={get(row,'policy.ins_premium')}/>
+                        render: (tr) => <NumberFormat displayType={'text'} thousandSeparator={' '} value={get(tr,'policy.ins_premium')}/>
                     },
                     {
                         id: 7,
                         key: 'createdAt',
                         title: 'Created at',
-                        render: ({value}) => value ? dayjs(value).format("DD-MM-YYYY HH:mm") : '-'
+                        render: (tr) => get(tr,'createdAt') ? dayjs(get(tr,'createdAt')).format("DD-MM-YYYY HH:mm") : '-'
                     },
                     {
                         id: 9,
@@ -98,12 +100,13 @@ const ListContainer = ({...rest}) => {
                 title={t('СМР')}
                 responseDataKey={'data.docs'}
                 viewUrl={'/insurance/smr/view'}
-                // createUrl={'/smr/create'}
-                updateUrl={'/insurance/smr/update'}
                 isHideColumn
                 dataKey={'contract_id'}
                 deleteUrl={URLS.smrDelete}
                 hideCreateBtn={true}
+                params={{
+                    branch:get(user,'branch.id')
+                }}
             />
         </>
     );

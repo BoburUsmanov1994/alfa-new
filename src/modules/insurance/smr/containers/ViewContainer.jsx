@@ -171,7 +171,7 @@ const ViewContainer = ({contract_id = null}) => {
             if (result.isConfirmed) {
                 deleteRequest({url: `${URLS.smrDelete}?contract_id=${contract_id}`}, {
                     onSuccess: () => {
-                        navigate('/smr')
+                        navigate('/insurance/smr')
                     }
                 })
             }
@@ -197,6 +197,8 @@ const ViewContainer = ({contract_id = null}) => {
                     <Title>СМР</Title>
                 </Col>
             </Row>
+            {/*<Button onClick={() => navigate(`/smr/update/${contract_id}`)} yellow type={'button'}*/}
+            {/*        className={'mr-16'}>Изменить</Button>*/}
             <Row>
                 <Col xs={12}>
                     <Form
@@ -206,8 +208,7 @@ const ViewContainer = ({contract_id = null}) => {
                             <Button onClick={remove}
                                     danger type={'button'}
                                     className={'mr-16'}>Удалить</Button>
-                            <Button onClick={() => navigate(`/smr/update/${contract_id}`)} yellow type={'button'}
-                                    className={'mr-16'}>Изменить</Button></>}
+                        </>}
                             <Button gray={isEqual(get(data, 'data.status'), 'paid')}
                                     onClick={(isEqual(get(data, 'data.status'), 'paid') || isEqual(get(data, 'data.status'), 'sent')) ? () => {
                                     } : confirmPayed}
@@ -595,7 +596,7 @@ const ViewContainer = ({contract_id = null}) => {
                             <Col xs={4}>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Агент (автоматически): </Col>
-                                    <Col xs={7}><Field defaultValue={username ?? get(data, 'data.agent_id')}
+                                    <Col xs={7}><Field defaultValue={username ? get(data, 'data.agent_id', '') : ''}
                                                        property={{hideLabel: true, disabled: true}} type={'input'}
                                                        name={'agent_id'}/></Col>
                                 </Row>
