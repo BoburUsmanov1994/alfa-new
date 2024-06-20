@@ -50,7 +50,7 @@ const ListContainer = ({...rest}) => {
                     },
                     {
                         id: 2,
-                        key: 'branch_id',
+                        key: 'branch.branchName',
                         title: 'Филиал',
                     },
                     {

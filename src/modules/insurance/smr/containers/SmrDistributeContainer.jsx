@@ -148,7 +148,7 @@ const SmrDistributeContainer = ({
                                 }}/></td>
                                 <td>{i + 1}</td>
                                 <td>{get(item, 'insurant.name')}</td>
-                                <td>{get(item, 'branch.branchname')}</td>
+                                <td>{get(item, 'branch.branchName')}</td>
                                 <td>{get(item, 'contract_id')}</td>
                                 <td>{get(item, 'policy.seria')}</td>
                                 <td>{get(item, 'policy.number')}</td>
