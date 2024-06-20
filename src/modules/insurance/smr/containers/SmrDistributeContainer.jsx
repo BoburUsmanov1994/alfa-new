@@ -73,7 +73,7 @@ const SmrDistributeContainer = ({
                     branch: get(params, 'branchId')
                 }
             })
-            navigate(`/insurance/smr/distribute`)
+            navigate(`/insurance/smr`)
         }
     }
 
@@ -137,7 +137,7 @@ const SmrDistributeContainer = ({
                                    } else {
                                        setIdList([])
                                    }
-                               }}/>, '№', 'Наименование', 'Филиал', 'Номер договора', 'Серия полиса', 'Номер полиса', 'Insurance sum','Insurance premium', 'Created at', 'Status']}>{get(transactions, 'data.docs', []).map((item, i) =>
+                               }}/>, '№', 'Наименование', 'Филиал', 'Номер договора', 'Серия полиса', 'Номер полиса', 'Insurance sum','Insurance premium','Снято на договор', 'Created at', 'Status']}>{get(transactions, 'data.docs', []).map((item, i) =>
                             <tr key={get(item, '_id')}>
                                 <td><Checkbox checked={includes(idList, get(item, '_id'))} onChange={(e) => {
                                     if (e.target?.checked) {
@@ -156,8 +156,10 @@ const SmrDistributeContainer = ({
                                                   value={get(item, 'policy.ins_sum', 0)}/></td>
                                 <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                                   value={get(item, 'policy.ins_premium', 0)}/></td>
+                                <td><NumberFormat displayType={'text'} thousandSeparator={" "}
+                                                  value={get(item, 'attachedSum', 0)}/></td>
                                 <td>{dayjs(get(item, 'createdAt')).format("DD.MM.YYYY")}</td>
-                                <td>{get(item, 'status')}</td>
+                                <td>{get(item, 'attachStatus')}</td>
                                 {/*<td>*/}
                                 {/*    <Eye onClick={() => navigate(`/insurance/smr/view/${get(item,'contract_id')}`)}*/}
                                 {/*         className={'cursor-pointer mr-10'} size={20} color={'#78716c'}/>*/}
