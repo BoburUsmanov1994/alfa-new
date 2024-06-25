@@ -225,6 +225,7 @@ const StepOne = ({id = null, ...props}) => {
             toast.warn('Select pledger')
         }
     }
+    console.log('product',product)
 
     return (
         <Row>
@@ -549,11 +550,7 @@ const StepOne = ({id = null, ...props}) => {
                             <Col xs={4} className={'mb-25'}>
                                 <Field
                                     params={{
-                                        required: true,
-                                        pattern: {
-                                            value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
-                                            message: 'Invalid format'
-                                        }
+                                        required: true
                                     }}
                                     label={'Phone'}
                                     type={'input'}
@@ -630,11 +627,7 @@ const StepOne = ({id = null, ...props}) => {
                             <Col xs={4} className={'mb-25'}>
                                 <Field
                                     params={{
-                                        required: true,
-                                        pattern: {
-                                            value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
-                                            message: 'Invalid format'
-                                        }
+                                        required: true
                                     }}
                                     label={'Phone'}
                                     type={'input'}
@@ -709,11 +702,7 @@ const StepOne = ({id = null, ...props}) => {
                             <Col xs={4} className={'mb-25'}>
                                 <Field
                                     params={{
-                                        required: true,
-                                        pattern: {
-                                            value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
-                                            message: 'Invalid format'
-                                        }
+                                        required: true
                                     }}
                                     label={'Phone'}
                                     type={'input'}

@@ -20,13 +20,9 @@ const StepFour = ({id = null, ...props}) => {
 
     const {mutate: createAgreement, isLoading} = usePostQuery({listKeyId: KEYS.agreements})
 
-    const setAgreement = useSettingsStore(state => get(state, 'setAgreement', () => {
-    }))
     const resetAgreement = useSettingsStore(state => get(state, 'resetAgreement', () => {
     }))
 
-    const removeCommissions = useSettingsStore(state => get(state, 'removeCommissions', () => {
-    }))
 
 
     const agreement = useSettingsStore(state => get(state, 'agreement', {}))

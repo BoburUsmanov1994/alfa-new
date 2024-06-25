@@ -22,11 +22,11 @@ const StepFive = ({...props}) => {
     const resetAgreement = useSettingsStore(state => get(state, 'resetAgreement', () => {
     }))
 
-    const removeCommissions = useSettingsStore(state => get(state, 'removeCommissions', () => {
-    }))
+
 
 
     const agreement = useSettingsStore(state => get(state, 'agreement', {}))
+    console.log('agreement',agreement)
 
 
     const nextStep = ({data}) => {

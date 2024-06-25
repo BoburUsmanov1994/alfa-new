@@ -108,9 +108,7 @@ const StepFour = ({id = null, ...props}) => {
     const removeTariffFromList = (i) => {
         setTariffList(prev => prev.filter((f, j) => !isEqual(i, j)))
     }
-    console.log('tariffList', tariffList)
-    console.log('otherParams', otherParams)
-    console.log('tarif', tarif)
+
 
     return (
         <Row>

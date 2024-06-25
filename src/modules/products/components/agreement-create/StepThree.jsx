@@ -208,22 +208,22 @@ const StepThree = ({...props}) => {
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field type={'number-format-input'}
+                                <Field property={{disabled:true}} type={'number-format-input'}
                                        name={`accruedCommissionAmount`}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field type={'number-format-input'}
+                                <Field  property={{disabled:true}} type={'number-format-input'}
                                        name={`paidcommissionAmount`}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field type={'input'}
+                                <Field property={{disabled:true}} type={'input'}
                                        name={`accruedCommissionRefund`}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field type={'input'}
+                                <Field property={{disabled:true}} type={'input'}
                                        name={`returnedCommission`}
                                 />
                             </Col>

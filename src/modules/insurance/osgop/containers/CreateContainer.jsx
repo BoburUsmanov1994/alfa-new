@@ -614,10 +614,6 @@ const CreateContainer = () => {
                                     <Field
                                         params={{
                                             required: true,
-                                            pattern: {
-                                                value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
-                                                message: 'Invalid format'
-                                            }
                                         }}
                                         defaultValue={get(ownerPerson, 'phone')}
                                         label={'Phone'}
@@ -740,11 +736,7 @@ const CreateContainer = () => {
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field defaultValue={get(ownerOrganization, 'phone')} params={{
-                                        required: true,
-                                        pattern: {
-                                            value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
-                                            message: 'Invalid format'
-                                        }
+                                        required: true
                                     }}
                                            property={{placeholder: '998XXXXXXXXX'}}
                                            label={'Телефон'} type={'input'}
@@ -948,11 +940,7 @@ const CreateContainer = () => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         params={{
-                                            required: true,
-                                            pattern: {
-                                                value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
-                                                message: 'Invalid format'
-                                            }
+                                            required: true
                                         }}
                                         property={{placeholder: '998XXXXXXXXX'}}
                                         defaultValue={insurantIsOwner ? get(otherPrams, 'insurant.person.phone') : null}
@@ -1087,11 +1075,7 @@ const CreateContainer = () => {
                                     <Field
                                         defaultValue={get(insurantIsOwner ? ownerOrganization : insurantOrganization, 'phone', get(otherPrams, 'insurant.organization.phone'))}
                                         params={{
-                                            required: true,
-                                            pattern: {
-                                                value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
-                                                message: 'Invalid format'
-                                            }
+                                            required: true
                                         }}
                                         property={{placeholder: '998XXXXXXXXX'}}
                                         label={'Телефон'} type={'input'}

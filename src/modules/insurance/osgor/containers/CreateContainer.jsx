@@ -613,11 +613,7 @@ const CreateContainer = ({...rest}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         params={{
-                                            required: true,
-                                            pattern: {
-                                                value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
-                                                message: 'Invalid format'
-                                            }
+                                            required: true
                                         }}
                                         defaultValue={get(person, 'phone')}
                                         label={'Phone'}

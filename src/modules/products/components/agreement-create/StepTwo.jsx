@@ -5,30 +5,26 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, includes, isEqual, isNil, range, round, sum, find, entries, head, last,values} from "lodash"
+import {get, isEqual, isNil, range, round, sum, find, entries, head, last,values} from "lodash"
 import Title from "../../../../components/ui/title";
 import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
-import {formatDate, getSelectOptionsListFromData} from "../../../../utils";
+import {getSelectOptionsListFromData} from "../../../../utils";
 import Table from "../../../../components/table";
 import Flex from "../../../../components/flex";
 import {Plus, Trash2} from "react-feather";
-import Checkbox from "rc-checkbox";
 import 'rc-checkbox/assets/index.css';
 import {useTranslation} from "react-i18next";
 import Modal from "../../../../components/modal";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
 import {INSURANCE_OBJECT_TYPES, PERSON_TYPE} from "../../../../constants";
-import ReactJson from "react-json-view";
 import {toast} from "react-toastify";
 
 const StepTwo = ({id = null, ...props}) => {
     const {t} = useTranslation()
-    const [schedule, setSchedule] = useState([])
     const [count, setCount] = useState(0)
-    const [checkedAll, setCheckedAll] = useState(false)
     const [openObjectModal, setOpenObjectModal] = useState(false)
     const [riskFields, setRiskFields] = useState([])
     const [_fields, _setFields] = useState({})
@@ -50,24 +46,29 @@ const StepTwo = ({id = null, ...props}) => {
     const objects = useSettingsStore(state => get(state, 'objects', []))
 
     const nextStep = ({data}) => {
-        let {
-            riskOptions,
-            agentlist,
-            Isagreement,
-            limitofagreement,
-            tariffperclasses,
-            objectofinsurance,
-            insurancepremium,
-            insurancerate,
-            suminsured,
-            startofinsurance,
-            ...rest
-        } = data;
-        setAgreement({
-            ...rest,
-            objectOfInsurance: objects.map(_item => get(_item, 'objectOfInsurance'))
-        });
-        props.nextStep();
+        if(sum(range(0, count).map(_index => get(_fields, `paymentSchedule[${_index}].count`))) < round(sum(values(premium)),2)){
+            let {
+                riskOptions,
+                agentlist,
+                Isagreement,
+                limitofagreement,
+                tariffperclasses,
+                objectofinsurance,
+                insurancepremium,
+                insurancerate,
+                suminsured,
+                startofinsurance,
+                ...rest
+            } = data;
+            setAgreement({
+                ...rest,
+                objectOfInsurance: objects.map(_item => get(_item, 'objectOfInsurance'))
+            });
+            props.nextStep();
+        }
+        else{
+            toast.warn(t('Total amount cannot be greater than insurance premium!'))
+        }
     }
 
     const prevStep = () => {
@@ -171,19 +172,17 @@ const StepTwo = ({id = null, ...props}) => {
         return find(list, l => isEqual(get(l, "_id"), id))
     }
 
-
-    const setGraphic = () => {
-        setSchedule([])
-        let now = new Date();
-        for (let i = 12; i > 0; i--) {
-            let newdate = now.setMonth(now.getMonth() - 1);
-            setSchedule(prev => [...prev, {
-                date: formatDate(newdate),
-                count: round(Math.abs(get(_fields, 'accruedInsurancePremium', 0) - get(_fields, 'paidInsurancePremium', 0)) / 12, 2)
-            }])
+    const getNameFromObject = (object,type) => {
+        switch (type){
+            case INSURANCE_OBJECT_TYPES.VEHICLE: return get(object,'objectOfInsurance.details.carModel')
+            case INSURANCE_OBJECT_TYPES.BORROWER: return get(object,'objectOfInsurance.details.type') != 'PERSON' ? get(object,'objectOfInsurance.details.organization.name') : `${get(object,'objectOfInsurance.details.person.fullName.lastname')} ${get(object,'objectOfInsurance.details.person.fullName.firstname')}`
+            case INSURANCE_OBJECT_TYPES.PROPERTY: return get(object,'objectOfInsurance.details.cadastralNumber')
+            case INSURANCE_OBJECT_TYPES.AGRICULTURE: return get(object,'objectOfInsurance.details.objectName')
+            default: return  '-';
         }
-
     }
+
+
 
     useEffect(() => {
         if (!isNil(get(agreement, 'product.risk', []))) {
@@ -198,10 +197,10 @@ const StepTwo = ({id = null, ...props}) => {
         }
     }, [agreement])
 
-    console.log('agreement', agreement)
-    console.log('_fields', _fields)
-    console.log('objects', objects)
-    console.log('preimum', premium)
+
+
+    console.log('objects',objects)
+
     return (
         <Row>
             <Col xs={12}>
@@ -221,14 +220,19 @@ const StepTwo = ({id = null, ...props}) => {
                         <Col xs={12}>
                             <hr/>
                             {objects.length > 0 && <Table hideThead={false}
-                                                          thead={['Object JSON', 'Actions']}>
+                                                          thead={['Object type','Details', 'Actions']}>
                                 {objects?.length > 0 && objects.map((obj, i) => <tr key={get(obj, 'id', i)}>
-                                    <td style={{width: 500}}>
-                                        {obj && <ReactJson collapsed src={obj}/>}
+                                    <td>
+                                        {
+                                            get(obj,'objectOfInsurance.type')
+                                        }
+                                    </td>
+                                    <td>
+                                        {getNameFromObject(obj,get(obj,'objectOfInsurance.type'))}
                                     </td>
                                     <td className={'cursor-pointer'}
-                                        onClick={() => removeObjects(get(obj, 'id', i))}>
-                                        <Trash2 color={'#dc2626'}/>
+                                       >
+                                        <Trash2  onClick={() => removeObjects(get(obj, 'id', i))} color={'#dc2626'}/>
                                     </td>
                                 </tr>)
                                 }
@@ -242,40 +246,6 @@ const StepTwo = ({id = null, ...props}) => {
                     </Row>
 
                     <Row className={'mb-25'}>
-                        <Col xs={12}>
-                            <Row align={'center'}>
-                                <Col xs={1} className={''}>
-                                    <Checkbox checked={checkedAll} className={'mr-5'}
-                                              onChange={(e) => setCheckedAll(e.target.checked)}/> {t("Select all")}
-                                </Col>
-                                <Col xs={3}>
-
-                                    <Field
-                                        label={'Выберите группу  риска'}
-                                        type={'select'}
-                                        name={'agentlist'}
-                                        options={risksOptions}
-                                        defaultValue={get(agreement, 'agentlist')}
-                                    />
-                                </Col>
-                                <Col xs={3}>
-                                    <Field label={'Выберите риск'}
-                                           type={'select'}
-                                           name={'agentlist'}
-                                           options={risksOptions}
-                                           defaultValue={get(agreement, 'agentlist')}
-                                    />
-                                </Col>
-                                <Col xs={3}>
-                                    <Field label={'Выберите класс'}
-                                           type={'select'}
-                                           name={'agentlist'}
-                                           options={classOptions}
-                                           defaultValue={get(agreement, 'agentlist')}
-                                    />
-                                </Col>
-                            </Row>
-                        </Col>
                         {riskFields.length > 0 && <Col xs={12} className={'mb-25 horizontal-scroll'}>
                             <hr/>
                             <Table hideThead={false}
@@ -355,58 +325,6 @@ const StepTwo = ({id = null, ...props}) => {
                         </Col>}
                         <Col xs={12}>
                             <Row>
-                                <Col xs={12}>
-                                    <Flex
-                                    >
-                                        <Field
-                                            className={'mr-16'}
-                                            property={{
-                                                hideLabel: true,
-                                            }}
-                                            name={'startofinsurance'} type={'datepicker'}
-                                            label={'Начало страхового покрытия'}
-                                        />
-                                        <Field
-                                            className={'mr-16'}
-                                            property={{
-                                                hideLabel: true,
-                                            }}
-                                            name={'startofinsurance'} type={'datepicker'}
-                                            label={'Начало страхового покрытия'}
-                                        />
-                                        <Field
-                                            className={'mr-16'}
-                                            name={`insurancepremium`}
-                                            type={'number-format-input'}
-                                            property={{
-                                                hideLabel: true,
-                                                placeholder: 'ввод значения',
-                                            }}
-                                        />
-                                        <Field
-                                            className={'mr-16'}
-                                            name={`insurancerate`}
-                                            type={'number-format-input'}
-                                            property={{hideLabel: true, placeholder: 'insurancerate', suffix: ' %'}}
-
-                                        />
-                                        <Field
-                                            className={'mr-16'}
-                                            name={`suminsured`}
-                                            type={'number-format-input'}
-                                            property={{
-                                                hideLabel: true,
-                                                placeholder: 'ввод значения',
-                                            }}
-                                        />
-                                        <Button type={'button'} className={'mb-25'}>Применить к
-                                            выделенным</Button>
-                                    </Flex>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col xs={12}>
-                            <Row>
                                 <Col xs={3}>
                                     <Field
                                         className={'mr-16'}
@@ -481,7 +399,6 @@ const StepTwo = ({id = null, ...props}) => {
                                                     label={t('Комиссия за дубликат')}
                                                     type={'switch'}
                                                     name={'duplicateFee.hasDuplicateFee'}
-                                                    params={{required: true}}
                                                 />
                                                 {get(_fields, 'duplicateFee.hasDuplicateFee', false) && <><Field
                                                     name={`duplicateFee.countOfFee`}
@@ -518,7 +435,6 @@ const StepTwo = ({id = null, ...props}) => {
                                                     label={t('Доказуемые расходы')}
                                                     type={'switch'}
                                                     name={'demonstrableCosts.hasDemonstrableCosts'}
-                                                    params={{required: true}}
                                                 />
                                                 {get(_fields, 'demonstrableCosts.hasDemonstrableCosts', false) && <>
                                                     <Field
@@ -827,11 +743,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             <Col xs={4} className={'mb-25'}>
                                                 <Field
                                                     params={{
-                                                        required: true,
-                                                        pattern: {
-                                                            value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
-                                                            message: 'Invalid format'
-                                                        }
+                                                        required: true
                                                     }}
                                                     label={'Phone'}
                                                     type={'input'}
@@ -890,11 +802,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             </Col>
                                             <Col xs={4} className={'mb-25'}>
                                                 <Field params={{
-                                                    required: true,
-                                                    pattern: {
-                                                        value: /^998(9[012345789]|6[125679]|7[01234569])[0-9]{7}$/,
-                                                        message: 'Invalid format'
-                                                    }
+                                                    required: true
                                                 }}
                                                        property={{placeholder: '998XXXXXXXXX'}}
                                                        label={'Телефон'} type={'input'}
