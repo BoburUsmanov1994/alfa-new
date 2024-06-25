@@ -160,7 +160,7 @@ const AgentViewContainer = ({...rest}) => {
             <Section>
                 <Row className={''} align={'center'}>
                     <Col xs={12}>
-                        <Title>{t('Agreement view')}</Title>
+                        <Title>{t('Договор')}</Title>
                     </Col></Row>
                 <Row>
                     <Col xs={6}>
@@ -170,25 +170,31 @@ const AgentViewContainer = ({...rest}) => {
                                 <td><strong>{get(data, "data.product.name")}</strong></td>
                             </tr>
                             <tr>
-                                <td>{t("Agreement number")}</td>
-                                <td><strong>{get(data, "data.agreementNumber")}</strong></td>
-                            </tr>
-                            <tr>
-                                <td>{t("Agreement date")}</td>
+                                <td>{t("Страхователь")}</td>
                                 <td>
-                                    <strong>{dayjs(get(data, "data.agreementDate")).format("DD/MM/YYYY")}</strong>
+                                    <strong>{get(data, "data.insurant.organization") ? get(data, "data.insurant.organization.name") : `${get(data, "data.insurant.person.fullName.lastname")} ${get(data, "data.insurant.person.fullName.firstname")} ${get(data, "data.insurant.person.fullName.middlename")}`}</strong>
                                 </td>
                             </tr>
                             <tr>
-                                <td>{t("Application date")}</td>
+                                <td>{t("Номер договора")}</td>
+                                <td><strong>{get(data, "data.agreementNumber")}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>{t("Дата договора")}</td>
                                 <td>
-                                    <strong>{dayjs(get(data, "data.applicationDate")).format("DD/MM/YYYY")}</strong>
+                                    <strong>{dayjs(get(data, "data.agreementDate")).format("DD/MM/YYYY")}</strong>
                                 </td>
                             </tr>
                             <tr>
                                 <td>{t("Insurance start date")}</td>
                                 <td>
                                     <strong>{dayjs(get(data, "data.startOfInsurance")).format("DD/MM/YYYY")}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{t("Дата окончания периода страхования")}</td>
+                                <td>
+                                    <strong>{dayjs(get(data, "data.endOfInsurance")).format("DD/MM/YYYY")}</strong>
                                 </td>
                             </tr>
 
@@ -202,14 +208,24 @@ const AgentViewContainer = ({...rest}) => {
                                                           value={get(data, "data.totalInsuranceSum", 0)}/></strong></td>
                             </tr>
                             <tr>
-                                <td>{t("Total premium")}</td>
+                                <td>{t("Общая страховая премия")}</td>
                                 <td><strong><NumberFormat displayType={'text'} thousandSeparator={" "}
                                                           value={get(data, "data.totalInsurancePremium", 0)}/></strong>
                                 </td>
                             </tr>
                             <tr>
-                                <td>{t("Registration number")}</td>
+                                <td>{t("Номер анкеты-заявления")}</td>
                                 <td><strong>{t(get(data, "data.registrationNumber"))}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>{t("Дата анкеты-заявления")}</td>
+                                <td>
+                                    <strong>{dayjs(get(data, "data.createdAt")).format("DD/MM/YYYY")}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{t("Кем принято")}</td>
+                                <td><strong>{t(get(data, "data.whoAccepted"))}</strong></td>
                             </tr>
                             <tr>
                                 <td>{t("Status")}</td>
@@ -219,7 +235,7 @@ const AgentViewContainer = ({...rest}) => {
                     </Col>
                 </Row>
                 <Row className={'mt-15'}>
-                    <Col xs={6}>
+                    <Col xs={12}>
                         <Row align={'center'}>
                             <Col xs={8}><Title sm>Полис</Title></Col>
                             <Col xs={4} className={'text-right'}>
@@ -230,33 +246,49 @@ const AgentViewContainer = ({...rest}) => {
                             </Col>
                         </Row>
                         <Row className={'mt-15'}>
-                            {get(policyData, "data.data", []).length > 0 && <Col xs={12}>
+                            {get(policyData, "data.data", []).length > 0 && <Col xs={12}  className={'horizontal-scroll'}>
                                 <hr/>
                                 <Table hideThead={false}
-                                       thead={['Policy number', 'Issue date', 'Attached sum', 'Status', 'Action']}>
+                                       thead={['Номер полиса', 'Страхователь', 'Номер бланка полиса', 'Дата выдачи полиса', 'Дата начала периода по полису','Дата окончания периода по полису','Страховая сумма','Страховая премия', 'Прикреплено', 'Скачать анкету-заявление','Скачать договор','Скачать другие документы','Скачать сгенерированный полис','Status', 'Action']}>
                                     {get(policyData, "data.data", []).map((item, i) => <tr key={i + 1}>
                                         <td>
                                             {get(item, 'number', '-')}
                                         </td>
                                         <td>
+                                            -
+                                        </td>
+                                        <td>
+                                            {get(item, 'blank')}
+                                        </td>
+                                        <td>
                                             {dayjs(get(item, 'issueDate')).format('DD/MM/YYYY')}
                                         </td>
+                                        <td>{dayjs(get(item, 'startDate')).format('DD/MM/YYYY')}</td>
+                                        <td>{dayjs(get(item, 'endDate')).format('DD/MM/YYYY')}</td>
+                                        <td><NumberFormat displayType={'text'} thousandSeparator={" "}
+                                                          value={get(item, "insuranceSum")}/></td>
+                                        <td><NumberFormat displayType={'text'} thousandSeparator={" "}
+                                                          value={get(item, "insurancePremium")}/></td>
                                         <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                                           value={get(item, "attachedSum")}/></td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
                                         <td>{get(item, "fondStatus")}</td>
 
                                         <td className={''}
                                         >
                                             {includes(['new', 'partialPaid'], get(item, "fondStatus")) &&
-                                                <DollarSign onClick={() => setSelectedPolice(item)}
-                                                            className={'cursor-pointer'}
-                                                            color={'#71BC70'}/>}
+                                            <DollarSign onClick={() => setSelectedPolice(item)}
+                                                        className={'cursor-pointer'}
+                                                        color={'#71BC70'}/>}
                                             {includes(['paid'], get(item, "fondStatus")) &&
-                                                <Send className={'cursor-pointer ml-15'} color={'#13D6D1'}
-                                                      onClick={() => sendToFond(id, get(item, '_id'))}/>}
+                                            <Send className={'cursor-pointer ml-15'} color={'#13D6D1'}
+                                                  onClick={() => sendToFond(id, get(item, '_id'))}/>}
                                             {includes(['new'], get(item, "fondStatus")) &&
-                                                <Trash2 onClick={() => remove(get(item, '_id', null))}
-                                                        className={'ml-15 cursor-pointer'} color={'#dc2626'}/>}
+                                            <Trash2 onClick={() => remove(get(item, '_id', null))}
+                                                    className={'ml-15 cursor-pointer'} color={'#dc2626'}/>}
                                         </td>
                                     </tr>)}
                                 </Table>
@@ -264,39 +296,39 @@ const AgentViewContainer = ({...rest}) => {
                             }
                         </Row>
                     </Col>
-                    <Col xs={6}>
-                        <Row align={'center'}>
-                            <Col xs={12}> <Title sm>Индосаменты</Title></Col>
-                            {/*<Col xs={4} className={'text-right'}> <Button*/}
-                            {/*    onClick={() => navigate(`/endorsement/create/${id}`)} green type={'button'}>Добавить*/}
-                            {/*    индосаменты</Button></Col>*/}
-                        </Row>
-                        <Row className={'mt-15'}>
-                            {get(endorsementData, "data.data", []).length > 0 && <Col xs={12}>
-                                <hr/>
-                                <Table hideThead={false}
-                                       thead={['Type', 'Status', 'Conclusion', 'Action']}>
-                                    {get(endorsementData, "data.data", []).map((item, i) => <tr key={i + 1}>
-                                        <td>
-                                            {get(item, 'typeofendorsements.name', '-')}
-                                        </td>
-                                        <td>
-                                            {get(item, 'statusofendorsements.name', '-')}
-                                        </td>
-                                        <td>
-                                            {get(item, 'reqforconclusion', '-')}
-                                        </td>
-                                        <td className={'cursor-pointer'}
-                                            onClick={() => removeEndorsement(get(item, '_id', null))}>
-                                            <Trash2 color={'#dc2626'}/>
-                                        </td>
-                                    </tr>)}
-                                </Table>
-                            </Col>
-                            }
-                        </Row>
+                    {/*<Col xs={6}>*/}
+                    {/*    <Row align={'center'}>*/}
+                    {/*        <Col xs={12}> <Title sm>Индосаменты</Title></Col>*/}
+                    {/*        /!*<Col xs={4} className={'text-right'}> <Button*!/*/}
+                    {/*        /!*    onClick={() => navigate(`/endorsement/create/${id}`)} green type={'button'}>Добавить*!/*/}
+                    {/*        /!*    индосаменты</Button></Col>*!/*/}
+                    {/*    </Row>*/}
+                    {/*    <Row className={'mt-15'}>*/}
+                    {/*        {get(endorsementData, "data.data", []).length > 0 && <Col xs={12}>*/}
+                    {/*            <hr/>*/}
+                    {/*            <Table hideThead={false}*/}
+                    {/*                   thead={['Type', 'Status', 'Conclusion', 'Action']}>*/}
+                    {/*                {get(endorsementData, "data.data", []).map((item, i) => <tr key={i + 1}>*/}
+                    {/*                    <td>*/}
+                    {/*                        {get(item, 'typeofendorsements.name', '-')}*/}
+                    {/*                    </td>*/}
+                    {/*                    <td>*/}
+                    {/*                        {get(item, 'statusofendorsements.name', '-')}*/}
+                    {/*                    </td>*/}
+                    {/*                    <td>*/}
+                    {/*                        {get(item, 'reqforconclusion', '-')}*/}
+                    {/*                    </td>*/}
+                    {/*                    <td className={'cursor-pointer'}*/}
+                    {/*                        onClick={() => removeEndorsement(get(item, '_id', null))}>*/}
+                    {/*                        <Trash2 color={'#dc2626'}/>*/}
+                    {/*                    </td>*/}
+                    {/*                </tr>)}*/}
+                    {/*            </Table>*/}
+                    {/*        </Col>*/}
+                    {/*        }*/}
+                    {/*    </Row>*/}
 
-                    </Col>
+                    {/*</Col>*/}
                 </Row>
             </Section>
             <Modal title={'Распределение к полису'} visible={!isNil(selectedPolice)}
