@@ -27,6 +27,7 @@ const UpdateContainer = ({contract_id = null}) => {
     const [calcData, setCalcData] = useState({})
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
+    const user = useStore(state => get(state, 'user'))
     const navigate = useNavigate();
     const breadcrumbs = useMemo(() => [{
         id: 1, title: 'SMR', path: '/smr',
@@ -39,8 +40,8 @@ const UpdateContainer = ({contract_id = null}) => {
     const username = useSettingsStore(state => get(state, 'username', {}))
 
     const {data, isLoading} = useGetAllQuery({
-        key: KEYS.osgorView,
-        url: URLS.osgorView,
+        key: KEYS.smrView,
+        url: URLS.smrView,
         params: {
             params: {
                 contract_id: contract_id
@@ -51,17 +52,17 @@ const UpdateContainer = ({contract_id = null}) => {
 
     const {data: branches, isLoading: isLoadingBranches} = useGetAllQuery({
         key: KEYS.branches,
-        url: URLS.branches,
+        url: `${URLS.branches}/list`,
     })
 
-    const branchesList = getSelectOptionsListFromData(get(branches, `data.data`, []), 'id', 'name')
+    const branchesList = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
 
     const {data: okeds, isLoading: isLoadingOkeds} = useGetAllQuery({
         key: KEYS.okeds,
         url: URLS.okeds,
     })
 
-    const okedList = getSelectOptionsListFromData(get(okeds, `data.data`, []), 'id', 'name')
+    const okedList = get(okeds, `data`, []).map(_item => ({value: _item, label: _item}))
 
     const {data: areaTypes, isLoading: isLoadingAreaTypes} = useGetAllQuery({
         key: KEYS.areaTypes,
@@ -72,37 +73,37 @@ const UpdateContainer = ({contract_id = null}) => {
 
     const {data: ownershipForms, isLoading: isLoadingOwnershipForms} = useGetAllQuery({
         key: KEYS.ownershipForms,
-        url: URLS.ownershipForms,
+        url: `${URLS.ownershipForms}/list`,
     })
 
-    const ownershipFormsList = getSelectOptionsListFromData(get(ownershipForms, `data.data`, []), 'id', 'name')
+    const ownershipFormsList = getSelectOptionsListFromData(get(ownershipForms, `data.data`, []), '_id', 'name')
 
     const {data: country, isLoading: isLoadingCountry} = useGetAllQuery({
         key: KEYS.countries,
-        url: URLS.countries,
+        url: `${URLS.countries}/list`,
     })
 
     const countryList = getSelectOptionsListFromData(get(country, `data.data`, []), 'id', 'name')
 
     const {data: regions, isLoading: isLoadingRegion} = useGetAllQuery({
         key: KEYS.regions,
-        url: URLS.regions,
+        url: `${URLS.regions}/list`,
     })
 
     const regionsList = getSelectOptionsListFromData(get(regions, `data.data`, []), 'id', 'name')
 
-    const {data: districts} = useGetAllQuery({
+    const {data: districts, isLoading: isLoadingDistrict} = useGetAllQuery({
         key: KEYS.districts,
-        url: URLS.districts,
+        url: `${URLS.districts}/list`,
         params: {
             params: {
                 region: regionId
             }
         },
-        enabled: !!(regionId)
     })
 
     const districtList = getSelectOptionsListFromData(get(districts, `data.data`, []), 'id', 'name')
+
 
     const {
         mutate: updateRequest, isLoading: isLoadingPatch
@@ -145,7 +146,7 @@ const UpdateContainer = ({contract_id = null}) => {
     const update = ({data}) => {
         const {insurant, agent_comission, branch_id, ...rest} = data;
         updateRequest({
-                url: URLS.osgorEdit, attributes: {
+                url: URLS.smrEdit, attributes: {
                     branch_id: String(branch_id),
                     agent_comission: parseFloat(agent_comission),
                     insurant: {...insurant, phone: `${get(insurant, 'phone')}`, oked: String(get(insurant, 'oked'))},
@@ -189,6 +190,7 @@ const UpdateContainer = ({contract_id = null}) => {
         return <OverlayLoader/>
     }
 
+    console.log('branch',get(data,'data.branch'))
     return (<>
         {(isLoadingPatch || isLoadingOrganizationInfo) && <OverlayLoader/>}
         <Panel>
@@ -215,11 +217,11 @@ const UpdateContainer = ({contract_id = null}) => {
                             <Col xs={5}>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Статус</Col>
-                                    <Col xs={7}><Button green>{get(data, 'data.data.status')}</Button></Col>
+                                    <Col xs={7}><Button green>{get(data, 'data.attachStatus')}</Button></Col>
                                 </Row>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Филиал </Col>
-                                    <Col xs={7}><Field disabled defaultValue={721}
+                                    <Col xs={7}><Field disabled defaultValue={get(data,'data.branch')}
                                                        options={branchesList}
                                                        label={'Filial'}
                                                        property={{hideLabel: true}} type={'select'}
@@ -228,14 +230,14 @@ const UpdateContainer = ({contract_id = null}) => {
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Номер договора
                                         страхования: </Col>
-                                    <Col xs={7}><Field defaultValue={get(data, 'data.data.contract_number')}
+                                    <Col xs={7}><Field defaultValue={get(data, 'data.contract_number')}
                                                        params={{required: true}} property={{hideLabel: true}}
                                                        type={'input'}
                                                        name={'contract_number'}/></Col>
                                 </Row>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Дата договора страхования: </Col>
-                                    <Col xs={7}><Field defaultValue={get(data, 'data.data.contract_date')}
+                                    <Col xs={7}><Field defaultValue={get(data, 'data.contract_date')}
                                                        params={{required: true}}
                                                        property={{hideLabel: true, dateFormat: 'dd.MM.yyyy'}}
                                                        type={'datepicker'}
@@ -247,7 +249,7 @@ const UpdateContainer = ({contract_id = null}) => {
 
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Серия полиса: </Col>
-                                    <Col xs={7}><Field defaultValue={get(data, 'data.data.policy.seria')}
+                                    <Col xs={7}><Field defaultValue={get(data, 'data.policy.seria')}
                                                        params={{required: true}}
                                                        property={{hideLabel: true}}
                                                        type={'input'}
@@ -255,7 +257,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 </Row>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Номер полиса: </Col>
-                                    <Col xs={7}><Field defaultValue={get(data, 'data.data.policy.number')}
+                                    <Col xs={7}><Field defaultValue={get(data, 'data.policy.number')}
                                                        params={{required: true}}
                                                        property={{hideLabel: true,disabled:true}}
                                                        type={'input'}
@@ -264,7 +266,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Дата выдачи полиса: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.data.policy.issue_date')}
+                                        defaultValue={get(data, 'data.policy.issue_date')}
                                         params={{required: true}}
                                         property={{
                                             hideLabel: true,
@@ -276,14 +278,14 @@ const UpdateContainer = ({contract_id = null}) => {
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Дата начала: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.data.policy.s_date')}
+                                        defaultValue={get(data, 'data.policy.s_date')}
                                         params={{required: true}}
                                         property={{hideLabel: true, dateFormat: 'dd.MM.yyyy'}} type={'datepicker'}
                                         name={'policy.s_date'}/></Col>
                                 </Row>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Дата окончания: </Col>
-                                    <Col xs={7}><Field defaultValue={get(data, 'data.data.policy.e_date')}
+                                    <Col xs={7}><Field defaultValue={get(data, 'data.policy.e_date')}
                                                        property={{hideLabel: true, dateFormat: 'dd.MM.yyyy'}}
                                                        type={'datepicker'}
                                                        name={'policy.e_date'}/></Col>
@@ -305,7 +307,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                     </Col>
                                     <Col xs={8} className={'text-right'}>
                                         <Flex justify={'flex-end'}>
-                                            <Field defaultValue={inn ?? get(data, 'data.data.insurant.inn')} property={{
+                                            <Field defaultValue={inn ?? get(data, 'data.insurant.inn')} property={{
                                                 hideLabel: true,
                                                 mask: '999999999',
                                                 placeholder: 'Inn',
@@ -325,7 +327,7 @@ const UpdateContainer = ({contract_id = null}) => {
                             <>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field params={{required: true}} label={'INN'}
-                                           defaultValue={inn ?? get(data, 'data.data.insurant.inn')} property={{
+                                           defaultValue={inn ?? get(data, 'data.insurant.inn')} property={{
                                         mask: '999999999',
                                         placeholder: 'Inn',
                                         maskChar: '_'
@@ -334,13 +336,13 @@ const UpdateContainer = ({contract_id = null}) => {
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field params={{required: true}}
-                                           defaultValue={get(organization, 'data.name', get(data, 'data.data.insurant.name'))}
+                                           defaultValue={get(organization, 'data.name', get(data, 'data.insurant.name'))}
                                            label={'Наименование'} type={'input'}
                                            name={'insurant.name'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        defaultValue={get(organization, 'data.dir_name', get(data, 'data.data.insurant.dir_name'))}
+                                        defaultValue={get(organization, 'data.dir_name', get(data, 'data.insurant.dir_name'))}
                                         params={{required: true}} label={'Руководитель'} type={'input'}
                                         name={'insurant.dir_name'}/>
                                 </Col>
@@ -348,7 +350,7 @@ const UpdateContainer = ({contract_id = null}) => {
 
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        defaultValue={get(organization, 'data.phone', get(data, 'data.data.insurant.phone'))}
+                                        defaultValue={get(organization, 'data.phone', get(data, 'data.insurant.phone'))}
                                         params={{
                                             required: true
                                         }}
@@ -357,7 +359,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        defaultValue={parseInt(get(organization, 'data.oked', get(data, 'data.data.insurant.oked'))) || null}
+                                        defaultValue={parseInt(get(organization, 'data.oked', get(data, 'data.insurant.oked'))) || null}
                                         params={{required: true}}
                                         options={okedList}
                                         label={'ОКЭД'}
@@ -365,24 +367,24 @@ const UpdateContainer = ({contract_id = null}) => {
                                         name={'insurant.oked'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
-                                    <Field defaultValue={get(data, 'data.data.insurant.bank_name')}
+                                    <Field defaultValue={get(data, 'data.insurant.bank_name')}
                                            params={{required: true}} label={'Bank'} type={'input'}
                                            name={'insurant.bank_name'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
-                                    <Field defaultValue={get(data, 'data.data.insurant.mfo')} params={{required: true}}
+                                    <Field defaultValue={get(data, 'data.insurant.mfo')} params={{required: true}}
                                            label={'Bank mfo'} type={'input'}
                                            name={'insurant.mfo'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
-                                    <Field defaultValue={get(data, 'data.data.insurant.bank_rs')}
+                                    <Field defaultValue={get(data, 'data.insurant.bank_rs')}
                                            params={{required: true}} label={'Расчетный счет'} type={'input'}
                                            name={'insurant.bank_rs'}/>
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         params={{required:true}}
-                                        defaultValue={parseInt(get(organization, 'data.ownershipFormId', get(data, 'data.data.insurant.ownershipFormId'))) || null}
+                                        defaultValue={parseInt(get(organization, 'data.ownershipFormId', get(data, 'data.insurant.ownershipFormId'))) || null}
                                         options={ownershipFormsList}
                                         label={'Форма собственности'}
                                         type={'select'}
@@ -390,7 +392,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        defaultValue={210}
+                                        defaultValue={'210'}
                                         options={countryList}
                                         label={'Страна'}
                                         type={'select'}
@@ -399,8 +401,9 @@ const UpdateContainer = ({contract_id = null}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         params={{required:true}}
-                                        defaultValue={parseInt(get(organization, 'data.regionId', get(data, 'data.data.insurant.regionId'))) || null}
+                                        defaultValue={parseInt(get(organization, 'data.regionId', get(data, 'data.insurant.regionId'))) || null}
                                         options={regionsList}
+                                        property={{onChange:(val)=>setRegionId(val)}}
                                         label={'Область'}
                                         type={'select'}
                                         name={'insurant.regionId'}/>
@@ -408,7 +411,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         params={{required:true}}
-                                        defaultValue={parseInt(get(organization, 'data.districtId', get(data, 'data.data.insurant.districtId'))) || null}
+                                        defaultValue={parseInt(get(organization, 'data.districtId', get(data, 'data.insurant.districtId'))) || null}
                                         options={districtList}
                                         label={'Район'}
                                         type={'select'}
@@ -417,7 +420,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         params={{required:true}}
-                                        defaultValue={parseInt(get(organization, 'data.areaTypeId', get(data, 'data.data.insurant.areaTypeId'))) || null}
+                                        defaultValue={parseInt(get(organization, 'data.areaTypeId', get(data, 'data.insurant.areaTypeId'))) || null}
                                         options={areaTypesList}
                                         label={'Тип местности'}
                                         type={'select'}
@@ -425,7 +428,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        defaultValue={get(organization, 'data.address', get(data, 'data.data.insurant.address'))}
+                                        defaultValue={get(organization, 'data.address', get(data, 'data.insurant.address'))}
                                         params={{required: true}}
                                         label={'Address'} type={'input'}
                                         name={'insurant.address'}/>
@@ -440,7 +443,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Номер лота: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.data.building.lot_id')}
+                                        defaultValue={get(data, 'data.building.lot_id')}
                                         params={{required: true}}
                                         property={{hideLabel: true}} type={'input'}
                                         name={'building.lot_id'}/></Col>
@@ -450,7 +453,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Номер контакта строительства: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.data.building.dog_num')}
+                                        defaultValue={get(data, 'data.building.dog_num')}
                                         params={{required: true}}
                                         property={{hideLabel: true}} type={'input'}
                                         name={'building.dog_num'}/></Col>
@@ -460,7 +463,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Дата договора строительства: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.data.building.dog_date')}
+                                        defaultValue={get(data, 'data.building.dog_date')}
                                         params={{required: true}}
                                         property={{hideLabel: true, dateFormat: 'dd.MM.yyyy'}} type={'datepicker'}
                                         name={'building.dog_date'}/></Col>
@@ -470,7 +473,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Название объекта: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.data.building.stroy_name')}
+                                        defaultValue={get(data, 'data.building.stroy_name')}
                                         params={{required: true}}
                                         property={{hideLabel: true}} type={'input'}
                                         name={'building.stroy_name'}/></Col>
@@ -481,7 +484,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                     <Col className={'text-right'} xs={5}>Адрес и место
                                         расположение объекта: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.data.building.stroy_address')}
+                                        defaultValue={get(data, 'data.building.stroy_address')}
                                         params={{required: true}}
                                         property={{hideLabel: true}} type={'input'}
                                         name={'building.stroy_address'}/></Col>
@@ -491,7 +494,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Страховая стоимость: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.data.building.current_year_price')}
+                                        defaultValue={get(data, 'data.building.current_year_price')}
                                         params={{required: true}}
                                         property={{hideLabel: true}} type={'number-format-input'}
                                         name={'building.current_year_price'}/></Col>
@@ -575,9 +578,9 @@ const UpdateContainer = ({contract_id = null}) => {
                             <Col xs={4}>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Агент (автоматически): </Col>
-                                    <Col xs={7}><Field defaultValue={username}
+                                    <Col xs={7}><Field defaultValue={username ? get(data, 'data.agent', '') : ''}
                                                        property={{hideLabel: true, disabled: true}} type={'input'}
-                                                       name={'agent_id'}/></Col>
+                                                       name={'agent'}/></Col>
                                 </Row>
                             </Col>
                             <Col xs={4}>
@@ -595,7 +598,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                     <Col className={'text-right'} xs={5}>Оплаченная страховая
                                         премия: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.data.policy.ins_premium_paid', 0)}
+                                        defaultValue={get(data, 'data.policy.ins_premium_paid', 0)}
                                         params={{required: true}}
                                         property={{hideLabel: true,disabled:true}} type={'number-format-input'}
                                         name={'policy.ins_premium_paid'}/></Col>
@@ -605,7 +608,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Дата и время оплаты: </Col>
                                     <Col xs={7}><Field
-                                        defaultValue={get(data, 'data.data.policy.payment_date')}
+                                        defaultValue={get(data, 'data.policy.payment_date')}
                                         params={{required: true}}
                                         property={{hideLabel: true, dateFormat: 'dd.MM.yyyy'}}
                                         type={'datepicker'}
@@ -620,8 +623,8 @@ const UpdateContainer = ({contract_id = null}) => {
                             {/*            property={{*/}
                             {/*                hideLabel: true,*/}
                             {/*                contract_id,*/}
-                            {/*                seria: get(data, 'data.data.policy.seria'),*/}
-                            {/*                number: get(data, 'data.data.policy.number')*/}
+                            {/*                seria: get(data, 'data.policy.seria'),*/}
+                            {/*                number: get(data, 'data.policy.number')*/}
                             {/*            }} type={'dropzone'}*/}
                             {/*            name={'policy.file_id'}/></Col>*/}
                             {/*    </Row>*/}

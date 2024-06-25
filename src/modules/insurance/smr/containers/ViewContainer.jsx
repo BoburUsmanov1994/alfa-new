@@ -244,6 +244,8 @@ const ViewContainer = ({contract_id = null}) => {
                             <Button onClick={remove}
                                     danger type={'button'}
                                     className={'mr-16'}>Удалить</Button>
+                            <Button onClick={() => navigate(`/insurance/smr/update/${contract_id}`)} dark  type={'button'}
+                                    className={'mr-16'}>Edit</Button>
                             <Button onClick={() => setOpenModal(true)} yellow type={'button'}
                                     className={'mr-16'}>Attach</Button>
                         </>}
