@@ -187,4 +187,6 @@ export const URLS = {
     smrContractForm: 'api/smr/police-upload',
     getPolisFile: 'api/smr/get-polis-file',
     calculate: 'api/smr/calculate',
+    smrDistribute: 'api/smr/distribute',
+    smrAttach: 'api/smr/attach',
 }

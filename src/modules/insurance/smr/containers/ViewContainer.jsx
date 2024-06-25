@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {useSettingsStore, useStore} from "../../../../store";
-import {get, isEqual} from "lodash";
+import {get, isEqual, isNil} from "lodash";
 import Panel from "../../../../components/panel";
 import Search from "../../../../components/search";
 import {Col, Row} from "react-grid-system";
@@ -13,20 +13,27 @@ import Field from "../../../../containers/form/field";
 import {useDeleteQuery, useGetAllQuery, usePostQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
-import {OverlayLoader} from "../../../../components/loader";
+import {ContentLoader, OverlayLoader} from "../../../../components/loader";
 import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import Swal from "sweetalert2";
-import {getSelectOptionsListFromData, saveFile} from "../../../../utils";
+import {getSelectOptionsListFromData} from "../../../../utils";
 import dayjs from "dayjs";
+import Table from "../../../../components/table";
+import Checkbox from "rc-checkbox";
+import NumberFormat from "react-number-format";
+import Modal from "../../../../components/modal";
 
 
 const ViewContainer = ({contract_id = null}) => {
     const [inn, setInn] = useState(null)
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
+    const [transactionId, setTransactionId] = useState(null)
+    const [openModal, setOpenModal] = useState(false)
     const navigate = useNavigate();
     const username = useSettingsStore(state => get(state, 'username', {}))
+    const user = useStore(state => get(state, 'user'))
     const breadcrumbs = useMemo(() => [{
         id: 1, title: 'СМР', path: '/insurance/smr',
     }], [])
@@ -110,6 +117,14 @@ const ViewContainer = ({contract_id = null}) => {
     })
 
     const districtList = getSelectOptionsListFromData(get(districts, `data.data`, []), 'id', 'name')
+    let {data: transactions, isLoading: _isLoading} = useGetAllQuery({
+        key: KEYS.transactions, url: `${URLS.transactions}/list`, params: {
+            params: {
+                branch: get(user, 'branch._id'),
+                limit: 100
+            }
+        }
+    })
     const {
         mutate: confirmPayedRequest, isLoading: isLoadingConfirmPayed
     } = usePostQuery({listKeyId: KEYS.osgorView})
@@ -117,6 +132,8 @@ const ViewContainer = ({contract_id = null}) => {
         mutate: sendFondRequest, isLoading: isLoadingSendFond
     } = usePostQuery({listKeyId: KEYS.osgorView})
     const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: KEYS.osgopDelete})
+
+    const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: KEYS.smrView})
 
     const confirmPayed = () => {
         confirmPayedRequest({
@@ -146,6 +163,26 @@ const ViewContainer = ({contract_id = null}) => {
         )
     }
 
+    const attach = ({data}) => {
+        const {attachmentSum} = data;
+        attachRequest({
+            url: `${URLS.smrAttach}?contract_id=${contract_id}`,
+            attributes: {
+                attach: true,
+                transaction: transactionId,
+                attachmentSum,
+            }
+        }, {
+            onSuccess: () => {
+                setTransactionId(null)
+                setOpenModal(false)
+            },
+            onError: () => {
+
+            }
+        })
+    }
+
     useEffect(() => {
         setBreadcrumbs(breadcrumbs)
     }, [])
@@ -171,7 +208,7 @@ const ViewContainer = ({contract_id = null}) => {
             if (result.isConfirmed) {
                 deleteRequest({url: `${URLS.smrDelete}?contract_id=${contract_id}`}, {
                     onSuccess: () => {
-                        navigate('/smr')
+                        navigate('/insurance/smr')
                     }
                 })
             }
@@ -197,6 +234,7 @@ const ViewContainer = ({contract_id = null}) => {
                     <Title>СМР</Title>
                 </Col>
             </Row>
+
             <Row>
                 <Col xs={12}>
                     <Form
@@ -206,8 +244,9 @@ const ViewContainer = ({contract_id = null}) => {
                             <Button onClick={remove}
                                     danger type={'button'}
                                     className={'mr-16'}>Удалить</Button>
-                            <Button onClick={() => navigate(`/smr/update/${contract_id}`)} yellow type={'button'}
-                                    className={'mr-16'}>Изменить</Button></>}
+                            <Button onClick={() => setOpenModal(true)} yellow type={'button'}
+                                    className={'mr-16'}>Attach</Button>
+                        </>}
                             <Button gray={isEqual(get(data, 'data.status'), 'paid')}
                                     onClick={(isEqual(get(data, 'data.status'), 'paid') || isEqual(get(data, 'data.status'), 'sent')) ? () => {
                                     } : confirmPayed}
@@ -595,7 +634,7 @@ const ViewContainer = ({contract_id = null}) => {
                             <Col xs={4}>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Агент (автоматически): </Col>
-                                    <Col xs={7}><Field defaultValue={username ?? get(data, 'data.agent_id')}
+                                    <Col xs={7}><Field defaultValue={username ? get(data, 'data.agent_id', '') : ''}
                                                        property={{hideLabel: true, disabled: true}} type={'input'}
                                                        name={'agent_id'}/></Col>
                                 </Row>
@@ -650,6 +689,49 @@ const ViewContainer = ({contract_id = null}) => {
                 </Col>
             </Row>
         </Section>
+        <Modal title={'Распределение к полису'} visible={openModal}
+               hide={() => setOpenModal(false)}>
+            {
+                isLoadingAttach && <ContentLoader/>
+            }
+            {
+                <Table bordered hideThead={false}
+                       thead={['', '№', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления', 'Available sum']}>{get(transactions, 'data.data', []).map((item, i) =>
+                    <tr key={get(item, '_id')}>
+                        <td><Checkbox disabled={!get(item, 'available_sum', 0)}
+                                      checked={isEqual(transactionId, get(item, '_id'))} onChange={(e) => {
+                            if (e.target?.checked) {
+                                setTransactionId(get(item, '_id'))
+                            } else {
+                                setTransactionId(null)
+                            }
+                        }}/></td>
+                        <td>{i + 1}</td>
+                        <td>{dayjs(get(item, 'payment_order_date')).format("DD.MM.YYYY")}</td>
+                        <td>{get(item, 'sender_name')}</td>
+                        <td><NumberFormat displayType={'text'} thousandSeparator={" "}
+                                          value={get(item, 'payment_amount', 0)}/></td>
+                        <td><NumberFormat displayType={'text'} thousandSeparator={" "}
+                                          value={get(item, 'available_sum', 0)}/></td>
+                    </tr>)}</Table>}
+            {transactionId && <Form formRequest={attach} footer={<Button className={'mt-15'} type={'submit'}>Прикрепить</Button>}>
+                <Row className={'mt-15'}>
+                    <Col xs={6}>
+                        <Field defaultValue={get(data, 'data.policy.ins_premium', 0)}
+                               label={'Сумма оплаты по полису:'} property={{disabled: true}}
+                               type={'number-format-input'} name={'sumInsurancePremium'}/>
+                    </Col>
+                    <Col xs={6}>
+                        <Field defaultValue={get(data, 'attachedSum', 0)} property={{disabled: true}}
+                               type={'number-format-input'}
+                               name={'attachedSum'} label={'Сумма прикреплённых средств:'}/>
+                    </Col>
+                    <Col xs={6}>
+                        <Field type={'number-format-input'} name={'attachmentSum'} label={'Сумма к прикреплению:'}/>
+                    </Col>
+                </Row>
+            </Form>}
+        </Modal>
     </>);
 };
 

@@ -260,6 +260,11 @@ export const menuData = [
                 id: 4,
                 title: 'СМР',
                 path: '/insurance/smr',
+            },
+            {
+                id: 5,
+                title: 'СМР Распределение',
+                path: '/insurance/smr/distribute',
             }
         ]
     },

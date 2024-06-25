@@ -126,6 +126,7 @@ const OsagoViewPage = lazy(() => import("../modules/insurance/osago/pages/OsagaV
 const SmrListPage = lazy(() => import("../modules/insurance/smr/pages/ListPage"));
 const SmrUpdatePage = lazy(() => import("../modules/insurance/smr/pages/UpdatePage"));
 const SmrViewPage = lazy(() => import("../modules/insurance/smr/pages/ViewPage"));
+const SmrDistributePage = lazy(() => import("../modules/insurance/smr/pages/SmrDistributePage"));
 
 
 const Router = ({...rest}) => {
@@ -272,6 +273,7 @@ const Router = ({...rest}) => {
                                 <Route path={"smr"} element={<SmrListPage/>}/>
                                 <Route path={"smr/view/:contract_id"} element={<SmrViewPage/>}/>
                                 <Route path={"smr/update/:contract_id"} element={<SmrUpdatePage/>}/>
+                                <Route path={"smr/distribute"} element={<SmrDistributePage/>}/>
                             </Route>
                             <Route path={"endorsement"}>
                                 <Route path={"create/:product_id"} element={<EndorsementCreatePage/>}/>
@@ -281,7 +283,6 @@ const Router = ({...rest}) => {
                             <Route path={"/"} element={<Navigate to={'/products/all'} replace/>}/>
                             <Route path={"*"} element={<NotFoundPage/>}/>
                         </Route>
-
                     </Routes>
                 </IsAuth>
 
