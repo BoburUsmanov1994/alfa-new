@@ -128,26 +128,17 @@ const StepFour = ({id = null, ...props}) => {
                         <Col xs={12}>
                             <Row align={'flex-end'}>
                                 <Col xs={3}>
-                                    <Field label={'Агенты'}
-                                           type={'select'}
-                                           name={'tariff[0].agent'}
-                                           options={agents}
-                                           defaultValue={get(product, 'tariff[0].agent')}
-                                           params={{required: get(product, 'riskData', []).length > 0}}
-                                    />
-                                </Col>
-                                <Col xs={3}>
                                     <Field label={'Разрешить заключение договоров'}
                                            type={'switch'}
-                                           name={'tariff[0].allowAgreement'}
-                                           defaultValue={get(product, 'tariff[0].allowAgreement', false)}
+                                           name={'tariff.allowAgreement'}
+                                           defaultValue={get(product, 'tariff.allowAgreement', false)}
                                     />
                                 </Col>
                                 <Col xs={3}>
                                     <Field label={'Лимит ответственности'}
                                            type={'number-format-input'}
-                                           name={'tariff[0].limitOfAgreement'}
-                                           defaultValue={get(product, 'tariff[0].limitOfAgreement', 0)}
+                                           name={'tariff.limitOfAgreement'}
+                                           defaultValue={get(product, 'tariff.limitOfAgreement', 0)}
                                            property={{placeholder: 'Введите значение'}}
                                     />
                                 </Col>
@@ -194,82 +185,6 @@ const StepFour = ({id = null, ...props}) => {
                                             />
                                         </Flex>
                                     </td>
-                                </tr>)}
-                            </Table>
-                        </Col>}
-                        {tariffList.length > 0 && <Col xs={12} className={'horizontal-scroll'}>
-                            <hr/>
-                            <Table hideThead={false}
-                                   thead={['Агент', 'Разрешить заключение договоров', 'Лимит ответственности', 'Class', 'Max', 'Min', 'Delete']}>
-                                {tariffList.map((item, i) => <tr key={i + 1}>
-                                    <td>
-                                        <Field className={'minWidth300'} options={agents} type={'select'}
-                                               name={`tariff[${i + 1}].agent`}
-                                               defaultValue={get(item, 'tariff[0].agent')} property={{hideLabel: true}}
-                                               isDisabled={true}/>
-                                    </td>
-
-                                    <td className={'text-center'}>
-                                        <Field property={{hideLabel: true}}
-                                               type={'switch'}
-                                               name={`tariff[${i + 1}].allowAgreement`}
-                                               defaultValue={get(item, 'tariff[0].allowAgreement', false)}
-                                               disabled={true}
-                                        />
-                                    </td>
-                                    <td>
-                                        <Field
-                                            type={'number-format-input'}
-                                            name={`tariff[${i + 1}].limitOfAgreement`}
-                                            defaultValue={get(item, 'tariff[0].limitOfAgreement', 0)}
-                                            property={{
-                                                disabled: true,
-                                                placeholder: 'Введите значение',
-                                                hideLabel: true
-                                            }}
-                                        />
-                                    </td>
-                                    <td colSpan={3}>
-                                        {get(item, `tariff[0].tariffPerClass`, []).map((c, j) => <Flex><Field key={j}
-                                                                                                              className={'mb-15 mr-16 flex-none'}
-                                                                                                              name={`tariff[${i + 1}].tariffPerClass[${j}].class`}
-                                                                                                              type={'select'}
-                                                                                                              property={{
-                                                                                                                  hideLabel: true,
-                                                                                                                  bgColor: get(findItem(get(classes, 'data.data'), get(c, "_id")), 'color')
-                                                                                                              }}
-                                                                                                              options={classOptions}
-                                                                                                              defaultValue={get(findItem(get(classes, 'data.data'), get(c, "class")), '_id')}
-                                                                                                              isDisabled={true}
-                                        />
-                                            <Field key={j}
-                                                   className={'mb-15 mr-16 ml-15'}
-                                                   type={'number-format-input'}
-                                                   name={`tariff[${i + 1}].tariffPerClass[${j}].max`}
-                                                   defaultValue={get(c, 'max', 0)}
-                                                   property={{
-                                                       disabled: true,
-                                                       placeholder: 'Введите значение',
-                                                       hideLabel: true
-                                                   }}
-                                            />
-                                            <Field key={j}
-                                                   className={'mb-15'}
-                                                   type={'number-format-input'}
-                                                   name={`tariff[${i + 1}].tariffPerClass[${j}].min`}
-                                                   defaultValue={get(c, 'min', 0)}
-                                                   property={{
-                                                       disabled: true,
-                                                       placeholder: 'Введите значение',
-                                                       hideLabel: true
-                                                   }}
-                                            />
-                                        </Flex>)}
-
-                                    </td>
-                                    <td className={'cursor-pointer'}
-                                        onClick={() => removeTariffFromList(i)}><Trash2
-                                        color={'#dc2626'}/></td>
                                 </tr>)}
                             </Table>
                         </Col>}
