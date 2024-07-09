@@ -61,7 +61,7 @@ export const URLS = {
     policy: 'api/policy',
     bcoPolicyStatus: 'api/bco/policy-status',
     paymentStatus: 'api/references/payment-status',
-    endorsements: 'endorsements',
+    endorsements: 'api/endorsement',
     policyFilter: 'api/policy/list',
     endorsementFilter: 'endorsements/f',
     transactions: 'api/transaction',
@@ -189,4 +189,6 @@ export const URLS = {
     calculate: 'api/smr/calculate',
     smrDistribute: 'api/smr/distribute',
     smrAttach: 'api/smr/attach',
+    getCadastrInfo: 'api/provider/property-info',
+    agentCommission: 'api/agent/commission',
 }

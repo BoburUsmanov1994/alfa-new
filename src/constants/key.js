@@ -185,4 +185,6 @@ export const KEYS = {
     calculate: 'calculate',
     smrAttach: 'smrAttach',
     smrDistribute: 'smrDistribute',
+    getCadastrInfo: 'getCadastrInfo',
+    agentCommission: 'agentCommission',
 }

@@ -87,7 +87,7 @@ const StepFour = ({id = null, ...props}) => {
     const addTariff = () => {
         let result = [];
         let {...rest} = tarif;
-        if (!isNil(get(tarif, "tariff[0].agent"))) {
+        if (!isNil(get(tarif, "tariff.agent"))) {
             const res = tariffList.filter(t => !isEqual(get(t, "tariff[0].agent"), get(rest, "tariff[0].agent")));
             result = [...res, rest]
             setTariffList(result)
@@ -140,9 +140,9 @@ const StepFour = ({id = null, ...props}) => {
                                            property={{placeholder: 'Введите значение'}}
                                     />
                                 </Col>
-                                <Col xs={3} className={'text-right'}>
-                                    <Button onClick={addTariff} type={'button'} className={'mb-25'}>Применить</Button>
-                                </Col>
+                                {/*<Col xs={3} className={'text-right'}>*/}
+                                {/*    <Button onClick={addTariff} type={'button'} className={'mb-25'}>Применить</Button>*/}
+                                {/*</Col>*/}
                             </Row>
                         </Col>
                         {get(product, 'riskData', []).length > 0 && <Col xs={12} className={'mb-25'}>
@@ -152,7 +152,7 @@ const StepFour = ({id = null, ...props}) => {
                                 {get(product, 'riskData', []).map((item, i) => <tr key={i + 1}>
                                     <td>
                                         <Field
-                                            name={`tariff[0].tariffPerClass[${i}].class`}
+                                            name={`tariff.tariffPerClass[${i}].class`}
                                             type={'select'}
                                             property={{
                                                 hideLabel: true,
@@ -166,20 +166,20 @@ const StepFour = ({id = null, ...props}) => {
                                     <td>
                                         <Flex justify={'center'}>
                                             <Field
-                                                name={`tariff[0].tariffPerClass[${i}].min`}
+                                                name={`tariff.tariffPerClass[${i}].min`}
                                                 type={'number-format-input'}
                                                 property={{hideLabel: true, placeholder: 'Мин', suffix: ' %'}}
-                                                defaultValue={get(product, `tariff[0].tariffPerClass[${i}].min`, 0)}
+                                                defaultValue={get(product, `tariff.tariffPerClass[${i}].min`, 0)}
                                             />
                                         </Flex>
                                     </td>
                                     <td>
                                         <Flex justify={'flex-end'}>
                                             <Field
-                                                name={`tariff[0].tariffPerClass[${i}].max`}
+                                                name={`tariff.tariffPerClass[${i}].max`}
                                                 type={'number-format-input'}
                                                 property={{hideLabel: true, placeholder: 'Макс', suffix: ' %'}}
-                                                defaultValue={get(product, `tariff[0].tariffPerClass[${i}].max`, 0)}
+                                                defaultValue={get(product, `tariff.tariffPerClass[${i}].max`, 0)}
                                             />
                                         </Flex>
                                     </td>

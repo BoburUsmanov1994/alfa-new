@@ -88,6 +88,11 @@ export const menuData = [
                 title: 'Bank',
                 path: '/agents/bank',
             },
+            {
+                id: 6,
+                title: 'Комиссия и РПМ',
+                path: '/agents/commission',
+            },
         ]
     },
     {
@@ -184,6 +189,7 @@ export const menuData = [
         ]
     },
 
+
     {
         id: 2,
         title: 'БСО',
@@ -235,6 +241,11 @@ export const menuData = [
                 path: '/accounting/warehouse',
             }
         ]
+    },
+    {
+        id: 2222,
+        title: 'Индоссамент',
+        path: '/endorsement',
     },
     {
         id: 300,

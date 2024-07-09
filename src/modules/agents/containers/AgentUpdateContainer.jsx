@@ -1,477 +1,950 @@
-import React, {useEffect, useState, useMemo} from 'react';
-import {Row, Col} from "react-grid-system";
-import Section from "../../../components/section";
-import Title from "../../../components/ui/title";
-import {get, isEqual, range} from "lodash";
-import {useGetAllQuery, useGetOneQuery, usePostQuery, usePutQuery} from "../../../hooks/api";
-import {KEYS} from "../../../constants/key";
-import {URLS} from "../../../constants/url";
-import {OverlayLoader} from "../../../components/loader";
-import {useStore} from "../../../store";
-import {useTranslation} from "react-i18next";
+import dayjs from "dayjs";
+import { find, get, includes, isEqual, isNil, setWith } from "lodash";
+import React, { useState } from "react";
+import { Trash2 } from "react-feather";
+import { Col, Row } from "react-grid-system";
+import { useTranslation } from "react-i18next";
 import {useNavigate, useParams} from "react-router-dom";
-import Form from "../../../containers/form/form";
-import Button from "../../../components/ui/button";
-import Field from "../../../containers/form/field";
-import {Minus, Plus} from "react-feather";
-import {getSelectOptionsListFromData} from "../../../utils";
+import { toast } from "react-toastify";
+import Flex from "../../../components/flex";
+import { OverlayLoader } from "../../../components/loader";
 import Panel from "../../../components/panel";
 import Search from "../../../components/search";
+import Section from "../../../components/section";
+import Table from "../../../components/table";
+import Button from "../../../components/ui/button";
+import Title from "../../../components/ui/title";
+import { PERSON_TYPE } from "../../../constants";
+import { KEYS } from "../../../constants/key";
+import { URLS } from "../../../constants/url";
+import Field from "../../../containers/form/field";
+import Form from "../../../containers/form/form";
+import {useGetAllQuery, useGetOneQuery, usePutQuery} from "../../../hooks/api";
+import { useSettingsStore } from "../../../store";
+import { getSelectOptionsListFromData } from "../../../utils";
 
-const AgentUpdateContainer = ({...rest}) => {
-    const {t} = useTranslation();
-    const navigate = useNavigate();
+const AgentsUpdateContainer = () => {
     const {id} = useParams()
-    const [personType, setPersonType] = useState(null)
-    const [empCount, setEmpCount] = useState(0);
-
-    let {data: agent, isLoading, isError} = useGetOneQuery({id, key: KEYS.agents, url: URLS.agents})
+    const [tarif, setTarif] = useState({});
+    const [tariffList, setTariffList] = useState([]);
+    const navigate = useNavigate();
+    const { t } = useTranslation();
+    const [personType, setPersonType] = useState(null);
+    const [region, setregion] = useState(null);
+    let {data: agent, isLoading, isError} = useGetOneQuery({id, key: KEYS.agents, url: `${URLS.agents}/show`})
     const {mutate: updateRequest, isLoading: updateIsLoading} = usePutQuery({listKeyId: KEYS.agents})
-
-    const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
-    }))
-
-
-
-
     const setPersonTypeForSelect = (val, name) => {
-        if (isEqual(name, 'typeofpersons')) {
-            setPersonType(val)
+        if (isEqual(name, "typeofpersons")) {
+            setPersonType(val);
         }
-    }
-    let {data: branches} = useGetAllQuery({key: KEYS.branches, url: URLS.branches})
-    branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchname')
+        if (isEqual(name, "organization.region")) {
+            setregion(val);
+        }
+        if (isEqual(name, "person.region")) {
+            setregion(val);
+        }
+    };
 
-    let {data: regions} = useGetAllQuery({key: KEYS.regions, url: URLS.regions})
-    regions = getSelectOptionsListFromData(get(regions, `data.data`, []), '_id', 'name')
+    const product = useSettingsStore((state) => get(state, "product", {}));
+    let { data: branches } = useGetAllQuery({
+        key: KEYS.branches,
+        url: `${URLS.branches}/list`,
+    });
+    branches = getSelectOptionsListFromData(
+        get(branches, `data.data`, []),
+        "_id",
+        "branchName"
+    );
 
-    let {data: agentTypes} = useGetAllQuery({key: KEYS.typeofagent, url: URLS.typeofagent})
-    agentTypes = getSelectOptionsListFromData(get(agentTypes, `data.data`, []), '_id', 'name')
+    let { data: citizenshipList } = useGetAllQuery({
+        key: KEYS.residentType,
+        url: `${URLS.residentType}`,
+    });
+    citizenshipList = getSelectOptionsListFromData(
+        get(citizenshipList, `data.data`, []),
+        "_id",
+        "name"
+    );
 
-    let {data: persons} = useGetAllQuery({key: KEYS.typeofpersons, url: URLS.typeofpersons})
-    persons = getSelectOptionsListFromData(get(persons, `data.data`, []), '_id', 'name')
+    let { data: documentTypeList } = useGetAllQuery({
+        key: KEYS.documentType,
+        url: `${URLS.documentType}/list`,
+    });
+    documentTypeList = getSelectOptionsListFromData(
+        get(documentTypeList, `data.data`, []),
+        "_id",
+        "name"
+    );
 
-    let {data: accountstatus} = useGetAllQuery({key: KEYS.accountstatus, url: URLS.accountstatus})
-    accountstatus = getSelectOptionsListFromData(get(accountstatus, `data.data`, []), '_id', 'name')
+    let { data: regions } = useGetAllQuery({
+        key: KEYS.regions,
+        url: `${URLS.regions}/list`,
+    });
+    regions = getSelectOptionsListFromData(
+        get(regions, `data.data`, []),
+        "_id",
+        "name"
+    );
 
-    let {data: accountrole} = useGetAllQuery({key: KEYS.accountroles, url: URLS.accountroles})
-    accountrole = getSelectOptionsListFromData(get(accountrole, `data.data`, []), '_id', 'name')
+    let { data: agentTypes } = useGetAllQuery({
+        key: KEYS.typeofagent,
+        url: `${URLS.typeofagent}/list`,
+    });
+    agentTypes = getSelectOptionsListFromData(
+        get(agentTypes, `data.data`, []),
+        "_id",
+        "name"
+    );
 
-    let {data: genders} = useGetAllQuery({key: KEYS.genders, url: URLS.genders})
-    genders = getSelectOptionsListFromData(get(genders, `data.data`, []), '_id', 'name')
+    let { data: genders } = useGetAllQuery({
+        key: KEYS.genders,
+        url: `${URLS.genders}/list`,
+    });
+    genders = getSelectOptionsListFromData(
+        get(genders, `data.data`, []),
+        "_id",
+        "name"
+    );
 
-    let {data: citizenship} = useGetAllQuery({key: KEYS.citizenship, url: URLS.citizenship})
-    citizenship = getSelectOptionsListFromData(get(citizenship, `data.data`, []), '_id', 'name')
+    let { data: employeeList } = useGetAllQuery({
+        key: KEYS.employee,
+        url: `${URLS.employee}/list`,
+    });
+    employeeList = getSelectOptionsListFromData(
+        get(employeeList, `data.data`, []),
+        "_id",
+        "fullname"
+    );
 
-    let {data: typeofdocuments} = useGetAllQuery({key: KEYS.typeofdocuments, url: URLS.typeofdocuments})
-    typeofdocuments = getSelectOptionsListFromData(get(typeofdocuments, `data.data`, []), '_id', 'name')
-
-    let {data: districts} = useGetAllQuery({key: KEYS.districts, url: URLS.districts})
-    districts = getSelectOptionsListFromData(get(districts, `data.data`, []), '_id', 'name')
-
-    let {data: positions} = useGetAllQuery({key: KEYS.position, url: URLS.position})
-    positions = getSelectOptionsListFromData(get(positions, `data.data`, []), '_id', 'name')
-
-    const update = ({data}) => {
-        updateRequest({url: `${URLS.agents}/${id}`, attributes: {...data,isbeneficiary:null,isfixedpolicyholde:null}}, {
-            onSuccess: () => {
-                navigate('/agents/insurance-agents')
+    let { data: districts } = useGetAllQuery({
+        key: KEYS.districtsByRegion,
+        url: `${URLS.districts}/list`,
+        params: {
+            params: {
+                region,
             },
-            onError: () => {
-
-            }
-        })
-    }
-
-
-    const breadcrumbs = useMemo(() => [
-        {
-            id: 1,
-            title: t('Agents'),
-            path: '/agents',
         },
-        {
-            id: 2,
-            title: id,
-            path: '#',
+        enabled: !!region,
+    });
+    districts = getSelectOptionsListFromData(
+        get(districts, `data.data`, []),
+        "_id",
+        "name"
+    );
+
+
+    let { data: products } = useGetAllQuery({
+        key: ["products-list"],
+        url: `${URLS.products}`,
+    });
+    products = getSelectOptionsListFromData(
+        get(products, `data.data`, []),
+        "_id",
+        ["name"]
+    );
+
+    let { data: classes } = useGetAllQuery({
+        key: KEYS.classes,
+        url: `${URLS.insuranceClass}/list`,
+    });
+    const classOptions = getSelectOptionsListFromData(
+        get(classes, `data.data`, []),
+        "_id",
+        "name"
+    );
+
+    const setFieldValue = (value, name = "") => {
+        if (
+            includes(
+                [
+                    "tariff[0].product",
+                    "tariff[0].allowAgreement",
+                    "tariff[0].limitOfAgreement",
+                ],
+                name
+            )
+        ) {
+            setTarif((prev) => ({ ...prev, [name]: value }));
         }
-    ], [])
 
-    useEffect(() => {
-        setBreadcrumbs(breadcrumbs)
-    }, [])
-
-    useEffect(() => {
-        if (get(agent, 'data.data.corporateentitiesdata.employees',[])?.length) {
-            setEmpCount(get(agent, 'data.data.corporateentitiesdata.employees').length)
+        if (includes(name, "tariff[0].tariffPerClass")) {
+            setTarif({ ...setWith(tarif, name, value) });
         }
-    }, [get(agent, 'data.data')])
+    };
 
-    if (isLoading) {
-        return <OverlayLoader/>
+    const findItem = (list = [], id = null) => {
+        return find(list, (l) => isEqual(get(l, "_id"), id));
+    };
+
+    const addTariff = () => {
+        let result = [];
+        let { ...rest } = tarif;
+        if (!isNil(get(tarif, "tariff[0].product"))) {
+            const res = tariffList.filter(
+                (t) =>
+                    !isEqual(get(t, "tariff[0].product"), get(rest, "tariff[0].product"))
+            );
+            result = [...res, rest];
+            setTariffList(result);
+            setTarif({
+                ...tarif,
+                tariffPerClass: get(tarif, "tariff.tariffPerClass", []).map(
+                    ({ class: classes, min, max }) => ({
+                        classes,
+                        min: 0,
+                        max: 0,
+                    })
+                ),
+            });
+        } else {
+            toast.warn("Select all fields");
+        }
+    };
+
+    const removeTariffFromList = (i) => {
+        setTariffList((prev) => prev.filter((f, j) => !isEqual(i, j)));
+    };
+
+
+
+    const create = ({ data }) => {
+        updateRequest(
+            {
+                url:`${ URLS.agents}/${id}`,
+                attributes: {
+                    ...data,
+                    agreementdate: dayjs(get(data, "agreementdate")),
+                },
+            },
+            {
+                onSuccess: () => {
+                    navigate("/agents/insurance-agents");
+                },
+                onError: () => {},
+            }
+        );
+    };
+    if(isLoading){
+        return <OverlayLoader />
     }
+    console.log('agent',agent)
     return (
         <>
-            {updateIsLoading && <OverlayLoader/>}
-            <Section>
-                <Row className={'mb-25'}>
+            {/*{isLoading && <OverlayLoader />}*/}
+            <Panel>
+                <Row>
                     <Col xs={12}>
-                        <Title>Agent update</Title>
+                        <Search />
                     </Col>
                 </Row>
-                <Form getValueFromField={(val, name) => setPersonTypeForSelect(val, name)}
-                      footer={<Button>Update</Button>} formRequest={(values) => update(values)}>
+            </Panel>
+            <Section>
+                <Row className={"mb-25"}>
+                    <Col xs={12}>
+                        <Title>{t("Update agent")}</Title>
+                    </Col>
+                </Row>
+                <Form
+                    getValueFromField={(val, name) => {
+                        setPersonTypeForSelect(val, name);
+                        setFieldValue(val, name);
+                    }}
+                    footer={<Button>Save</Button>}
+                    formRequest={(values) => create(values)}
+                >
                     <Row>
                         <Col xs={4}>
-                            <Field name={'branch'} type={'select'} label={'Branch'} options={branches}
-                                   params={{required: true}}
-                                   defaultValue={get(agent, 'data.data.branch')}
+                            <Field
+                                defaultValue={get(agent,'data.branch')}
+                                name={"branch"}
+                                type={"select"}
+                                label={"Branch"}
+                                options={branches}
+                                params={{ required: true }}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field name={'inn'} type={'input-mask'} label={'INN'}
-                                   property={{mask: '999999999', maskChar: '_'}}
-                                   params={{required: true, pattern: /^[0-9]*$/}}
-                                   defaultValue={get(agent, 'data.data.inn')}
-                            />
-                        </Col>
-
-                        <Col xs={4}>
-                            <Field name={'agreementnumber'} type={'input'}
-                                   label={'agreementnumber'}
-                                   params={{required: true}}
-                                   defaultValue={get(agent, 'data.data.agreementnumber')}
-                            />
-                        </Col>
-                        <Col xs={4}>
-                            <Field name={'agreementdate'} dateFormat={"MM/DD/YYYY"} type={'datepicker'}
-                                   label={'agreementdate'}
-                                   params={{required: true}}
-                                   defaultValue={get(agent, 'data.data.agreementdate')}
+                            <Field
+                                name={"inn"}
+                                defaultValue={get(agent,'data.inn')}
+                                type={"input-mask"}
+                                label={"INN"}
+                                property={{ mask: "999999999", maskChar: "_", }}
+                                params={{ pattern: /^[0-9]*$/ }}
                             />
                         </Col>
 
                         <Col xs={4}>
-                            <Field name={'typeofagent'} type={'select'} label={'Agent type'} options={agentTypes}
-                                   defaultValue={get(agent, 'data.data.typeofagent._id')}
-
+                            <Field
+                                defaultValue={get(agent,'data.agreementnumber')}
+                                name={"agreementnumber"}
+                                type={"input"}
+                                label={"agreementnumber"}
+                                params={{ required: true }}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field name={'typeofpersons'} type={'select'} label={'Person type'} options={persons}
-                                   defaultValue={get(agent, 'data.data.typeofpersons._id')}
-                                   params={{required: true}}/>
+                            <Field
+                                defaultValue={get(agent,'data.agreementdate')}
+                                name={"agreementdate"}
+                                dateFormat={"MM/DD/YYYY"}
+                                type={"datepicker"}
+                                label={"agreementdate"}
+                                params={{ required: true }}
+                            />
                         </Col>
-                        {isEqual(personType, '6292025f8982798b6996bc34') && <>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.name'} type={'input'} label={'name'}
-                                       params={{required: true}}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.name')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.secondname'} type={'input'} label={'secondname'}
-                                       params={{required: true}}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.secondname')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.middlename'} type={'input'} label={'middlename'}
-                                       params={{required: true}} defaultValue={get(agent, 'data.data.forindividualsdata.middlename')}/>
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.gender'} type={'select'} label={'Gender'}
-                                       options={genders}
-                                       params={{required: true}} defaultValue={get(agent, 'data.data.forindividualsdata.gender')}/>
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.dateofbirth'} dateFormat={"MM/DD/YYYY"} type={'datepicker'}
-                                       label={'dateofbirth'}
-                                       params={{required: true}} defaultValue={get(agent, 'data.data.forindividualsdata.dateofbirth')}/>
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.citizenship'} type={'select'} label={'Citizenship'}
-                                       options={citizenship}
-                                       params={{required: true}} defaultValue={get(agent, 'data.data.forindividualsdata.citizenship')}/>
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.typeofdocument'} type={'select'}
-                                       label={'typeofdocument'} options={typeofdocuments}
-                                       params={{required: true}} defaultValue={get(agent, 'data.data.forindividualsdata.typeofdocument')}/>
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.passportSeries'} type={'input-mask'}
-                                       label={'Passport seria'}
-                                       property={{mask: 'aa', maskChar: '_'}}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.passportSeries')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.passportNumber'} type={'input-mask'}
-                                       label={'Passport number'}
-                                       property={{mask: '9999999', maskChar: '_'}}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.passportNumber')}
-                                />
-                            </Col>
-                            <Col xs={4}>
 
-                                <Field name={'forindividualsdata.pin'} type={'input-mask'} label={'PINFL'}
-                                       property={{mask: '99999999999999', maskChar: '_'}}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.pin')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.passportissuancedate'} dateFormat={"MM/DD/YYYY"} type={'datepicker'}
-                                       label={'passportissuancedate'}
-                                       defaultValue={get(agent, 'forindividualsdata.passportissuancedate')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.passportissuedby'} type={'input'}
-                                       label={'passportissuedby'}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.passportissuedby')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.regions'} type={'select'} label={'Region'}
-                                       options={regions}
-                                       params={{required: true}} defaultValue={get(agent, 'data.data.forindividualsdata.regions')}/>
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.districts'} type={'select'} label={'District'}
-                                       options={districts}
-                                       params={{required: true}} defaultValue={get(agent, 'data.data.forindividualsdata.districts')}/>
-                            </Col>
-
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.address'} type={'input'}
-                                       label={'address'}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.address')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.postcode'} type={'input'}
-                                       label={'postcode'}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.postcode')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.telephonenumber'} type={'input'}
-                                       label={'telephonenumber'}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.telephonenumber')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.emailforcontact'} type={'input'}
-                                       label={'emailforcontact'}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.emailforcontact')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.personalaccount'} type={'input'}
-                                       label={'personalaccount'}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.personalaccount')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.transitaccount'} type={'input'}
-                                       label={'transitaccount'}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.transitaccount')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.mfo'} type={'input'}
-                                       label={'mfo'}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.mfo')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.nameofbank'} type={'input'}
-                                       label={'nameofbank'}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.nameofbank')}
-                                />
-                            </Col>
-                            <Col xs={4}>
-                                <Field name={'forindividualsdata.numberofcard'} type={'input'} label={'numberofcard'}
-                                       defaultValue={get(agent, 'data.data.forindividualsdata.numberofcard')}
-                                />
-                            </Col>
-                        </>
-                        }
-                        {isEqual(personType, '629202448982798b6996bc32') &&
+                        <Col xs={4}>
+                            <Field
+                                defaultValue={get(agent,'data.typeofagent')}
+                                params={{ required: true }}
+                                name={"typeofagent"}
+                                type={"select"}
+                                label={"Agent type"}
+                                options={agentTypes}
+                            />
+                        </Col>
+                        <Col xs={4}>
+                            <Field
+                                defaultValue={get(agent,'data.isbeneficiary')}
+                                label={"isbeneficiary"}
+                                type={"switch"}
+                                name={"isbeneficiary"}
+                                params={{ required: true }}
+                            />
+                        </Col>
+                        <Col xs={4}>
+                            <Field
+                                defaultValue={get(agent,'data.isfixedpolicyholder')}
+                                label={"isfixedpolicyholder"}
+                                type={"switch"}
+                                name={"isfixedpolicyholder"}
+                                params={{ required: true }}
+                            />
+                        </Col>
+                        <Col xs={4}>
+                            <Field
+                                name={"typeofpersons"}
+                                type={"select"}
+                                label={"Person type"}
+                                defaultValue={get(agent,'data.person') ? PERSON_TYPE.person : PERSON_TYPE.organization}
+                                options={[
+                                    {
+                                        value: PERSON_TYPE.person,
+                                        label: t(PERSON_TYPE.person),
+                                    },
+                                    {
+                                        value: PERSON_TYPE.organization,
+                                        label: t(PERSON_TYPE.organization),
+                                    },
+                                ]}
+                                params={{ required: true }}
+                            />
+                        </Col>
+                        {isEqual(personType, PERSON_TYPE.person) && (
                             <>
+                                <Col xs={4}>
+                                    <Field name={"person.photo"} type={"input"} label={"Photo"} />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.name')}
+                                        name={"person.name"}
+                                        type={"input"}
+                                        label={"name"}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.secondname')}
+                                        name={"person.secondname"}
+                                        type={"input"}
+                                        label={"secondname"}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        name={"person.middlename"}
+                                        type={"input"}
+                                        label={"middlename"}
+                                        defaultValue={get(agent,'data.person.middlename')}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.gender')}
+                                        name={"person.gender"}
+                                        type={"select"}
+                                        label={"Gender"}
+                                        options={genders}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.dateofbirth')}
+                                        name={"person.dateofbirth"}
+                                        dateFormat={"MM/DD/YYYY"}
+                                        type={"datepicker"}
+                                        label={"dateofbirth"}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.citizenship')}
+                                        name={"person.citizenship"}
+                                        type={"select"}
+                                        options={citizenshipList}
+                                        label={"Citizenship"}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.typeofdocument')}
+                                        name={"person.typeofdocument"}
+                                        type={"select"}
+                                        options={documentTypeList}
+                                        label={"typeofdocument"}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.passportSeries')}
+                                        name={"person.passportSeries"}
+                                        type={"input-mask"}
+                                        label={"Passport seria"}
+                                        property={{ mask: "aa", maskChar: "_" }}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.passportNumber')}
+                                        name={"person.passportNumber"}
+                                        type={"input-mask"}
+                                        label={"Passport number"}
+                                        property={{ mask: "9999999", maskChar: "_" }}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.pin')}
+                                        name={"person.pin"}
+                                        type={"input-mask"}
+                                        label={"PINFL"}
+                                        property={{ mask: "99999999999999", maskChar: "_" }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.passportissuancedate')}
+                                        name={"person.passportissuancedate"}
+                                        dateFormat={"MM/DD/YYYY"}
+                                        type={"datepicker"}
+                                        label={"passportissuancedate"}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.passportissuedby')}
+                                        name={"person.passportissuedby"}
+                                        type={"input"}
+                                        label={"passportissuedby"}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.region')}
+                                        name={"person.region"}
+                                        type={"select"}
+                                        label={"Region"}
+                                        options={regions}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.person.district')}
+                                        name={"person.district"}
+                                        type={"select"}
+                                        label={"District"}
+                                        options={districts}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
 
                                 <Col xs={4}>
-                                    <Field name={'corporateentitiesdata.nameoforganization'} type={'input'}
-                                           label={'nameoforganization'}
-                                           defaultValue={get(agent, 'data.data.corporateentitiesdata.nameoforganization')}
+                                    <Field
+                                        defaultValue={get(agent,'data.person.address')}
+                                        name={"person.address"}
+                                        type={"input"}
+                                        label={"address"}
+                                        params={{ required: true }}
                                     />
                                 </Col>
                                 <Col xs={4}>
-                                    <Field name={'corporateentitiesdata.oked'} type={'input'} label={'oked'}
-                                           defaultValue={get(agent, 'data.data.corporateentitiesdata.oked')}
+                                    <Field
+                                        defaultValue={get(agent,'data.person.postcode')}
+                                        name={"person.postcode"}
+                                        type={"input"}
+                                        label={"postcode"}
                                     />
                                 </Col>
                                 <Col xs={4}>
-                                    <Field name={'corporateentitiesdata.mfo'} type={'input'} label={'mfo'}
-                                           defaultValue={get(agent, 'data.data.corporateentitiesdata.mfo')}
+                                    <Field
+                                        defaultValue={get(agent,'data.person.telephonenumber')}
+                                        name={"person.telephonenumber"}
+                                        type={"input"}
+                                        label={"telephonenumber"}
                                     />
                                 </Col>
                                 <Col xs={4}>
-                                    <Field name={'corporateentitiesdata.nameofbank'} type={'input'} label={'nameofbank'}
-                                           defaultValue={get(agent, 'data.data.corporateentitiesdata.nameofbank')}
+                                    <Field
+                                        defaultValue={get(agent,'data.person.emailforcontact')}
+                                        name={"person.emailforcontact"}
+                                        type={"input"}
+                                        label={"emailforcontact"}
                                     />
                                 </Col>
                                 <Col xs={4}>
-                                    <Field name={'corporateentitiesdata.innofbank'} type={'input'} label={'innofbank'}
-                                           defaultValue={get(agent, 'data.data.corporateentitiesdata.innofbank')}
-                                    />
-                                </Col>
-
-                                <Col xs={4}>
-                                    <Field name={'corporateentitiesdata.scheduledaccount'} type={'input'}
-                                           label={'scheduledaccount'}
-                                           defaultValue={get(agent, 'data.data.corporateentitiesdata.scheduledaccount')}
+                                    <Field
+                                        defaultValue={get(agent,'data.person.personalaccount')}
+                                        name={"person.personalaccount"}
+                                        type={"input"}
+                                        label={"personalaccount"}
                                     />
                                 </Col>
                                 <Col xs={4}>
-                                    <Field name={'corporateentitiesdata.region'} type={'select'} label={'Region'}
-                                           defaultValue={get(agent, 'data.data.corporateentitiesdata.region')}
-                                           options={regions}
+                                    <Field
+                                        defaultValue={get(agent,'data.person.transitaccount')}
+                                        name={"person.transitaccount"}
+                                        type={"input"}
+                                        label={"transitaccount"}
                                     />
                                 </Col>
                                 <Col xs={4}>
-                                    <Field name={'corporateentitiesdata.districts'} type={'select'} label={'District'}
-                                           options={districts}
-                                           defaultValue={get(agent, 'data.data.corporateentitiesdata.districts')}
-                                           params={{required: true}}/>
+                                    <Field    defaultValue={get(agent,'data.person.mfo')} name={"person.mfo"} type={"input"} label={"mfo"} />
                                 </Col>
-
                                 <Col xs={4}>
-                                    <Field name={'corporateentitiesdata.address'} type={'input'}
-                                           label={'address'}
-                                           defaultValue={get(agent, 'data.data.corporateentitiesdata.address')}
+                                    <Field
+                                        defaultValue={get(agent,'data.person.nameofbank')}
+                                        name={"person.nameofbank"}
+                                        type={"input"}
+                                        label={"nameofbank"}
                                     />
                                 </Col>
                                 <Col xs={4}>
-                                    <Field name={'corporateentitiesdata.postcode'} type={'input'}
-                                           defaultValue={get(agent, 'data.data.corporateentitiesdata.postcode')}
-                                           label={'postcode'}
+                                    <Field
+                                        defaultValue={get(agent,'data.person.numberofcard')}
+                                        name={"person.numberofcard"}
+                                        type={"input"}
+                                        label={"numberofcard"}
                                     />
                                 </Col>
-                                <Col xs={4}>
-                                    <Field name={'corporateentitiesdata.checkingaccount'} type={'input'}
-                                           label={'checkingaccount'}
-                                           defaultValue={get(agent, 'data.data.corporateentitiesdata.checkingaccount')}
-                                    />
-                                </Col>
-                                <Col xs={11} className={"mb-15"}>
-                                    <Title sm>Add employee</Title>
-                                </Col>
-                                <Col xs={1} className={'text-right'}>
-                                    <Button onClick={() => setEmpCount(prev => ++prev)} sm type={"button"}
-                                            inline><Plus/></Button>
-                                </Col>
-                                {range(0,empCount).map(count => <Col xs={12} className={'box__outlined'}><Row align={"center"}>
-                                    <Col xs={11}>
-                                        <Row>
-                                            <Col xs={4}>
-                                                <Field name={`corporateentitiesdata.employees[${count}].fullname`} type={'input'}
-                                                       label={'Employee fullname'}
-                                                       params={{required:true}}
-                                                       defaultValue={get(agent, `data.data.corporateentitiesdata.employees[${count}].fullname`)}
-                                                />
-                                            </Col>
-                                            <Col xs={4}>
-                                                <Field name={`corporateentitiesdata.employees[${count}].positions`} type={'select'} options={positions}
-                                                       label={'Employee position'}
-                                                       params={{required:true}}
-                                                       defaultValue={get(agent, `data.data.corporateentitiesdata.employees[${count}].positions`)}
-                                                />
-                                            </Col>
-                                            <Col xs={4}>
-                                                <Field name={`corporateentitiesdata.employees[${count}].typeofdocumentsformanager`} type={'select'} options={typeofdocuments}
-                                                       label={'Employee doc type'}
-                                                       params={{required:true}}
-                                                       defaultValue={get(agent, `data.data.corporateentitiesdata.employees[${count}].typeofdocumentsformanager`)}
-                                                />
-                                            </Col>
-                                            <Col xs={4}>
-                                                <Field name={`corporateentitiesdata.employees[${count}].documentnumber`} type={'input'}
-                                                       label={'Employee documentnumber'}
-                                                       defaultValue={get(agent, `data.data.corporateentitiesdata.employees[${count}].documentnumber`)}
-                                                />
-                                            </Col>
-                                            <Col xs={4}>
-                                                <Field name={`corporateentitiesdata.employees[${count}].dateofmanagerdocument`} dateFormat={"MM/DD/YYYY"} type={'datepicker'}
-                                                       label={'dateofmanagerdocument'}
-                                                       defaultValue={get(agent, `data.data.corporateentitiesdata.employees[${count}].dateofmanagerdocument`)}
-                                                />
-                                            </Col>
-                                            <Col xs={4}>
-                                                <Field name={`corporateentitiesdata.employees[${count}].expirationdate`} dateFormat={"MM/DD/YYYY"} type={'datepicker'}
-                                                       label={'expirationdate'}
-                                                       defaultValue={get(agent, `data.data.corporateentitiesdata.employees[${count}].expirationdate`)}
-                                                />
-                                            </Col>
-                                            <Col xs={4}>
-                                                <Field name={`corporateentitiesdata.employees[${count}].telephonenumber`} type={'input'}
-                                                       label={'telephonenumber'}
-                                                       defaultValue={get(agent, `data.data.corporateentitiesdata.employees[${count}].telephonenumber`)}
-                                                />
-                                            </Col>
-                                            <Col xs={4}>
-                                                <Field name={`corporateentitiesdata.employees[${count}].emailforcontacts`} type={'input'}
-                                                       label={'emailforcontacts'}
-                                                       defaultValue={get(agent, `data.data.corporateentitiesdata.employees[${count}].emailforcontacts`)}
-                                                />
-                                            </Col>
-                                        </Row>
-                                    </Col>
-                                    <Col xs={1} className={"text-right "}>
-                                        <Button danger onClick={() => setEmpCount(prev => --prev)} sm type={"button"}
-                                                inline><Minus/></Button>
-                                    </Col>
-                                </Row></Col>)}
-
                             </>
-                        }
-                        <Col xs={4}>
-                            <Field
-                                label={'isUsedourpanel'}
-                                type={'switch'}
-                                name={'isUsedourpanel'}
-                                params={{required: true}}
-                                defaultValue={get(agent, 'data.data.isUsedourpanel')}
-                            />
-                        </Col>
-                        <Col xs={4}>
-                            <Field
-                                label={'isUserRestAPI'}
-                                type={'switch'}
-                                name={'isUserRestAPI'}
-                                params={{required: true}}
-                                defaultValue={get(agent, 'data.data.isUserRestAPI')}
-                            />
-                        </Col>
-                        <Col xs={4}>
-                            <Field name={'email'} type={'input'} label={'Email'}
-                                   params={{required: true}} defaultValue={get(agent, 'data.data.email')}/>
-                        </Col>
+                        )}
+                        {isEqual(personType, PERSON_TYPE.organization) && (
+                            <>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.organization.nameoforganization')}
+                                        name={"organization.nameoforganization"}
+                                        type={"input"}
+                                        label={"nameoforganization"}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.organization.oked')}
+                                        name={"organization.oked"}
+                                        type={"input"}
+                                        label={"oked"}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.organization.mfo')}
+                                        name={"organization.mfo"}
+                                        type={"input"}
+                                        label={"mfo"}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.organization.nameofbank')}
+                                        name={"organization.nameofbank"}
+                                        type={"input"}
+                                        label={"nameofbank"}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.organization.innofbank')}
+                                        name={"organization.innofbank"}
+                                        type={"input"}
+                                        label={"innofbank"}
+                                    />
+                                </Col>
 
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.organization.scheduledaccount')}
+                                        name={"organization.scheduledaccount"}
+                                        type={"input"}
+                                        label={"scheduledaccount"}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.organization.region')}
+                                        name={"organization.region"}
+                                        type={"select"}
+                                        label={"Region"}
+                                        options={regions}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.organization.district')}
+                                        name={"organization.district"}
+                                        type={"select"}
+                                        label={"District"}
+                                        options={districts}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.organization.address')}
+                                        name={"organization.address"}
+                                        type={"input"}
+                                        label={"address"}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.organization.postcode')}
+                                        name={"organization.postcode"}
+                                        type={"input"}
+                                        label={"postcode"}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        defaultValue={get(agent,'data.organization.checkingaccount')}
+                                        name={"organization.checkingaccount"}
+                                        type={"input"}
+                                        label={"checkingaccount"}
+                                    />
+                                </Col>
+                                <Col xs={8}>
+                                    <Field
+                                        defaultValue={get(agent,'data.organization.employees')}
+                                        isMulti
+                                        name={"organization.employees"}
+                                        type={"select"}
+                                        options={employeeList}
+                                        label={"Employees"}
+                                        params={{ required: true }}
+                                    />
+                                </Col>
+                            </>
+                        )}
                         <Col xs={4}>
-                            <Field name={'password'} type={'input'} label={'password'} property={{type:"password"}}
-                                   params={{required: true}} defaultValue={get(agent, 'data.data.password')}/>
+                            <Field
+                                defaultValue={get(agent,'data.isUsedourpanel')}
+                                label={"isUsedourpanel"}
+                                type={"switch"}
+                                name={"isUsedourpanel"}
+                                params={{ required: true }}
+                            />
                         </Col>
                         <Col xs={4}>
-                            <Field name={'accountstatus'} type={'select'} label={'Account status'}
-                                   options={accountstatus}
-                                   params={{required: true}} defaultValue={get(agent, 'data.data.accountstatus._id')}/>
+                            <Field
+                                defaultValue={get(agent,'data.isUserRestAPI')}
+                                label={"isUserRestAPI"}
+                                type={"switch"}
+                                name={"isUserRestAPI"}
+                                params={{ required: true }}
+                            />
                         </Col>
-                        <Col xs={4}>
-                            <Field name={'accountrole'} type={'select'} label={'Account role'} options={accountrole}
-                                   params={{required: true}} defaultValue={get(agent, 'data.data.accountrole._id')}/>
+                    </Row>
+
+                    <Row className={"mb-15"}>
+                        <Col xs={12}>
+                            <Title>Тарифы</Title>
                         </Col>
+                    </Row>
+
+                    <Row className={"mb-25"}>
+                        <Col xs={12}>
+                            <Row align={"flex-end"}>
+                                <Col xs={3}>
+                                    <Field
+                                        label={"Продукты"}
+                                        type={"select"}
+                                        name={"tariff[0].product"}
+                                        options={products}
+                                        defaultValue={get(product, "tariff[0].product")}
+                                        params={{
+                                            required: get(product, "riskData", []).length > 0,
+                                        }}
+                                    />
+                                </Col>
+                                <Col xs={3}>
+                                    <Field
+                                        label={"Разрешить заключение договоров"}
+                                        type={"switch"}
+                                        name={"tariff[0].allowAgreement"}
+                                        defaultValue={get(
+                                            product,
+                                            "tariff[0].allowAgreement",
+                                            false
+                                        )}
+                                    />
+                                </Col>
+                                <Col xs={3}>
+                                    <Field
+                                        label={"Лимит ответственности"}
+                                        type={"number-format-input"}
+                                        name={"tariff[0].limitOfAgreement"}
+                                        defaultValue={get(product, "tariff[0].limitOfAgreement", 0)}
+                                        property={{ placeholder: "Введите значение" }}
+                                    />
+                                </Col>
+                                <Col xs={3} className={"text-right"}>
+                                    <Button
+                                        onClick={addTariff}
+                                        type={"button"}
+                                        className={"mb-25"}
+                                    >
+                                        Применить
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </Col>
+                        {get(agent, "data.tariff", []).length > 0 && (
+                            <Col xs={12} className={"mb-25"}>
+                                <hr />
+                                <Table
+                                    hideThead={false}
+                                    thead={[
+                                        "Класс",
+                                        "минимальную и  ставку по классу ",
+                                        "максимальную ставку по классу",
+                                    ]}
+                                >
+                                    {get(agent, "data.tariff", []).map((item, i) => (
+                                        <tr key={i + 1}>
+                                            <td>
+                                                <Field
+                                                    name={`tariff[0].tariffPerClass[${i}].class`}
+                                                    type={"select"}
+                                                    property={{
+                                                        hideLabel: true,
+                                                        bgColor: get(
+                                                            findItem(
+                                                                get(classes, "data.data"),
+                                                                get(item, "_id")
+                                                            ),
+                                                            "color"
+                                                        ),
+                                                    }}
+                                                    options={classOptions}
+                                                    defaultValue={get(
+                                                        findItem(
+                                                            get(classes, "data.data"),
+                                                            get(item, "classeId")
+                                                        ),
+                                                        "_id"
+                                                    )}
+                                                    isDisabled={true}
+                                                />
+                                            </td>
+                                            <td>
+                                                <Flex justify={"center"}>
+                                                    <Field
+                                                        name={`tariff[0].tariffPerClass[${i}].min`}
+                                                        type={"number-format-input"}
+                                                        property={{
+                                                            hideLabel: true,
+                                                            placeholder: "Мин",
+                                                            suffix: " %",
+                                                        }}
+                                                        defaultValue={get(
+                                                            product,
+                                                            `tariff[0].tariffPerClass[${i}].min`,
+                                                            0
+                                                        )}
+                                                    />
+                                                </Flex>
+                                            </td>
+                                            <td>
+                                                <Flex justify={"flex-end"}>
+                                                    <Field
+                                                        name={`tariff[0].tariffPerClass[${i}].max`}
+                                                        type={"number-format-input"}
+                                                        property={{
+                                                            hideLabel: true,
+                                                            placeholder: "Макс",
+                                                            suffix: " %",
+                                                        }}
+                                                        defaultValue={get(
+                                                            product,
+                                                            `tariff[0].tariffPerClass[${i}].max`,
+                                                            0
+                                                        )}
+                                                    />
+                                                </Flex>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </Table>
+                            </Col>
+                        )}
+                        {tariffList.length > 0 && (
+                            <Col xs={12} className={"horizontal-scroll"}>
+                                <hr />
+                                <Table
+                                    hideThead={false}
+                                    thead={[
+                                        "Продукт",
+                                        "Разрешить заключение договоров",
+                                        "Лимит ответственности",
+                                        "Class",
+                                        "Max",
+                                        "Min",
+                                        "Delete",
+                                    ]}
+                                >
+                                    {tariffList.map((item, i) => (
+                                        <tr key={i + 1}>
+                                            <td>
+                                                <Field
+                                                    className={"minWidth300"}
+                                                    options={products}
+                                                    type={"select"}
+                                                    name={`tariff[${i + 1}].product`}
+                                                    defaultValue={get(item, "tariff[0].product")}
+                                                    property={{ hideLabel: true }}
+                                                    isDisabled={true}
+                                                />
+                                            </td>
+
+                                            <td className={"text-center"}>
+                                                <Field
+                                                    property={{ hideLabel: true }}
+                                                    type={"switch"}
+                                                    name={`tariff[${i + 1}].allowAgreement`}
+                                                    defaultValue={get(
+                                                        item,
+                                                        "tariff[0].allowAgreement",
+                                                        false
+                                                    )}
+                                                    disabled={true}
+                                                />
+                                            </td>
+                                            <td>
+                                                <Field
+                                                    type={"number-format-input"}
+                                                    name={`tariff[${i + 1}].limitOfAgreement`}
+                                                    defaultValue={get(
+                                                        item,
+                                                        "tariff[0].limitOfAgreement",
+                                                        0
+                                                    )}
+                                                    property={{
+                                                        disabled: true,
+                                                        placeholder: "Введите значение",
+                                                        hideLabel: true,
+                                                    }}
+                                                />
+                                            </td>
+                                            <td colSpan={3}>
+                                                {get(item, `tariff[0].tariffPerClass`, []).map(
+                                                    (c, j) => (
+                                                        <Flex>
+                                                            <Field
+                                                                key={j}
+                                                                className={"mb-15 mr-16 flex-none"}
+                                                                name={`tariff[${
+                                                                    i + 1
+                                                                }].tariffPerClass[${j}].class`}
+                                                                type={"select"}
+                                                                property={{
+                                                                    hideLabel: true,
+                                                                    bgColor: get(
+                                                                        findItem(
+                                                                            get(classes, "data.data"),
+                                                                            get(c, "_id")
+                                                                        ),
+                                                                        "color"
+                                                                    ),
+                                                                }}
+                                                                options={classOptions}
+                                                                defaultValue={get(
+                                                                    findItem(
+                                                                        get(classes, "data.data"),
+                                                                        get(c, "class")
+                                                                    ),
+                                                                    "_id"
+                                                                )}
+                                                                isDisabled={true}
+                                                            />
+                                                            <Field
+                                                                key={j}
+                                                                className={"mb-15 mr-16 ml-15"}
+                                                                type={"number-format-input"}
+                                                                name={`tariff[${
+                                                                    i + 1
+                                                                }].tariffPerClass[${j}].max`}
+                                                                defaultValue={get(c, "max", 0)}
+                                                                property={{
+                                                                    disabled: true,
+                                                                    placeholder: "Введите значение",
+                                                                    hideLabel: true,
+                                                                }}
+                                                            />
+                                                            <Field
+                                                                key={j}
+                                                                className={"mb-15"}
+                                                                type={"number-format-input"}
+                                                                name={`tariff[${
+                                                                    i + 1
+                                                                }].tariffPerClass[${j}].min`}
+                                                                defaultValue={get(c, "min", 0)}
+                                                                property={{
+                                                                    disabled: true,
+                                                                    placeholder: "Введите значение",
+                                                                    hideLabel: true,
+                                                                }}
+                                                            />
+                                                        </Flex>
+                                                    )
+                                                )}
+                                            </td>
+                                            <td
+                                                className={"cursor-pointer"}
+                                                onClick={() => removeTariffFromList(i)}
+                                            >
+                                                <Trash2 color={"#dc2626"} />
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </Table>
+                            </Col>
+                        )}
                     </Row>
                 </Form>
             </Section>
@@ -479,4 +952,4 @@ const AgentUpdateContainer = ({...rest}) => {
     );
 };
 
-export default AgentUpdateContainer;
+export default AgentsUpdateContainer;

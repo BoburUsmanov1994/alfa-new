@@ -74,9 +74,9 @@ const AgentsContainer = ({...rest}) => {
                 responseDataKey={'data.data'}
                 // viewUrl={'/agents/view'}
                 createUrl={'/agents/create'}
-                // updateUrl={'/agents/update'}
+                updateUrl={'/agents/update'}
                 isHideColumn
-
+                hasUpdateBtn
             />
         </>
     );

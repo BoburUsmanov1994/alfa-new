@@ -71,7 +71,7 @@ const StepThree = ({...props}) => {
                         <Col xs={12}>
                             <Title>Комиссия</Title>
                         </Col>
-                        <Col xs={12} className={'text-right mb-15'}>
+                        <Col xs={12} className={' mb-15 mt-15'}>
                             <Button onClick={() => setOpenCommissionModal(true)} type={'button'}>Выбрать
                                 агентов</Button>
                         </Col>

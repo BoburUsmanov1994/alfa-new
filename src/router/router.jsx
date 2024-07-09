@@ -107,6 +107,7 @@ const AgentStatusPage = lazy(() => import("../modules/agents/pages/AgentStatusPa
 const AgentCreatePage = lazy(() => import("../modules/agents/pages/AgentsCreatePage"));
 const AgentUpdatePage = lazy(() => import("../modules/agents/pages/AgentUpdatePage"));
 const AgentViewPage = lazy(() => import("../modules/agents/pages/AgentViewPage"));
+const AgentsComissionPage = lazy(() => import("../modules/agents/pages/AgentsComissionPage"));
 const AgreementViewPage = lazy(() => import("../modules/products/pages/AgreementViewPage"));
 const PolicyCreatePage = lazy(() => import("../modules/policy/pages/CreatePage"));
 
@@ -128,6 +129,9 @@ const SmrUpdatePage = lazy(() => import("../modules/insurance/smr/pages/UpdatePa
 const SmrViewPage = lazy(() => import("../modules/insurance/smr/pages/ViewPage"));
 const SmrDistributePage = lazy(() => import("../modules/insurance/smr/pages/SmrDistributePage"));
 
+const EndorsementPage = lazy(() => import("../modules/bco/pages/EndorsementPage"));
+const EndorsementViewPage = lazy(() => import("../modules/bco/pages/EndorsementViewPage"));
+
 
 const Router = ({...rest}) => {
     return (
@@ -137,6 +141,8 @@ const Router = ({...rest}) => {
                     <Routes>
                         <Route path={"/"} element={<MainLayout/>}>
                             <Route path={"dashboard"} index element={<DashboardPage/>}/>
+                            <Route path={"endorsement"} element={<EndorsementPage/>}/>
+                            <Route path={"endorsement/view/:id"} element={<EndorsementViewPage/>}/>
                             <Route path={"products"}>
                                 <Route index path={"all"} element={<ProductsPage/>}/>
                                 <Route path={"product-groups"} element={<ProductGroupsPage/>}/>
@@ -176,6 +182,7 @@ const Router = ({...rest}) => {
                                 <Route path={"view/:id"} element={<AgentViewPage/>}/>
                                 <Route path={"bank"} element={<BankPage/>}/>
                                 <Route path={"bank/create"} element={<BankCreatePage/>}/>
+                                <Route path={"commission"} element={<AgentsComissionPage/>}/>
                             </Route>
                             <Route path={"accounting"}>
                                 <Route path={"import-payment-documents"} element={<ImportPaymentDocumentsPage/>}/>

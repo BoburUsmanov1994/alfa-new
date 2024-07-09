@@ -3,7 +3,7 @@ import {Row, Col} from "react-grid-system";
 import Section from "../../../components/section";
 import Title from "../../../components/ui/title";
 import {get, includes, isEqual, isNil, sumBy} from "lodash";
-import {useDeleteQuery, useGetAllQuery, useGetOneQuery, usePostQuery} from "../../../hooks/api";
+import {useDeleteQuery, useGetAllQuery, useGetOneQuery, usePostQuery, usePutQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import {ContentLoader, OverlayLoader} from "../../../components/loader";
@@ -35,11 +35,15 @@ const AgentViewContainer = ({...rest}) => {
             }
         }
     })
-    let {data: endorsementData, isLoading: endorsementIsLoading} = useGetOneQuery({
+    let {data: endorsementData, isLoading: endorsementIsLoading} = useGetAllQuery({
         id,
-        key: KEYS.endorsementFilter,
-        url: URLS.endorsementFilter,
-        enabled: false
+        key: KEYS.endorsements,
+        url: `${URLS.endorsements}/list`,
+        params: {
+            params: {
+                agreementId: id
+            }
+        }
     })
     const {mutate: sentToFondRequest, isLoadingSendToFond} = usePostQuery({listKeyId: KEYS.agreements})
     const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: KEYS.policyFilter})
@@ -98,7 +102,6 @@ const AgentViewContainer = ({...rest}) => {
             }
         })
     }
-    console.log('selectedPolice', selectedPolice)
 
     const remove = (id) => {
         Swal.fire({
@@ -123,35 +126,22 @@ const AgentViewContainer = ({...rest}) => {
         });
     }
 
-    const removeEndorsement = (id) => {
-        Swal.fire({
-            position: 'center',
-            icon: 'error',
-            backdrop: 'rgba(0,0,0,0.9)',
-            background: 'none',
-            title: t('Are you sure?'),
-            showConfirmButton: true,
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#13D6D1',
-            confirmButtonText: t('Delete'),
-            cancelButtonText: t('Cancel'),
-            customClass: {
-                title: 'title-color',
-            },
-        }).then((result) => {
-            if (result.isConfirmed) {
-                deleteEndorsementRequest({url: `${URLS.endorsements}/${id}`})
-            }
-        });
-    }
 
     const sendToFond = (agreementId, policyId) => {
         sentToFondRequest({url: `${URLS.sendToFond}?agreementId=${agreementId}&policyId=${policyId}`})
     }
 
+    const {mutate: allowRequest, isLoading:isLoadingAllow} = usePutQuery({listKeyId: KEYS.endorsements})
+    const allow = (_id, _isAllowed = true) => {
+        allowRequest({
+            url: `${URLS.endorsements}/${_id}`,
+            attributes: {
+                allow: _isAllowed
+            }
+        })
+    }
 
-    if (isLoading || deleteLoading || policyIsLoading || endorsementIsLoading || deleteEndorsementLoading) {
+    if (isLoading || deleteLoading || policyIsLoading || endorsementIsLoading || deleteEndorsementLoading || isLoadingAllow) {
         return <OverlayLoader/>
     }
 
@@ -296,39 +286,37 @@ const AgentViewContainer = ({...rest}) => {
                             }
                         </Row>
                     </Col>
-                    {/*<Col xs={6}>*/}
-                    {/*    <Row align={'center'}>*/}
-                    {/*        <Col xs={12}> <Title sm>Индосаменты</Title></Col>*/}
-                    {/*        /!*<Col xs={4} className={'text-right'}> <Button*!/*/}
-                    {/*        /!*    onClick={() => navigate(`/endorsement/create/${id}`)} green type={'button'}>Добавить*!/*/}
-                    {/*        /!*    индосаменты</Button></Col>*!/*/}
-                    {/*    </Row>*/}
-                    {/*    <Row className={'mt-15'}>*/}
-                    {/*        {get(endorsementData, "data.data", []).length > 0 && <Col xs={12}>*/}
-                    {/*            <hr/>*/}
-                    {/*            <Table hideThead={false}*/}
-                    {/*                   thead={['Type', 'Status', 'Conclusion', 'Action']}>*/}
-                    {/*                {get(endorsementData, "data.data", []).map((item, i) => <tr key={i + 1}>*/}
-                    {/*                    <td>*/}
-                    {/*                        {get(item, 'typeofendorsements.name', '-')}*/}
-                    {/*                    </td>*/}
-                    {/*                    <td>*/}
-                    {/*                        {get(item, 'statusofendorsements.name', '-')}*/}
-                    {/*                    </td>*/}
-                    {/*                    <td>*/}
-                    {/*                        {get(item, 'reqforconclusion', '-')}*/}
-                    {/*                    </td>*/}
-                    {/*                    <td className={'cursor-pointer'}*/}
-                    {/*                        onClick={() => removeEndorsement(get(item, '_id', null))}>*/}
-                    {/*                        <Trash2 color={'#dc2626'}/>*/}
-                    {/*                    </td>*/}
-                    {/*                </tr>)}*/}
-                    {/*            </Table>*/}
-                    {/*        </Col>*/}
-                    {/*        }*/}
-                    {/*    </Row>*/}
-
-                    {/*</Col>*/}
+                </Row>
+                <Row className={'mt-30'}>
+                    <Col xs={12}>
+                        <Row align={'center'}>
+                            <Col xs={12}><Title sm>Индоссамент</Title></Col>
+                        </Row>
+                        <Row className={'mt-15'}>
+                            {get(endorsementData, "data.data", []).length > 0 && <Col xs={12}  className={'horizontal-scroll'}>
+                                <hr/>
+                                <Table hideThead={false}
+                                       thead={['Причина', 'Решение', 'Дата решения', 'Кем принято решение',  'Action']}>
+                                    {get(endorsementData, "data.data", []).map((item, i) => <tr key={i + 1}>
+                                        <td>
+                                            {get(item, 'reason', '-')}
+                                        </td>
+                                        <td>{get(item, "decision")}</td>
+                                        <td>{dayjs(get(item, "createdAt")).format("DD.MM.YYYY")}</td>
+                                        <td>{get(item, "request_creator.name")}</td>
+                                        <td className={''}
+                                        >
+                                            {get(item, 'decision') === 'approved' ? <><Button danger
+                                                                                            onClick={() => allow(get(item, '_id'), false)}>{t('Отказать')}</Button></> : <Button
+                                                className={'ml-15'}
+                                                onClick={() => allow(get(item, '_id'))}>{t('Одобрить')}</Button>}
+                                        </td>
+                                    </tr>)}
+                                </Table>
+                            </Col>
+                            }
+                        </Row>
+                    </Col>
                 </Row>
             </Section>
             <Modal title={'Распределение к полису'} visible={!isNil(selectedPolice)}

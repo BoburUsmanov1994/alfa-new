@@ -45,7 +45,11 @@ const StyledButton = styled.button`
   ${({sm}) => sm && css`
     padding: 9px 12px;
   `}
-
+  ${({block}) => block && css`
+    display: block;
+    text-align: center;
+    width: 100%;
+  `}
 `;
 
 const Button = ({...rest}) => {
