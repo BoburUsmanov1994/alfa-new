@@ -4,7 +4,7 @@ import Label from "../../../../components/ui/label";
 import Switch from "react-switch";
 import Flex from "../../../../components/flex";
 import classNames from "classnames";
-import {get, head, last, isEmpty} from "lodash";
+import {get, head, last, isEmpty, isFunction} from "lodash";
 
 const Styled = styled.div`
   .switch {
@@ -85,7 +85,9 @@ const Switcher = ({
                         checked={checked}
                         onChange={(val) => {
                             setChecked(val);
-                            property?.handleChange(val)
+                            if(isFunction(get(property,'handleChange'))) {
+                                property?.handleChange(val)
+                            }
                         }}
                         onColor={'#5BBA7C'}
                         offColor={'#C8C8C8'}

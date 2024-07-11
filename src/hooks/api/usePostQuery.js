@@ -24,7 +24,13 @@ const usePostQuery = ({hideSuccessToast = false, listKeyId = null}) => {
                     }
 
                     if (listKeyId) {
-                        queryClient.invalidateQueries(listKeyId)
+                        if(isArray(listKeyId)){
+                            forEach(listKeyId,(_keyId)=>{
+                                queryClient.invalidateQueries(_keyId)
+                            })
+                        }else {
+                            queryClient.invalidateQueries(listKeyId)
+                        }
                     }
                 },
                 onError: (data) => {
