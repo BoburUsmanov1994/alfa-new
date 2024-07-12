@@ -86,7 +86,6 @@ const AgentsCommissionContainer = () => {
         key: KEYS.agentCommission, url: `${URLS.agentCommission}/list`,
         params: {
             params: {
-                branch: get(user, 'branch._id'),
                 product: productId,
                 limit: 1000
             }
