@@ -17,7 +17,8 @@ const GridTableBody = ({
                            updateUrl = null,
                            hideDeleteBtn = false,
                            hasUpdateBtn = false,
-                           dataKey
+                           dataKey,
+                           extraActions
                        }) => {
     const navigate = useNavigate();
     return (
@@ -49,7 +50,9 @@ const GridTableBody = ({
                             }} className={'cursor-pointer mr-10'} size={20}
                             color={'#13D6D1'}/>}
                         {!hideDeleteBtn && <Trash2 onClick={() => remove(get(tr, dataKey, null))}
-                                                   className={'cursor-pointer '} size={20} color={'#dc2626'}/>}</td>
+                                                   className={'cursor-pointer '} size={20} color={'#dc2626'}/>}
+                        {extraActions(tr)}
+                    </td>
                 </tr>)
             }
         </>

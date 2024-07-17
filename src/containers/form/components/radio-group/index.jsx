@@ -69,7 +69,7 @@ const RadioGroupComponent = ({
             <div className="form-group">
                 <Label
                     className={classNames('checkbox-label mr-10 mb-0', {required: get(property, 'hasRequiredLabel', false)})}>{label ?? name}</Label>
-                <RadioGroup value={parseInt(val)} onChange={setVal}>
+                <RadioGroup value={val} onChange={setVal}>
 
                     {
                         options && options.map((option, i) => <Radio key={i + 1} value={get(option, 'value')}>{

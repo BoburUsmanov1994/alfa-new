@@ -93,6 +93,11 @@ export const menuData = [
                 title: 'Комиссия и РПМ',
                 path: '/agents/commission',
             },
+            {
+                id: 7,
+                title: 'Подготовка актов выполненных работ',
+                path: '/agents/report',
+            },
         ]
     },
     {

@@ -207,20 +207,22 @@ const StepFive = ({id = null, ...props}) => {
                                         <td>Форма анкеты</td>
 
                                         <td><Download className={'cursor-pointer'}
-                                                      onClick={() => request.get(`${URLS.applicationForm}/file/${get(product, 'applicationForm')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
+                                                      onClick={() => request.get(`${URLS.file}/${get(product, 'applicationForm')}`, {responseType: 'blob'}).then((res) => {
+                                                          saveFile(res)
+                                                      })}
                                                       color={'#13D6D1'}/></td>
                                     </tr>}
                                     {get(product, 'contractForm') && <tr>
                                         <td>Договор</td>
                                         <td><Download className={'cursor-pointer'}
-                                                      onClick={() => request.get(`${URLS.contractForm}/file/${get(product, 'contractForm')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
+                                                      onClick={() => request.get(`${URLS.file}/${get(product, 'contractForm')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
                                                       color={'#13D6D1'}/></td>
                                     </tr>}
                                     {get(product, 'additionalDocuments') && <tr>
                                         <td>Приложения</td>
                                         <td>
                                             <Download className={'cursor-pointer'}
-                                                      onClick={() => request.get(`${URLS.additionaldocuments}/file/${get(product, 'additionalDocuments')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
+                                                      onClick={() => request.get(`${URLS.file}/${get(product, 'additionalDocuments')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
                                                       color={'#13D6D1'}/></td>
                                     </tr>}
                                     <tr>

@@ -81,7 +81,8 @@ const GridView = ({
                       hasUpdateBtn = false,
                       isFormData = false,
                       dataKey = '_id',
-                      deleteUrl = null
+                      deleteUrl = null,
+                      extraActions=<></>
                   }) => {
     const navigate = useNavigate()
     const {t} = useTranslation()
@@ -271,6 +272,7 @@ const GridView = ({
                                                                     tableBodyData={get(data, responseDataKey, [])}
                                                                     isFetching={isFetching}
                                                                     dataKey={dataKey}
+                                                                    extraActions={extraActions}
                     /></div>
                     {!hidePagination &&
                     <Pagination page={page} setPage={setPage} totalItems={get(data, `data.count`, 0)}/>}

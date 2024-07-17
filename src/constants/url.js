@@ -192,4 +192,5 @@ export const URLS = {
     getCadastrInfo: 'api/provider/property-info',
     agentCommission: 'api/agent/commission',
     file: 'api/file',
+    agentAgreement: 'api/agent/agreement',
 }

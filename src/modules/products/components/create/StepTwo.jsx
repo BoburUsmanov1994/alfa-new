@@ -97,7 +97,7 @@ const StepTwo = ({...props}) => {
 
                                     />
                                 </Flex>
-                                {get(show, 'hasApplicationForm', false) && <Field type={'select'} name={'applicationForm'} options={getSelectOptionsListFromData(get(applicationformdocs,'data.data',[]),'_id','name')} />}
+                                {get(show, 'hasApplicationForm', false) && <Field type={'dropzone'} name={'applicationForm'}  />}
 
                             </Col>
                             <Col xs={4}>
@@ -105,14 +105,14 @@ const StepTwo = ({...props}) => {
                                     <Field label={'Имеет конракт'} type={'switch'} name={'hasContractForm'}
                                            defaultValue={get(product,'hasContractForm',false)} />
                                 </Flex>
-                                {get(show, 'hasContractForm', false) && <Field type={'select'} name={'contractForm'} options={getSelectOptionsListFromData(get(contractform,'data.data',[]),'_id','name')} />}
+                                {get(show, 'hasContractForm', false) && <Field type={'dropzone'} name={'contractForm'}  />}
                             </Col>
                             <Col xs={4}>
                                 <Flex align={'flex-end'}>
                                     <Field label={'Имеет приложение'} type={'switch'} name={'hasAdditionalDocuments'}
                                            defaultValue={get(product,'hasAdditionalDocuments',false)} />
                                 </Flex>
-                                {get(show, 'hasAdditionalDocuments', false) && <Field type={'select'} name={'additionalDocuments'} options={getSelectOptionsListFromData(get(additionaldocuments,'data.data',[]),'_id','name')} />}
+                                {get(show, 'hasAdditionalDocuments', false) && <Field type={'dropzone'} name={'additionalDocuments'}  />}
                             </Col>
                         </Row>
                         <Row>

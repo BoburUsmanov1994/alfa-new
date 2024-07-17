@@ -188,4 +188,5 @@ export const KEYS = {
     getCadastrInfo: 'getCadastrInfo',
     agentCommission: 'agentCommission',
     file: 'file',
+    agentAgreement: 'agentAgreement',
 }

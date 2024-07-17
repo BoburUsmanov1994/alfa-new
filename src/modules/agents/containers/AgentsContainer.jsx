@@ -4,11 +4,16 @@ import {get, isEqual} from "lodash";
 import GridView from "../../../containers/grid-view/grid-view";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
+import {Download, RefreshCcw} from "react-feather";
+import {usePostQuery} from "../../../hooks/api";
+import {ContentLoader} from "../../../components/loader";
+import config from "../../../config";
 
 const AgentsContainer = ({...rest}) => {
 
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
+    const {mutate:generateAgentAgreement,isLoading} = usePostQuery({listKeyId:[KEYS.agents,1]})
 
     const breadcrumbs = useMemo(() => [
         {
@@ -27,14 +32,18 @@ const AgentsContainer = ({...rest}) => {
         setBreadcrumbs(breadcrumbs)
     }, [])
 
-    const ModalBody = ({data, rowId = null, personType = null}) => <>
 
-
-    </>
     return (
         <>
+            {
+                isLoading && <ContentLoader />
+            }
             <GridView
-                ModalBody={ModalBody}
+                extraActions={(tr)=><><RefreshCcw onClick={()=>{
+                    generateAgentAgreement({
+                        url:`${URLS.agentAgreement}/${get(tr,"_id")}`
+                    })
+                }}  size={20} style={{marginLeft:10,cursor:'pointer',color:'#306962'}} /></>}
                 tableHeaderData={[
                     {
                         id: 1,
@@ -61,10 +70,19 @@ const AgentsContainer = ({...rest}) => {
                         key: 'person.name',
                         title: 'Firstname'
                     },
+
                     {
-                        id: 555,
+                        id: 556,
                         key: 'person.middlename',
                         title: 'Middlename'
+                    },
+                    {
+                        id: 555,
+                        key: 'agreementPath',
+                        title: 'Agreement file',
+                        render:(_tr)=>{
+                            return get(_tr,'agreementPath') && <a href={`${config.FILE_URL}/${get(_tr,'agreementPath')}`} target={'_blank'}><Download /></a>
+                        }
                     },
                 ]}
                 keyId={KEYS.agents}
@@ -72,7 +90,6 @@ const AgentsContainer = ({...rest}) => {
                 listUrl={`${URLS.agents}/list`}
                 title={'Страховые агенты'}
                 responseDataKey={'data.data'}
-                // viewUrl={'/agents/view'}
                 createUrl={'/agents/create'}
                 updateUrl={'/agents/update'}
                 isHideColumn
