@@ -68,6 +68,7 @@ const NumberFormatInput = ({
     //        getValueFromField(defaultValue, name);
     //    }
     // }, [defaultValue]);
+    console.log('errors',errors)
     return (
         <Styled {...rest}>
             <div className="form-group">
@@ -96,17 +97,18 @@ const NumberFormatInput = ({
                 <ErrorMessage
                     errors={errors}
                     name={name}
-                    render={({messages = `${label} is required`}) => {
+                    render={() => {
+                        let messages = '';
+                        if (get(errors,`${name}.type`) === 'required') {
+                            messages = `${label ?? name} is required`;
+                        }
+                        else if(get(errors,`${name}.type`) === 'pattern') {
+                            messages = `${label ?? name} is not valid`;
+                        }
+                        else {
+                            messages = `${label ?? name} ${errors[name]?.message}`;
+                        }
 
-                        if (errors[name]?.type == 'required') {
-                            messages = `${label} is required`;
-                        }
-                        if (errors[name]?.type == 'pattern') {
-                            messages = `${label} is not valid`;
-                        }
-                        if (errors[name]?.type == 'manual') {
-                            messages = `${label} ${errors[name].message}`;
-                        }
                         return <small className="form-error-message"> {messages}</small>;
                     }}
                 />

@@ -191,4 +191,5 @@ export const URLS = {
     smrAttach: 'api/smr/attach',
     getCadastrInfo: 'api/provider/property-info',
     agentCommission: 'api/agent/commission',
+    file: 'api/file',
 }

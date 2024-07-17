@@ -21,6 +21,7 @@ import {ContentLoader} from "../../../../components/loader";
 import {PERSON_TYPE} from "../../../../constants";
 import config from "../../../../config";
 import {request} from "../../../../services/api";
+import {useNavigate} from "react-router-dom";
 
 const StepOne = ({id = null, ...props}) => {
     const {t} = useTranslation()
@@ -52,6 +53,7 @@ const StepOne = ({id = null, ...props}) => {
     const resetPledgers = useSettingsStore(state => get(state, 'resetPledgers', () => {
     }))
 
+    const navigate = useNavigate()
 
     const agreement = useSettingsStore(state => get(state, 'agreement', {}))
     const insurer = useSettingsStore(state => get(state, 'insurer', {}))
@@ -61,7 +63,7 @@ const StepOne = ({id = null, ...props}) => {
 
 
     const nextStep = ({data}) => {
-        const {classeId, risk, riskgroup,group,subGroup, ...rest} = data
+        const {classeId, risk, riskgroup, group, subGroup, ...rest} = data
         if (get(insurer, 'data.id')) {
             setAgreement({
                 ...rest,
@@ -99,7 +101,7 @@ const StepOne = ({id = null, ...props}) => {
     groups = getSelectOptionsListFromData(get(groups, `data.data`, []), '_id', 'name')
 
     let {data: subGroups} = useGetAllQuery({
-        key: [KEYS.subgroupsofproductsFilter,productGroupId],
+        key: [KEYS.subgroupsofproductsFilter, productGroupId],
         url: URLS.subgroupsofproductsFilter,
         params: {
             params: {
@@ -110,7 +112,7 @@ const StepOne = ({id = null, ...props}) => {
     })
     subGroups = getSelectOptionsListFromData(get(subGroups, `data.data`, []), '_id', 'name')
     let {data: products} = useGetAllQuery({
-        key: [KEYS.productsfilter,productSubGroupId],
+        key: [KEYS.productsfilter, productSubGroupId],
         url: URLS.products,
         params: {
             params: {
@@ -120,8 +122,6 @@ const StepOne = ({id = null, ...props}) => {
         enabled: !!productSubGroupId
     })
     const productsList = getSelectOptionsListFromData(get(products, `data.data`, []), '_id', 'name')
-
-
 
 
     const {mutate: filterRequest, isLoading: filterLoading} = usePostQuery({})
@@ -225,7 +225,7 @@ const StepOne = ({id = null, ...props}) => {
             toast.warn('Select pledger')
         }
     }
-    console.log('product',product)
+    console.log('product', product)
 
     return (
         <Row>
@@ -257,13 +257,13 @@ const StepOne = ({id = null, ...props}) => {
                         <Col xs={4}>
                             <Field label={t('Выберите категорию')} options={groups} type={'select'}
                                    name={'group'}
-                                   property={{onChange: (val)=>setProductGroupId(val)}}
+                                   property={{onChange: (val) => setProductGroupId(val)}}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field label={t('Выберите подкатегорию')} options={subGroups} type={'select'}
                                    name={'subGroup'}
-                                   property={{onChange: (val)=>setProductSubGroupId(val)}}
+                                   property={{onChange: (val) => setProductSubGroupId(val)}}
                             />
                         </Col>
                         <Col xs={4}>
@@ -289,37 +289,37 @@ const StepOne = ({id = null, ...props}) => {
                         {!isEmpty(product) && <><Col xs={12} className={'mb-15'}>
                             <Title>{t("Шаблоны")}</Title>
                         </Col>
-                        <Col xs={12} className={'mb-15'}>
-                            <Row>
-                                <Col xs={4}>
-                                    {get(product, 'applicationForm._id') && <>
-                                        <span>Форма анкеты</span>
+                            <Col xs={12} className={'mb-15'}>
+                                <Row>
+                                    <Col xs={4}>
+                                        {get(product, 'applicationForm._id') && <>
+                                            <span>Форма анкеты</span>
 
-                                        <Download className={'cursor-pointer mr-8'}
-                                                      onClick={() => request.get(`${URLS.applicationForm}/file/${get(product, 'applicationForm._id')}`,{ responseType: 'blob' }).then((res) => saveFile(res))}
-                                                      color={'#13D6D1'}/>
-                                    </>}
-
-                                </Col>
-                                <Col xs={4}>
-                                    {get(product, 'contractForm._id') && <>
-                                        <span>Договор</span>
-                                        <Download className={'cursor-pointer mr-8'}
-                                                      onClick={() => request.get(`${URLS.contractForm}/file/${get(product, 'contractForm._id')}`,{ responseType: 'blob' }).then((res) => saveFile(res))}
-                                                      color={'#13D6D1'}/>
-                                    </>}
-
-                                </Col>
-                                <Col xs={4}>
-                                    {get(product, 'additionalDocuments._id') && <>
-                                        <span>Приложения</span>
                                             <Download className={'cursor-pointer mr-8'}
-                                                      onClick={() => request.get(`${URLS.additionaldocuments}/file/${get(product, 'additionalDocuments._id')}`,{ responseType: 'blob' }).then((res) => saveFile(res))}
+                                                      onClick={() => request.get(`${URLS.applicationForm}/file/${get(product, 'applicationForm._id')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
                                                       color={'#13D6D1'}/>
-                                    </>}
-                                </Col>
-                            </Row>
-                        </Col>
+                                        </>}
+
+                                    </Col>
+                                    <Col xs={4}>
+                                        {get(product, 'contractForm._id') && <>
+                                            <span>Договор</span>
+                                            <Download className={'cursor-pointer mr-8'}
+                                                      onClick={() => request.get(`${URLS.contractForm}/file/${get(product, 'contractForm._id')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
+                                                      color={'#13D6D1'}/>
+                                        </>}
+
+                                    </Col>
+                                    <Col xs={4}>
+                                        {get(product, 'additionalDocuments._id') && <>
+                                            <span>Приложения</span>
+                                            <Download className={'cursor-pointer mr-8'}
+                                                      onClick={() => request.get(`${URLS.additionaldocuments}/file/${get(product, 'additionalDocuments._id')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
+                                                      color={'#13D6D1'}/>
+                                        </>}
+                                    </Col>
+                                </Row>
+                            </Col>
                         </>}
                         <Col xs={12} className={'mb-15'}>
                             <Title>{t("Покрываемые риски")}</Title>
@@ -515,7 +515,13 @@ const StepOne = ({id = null, ...props}) => {
                             onClick={() => setInsurer({...insurer, type: PERSON_TYPE.organization})}>Юридическое
                         лицо</Button>
                     <Form formRequest={(data) => agentFilter(data, 'insurer')}
-                          footer={<><Button>{t("Найдите или добавьте")}</Button></>}>
+                          footer={<><Button>{t("Find")}</Button><Button onClick={() => {
+                              if (isEqual(get(insurer, 'type'), PERSON_TYPE.person)) {
+                                  navigate('/clients/physical/create')
+                              } else {
+                                  navigate('/clients/juridical/create')
+                              }
+                          }} green url className={'ml-15'}>{t("Add")}</Button></>}>
                         {isEqual(get(insurer, 'type'), PERSON_TYPE.person) ? <Row className={'mt-15'}>
 
                             <Col xs={4}>
@@ -668,7 +674,13 @@ const StepOne = ({id = null, ...props}) => {
                             onClick={() => setPledger({...pledger, type: PERSON_TYPE.organization})}>Юридическое
                         лицо</Button>
                     <Form formRequest={(data) => agentFilter(data, 'pledger')}
-                          footer={<><Button>{t("Найдите или добавьте")}</Button></>}>
+                          footer={<><Button>{t("Find")}</Button><Button onClick={() => {
+                              if (isEqual(get(pledger, 'type'), PERSON_TYPE.person)) {
+                                  navigate('/clients/physical/create')
+                              } else {
+                                  navigate('/clients/juridical/create')
+                              }
+                          }} green url className={'ml-15'}>{t("Add")}</Button></>}>
                         {isEqual(get(pledger, 'type'), PERSON_TYPE.person) ? <Row className={'mt-15'}>
                             <Col xs={4}>
                                 <Field params={{required: true}} type={'input-mask'} name={`person.seria`} property={{

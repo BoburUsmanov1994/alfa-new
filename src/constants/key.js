@@ -187,4 +187,5 @@ export const KEYS = {
     smrDistribute: 'smrDistribute',
     getCadastrInfo: 'getCadastrInfo',
     agentCommission: 'agentCommission',
+    file: 'file',
 }

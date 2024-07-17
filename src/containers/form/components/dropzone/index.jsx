@@ -1,13 +1,15 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import {get} from "lodash";
 import {ErrorMessage} from "@hookform/error-message";
 import Label from "../../../../components/ui/label";
 import classNames from "classnames";
 import Dropzone from 'react-dropzone'
-import {Paperclip} from "react-feather";
-import {usePostQuery} from "../../../../hooks/api";
+import {Paperclip, X} from "react-feather";
+import {useDeleteQuery, usePostQuery} from "../../../../hooks/api";
 import {URLS} from "../../../../constants/url"
+import config from "../../../../config";
+import {KEYS} from "../../../../constants/key";
 
 const Styled = styled.div`
   .form-input {
@@ -69,7 +71,9 @@ const CustomDropzone = ({
                             },
                             ...rest
                         }) => {
-    const {mutate: uploadFile, isLoading} = usePostQuery({listKeyId: get(property, 'key')})
+    const [file,setFile] = useState(null)
+    const {mutate: uploadFile, isLoading} = usePostQuery({listKeyId: KEYS.file})
+    const {mutate: deleteFile, isLoading:isLoadingDelete} = useDeleteQuery({listKeyId: KEYS.file})
 
     useEffect(() => {
         setValue(name, defaultValue)
@@ -80,24 +84,25 @@ const CustomDropzone = ({
     }, [watch(name)]);
 
     const upload = (files) => {
-        // const formData = new FormData();
-        // formData.append('file', files[0]);
+        const formData = new FormData();
+        formData.append('file', files[0]);
         setValue(name, files[0])
 
-        // uploadFile({
-        //     url: get(property, 'url', URLS.contractform), attributes: formData, config: {
-        //         headers: {
-        //             'content-type': 'multipart/form-data'
-        //         }
-        //     }
-        // }, {
-        //     onSuccess: ({data}) => {
-        //         setValue(name, get(data, 'data._id'))
-        //     },
-        //     onError: () => {
-        //
-        //     }
-        // })
+        uploadFile({
+            url: get(property, 'url', URLS.file), attributes: formData, config: {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+        }, {
+            onSuccess: ({data}) => {
+                setFile(data)
+                setValue(name, get(data, '_id'))
+            },
+            onError: () => {
+
+            }
+        })
     }
     return (
         <Styled {...rest}>
@@ -111,6 +116,14 @@ const CustomDropzone = ({
                                 <input {...getInputProps()} />
                                 <button type={'button'}><span>Прикрепить файл</span> <Paperclip size={18}/></button>
                             </div>
+                            {get(file,'path') && <div style={{marginTop:'10px'}}>
+                                <img src={`${config.FILE_URL}/${get(file,'path')}`} alt="" width={280} height={90} style={{objectFit:'cover'}}/>
+                                <X onClick={()=>{
+                                    deleteFile({url: `${URLS.file}/${get(file,"_id")}`})
+                                    setFile(null)
+                                    setValue(name, null)
+                                }} style={{position:'absolute',cursor:'pointer'}} size={28} color={'red'}/>
+                            </div>}
                         </section>
                     )}
                 </Dropzone>

@@ -46,7 +46,6 @@ const StepFour = ({id = null, ...props}) => {
                 onSuccess: () => {
                     resetAgreement();
                     navigate('/agreements')
-
                 },
                 onError: () => {
 

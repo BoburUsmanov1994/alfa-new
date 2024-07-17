@@ -18,6 +18,7 @@ import {Trash2} from "react-feather";
 
 const StepThree = ({...props}) => {
     const [fields, setFields] = useState({})
+    const [agentId, setAgentId] = useState(null)
     const {t} = useTranslation()
     const user = useStore(state => get(state, 'user'))
 
@@ -36,12 +37,14 @@ const StepThree = ({...props}) => {
     const agreement = useSettingsStore(state => get(state, 'agreement', {}))
     const commissions = useSettingsStore(state => get(state, 'commissions', []))
 
-    let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.agents}/list`,params:{
-        params:{
-            branch: get(user, 'branch._id'),
-            limit:100
+    let {data: agents} = useGetAllQuery({
+        key: ['agents-list'], url: `${URLS.agents}/list`, params: {
+            params: {
+                branch: get(user, 'branch._id'),
+                limit: 100
+            }
         }
-        }})
+    })
     agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', ['organization.nameoforganization', 'person.secondname', 'person.name'])
 
     const nextStep = ({data}) => {
@@ -57,7 +60,18 @@ const StepThree = ({...props}) => {
         resetAgreement();
         props.firstStep();
     }
-
+    const {data: commissionList, isLoading: isLoadingCommissionList} = useGetAllQuery({
+        key: KEYS.agentCommission, url: `${URLS.agentCommission}/list`,
+        params: {
+            params: {
+                product: get(agreement, 'product._id'),
+                agent: agentId,
+                limit: 1000
+            }
+        }
+    })
+    console.log('agreement', agreement)
+    console.log('commissionList', commissionList)
 
     return (
         <Row>
@@ -153,9 +167,15 @@ const StepThree = ({...props}) => {
                                 name={`rpm.perDeductionsRPM`}
                                 type={'number-format-input'}
                                 label={'Процент отчислений в РПМ'}
+                                // params={{
+                                //     required:true,
+                                //     max: {value: get(head(get(commissionList,'data.data',[])),'rpm.maximumPercent',100), message: t(" max value should be ") + get(head(get(commissionList,'data.data',[])),'rpm.maximumPercent',100)},
+                                //     min: {value: get(head(get(commissionList,'data.data',[])),'rpm.minimumPercent',0), message: t(" min value should be ") + get(head(get(commissionList,'data.data',[])),'rpm.minimumPercent',0)},
+                                // }}
                                 property={{
                                     placeholder: 'ввод значения',
-                                    suffix: '%'
+                                    suffix: '%',
+                                    // disabled:!get(head(get(commissionList,'data.data',[])),'rpm.allowChangePercents',false)
                                 }}
                             />
                         </Col>
@@ -198,32 +218,39 @@ const StepThree = ({...props}) => {
                                     options={agents}
                                     type={'select'}
                                     name={`agent`}
+                                    property={{
+                                        onChange: (val) => setAgentId(val)
+                                    }}
                                 />
                             </Col>
 
                             <Col xs={4}>
                                 <Field type={'number-format-input'}
                                        name={`percentageRemuneration`}
+                                       params={{
+                                           max: {value: get(head(get(commissionList,'data.data',[])),'commission.maximumPercent',100), message: t(" max value should be ") + get(head(get(commissionList,'data.data',[])),'commission.maximumPercent',100)},
+                                           min: {value: get(head(get(commissionList,'data.data',[])),'commission.minimumPercent',0), message: t(" min value should be ") + get(head(get(commissionList,'data.data',[])),'commission.minimumPercent',0)},
+                                       }}
                                        property={{suffix: '%'}}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field property={{disabled:true}} type={'number-format-input'}
+                                <Field property={{disabled: true}} type={'number-format-input'}
                                        name={`accruedCommissionAmount`}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field  property={{disabled:true}} type={'number-format-input'}
+                                <Field property={{disabled: true}} type={'number-format-input'}
                                        name={`paidcommissionAmount`}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field property={{disabled:true}} type={'input'}
+                                <Field property={{disabled: true}} type={'input'}
                                        name={`accruedCommissionRefund`}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field property={{disabled:true}} type={'input'}
+                                <Field property={{disabled: true}} type={'input'}
                                        name={`returnedCommission`}
                                 />
                             </Col>
