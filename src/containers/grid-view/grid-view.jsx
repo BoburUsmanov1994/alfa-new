@@ -82,7 +82,7 @@ const GridView = ({
                       isFormData = false,
                       dataKey = '_id',
                       deleteUrl = null,
-                      extraActions=<></>
+                      extraActions=()=>{}
                   }) => {
     const navigate = useNavigate()
     const {t} = useTranslation()

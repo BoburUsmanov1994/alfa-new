@@ -5,7 +5,7 @@ import {ErrorMessage} from "@hookform/error-message";
 import Label from "../../../../components/ui/label";
 import classNames from "classnames";
 import Dropzone from 'react-dropzone'
-import {Paperclip, X} from "react-feather";
+import {Download, Paperclip, Upload, X} from "react-feather";
 import {useDeleteQuery, usePostQuery} from "../../../../hooks/api";
 import {URLS} from "../../../../constants/url"
 import config from "../../../../config";
@@ -116,13 +116,13 @@ const CustomDropzone = ({
                                 <input {...getInputProps()} />
                                 <button type={'button'}><span>Прикрепить файл</span> <Paperclip size={18}/></button>
                             </div>
-                            {get(file,'path') && <div style={{marginTop:'10px'}}>
-                                <img src={`${config.FILE_URL}/${get(file,'path')}`} alt="" width={280} height={90} style={{objectFit:'cover'}}/>
+                            {get(file,'path') && <div style={{marginTop:'10px',position:'relative',paddingTop:'5px'}}>
+                                <a target={"_self"} href={`${config.FILE_URL}/${get(file,'path')}`} style={{display:'flex',alignItems:'center'}}><Download size={22} color={'blue'} /><span style={{marginLeft:'8px'}}>{get(file,'filename')}</span></a>
                                 <X onClick={()=>{
                                     deleteFile({url: `${URLS.file}/${get(file,"_id")}`})
                                     setFile(null)
                                     setValue(name, null)
-                                }} style={{position:'absolute',cursor:'pointer'}} size={28} color={'red'}/>
+                                }} style={{position:'absolute',cursor:'pointer',top:0,right:0}} size={28} color={'red'}/>
                             </div>}
                         </section>
                     )}
