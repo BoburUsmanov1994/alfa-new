@@ -39,49 +39,8 @@ const AgentsReportContainer = () => {
         }
     ], [])
 
-    let {data: branches} = useGetAllQuery({
-        key: KEYS.branches,
-        url: `${URLS.branches}/list`,
-    });
-    branches = getSelectOptionsListFromData(
-        get(branches, `data.data`, []),
-        "_id",
-        "branchName"
-    );
-    let {data: groups} = useGetAllQuery({key: KEYS.groupsofproducts, url: `${URLS.groupsofproducts}/list`})
-    groups = getSelectOptionsListFromData(get(groups, `data.data`, []), '_id', 'name')
-
-    let {data: subGroups} = useGetAllQuery({
-        key: KEYS.subgroupsofproductsFilter,
-        url: URLS.subgroupsofproductsFilter,
-        params: {
-            params: {
-                group: productGroupId
-            }
-        },
-        enabled: !!productGroupId
-    })
-    subGroups = getSelectOptionsListFromData(get(subGroups, `data.data`, []), '_id', 'name')
-    let {data: products} = useGetAllQuery({
-        key: [KEYS.productsfilter, productSubGroupId],
-        url: URLS.products,
-        params: {
-            params: {
-                subGroup: productSubGroupId
-            }
-        },
-        enabled: !!productSubGroupId
-    })
-    const productsList = getSelectOptionsListFromData(get(products, `data.data`, []), '_id', 'name')
-    const {data: agents, isLoading: isLoadingAgents} = useGetAllQuery({
-        key: KEYS.agents, url: `${URLS.agents}/list`,
-        params: {
-            params: {
-                branch: get(user, 'branch._id'),
-                limit: 1000
-            }
-        }
-    })
+    let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.agents}/list`})
+    agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', ['organization.nameoforganization', 'person.secondname', 'person.name'])
     const {data: commissionList, isLoading: isLoadingCommissionList} = useGetAllQuery({
         key: KEYS.agentCommission, url: `${URLS.agentCommission}/list`,
         params: {
@@ -122,27 +81,8 @@ const AgentsReportContainer = () => {
                         <Form>
                             <Row>
                                 <Col xs={3}>
-                                    <Field type={'select'} name={'branch'} options={branches} label={t("Branch")}
-                                           defaultValue={get(user, 'branch._id')} disabled/>
-                                </Col>
-                                <Col xs={3}>
-                                    <Field label={t('Выберите категорию')} options={groups} type={'select'}
-                                           name={'group'}
-                                           property={{onChange: (val) => setProductGroupId(val)}}
-                                    />
-                                </Col>
-                                <Col xs={3}>
-                                    <Field label={t('Выберите подкатегорию')} options={subGroups} type={'select'}
-                                           name={'subGroup'}
-                                           property={{onChange: (val) => setProductSubGroupId(val)}}
-                                    />
-                                </Col>
-                                <Col xs={3}>
-                                    <Field label={t('Выберите продукта')} options={productsList} type={'select'}
-                                           name={'product'} params={{required: true}}
-                                           property={{onChange: (val) => setProductId(val)}}
-
-                                    />
+                                    <Field type={'select'} name={'agent'} options={agents} label={t("Agent")}
+                                           defaultValue={get(user, 'agent._id')} />
                                 </Col>
                             </Row>
                         </Form>
