@@ -54,7 +54,7 @@ const StyledButton = styled.button`
 
 const Button = ({...rest}) => {
   return (
-      <StyledButton {...rest} />
+      <StyledButton  {...rest} />
   );
 };
 

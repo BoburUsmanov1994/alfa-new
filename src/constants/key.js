@@ -189,4 +189,7 @@ export const KEYS = {
     agentCommission: 'agentCommission',
     file: 'file',
     agentAgreement: 'agentAgreement',
+    policyByAgent: 'policyByAgent',
+    agentAct: 'agentAct',
+    agentActList: 'agentActList',
 }

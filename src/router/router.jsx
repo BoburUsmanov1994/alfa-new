@@ -50,6 +50,7 @@ import AccountPage from "../modules/accounting/pages/AccountPage";
 import BcoActStatusPage from "../modules/bco/pages/BcoActStatusPage";
 import TransactionLogsPage from "../modules/accounting/pages/TransactionLogsPage";
 import AgentsReportPage from "../modules/agents/pages/AgentsReportPage";
+import AgentsReportControlPage from "../modules/agents/pages/AgentsReportControlPage";
 //lazy load
 const TypeObjectPage = lazy(() => import("../modules/handbook/pages/TypeObjectPage"));
 const ObjectPage = lazy(() => import("../modules/handbook/pages/ObjectPage"));
@@ -185,6 +186,7 @@ const Router = ({...rest}) => {
                                 <Route path={"bank/create"} element={<BankCreatePage/>}/>
                                 <Route path={"commission"} element={<AgentsComissionPage/>}/>
                                 <Route path={"report"} element={<AgentsReportPage/>}/>
+                                <Route path={"report-control"} element={<AgentsReportControlPage/>}/>
                             </Route>
                             <Route path={"accounting"}>
                                 <Route path={"import-payment-documents"} element={<ImportPaymentDocumentsPage/>}/>

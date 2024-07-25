@@ -193,4 +193,11 @@ export const URLS = {
     agentCommission: 'api/agent/commission',
     file: 'api/file',
     agentAgreement: 'api/agent/agreement',
+    policyByAgent: 'api/policy/byAgent',
+    agentAct: 'api/agent/act',
+    agentActBlank: 'api/agent/act/blank',
+    agentActReport: 'api/agent/act/report',
+    agentActBordero: 'api/agent/act/bordero',
+    agentActStatus: 'api/agent/act/status',
+    agentActList: 'api/agent/act/list',
 }

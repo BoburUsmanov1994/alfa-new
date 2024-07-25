@@ -98,6 +98,11 @@ export const menuData = [
                 title: 'Подготовка актов выполненных работ',
                 path: '/agents/report',
             },
+            {
+                id: 8,
+                title: 'Управления актами выполненных работ',
+                path: '/agents/report-control',
+            },
         ]
     },
     {
