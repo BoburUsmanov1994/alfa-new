@@ -110,10 +110,12 @@ const ListContainer = ({...rest}) => {
                 title={t('СМР')}
                 responseDataKey={'data.docs'}
                 viewUrl={'/insurance/smr/view'}
+                updateUrl={'/insurance/smr/update'}
                 isHideColumn
                 dataKey={'contract_id'}
                 deleteUrl={URLS.smrDelete}
                 hideCreateBtn={true}
+                hasUpdateBtn
                 params={{
                     branch:get(user,'branch.id')
                 }}
