@@ -84,31 +84,6 @@ const StepFour = ({id = null, ...props}) => {
     }
 
 
-    const addTariff = () => {
-        let result = [];
-        let {...rest} = tarif;
-        if (!isNil(get(tarif, "tariff.agent"))) {
-            const res = tariffList.filter(t => !isEqual(get(t, "tariff[0].agent"), get(rest, "tariff[0].agent")));
-            result = [...res, rest]
-            setTariffList(result)
-            setTarif({
-                ...tarif,
-                tariffPerClass: get(tarif, 'tariff.tariffPerClass', []).map(({class: classes, min, max}) => ({
-                    classes,
-                    min: 0,
-                    max: 0
-                }))
-            })
-        } else {
-            toast.warn("Select all fields")
-        }
-
-    }
-
-    const removeTariffFromList = (i) => {
-        setTariffList(prev => prev.filter((f, j) => !isEqual(i, j)))
-    }
-
 
     return (
         <Row>
@@ -140,9 +115,6 @@ const StepFour = ({id = null, ...props}) => {
                                            property={{placeholder: 'Введите значение'}}
                                     />
                                 </Col>
-                                {/*<Col xs={3} className={'text-right'}>*/}
-                                {/*    <Button onClick={addTariff} type={'button'} className={'mb-25'}>Применить</Button>*/}
-                                {/*</Col>*/}
                             </Row>
                         </Col>
                         {get(product, 'riskData', []).length > 0 && <Col xs={12} className={'mb-25'}>

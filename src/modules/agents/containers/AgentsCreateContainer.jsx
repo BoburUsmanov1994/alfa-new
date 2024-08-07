@@ -24,11 +24,12 @@ import { useSettingsStore } from "../../../store";
 import { getSelectOptionsListFromData } from "../../../utils";
 
 const AgentsCreateContainer = () => {
-  const [fields, setFields] = useState({ riskOptions: [] });
-  const [otherParams, setOtherParams] = useState({});
   const [tarif, setTarif] = useState({});
   const [tariffList, setTariffList] = useState([]);
   const navigate = useNavigate();
+  const [productGroupId, setProductGroupId] = useState(null);
+  const [productSubGroupId, setProductSubGroupId] = useState(null);
+  const [productId, setProductId] = useState(null);
   const { t } = useTranslation();
   const [personType, setPersonType] = useState(null);
   const [region, setregion] = useState(null);
@@ -43,7 +44,30 @@ const AgentsCreateContainer = () => {
       setregion(val);
     }
   };
+  let {data: groups} = useGetAllQuery({key: KEYS.groupsofproducts, url: `${URLS.groupsofproducts}/list`})
+  groups = getSelectOptionsListFromData(get(groups, `data.data`, []), '_id', 'name')
 
+  let {data: subGroups} = useGetAllQuery({
+    key: [KEYS.subgroupsofproductsFilter, productGroupId],
+    url: URLS.subgroupsofproductsFilter,
+    params: {
+      params: {
+        group: productGroupId
+      }
+    },
+    enabled: !!productGroupId
+  })
+  subGroups = getSelectOptionsListFromData(get(subGroups, `data.data`, []), '_id', 'name')
+  let {data: productsList} = useGetAllQuery({
+    key: [KEYS.productsfilter, productSubGroupId],
+    url: URLS.products,
+    params: {
+      params: {
+        subGroup: productSubGroupId
+      }
+    },
+    enabled: !!productSubGroupId
+  })
   const product = useSettingsStore((state) => get(state, "product", {}));
   let { data: branches } = useGetAllQuery({
     key: KEYS.branches,
@@ -133,12 +157,8 @@ const AgentsCreateContainer = () => {
 
   //
 
-  let { data: products } = useGetAllQuery({
-    key: ["products-list"],
-    url: `${URLS.products}`,
-  });
-  products = getSelectOptionsListFromData(
-    get(products, `data.data`, []),
+  let products = getSelectOptionsListFromData(
+    get(productsList, `data.data`, []),
     "_id",
     ["name"]
   );
@@ -227,6 +247,9 @@ const AgentsCreateContainer = () => {
       }
     );
   };
+
+  console.log('productList',get(productsList, `data.data`, []))
+  console.log('tariffList',tariffList)
 
   return (
     <>
@@ -392,8 +415,7 @@ const AgentsCreateContainer = () => {
                 <Col xs={4}>
                   <Field
                     name={"person.typeofdocument"}
-                    type={"select"}
-                    options={documentTypeList}
+                    type={"dropzone"}
                     label={"typeofdocument"}
                     params={{ required: true }}
                   />
@@ -647,6 +669,18 @@ const AgentsCreateContainer = () => {
             <Col xs={12}>
               <Row align={"flex-end"}>
                 <Col xs={3}>
+                  <Field label={t('Выберите категорию')} options={groups} type={'select'}
+                         name={'group'}
+                         property={{onChange: (val) => setProductGroupId(val)}}
+                  />
+                </Col>
+                <Col xs={3}>
+                  <Field label={t('Выберите подкатегорию')} options={subGroups} type={'select'}
+                         name={'subGroup'}
+                         property={{onChange: (val) => setProductSubGroupId(val)}}
+                  />
+                </Col>
+                <Col xs={3}>
                   <Field
                     label={"Продукты"}
                     type={"select"}
@@ -656,6 +690,7 @@ const AgentsCreateContainer = () => {
                     params={{
                       required: get(product, "riskData", []).length > 0,
                     }}
+                    property={{onChange: (val) => setProductId(val)}}
                   />
                 </Col>
                 <Col xs={3}>
@@ -663,11 +698,7 @@ const AgentsCreateContainer = () => {
                     label={"Разрешить заключение договоров"}
                     type={"switch"}
                     name={"tariff[0].allowAgreement"}
-                    defaultValue={get(
-                      product,
-                      "tariff[0].allowAgreement",
-                      false
-                    )}
+                    defaultValue={get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),productId)),'tariff.allowAgreement',false)}
                   />
                 </Col>
                 <Col xs={3}>
@@ -675,11 +706,11 @@ const AgentsCreateContainer = () => {
                     label={"Лимит ответственности"}
                     type={"number-format-input"}
                     name={"tariff[0].limitOfAgreement"}
-                    defaultValue={get(product, "tariff[0].limitOfAgreement", 0)}
+                    defaultValue={get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),productId)),'tariff.limitOfAgreement',0)}
                     property={{ placeholder: "Введите значение" }}
                   />
                 </Col>
-                <Col xs={3} className={"text-right"}>
+                <Col xs={3}>
                   <Button
                     onClick={addTariff}
                     type={"button"}
@@ -690,85 +721,7 @@ const AgentsCreateContainer = () => {
                 </Col>
               </Row>
             </Col>
-            {get(product, "riskData", []).length > 0 && (
-              <Col xs={12} className={"mb-25"}>
-                <hr />
-                <Table
-                  hideThead={false}
-                  thead={[
-                    "Класс",
-                    "минимальную и  ставку по классу ",
-                    "максимальную ставку по классу",
-                  ]}
-                >
-                  {get(product, "riskData", []).map((item, i) => (
-                    <tr key={i + 1}>
-                      <td>
-                        <Field
-                          name={`tariff[0].tariffPerClass[${i}].class`}
-                          type={"select"}
-                          property={{
-                            hideLabel: true,
-                            bgColor: get(
-                              findItem(
-                                get(classes, "data.data"),
-                                get(item, "_id")
-                              ),
-                              "color"
-                            ),
-                          }}
-                          options={classOptions}
-                          defaultValue={get(
-                            findItem(
-                              get(classes, "data.data"),
-                              get(item, "classeId")
-                            ),
-                            "_id"
-                          )}
-                          isDisabled={true}
-                        />
-                      </td>
-                      <td>
-                        <Flex justify={"center"}>
-                          <Field
-                            name={`tariff[0].tariffPerClass[${i}].min`}
-                            type={"number-format-input"}
-                            property={{
-                              hideLabel: true,
-                              placeholder: "Мин",
-                              suffix: " %",
-                            }}
-                            defaultValue={get(
-                              product,
-                              `tariff[0].tariffPerClass[${i}].min`,
-                              0
-                            )}
-                          />
-                        </Flex>
-                      </td>
-                      <td>
-                        <Flex justify={"flex-end"}>
-                          <Field
-                            name={`tariff[0].tariffPerClass[${i}].max`}
-                            type={"number-format-input"}
-                            property={{
-                              hideLabel: true,
-                              placeholder: "Макс",
-                              suffix: " %",
-                            }}
-                            defaultValue={get(
-                              product,
-                              `tariff[0].tariffPerClass[${i}].max`,
-                              0
-                            )}
-                          />
-                        </Flex>
-                      </td>
-                    </tr>
-                  ))}
-                </Table>
-              </Col>
-            )}
+
             {tariffList.length > 0 && (
               <Col xs={12} className={"horizontal-scroll"}>
                 <hr />
@@ -828,7 +781,7 @@ const AgentsCreateContainer = () => {
                         />
                       </td>
                       <td colSpan={3}>
-                        {get(item, `tariff[0].tariffPerClass`, []).map(
+                        {get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),get(item,'tariff[0].product'))),'tariff.tariffPerClass',[]).map(
                           (c, j) => (
                             <Flex>
                               <Field
@@ -856,7 +809,7 @@ const AgentsCreateContainer = () => {
                                   ),
                                   "_id"
                                 )}
-                                isDisabled={true}
+                                // isDisabled={true}
                               />
                               <Field
                                 key={j}
@@ -867,7 +820,7 @@ const AgentsCreateContainer = () => {
                                 }].tariffPerClass[${j}].max`}
                                 defaultValue={get(c, "max", 0)}
                                 property={{
-                                  disabled: true,
+                                  // disabled: true,
                                   placeholder: "Введите значение",
                                   hideLabel: true,
                                 }}
@@ -881,7 +834,7 @@ const AgentsCreateContainer = () => {
                                 }].tariffPerClass[${j}].min`}
                                 defaultValue={get(c, "min", 0)}
                                 property={{
-                                  disabled: true,
+                                  // disabled: true,
                                   placeholder: "Введите значение",
                                   hideLabel: true,
                                 }}

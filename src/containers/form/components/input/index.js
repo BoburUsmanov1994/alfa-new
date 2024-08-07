@@ -1,6 +1,6 @@
 import React,{useEffect} from 'react';
 import styled from "styled-components";
-import {get, includes, isEmpty} from "lodash";
+import {get, includes, isEmpty, isEqual} from "lodash";
 import { ErrorMessage } from "@hookform/error-message";
 import Label from "../../../../components/ui/label";
 import classNames from "classnames";
@@ -55,7 +55,18 @@ const Input = ({
         <Styled {...rest}>
             <div className="form-group">
                 {!get(property,'hideLabel',false) && <Label className={classNames({required:get(property,'hasRequiredLabel',get(params,'required'))})}>{label ?? name}</Label>}
-                <input
+                {isEqual(get(property,'type'),'number') ?<input
+                    className={classNames('form-input',{error:get(errors,`${name}`,false)})}
+                    name={name}
+                    {...register(name, params)}
+                    placeholder={get(property, "placeholder")}
+                    type={'number'}
+                    disabled={get(property, "disabled")}
+                    defaultValue={defaultValue}
+                    min={get(property,'min',0)}
+                    max={get(property,'max',100)}
+                    step={0.01}
+                />:<input
                     className={classNames('form-input',{error:get(errors,`${name}`,false)})}
                     name={name}
                     {...register(name, params)}
@@ -63,7 +74,7 @@ const Input = ({
                     type={get(property, "type", "text")}
                     disabled={get(property, "disabled")}
                     defaultValue={defaultValue}
-                />
+                />}
                 <ErrorMessage
                     errors={errors}
                     name={name}

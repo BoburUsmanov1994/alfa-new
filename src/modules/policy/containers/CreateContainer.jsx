@@ -143,7 +143,7 @@ const CreateContainer = ({
                             <Col xs={4}>
                                 <Field
                                     isMulti
-                                    type={'select'}
+                                    type={'dropzone'}
                                     name={`documents`}
                                     options={documents}
                                 />

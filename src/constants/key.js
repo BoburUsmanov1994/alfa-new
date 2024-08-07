@@ -192,4 +192,5 @@ export const KEYS = {
     policyByAgent: 'policyByAgent',
     agentAct: 'agentAct',
     agentActList: 'agentActList',
+    showFile: 'showFile',
 }

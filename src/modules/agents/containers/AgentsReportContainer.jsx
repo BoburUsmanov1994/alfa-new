@@ -40,7 +40,15 @@ const AgentsReportContainer = () => {
         }
     ], [])
 
-    let {data: agents} = useGetAllQuery({key: ['agents-list'], url: `${URLS.agents}/list`})
+    let {data: agents} = useGetAllQuery({
+        key: ['agents-list'],
+        params: {
+            params:{
+                branch: get(user, 'branch._id')
+            }
+        },
+        url: `${URLS.agents}/list`
+    })
     agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', ['organization.nameoforganization', 'person.secondname', 'person.name'])
     const {data: policyByAgentList, isLoading: isLoadingPolicyByAgentList} = useGetAllQuery({
         key: KEYS.policyByAgent, url: `${URLS.policyByAgent}`,

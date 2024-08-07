@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {Row, Col} from "react-grid-system";
 import Section from "../../../components/section";
 import Title from "../../../components/ui/title";
-import {get, includes, isEqual, isNil, sumBy} from "lodash";
+import {get, head, includes, isEqual, isNil, sumBy} from "lodash";
 import {useDeleteQuery, useGetAllQuery, useGetOneQuery, usePostQuery, usePutQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
@@ -20,6 +20,7 @@ import Form from "../../../containers/form/form";
 import Field from "../../../containers/form/field";
 import Modal from "../../../components/modal";
 import Checkbox from "rc-checkbox";
+import FilePreview from "../../../components/file-preview";
 
 const AgentViewContainer = ({...rest}) => {
     const {t} = useTranslation();
@@ -261,10 +262,10 @@ const AgentViewContainer = ({...rest}) => {
                                                           value={get(item, "insurancePremium")}/></td>
                                         <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                                           value={get(item, "attachedSum")}/></td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
+                                        <td><FilePreview fileId={head(get(item,'documents',[]))} /></td>
+                                        <td><FilePreview fileId={head(get(item,'documents',[]))} /></td>
+                                        <td><FilePreview fileId={head(get(item,'documents',[]))} /></td>
+                                        <td><FilePreview fileId={head(get(item,'documents',[]))} /></td>
                                         <td>{get(item, "fondStatus")}</td>
 
                                         <td className={''}

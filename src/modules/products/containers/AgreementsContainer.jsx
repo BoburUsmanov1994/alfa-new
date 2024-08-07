@@ -21,9 +21,22 @@ const AgreementsContainer = ({...rest}) => {
             path: '/agreements',
         },
     ], [])
+    const resetInsurer = useSettingsStore(state => get(state, 'resetInsurer', () => {
+    }))
+    const resetBeneficiary = useSettingsStore(state => get(state, 'resetBeneficiary', () => {
+    }))
+    const resetAgreement = useSettingsStore(state => get(state, 'resetAgreement', () => {
+    }))
+    const resetPledger = useSettingsStore(state => get(state, 'resetPledger', () => {
+    }))
+
 
     useEffect(() => {
         setBreadcrumbs(breadcrumbs)
+        resetInsurer()
+        resetBeneficiary()
+        resetAgreement()
+        resetPledger()
     }, [])
 
     return (

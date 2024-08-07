@@ -200,4 +200,5 @@ export const URLS = {
     agentActBordero: 'api/agent/act/bordero',
     agentActStatus: 'api/agent/act/status',
     agentActList: 'api/agent/act/list',
+    showFile: 'api/file/show',
 }

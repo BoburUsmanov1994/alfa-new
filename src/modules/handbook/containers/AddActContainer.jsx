@@ -113,7 +113,8 @@ const AddActContainer = ({...rest}) => {
     if (bcoStatusListIsLoading || isLoadingBranches || isLoadingBcoList) {
         return <OverlayLoader/>
     }
-    console.log(formParams)
+    console.log(bcoListData,'bcoListData')
+    console.log(bcoListSelect,'bcoListSelect')
     return (
         <>
             {
@@ -183,7 +184,7 @@ const AddActContainer = ({...rest}) => {
                                                thead={['№', 'Тип полиса', 'Начальный №', 'Конечный №', 'Action']}>{bcoListData.map((item, i) =>
                                             <tr key={get(item, '_id')}>
                                                 <td>{i + 1}</td>
-                                                <td>{get(item, 'bco_type', '-')}</td>
+                                                <td>{get(find(bcoListSelect,(_item)=>isEqual(get(_item,'value'),get(item, 'bco_type'))),'label','-')}</td>
                                                 <td>{get(item, 'policy_blank_number_from')}</td>
                                                 <td>{get(item, 'policy_blank_number_to')}</td>
                                                 <td>

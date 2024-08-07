@@ -22,6 +22,7 @@ import {PERSON_TYPE} from "../../../../constants";
 import config from "../../../../config";
 import {request} from "../../../../services/api";
 import {useNavigate} from "react-router-dom";
+import FilePreview from "../../../../components/file-preview";
 
 const StepOne = ({id = null, ...props}) => {
     const {t} = useTranslation()
@@ -225,7 +226,7 @@ const StepOne = ({id = null, ...props}) => {
             toast.warn('Select pledger')
         }
     }
-    console.log('product', product)
+
 
     return (
         <Row>
@@ -294,28 +295,22 @@ const StepOne = ({id = null, ...props}) => {
                                     <Col xs={4}>
                                         {get(product, 'applicationForm._id') && <>
                                             <span>Форма анкеты</span>
+<FilePreview fileId={get(product, 'applicationForm._id')} />
 
-                                            <Download className={'cursor-pointer mr-8'}
-                                                      onClick={() => request.get(`${URLS.applicationForm}/file/${get(product, 'applicationForm._id')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
-                                                      color={'#13D6D1'}/>
                                         </>}
 
                                     </Col>
                                     <Col xs={4}>
                                         {get(product, 'contractForm._id') && <>
                                             <span>Договор</span>
-                                            <Download className={'cursor-pointer mr-8'}
-                                                      onClick={() => request.get(`${URLS.contractForm}/file/${get(product, 'contractForm._id')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
-                                                      color={'#13D6D1'}/>
+                                            <FilePreview fileId={get(product, 'contractForm._id')} />
                                         </>}
 
                                     </Col>
                                     <Col xs={4}>
                                         {get(product, 'additionalDocuments._id') && <>
                                             <span>Приложения</span>
-                                            <Download className={'cursor-pointer mr-8'}
-                                                      onClick={() => request.get(`${URLS.additionaldocuments}/file/${get(product, 'additionalDocuments._id')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
-                                                      color={'#13D6D1'}/>
+                                            <FilePreview fileId={get(product, 'additionalDocuments._id')} />
                                         </>}
                                     </Col>
                                 </Row>
@@ -383,7 +378,7 @@ const StepOne = ({id = null, ...props}) => {
                                 </Col>
                             </Row>
                         </Col>
-                        {get(product, 'hasFixedBeneficary', false) && <><Col xs={12} className={'mb-15'}>
+                        {get(product, 'hasBeneficary', false) && <><Col xs={12} className={'mb-15'}>
                             <Title>{t("Выгодоприобритатель")}</Title>
                         </Col>
                             <Col xs={12}>

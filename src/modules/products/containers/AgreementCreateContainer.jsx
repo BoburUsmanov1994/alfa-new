@@ -38,8 +38,6 @@ const AgreementCreateContainer = ({ ...rest }) => {
     setBreadcrumbs(breadcrumbs);
   }, []);
 
-  const product = useSettingsStore((state) => get(state, "product", {}));
-  console.log("Product", product);
 
   return (
     <>

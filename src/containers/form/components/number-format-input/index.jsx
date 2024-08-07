@@ -68,7 +68,7 @@ const NumberFormatInput = ({
     //        getValueFromField(defaultValue, name);
     //    }
     // }, [defaultValue]);
-    console.log('errors',errors)
+    console.log('errors',errors,name)
     return (
         <Styled {...rest}>
             <div className="form-group">

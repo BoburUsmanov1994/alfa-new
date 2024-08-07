@@ -165,17 +165,16 @@ const StepThree = ({...props}) => {
                         <Col xs={3}>
                             <Field
                                 name={`rpm.perDeductionsRPM`}
-                                type={'number-format-input'}
+                                type={'input'}
                                 label={'Процент отчислений в РПМ'}
-                                // params={{
-                                //     required:true,
-                                //     max: {value: get(head(get(commissionList,'data.data',[])),'rpm.maximumPercent',100), message: t(" max value should be ") + get(head(get(commissionList,'data.data',[])),'rpm.maximumPercent',100)},
-                                //     min: {value: get(head(get(commissionList,'data.data',[])),'rpm.minimumPercent',0), message: t(" min value should be ") + get(head(get(commissionList,'data.data',[])),'rpm.minimumPercent',0)},
-                                // }}
+                                params={{
+                                    required:true
+                                }}
                                 property={{
+                                    type:'number',
                                     placeholder: 'ввод значения',
-                                    suffix: '%',
-                                    // disabled:!get(head(get(commissionList,'data.data',[])),'rpm.allowChangePercents',false)
+                                    max:get(head(get(commissionList,'data.data',[])),'rpm.maximumPercent',100) || 100,
+                                    min:get(head(get(commissionList,'data.data',[])),'rpm.minimumPercent',0) || 0
                                 }}
                             />
                         </Col>
