@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
 import styled from "styled-components";
 import {NavLink} from "react-router-dom";
-import {get, isEqual} from "lodash";
-import {menuData} from "../../constants/menu";
+import {filter, get, isEqual} from "lodash";
 import {ChevronRight, ChevronDown} from 'react-feather';
 import classNames from "classnames";
 import {useTranslation} from "react-i18next";
+import {useStore} from "../../store";
+import {menuData} from "../../constants/menu";
 
 const StyledMenu = styled.div`
-  //padding-top: 15px;
+
 `;
 
 const StyledMenuLink = styled(NavLink)`
@@ -74,6 +75,8 @@ const StyledSubMenuLink = styled(NavLink)`
   }
 `;
 const Menu = ({...rest}) => {
+    const user = useStore(state => get(state, 'user', null))
+
     const [active, setActive] = useState(null);
     const {t} = useTranslation();
     const showSubMenu = (id) => {
@@ -81,7 +84,7 @@ const Menu = ({...rest}) => {
     }
     return (
         <StyledMenu {...rest}>
-            {menuData && menuData.map((menu, i) => <><StyledMenuLink
+            {menuData(get(user,'role.name')) && menuData(get(user,'role.name')).filter(item=>item).map((menu, i) => <><StyledMenuLink
                 key={get(menu, 'id', i)}
                 onClick={(e) => {
                     if (get(menu, 'submenu')) e.preventDefault();
@@ -98,7 +101,7 @@ const Menu = ({...rest}) => {
                 </span>}
             </StyledMenuLink>
                     {
-                        isEqual(active, get(menu, 'id')) && get(menu,'submenu') && get(menu,'submenu',[]).map(
+                        isEqual(active, get(menu, 'id')) && get(menu,'submenu') && filter(get(menu,'submenu',[]),_item=>_item).map(
                             (submenu,j) => <StyledSubMenuLink to={get(submenu,'path','#')} key={get(submenu,'id',j)}>
                                 {t(get(submenu,'title'))}
                             </StyledSubMenuLink>

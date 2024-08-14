@@ -1,10 +1,8 @@
-export const menuData = [
-    // {
-    //     id: 1,
-    //     title: 'Панель приборов',
-    //     path: '/dashboard',
-    // },
-    {
+import {includes} from "lodash";
+import config from "../config";
+
+export const menuData = (role) => [
+    includes([config.ROLES.admin],role) && {
         id: 7,
         title: 'Продукты',
         path: '/products',
@@ -31,12 +29,12 @@ export const menuData = [
             },
         ]
     },
-    {
+    includes([config.ROLES.admin],role) && {
         id: 222,
         title: 'Соглашения',
         path: '/agreements',
     },
-    {
+    includes([config.ROLES.admin],role) && {
         id: 2,
         title: 'Клиенты',
         path: '/clients',
@@ -58,7 +56,7 @@ export const menuData = [
             }
         ]
     },
-    {
+    includes([config.ROLES.admin],role) && {
         id: 8,
         title: 'Агенты',
         path: '/agents',
@@ -105,7 +103,7 @@ export const menuData = [
             },
         ]
     },
-    {
+    includes([config.ROLES.admin],role) && {
         id: 222,
         title: 'Аккаунты',
         path: '/accounts',
@@ -128,7 +126,7 @@ export const menuData = [
 
         ]
     },
-    {
+    includes([config.ROLES.admin],role) && {
         id: 111,
         title: 'Филиалы и сотрудники',
         path: '/branches',
@@ -160,7 +158,7 @@ export const menuData = [
             },
         ]
     },
-    {
+    includes([config.ROLES.admin],role) &&  {
         id: 3,
         title: 'Бухгалтерия',
         path: '/accounting',
@@ -198,9 +196,7 @@ export const menuData = [
 
         ]
     },
-
-
-    {
+    includes([config.ROLES.admin],role) && {
         id: 2,
         title: 'БСО',
         path: '/bco',
@@ -252,37 +248,37 @@ export const menuData = [
             }
         ]
     },
-    {
+    includes([config.ROLES.admin,config.ROLES.endorsement],role) && {
         id: 2222,
         title: 'Индоссамент',
         path: '/endorsement',
     },
-    {
+    includes([config.ROLES.admin,config.ROLES.osgop,config.ROLES.osgor],role) && {
         id: 300,
         title: 'Страховой',
         path: '/insurance',
         submenu: [
-            {
+            includes([config.ROLES.admin,config.ROLES.osgor],role) &&{
                 id: 1,
                 title: 'ОСГОР',
                 path: '/insurance/osgor',
             },
-            {
+            includes([config.ROLES.admin,config.ROLES.osgop],role) && {
                 id: 2,
                 title: 'ОСГОП',
                 path: '/insurance/osgop',
             },
-            {
+            includes([config.ROLES.admin],role) && {
                 id: 3,
                 title: 'ОСАГО',
                 path: '/insurance/osago',
             },
-            {
+            includes([config.ROLES.admin],role) && {
                 id: 4,
                 title: 'СМР',
                 path: '/insurance/smr',
             },
-            {
+            includes([config.ROLES.admin],role) &&{
                 id: 5,
                 title: 'СМР Распределение',
                 path: '/insurance/smr/distribute',
@@ -290,7 +286,7 @@ export const menuData = [
         ]
     },
 
-    {
+    includes([config.ROLES.admin],role) && {
         id: 10,
         title: 'Справочники',
         path: '/handbook',
@@ -471,21 +467,11 @@ export const menuData = [
                 title: 'Document type',
                 path: '/handbook/document-type',
             },
-            // {
-            //     id: 26,
-            //     title: 'Translations',
-            //     path: '/handbook/translations',
-            // },
         ]
     },
-    {
+    includes([config.ROLES.admin],role) && {
         id: 222,
         title: 'Translations',
         path: '/handbook/translations',
     },
-    // {
-    //     id: 11,
-    //     title: 'Администрирование',
-    //     path: '/settings',
-    // },
 ]

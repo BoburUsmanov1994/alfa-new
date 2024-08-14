@@ -44,33 +44,33 @@ const UsersContainer = () => {
             </Col>
             <Col xs={6}>
                 <Field name={'branch'} type={'select'} label={'Branch'} options={branchList}
-                       defaultValue={rowId ? get(data, 'branch._id') : null} />
+                       defaultValue={rowId ? get(data, 'branch') : null} />
             </Col>
             <Col xs={6}>
                 <Field name={'employee'} type={'select'} label={'Employee'} options={employeeList}
-                       defaultValue={rowId ? get(data, 'employee._id') : null} />
+                       defaultValue={rowId ? get(data, 'employee') : null} />
             </Col>
             <Col xs={6}>
                 <Field name={'agent'} type={'select'} label={'Agent'} options={agents}
-                       defaultValue={rowId ? get(data, 'agent._id') : null} />
+                       defaultValue={rowId ? get(data, 'agent') : null} />
             </Col>
             <Col xs={6}>
                 <Field name={'username'} type={'input'} label={'Username'}
                        defaultValue={rowId ? get(data, 'username') : null}
                        params={{required: true}}/>
             </Col>
-            <Col xs={6}>
+            {!rowId && <Col xs={6}>
                 <Field name={'password'} type={'input'} label={'Password'}
                        defaultValue={rowId ? get(data, 'password') : null}
                        params={{required: true}} property={{type: 'password'}}/>
-            </Col>
+            </Col>}
             <Col xs={6}>
                 <Field name={'role'} type={'select'} label={'Role'} options={roles}
-                       defaultValue={rowId ? get(data, 'role._id') : null} params={{required: true}}/>
+                       defaultValue={rowId ? get(data, 'role.') : null} params={{required: true}}/>
             </Col>
             <Col xs={6}>
                 <Field name={'status'} type={'select'} label={'Status'} options={status}
-                       defaultValue={rowId ? get(data, 'status._id') : null} params={{required: true}}/>
+                       defaultValue={rowId ? get(data, 'status') : null} params={{required: true}}/>
             </Col>
         </Row>
     </>
@@ -88,6 +88,21 @@ const UsersContainer = () => {
                         id: 3,
                         key: 'username',
                         title: 'Username',
+                    },
+                    {
+                        id: 4,
+                        key: 'branch.branchName',
+                        title: 'Branch',
+                    },
+                    {
+                        id: 4,
+                        key: 'role.name',
+                        title: 'Role',
+                    },
+                    {
+                        id: 5,
+                        key: 'status.name',
+                        title: 'Status',
                     }
                 ]}
                 keyId={KEYS.user}
@@ -96,7 +111,7 @@ const UsersContainer = () => {
                 title={t('All users')}
                 responseDataKey={'data.data'}
                 isHideColumn
-
+                hasUpdateBtn
             />
         </>
     );

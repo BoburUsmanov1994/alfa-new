@@ -5,12 +5,13 @@ import Field from "../../../containers/form/field";
 import Button from "../../../components/ui/button";
 import {usePostQuery} from "../../../hooks/api";
 import {useSettingsStore} from "../../../store";
-import {get} from "lodash";
+import {get, includes} from "lodash";
 import Swal from "sweetalert2";
 import {OverlayLoader} from "../../../components/loader";
 import {URLS} from "../../../constants/url";
 import i18next from "i18next";
 import {useTranslation} from "react-i18next";
+import config from "../../../config";
 
 const LoginContainer = ({...rest}) => {
     const {t} = useTranslation()
@@ -24,7 +25,11 @@ const LoginContainer = ({...rest}) => {
         mutate({url: URLS.login, attributes: data}, {
             onSuccess: ({data}) => {
                 setToken(get(data, 'access_token', null))
-                navigate("/products/all");
+                if(includes([config.ROLES.osgop,config.ROLES.osgor],get(data,'role'))){
+                    navigate(`/insurance/${get(data,'role')}`);
+                }else {
+                    navigate("/products/all");
+                }
                 i18next.reloadResources()
                 Swal.fire({
                     position: 'center',
