@@ -22,7 +22,7 @@ import Modal from "../../../components/modal";
 import Checkbox from "rc-checkbox";
 import FilePreview from "../../../components/file-preview";
 
-const AgentViewContainer = ({...rest}) => {
+const AgentViewContainer = () => {
     const {t} = useTranslation();
     const {id} = useParams()
     const navigate = useNavigate();

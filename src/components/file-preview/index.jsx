@@ -12,15 +12,17 @@ const Index = ({fileId}) => {
     }
 
     useEffect(() => {
-        getDownloadURL(fileId).then((res)=>{
-            setUrl(get(res,'data.path','#'))
-        })
+        if(fileId) {
+            getDownloadURL(fileId).then((res) => {
+                setUrl(get(res, 'data.path', '#'))
+            })
+        }
     }, []);
     return (
-        <a target={"_blank"}
+        <>{url ? <a target={"_blank"}
            href={`${config.FILE_URL}/${url}`}><Download
             className={'cursor-pointer mr-8'}
-            color={'#13D6D1'}/></a>
+            color={'#13D6D1'}/></a>:'-' }</>
     );
 };
 

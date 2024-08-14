@@ -38,6 +38,7 @@ const CreateContainer = ({
             params: {
                 branch: get(user, 'branch._id'),
                 employee: get(user, 'employee._id'),
+                product:get(agreementData, 'data.product._id'),
                 is_used: false
             }
         },
