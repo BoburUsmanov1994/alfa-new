@@ -66,7 +66,7 @@ const UsersContainer = () => {
             </Col>}
             <Col xs={6}>
                 <Field name={'role'} type={'select'} label={'Role'} options={roles}
-                       defaultValue={rowId ? get(data, 'role.') : null} params={{required: true}}/>
+                       defaultValue={rowId ? get(data, 'role') : null} params={{required: true}}/>
             </Col>
             <Col xs={6}>
                 <Field name={'status'} type={'select'} label={'Status'} options={status}
