@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {useStore} from "../../../store";
-import {find, get, isEqual} from "lodash";
+import {find, get, isEqual,includes} from "lodash";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import {useGetAllQuery, usePostQuery} from "../../../hooks/api";
@@ -17,6 +17,7 @@ import {getSelectOptionsListFromData} from "../../../utils";
 import {toast} from "react-toastify";
 import {ContentLoader} from "../../../components/loader";
 import EmptyPage from "../../auth/pages/EmptyPage";
+import config from "../../../config";
 
 const AgentsCommissionContainer = () => {
     const {t} = useTranslation()
@@ -119,7 +120,7 @@ const AgentsCommissionContainer = () => {
                         <Form>
                             <Row>
                                 <Col xs={3}>
-                                    <Field type={'select'} name={'branch'} options={branches} label={t("Branch")} defaultValue={get(user,'branch._id')} disabled />
+                                    <Field type={'select'} name={'branch'} options={branches} label={t("Branch")} defaultValue={get(user,'branch._id')} disabled={!includes([config.ROLES.admin],get(user,'role.name'))} />
                                 </Col>
                                 <Col xs={3}>
                                     <Field label={t('Выберите категорию')} options={groups} type={'select'}
