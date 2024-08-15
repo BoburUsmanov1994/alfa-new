@@ -168,7 +168,8 @@ const StepThree = ({...props}) => {
                                 type={'input'}
                                 label={'Процент отчислений в РПМ'}
                                 params={{
-                                    required:true
+                                    required:true,
+                                    valueAsNumber: true
                                 }}
                                 property={{
                                     type:'number',
