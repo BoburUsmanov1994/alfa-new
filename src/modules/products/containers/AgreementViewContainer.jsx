@@ -246,7 +246,7 @@ const AgentViewContainer = () => {
                                             {get(item, 'number', '-')}
                                         </td>
                                         <td>
-                                            -
+                                            {get(data, "data.insurant.organization") ? get(data, "data.insurant.organization.name") : `${get(data, "data.insurant.person.fullName.lastname")} ${get(data, "data.insurant.person.fullName.firstname")} ${get(data, "data.insurant.person.fullName.middlename")}`}
                                         </td>
                                         <td>
                                             {get(item, 'blank')}
@@ -262,10 +262,10 @@ const AgentViewContainer = () => {
                                                           value={get(item, "insurancePremium")}/></td>
                                         <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                                           value={get(item, "attachedSum")}/></td>
-                                        <td><FilePreview fileId={head(get(item,'documents',[]))} /></td>
-                                        <td><FilePreview fileId={head(get(item,'documents',[]))} /></td>
-                                        <td><FilePreview fileId={head(get(item,'documents',[]))} /></td>
-                                        <td><FilePreview fileId={head(get(item,'documents',[]))} /></td>
+                                        <td>{get(data, "data.copyOfDocuments") && <FilePreview fileId={get(data, "data.copyOfDocuments")} />}</td>
+                                        <td>{get(data, "data.copyOfAgreement") && <FilePreview fileId={get(data, "data.copyOfAgreement")} />}</td>
+                                        <td>{get(data, "data.documents._id") && <FilePreview fileId={get(data, "data.documents._id")} />}</td>
+                                        <td>{head(get(item,'documents',[])) && <FilePreview fileId={head(get(item,'documents',[]))} />}</td>
                                         <td>{get(item, "fondStatus")}</td>
 
                                         <td className={''}
