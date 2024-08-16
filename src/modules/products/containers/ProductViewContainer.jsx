@@ -6,19 +6,19 @@ import Panel from "../../../components/panel";
 import Search from "../../../components/search";
 import Title from "../../../components/ui/title";
 import Section from "../../../components/section";
-import {useDeleteQuery, useGetAllQuery, useGetOneQuery, usePostQuery} from "../../../hooks/api";
+import {useDeleteQuery, useGetOneQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import {ContentLoader, OverlayLoader} from "../../../components/loader";
 import Table from "../../../components/table";
-import {Download, Edit, Trash2} from "react-feather";
+import {Download, Trash2} from "react-feather";
 import Flex from "../../../components/flex";
 import {useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import config from "../../../config";
 import {request} from "../../../services/api";
 import {saveFile} from "../../../utils";
+import FilePreview from "../../../components/file-preview";
 
 
 const ProductViewContainer = ({id, ...rest}) => {
@@ -26,7 +26,7 @@ const ProductViewContainer = ({id, ...rest}) => {
 
     const navigate = useNavigate();
 
-    let {data, isLoading, isError} = useGetOneQuery({id, key: KEYS.product, url: `${URLS.product}/show`})
+    let {data, isLoading} = useGetOneQuery({id, key: KEYS.product, url: `${URLS.product}/show`})
 
     const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: KEYS.products})
 
@@ -165,22 +165,21 @@ const ProductViewContainer = ({id, ...rest}) => {
                             {get(product, 'applicationForm._id') && <tr>
                                 <td>Форма анкеты</td>
 
-                                <td><Download className={'cursor-pointer'}
-                                              onClick={() => request.get(`${URLS.file}/${get(product, 'applicationForm._id')}`,{ responseType: 'blob' }).then((res) => saveFile(res))}
-                                              color={'#13D6D1'}/></td>
+                                <td>
+                                    {get(product, 'applicationForm._id') && <FilePreview fileId={get(product, 'applicationForm._id')} />}
+                                    </td>
                             </tr>}
                             {get(product, 'contractForm._id') && <tr>
                                 <td>Договор</td>
-                                <td><Download className={'cursor-pointer'}
-                                              onClick={() => request.get(`${URLS.file}/${get(product, 'contractForm._id')}`,{ responseType: 'blob' }).then((res) => saveFile(res))}
-                                              color={'#13D6D1'}/></td>
+                                <td>
+                                    {get(product, 'contractForm._id') && <FilePreview fileId={get(product, 'contractForm._id')} />}
+                                </td>
                             </tr>}
                             {get(product, 'additionalDocuments._id') && <tr>
                                 <td>Приложения</td>
                                 <td>
-                                    <Download className={'cursor-pointer'}
-                                              onClick={() => request.get(`${URLS.file}/${get(product, 'additionalDocuments._id')}`,{ responseType: 'blob' }).then((res) => saveFile(res))}
-                                              color={'#13D6D1'}/></td>
+                                    {get(product, 'additionalDocuments._id') && <FilePreview fileId={get(product, 'additionalDocuments._id')} />}
+                                </td>
                             </tr>}
                             <tr>
                                 <td>Имеет фиксированного страхователя</td>

@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {Row, Col} from "react-grid-system";
 import Section from "../../../components/section";
 import Title from "../../../components/ui/title";
-import {get, head, includes, isEqual, isNil, sumBy} from "lodash";
+import {get, head, includes, isEqual, isNil} from "lodash";
 import {useDeleteQuery, useGetAllQuery, useGetOneQuery, usePostQuery, usePutQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";

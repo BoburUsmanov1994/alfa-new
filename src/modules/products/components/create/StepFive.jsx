@@ -14,6 +14,7 @@ import {URLS} from "../../../../constants/url";
 import {getSelectOptionsListFromData, saveFile} from "../../../../utils";
 import {Download} from "react-feather";
 import {request} from "../../../../services/api";
+import FilePreview from "../../../../components/file-preview";
 
 const StepFive = ({id = null, ...props}) => {
 
@@ -206,24 +207,19 @@ const StepFive = ({id = null, ...props}) => {
                                     {get(product, 'applicationForm') && <tr>
                                         <td>Форма анкеты</td>
 
-                                        <td><Download className={'cursor-pointer'}
-                                                      onClick={() => request.get(`${URLS.file}/${get(product, 'applicationForm')}`, {responseType: 'blob'}).then((res) => {
-                                                          saveFile(res)
-                                                      })}
-                                                      color={'#13D6D1'}/></td>
+                                        <td>{get(product, 'applicationForm') && <FilePreview fileId={get(product, 'applicationForm')} />}</td>
                                     </tr>}
                                     {get(product, 'contractForm') && <tr>
                                         <td>Договор</td>
-                                        <td><Download className={'cursor-pointer'}
-                                                      onClick={() => request.get(`${URLS.file}/${get(product, 'contractForm')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
-                                                      color={'#13D6D1'}/></td>
+                                        <td>
+                                            {get(product, 'contractForm') && <FilePreview fileId={get(product, 'applicationForm')} />}
+                                            </td>
                                     </tr>}
                                     {get(product, 'additionalDocuments') && <tr>
                                         <td>Приложения</td>
                                         <td>
-                                            <Download className={'cursor-pointer'}
-                                                      onClick={() => request.get(`${URLS.file}/${get(product, 'additionalDocuments')}`, {responseType: 'blob'}).then((res) => saveFile(res))}
-                                                      color={'#13D6D1'}/></td>
+                                            {get(product, 'additionalDocuments') && <FilePreview fileId={get(product, 'applicationForm')} />}
+                                           </td>
                                     </tr>}
                                     <tr>
                                         <td>Имеет фиксированного страхователя</td>
