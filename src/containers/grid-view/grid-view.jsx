@@ -143,8 +143,9 @@ const GridView = ({
 
     const update = ({data}) => {
         console.log('data',data)
+        const {password,...rest} = data;
         if (rowId) {
-            updateRequest({url: `${url}/${rowId}`, attributes: data}, {
+            updateRequest({url: `${url}/${rowId}`, attributes: rest}, {
                 onSuccess: () => {
                     setOpenModal(false)
                 },
