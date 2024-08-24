@@ -1324,6 +1324,131 @@ const StepTwo = ({id = null, ...props}) => {
                                     </Col>
                                 </>}
                             {
+                                isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.SMROBJECT) && <>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'uuid объекта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.uuid'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            property={{type:'number'}}
+                                            type={'input'}
+                                            params={{required: true,valueAsNumber:true}}
+                                            label={'Тип объекта'}
+                                            name={'objectOfInsurance.details.objectType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Номер лота'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.lotId'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Номер договора'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.dogNum'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Дата договора'}
+                                            type={'datepicker'}
+                                            name={'objectOfInsurance.details.dogDate'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Наименование объекта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.objectName'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Адрес объекта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.objectAddress'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Стоимость объекта'}
+                                            type={'number-format-input'}
+                                            name={'objectOfInsurance.details.objectPrice'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Финансирование на текущий год'}
+                                            type={'number-format-input'}
+                                            name={'objectOfInsurance.details.currentYearPrice'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Ссылка на скачивание документации'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.docLink'}/>
+                                    </Col>
+                                </>}
+                            {
+                                isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.OPOOBJECT) && <>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'uuid объекта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.uuid'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            property={{type:'number'}}
+                                            type={'input'}
+                                            params={{required: true,valueAsNumber:true}}
+                                            label={'Тип объекта'}
+                                            name={'objectOfInsurance.details.objectType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Наименование объекта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.objectName'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Адрес объекта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.objectAddress'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Тип ОПО'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.opoObjectType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Ссылка на скачивание документации'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.docLink'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Номер лицензии'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.license'}/>
+                                    </Col>
+                                </>}
+                            {
                                 isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.OTHEROBJECT) && <>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
@@ -1410,6 +1535,29 @@ const StepTwo = ({id = null, ...props}) => {
                                     name={`objectOfInsurance.district`}
                                     label={t('District')}
                                     params={{required: true}}
+                                />
+                            </Col>
+                            <Col xs={4}>
+                                <Field
+                                    defaultValue={false}
+                                    label={"Ведется ли по объекту страхование гражданской ответственности?"}
+                                    type={"switch"}
+                                    name={"isDefault"}
+                                    params={{ required: true }}
+                                />
+                            </Col>
+                            <Col xs={4}>
+                                <Field
+                                    label={"Территория страхования"}
+                                    type={"input"}
+                                    name={"territoryInsurance"}
+                                />
+                            </Col>
+                            <Col xs={4}>
+                                <Field
+                                    label={"Специальные условия"}
+                                    type={"input"}
+                                    name={"specialConditions"}
                                 />
                             </Col>
                         </Row>
