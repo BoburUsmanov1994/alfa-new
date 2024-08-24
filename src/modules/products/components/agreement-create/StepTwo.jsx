@@ -233,7 +233,8 @@ const StepTwo = ({id = null, ...props}) => {
         key: KEYS.measurementType, url: `${URLS.measurementType}/list`
     })
     const measurementTypeList = getSelectOptionsListFromData(get(measurementType, `data.data`, []), '_id', 'name')
-
+    const {data:types} = useGetAllQuery({key:KEYS.typeofobject,url:`${URLS.objectType}/list`})
+    const typesOptions = getSelectOptionsListFromData(get(types,`data.data`,[]),'_id','name')
 
     const setFieldValue = (value, name = "") => {
 
@@ -1335,7 +1336,8 @@ const StepTwo = ({id = null, ...props}) => {
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             property={{type:'number'}}
-                                            type={'input'}
+                                            options={typesOptions}
+                                            type={'select'}
                                             params={{required: true,valueAsNumber:true}}
                                             label={'Тип объекта'}
                                             name={'objectOfInsurance.details.objectType'}/>
@@ -1408,7 +1410,8 @@ const StepTwo = ({id = null, ...props}) => {
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             property={{type:'number'}}
-                                            type={'input'}
+                                            type={'select'}
+                                            options={typesOptions}
                                             params={{required: true,valueAsNumber:true}}
                                             label={'Тип объекта'}
                                             name={'objectOfInsurance.details.objectType'}/>
