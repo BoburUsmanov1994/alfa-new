@@ -1105,6 +1105,165 @@ const StepTwo = ({id = null, ...props}) => {
                                     </Col>
                                 </>}
                             {
+                                isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.REALESTATE) && <>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            options={propertyRightTypeList}
+                                            label={'Property right type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.propertyRightType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Кадастровый номер'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cadastralNumber'}/>
+                                    </Col>
+
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Дата кадастрового документа'}
+                                            type={'datepicker'}
+                                            name={'objectOfInsurance.details.dateCadastr'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={propertyTypeList}
+                                            label={'Property type'}
+                                            defaultValue={parseInt(get(property,'tip'))}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.propertyClassification'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Описание имущества'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.propertyDescription'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Страховая стоимость'}
+                                            type={'number-format-input'}
+                                            name={'objectOfInsurance.details.insuredValue'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Почтовый индекс'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.postcode'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Адрес имущества'}
+                                            type={'input'}
+                                            defaultValue={get(property,'address')}
+                                            name={'objectOfInsurance.details.address'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{valueAsNumber:'true'}}
+                                            property={{type:'number'}}
+                                            label={'Номер контракта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cargoInsurance.contractNumber'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Сопровождающие документы'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cargoInsurance.accompanyingDocuments'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Наименование груза'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cargoInsurance.cargoName'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Вид транспорта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cargoInsurance.carType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Грузоперевозчик'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cargoInsurance.cargoCarrier'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Пункт отправления'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cargoInsurance.departurePoint'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Места перегрузок'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cargoInsurance.destination'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Пункт назначения'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cargoInsurance.destination'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Места перегрузок'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cargoInsurance.transshipmentPoints'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Условия страхования'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.cargoInsurance.insuranceConditions'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Код типа ОПО'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.opo.code'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Местонахождение ОПО'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.opo.location'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Наименование строительства'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.smr.constructionName'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Место строительства'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.smr.constructionPlace'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{valueAsNumber:true}}
+                                            label={'Страховая сумма по имуществу'}
+                                            type={'number-format-input'}
+                                            name={'objectOfInsurance.details.smr.insuranceSumProperty'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{valueAsNumber:true}}
+                                            label={'Страховая сумма по отв.'}
+                                            type={'number-format-input'}
+                                            name={'objectOfInsurance.details.smr.insuranceSumAnswer'}/>
+                                    </Col>
+                                </>}
+                            {
                                 isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.AGRICULTURE) && <>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field

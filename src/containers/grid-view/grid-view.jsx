@@ -142,7 +142,6 @@ const GridView = ({
     }
 
     const update = ({data}) => {
-        console.log('data',data)
         const {password,...rest} = data;
         if (rowId) {
             updateRequest({url: `${url}/${rowId}`, attributes: rest}, {
