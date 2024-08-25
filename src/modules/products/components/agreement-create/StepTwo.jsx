@@ -720,6 +720,7 @@ const StepTwo = ({id = null, ...props}) => {
                        hide={setOpenObjectModal}>
                     <Form getValueFromField={(value, name) => _setModalFields(prev => ({...prev, [name]: value}))}
                           formRequest={({data}) => {
+                              console.log('data',data)
                               addObjects({...data, id: objects.length});
                               setOpenObjectModal(false)
                           }}
@@ -1166,7 +1167,6 @@ const StepTwo = ({id = null, ...props}) => {
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             params={{valueAsNumber:'true'}}
-                                            property={{type:'number'}}
                                             label={'Номер контракта'}
                                             type={'input'}
                                             name={'objectOfInsurance.details.cargoInsurance.contractNumber'}/>
@@ -1200,12 +1200,6 @@ const StepTwo = ({id = null, ...props}) => {
                                             label={'Пункт отправления'}
                                             type={'input'}
                                             name={'objectOfInsurance.details.cargoInsurance.departurePoint'}/>
-                                    </Col>
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            label={'Места перегрузок'}
-                                            type={'input'}
-                                            name={'objectOfInsurance.details.cargoInsurance.destination'}/>
                                     </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
@@ -1335,7 +1329,6 @@ const StepTwo = ({id = null, ...props}) => {
                                     </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
-                                            property={{type:'number'}}
                                             options={typesOptions}
                                             type={'select'}
                                             params={{required: true,valueAsNumber:true}}
@@ -1409,7 +1402,6 @@ const StepTwo = ({id = null, ...props}) => {
                                     </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
-                                            property={{type:'number'}}
                                             type={'select'}
                                             options={typesOptions}
                                             params={{required: true,valueAsNumber:true}}
@@ -1545,7 +1537,7 @@ const StepTwo = ({id = null, ...props}) => {
                                     defaultValue={false}
                                     label={"Ведется ли по объекту страхование гражданской ответственности?"}
                                     type={"switch"}
-                                    name={"isDefault"}
+                                    name={"objectOfInsurance.isDefault"}
                                     params={{ required: true }}
                                 />
                             </Col>
@@ -1553,14 +1545,14 @@ const StepTwo = ({id = null, ...props}) => {
                                 <Field
                                     label={"Территория страхования"}
                                     type={"input"}
-                                    name={"territoryInsurance"}
+                                    name={"objectOfInsurance.territoryInsurance"}
                                 />
                             </Col>
                             <Col xs={4}>
                                 <Field
                                     label={"Специальные условия"}
                                     type={"input"}
-                                    name={"specialConditions"}
+                                    name={"objectOfInsurance.specialConditions"}
                                 />
                             </Col>
                         </Row>
