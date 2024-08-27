@@ -53,6 +53,13 @@ const WarehouseContainer = ({...rest}) => {
         url: `${URLS.bcoStatus}/list`
     })
     bcoStatusList = getSelectOptionsListFromData(get(bcoStatusList, `data.data`, []), '_id', 'name')
+    let {data: products} = useGetAllQuery({
+        key: KEYS.productsfilter,
+        url: URLS.products,
+
+    })
+    const productsList = getSelectOptionsListFromData(get(products, `data.data`, []), '_id', 'name')
+
 
     const ModalBody = ({data, rowId = null}) => <Row>
         <Col xs={6}>
@@ -75,6 +82,11 @@ const WarehouseContainer = ({...rest}) => {
                    defaultValue={rowId ? get(data, 'status') : null}
                    params={{required: true}}/>
         </Col>
+        <Col xs={6}>
+            <Field name={'product'} options={productsList} type={'select'} label={'Product'}
+                   defaultValue={rowId ? get(data, 'product') : null}
+                   params={{required: true}}/>
+        </Col>
     </Row>
     return (
         <>
@@ -85,6 +97,11 @@ const WarehouseContainer = ({...rest}) => {
                         id: 1,
                         key: 'bco_type.policy_type_name',
                         title: 'Bco'
+                    },
+                    {
+                        id: 2,
+                        key: 'product.name',
+                        title: 'Product'
                     },
                     {
                         id: 3,
