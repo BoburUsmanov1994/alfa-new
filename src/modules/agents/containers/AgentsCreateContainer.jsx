@@ -250,6 +250,7 @@ const AgentsCreateContainer = () => {
 
   console.log('productList',get(productsList, `data.data`, []))
   console.log('tariffList',tariffList)
+  console.log('limitOfAgreement',get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),productId)),'tariff.limitOfAgreement',0))
 
   return (
     <>
@@ -704,7 +705,7 @@ const AgentsCreateContainer = () => {
                 <Col xs={3}>
                   <Field
                     label={"Лимит ответственности"}
-                    type={"number-format-input"}
+                    type={"input"}
                     name={"tariff[0].limitOfAgreement"}
                     defaultValue={get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),productId)),'tariff.limitOfAgreement',0)}
                     property={{ placeholder: "Введите значение" }}
@@ -809,7 +810,7 @@ const AgentsCreateContainer = () => {
                                   ),
                                   "_id"
                                 )}
-                                // isDisabled={true}
+                                isDisabled={true}
                               />
                               <Field
                                 key={j}
