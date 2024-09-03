@@ -29,27 +29,27 @@ export const menuData = (role) => [
             },
         ]
     },
-    includes([config.ROLES.admin],role) && {
+    includes([config.ROLES.admin, config.ROLES.user],role) && {
         id: 222,
         title: 'Соглашения',
         path: '/agreements',
     },
-    includes([config.ROLES.admin],role) && {
+    includes([config.ROLES.admin, config.ROLES.user],role) && {
         id: 2,
         title: 'Клиенты',
         path: '/clients',
         submenu: [
-            {
+            includes([config.ROLES.admin, config.ROLES.user],role) && {
                 id: 1,
                 title: 'Физические лица',
                 path: '/clients/physical',
             },
-            {
+            includes([config.ROLES.admin, config.ROLES.user],role) && {
                 id: 2,
                 title: 'Юридические лица',
                 path: '/clients/juridical',
             },
-            {
+            includes([config.ROLES.admin],role) && {
                 id: 5,
                 title: 'Тип человека',
                 path: '/clients/person-type',
@@ -196,52 +196,52 @@ export const menuData = (role) => [
 
         ]
     },
-    includes([config.ROLES.admin],role) && {
+    includes([config.ROLES.admin, config.ROLES.user],role) && {
         id: 2,
         title: 'БСО',
         path: '/bco',
         submenu: [
-            {
+            includes([config.ROLES.admin],role) && {
                 id: 11,
                 title: 'БСО',
                 path: '/bco',
             },
-            {
+            includes([config.ROLES.admin],role) && {
                 id: 1,
                 title: 'Тип БСО',
                 path: '/bco/type',
             },
-            {
+            includes([config.ROLES.admin],role) && {
                 id: 2,
                 title: 'БСО статус полиса',
                 path: '/bco/policy-status',
             },
-            {
+            includes([config.ROLES.admin],role) && {
                 id: 3,
                 title: 'БСО статус',
                 path: '/bco/status',
             },
-            {
+            includes([config.ROLES.admin],role) && {
                 id: 4,
                 title: 'БСО язык',
                 path: '/bco/language',
             },
-            {
+            includes([config.ROLES.admin],role) && {
                 id: 5,
                 title: 'БСО blanks',
                 path: '/accounting/bco-blanks',
             },
-            {
+            includes([config.ROLES.admin, config.ROLES.user],role) && {
                 id: 6,
                 title: 'ACTS',
                 path: '/accounting/act',
             },
-            {
+            includes([config.ROLES.admin],role) && {
                 id: 7,
                 title: 'Act status',
                 path: '/bco/act-status',
             },
-            {
+            includes([config.ROLES.admin],role) && {
                 id: 8,
                 title: 'Warehouse',
                 path: '/accounting/warehouse',
@@ -253,17 +253,17 @@ export const menuData = (role) => [
         title: 'Индоссамент',
         path: '/endorsement',
     },
-    includes([config.ROLES.admin,config.ROLES.osgop,config.ROLES.osgor],role) && {
+    includes([config.ROLES.admin,config.ROLES.osgop,config.ROLES.osgor, config.ROLES.user],role) && {
         id: 300,
         title: 'Страховой',
         path: '/insurance',
         submenu: [
-            includes([config.ROLES.admin,config.ROLES.osgor],role) &&{
+            includes([config.ROLES.admin,config.ROLES.osgor, config.ROLES.user],role) &&{
                 id: 1,
                 title: 'ОСГОР',
                 path: '/insurance/osgor',
             },
-            includes([config.ROLES.admin,config.ROLES.osgop],role) && {
+            includes([config.ROLES.admin,config.ROLES.osgop, config.ROLES.user],role) && {
                 id: 2,
                 title: 'ОСГОП',
                 path: '/insurance/osgop',
@@ -273,7 +273,7 @@ export const menuData = (role) => [
                 title: 'ОСАГО',
                 path: '/insurance/osago',
             },
-            includes([config.ROLES.admin],role) && {
+            includes([config.ROLES.admin, config.ROLES.user],role) && {
                 id: 4,
                 title: 'СМР',
                 path: '/insurance/smr',
