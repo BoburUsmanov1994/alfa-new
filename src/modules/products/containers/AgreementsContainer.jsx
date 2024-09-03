@@ -29,6 +29,8 @@ const AgreementsContainer = ({...rest}) => {
     }))
     const resetPledger = useSettingsStore(state => get(state, 'resetPledger', () => {
     }))
+    const removeObjects = useSettingsStore(state => get(state, 'removeObjects', () => {
+    }))
 
 
     useEffect(() => {
@@ -37,6 +39,7 @@ const AgreementsContainer = ({...rest}) => {
         resetBeneficiary()
         resetAgreement()
         resetPledger()
+        removeObjects()
     }, [])
 
     return (

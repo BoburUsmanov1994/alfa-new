@@ -53,6 +53,8 @@ const StepOne = ({id = null, ...props}) => {
     }))
     const resetPledgers = useSettingsStore(state => get(state, 'resetPledgers', () => {
     }))
+    const removeObjects = useSettingsStore(state => get(state, 'removeObjects', () => {
+    }))
 
     const navigate = useNavigate()
 
@@ -89,6 +91,7 @@ const StepOne = ({id = null, ...props}) => {
         resetPledger();
         resetInsurer();
         resetBeneficiary();
+        removeObjects();
         props.firstStep();
     }
     let {data: branchList} = useGetAllQuery({

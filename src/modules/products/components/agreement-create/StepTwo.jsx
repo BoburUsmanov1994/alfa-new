@@ -278,7 +278,9 @@ const StepTwo = ({id = null, ...props}) => {
         }
     }, [agreement])
 
-    
+    console.log('_modalFields',_modalFields)
+
+
     return (
         <Row>
             <Col xs={12}>
@@ -1455,7 +1457,7 @@ const StepTwo = ({id = null, ...props}) => {
                                     </Col>
                                 </>}
                             {
-                                isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.OTHEROBJECT) && <>
+                                isEqual(get(_modalFields, 'objectOfInsurance.type'), "OTHEROBJECT") && <>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             params={{required: true}}
