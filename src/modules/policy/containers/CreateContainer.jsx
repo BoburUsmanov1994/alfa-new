@@ -158,7 +158,7 @@ const CreateContainer = ({
                             <Col xs={4}>
                                 <Field  defaultValue={get(agreementData, 'data.totalInsurancePremium')}
                                        label={t('insurancePremium')} type={'number-format-input'}
-                                       name={'insurancePremium'} property={{disabled:true}}
+                                       name={'insurancePremium'}
                                 />
                             </Col>
                         </Row>
