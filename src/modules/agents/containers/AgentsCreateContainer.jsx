@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { find, get, includes, isEqual, isNil, setWith } from "lodash";
+import { find, get, includes, isEqual, isNil, setWith,isArray } from "lodash";
 import React, { useState } from "react";
 import { Trash2 } from "react-feather";
 import { Col, Row } from "react-grid-system";
@@ -781,7 +781,7 @@ const AgentsCreateContainer = () => {
                         />
                       </td>
                       <td colSpan={3}>
-                        {get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),get(item,'tariff[0].product'))),'tariff',[]).map(
+                        {isArray(get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),get(item,'tariff[0].product'))),'tariff',[])) && get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),get(item,'tariff[0].product'))),'tariff',[]).map(
                           (c, j) => (
                             <Flex>
                               <Field
