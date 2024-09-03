@@ -31,6 +31,9 @@ const AgentsUpdateContainer = () => {
     const { t } = useTranslation();
     const [personType, setPersonType] = useState(null);
     const [region, setregion] = useState(null);
+    const [productGroupId, setProductGroupId] = useState(null);
+    const [productSubGroupId, setProductSubGroupId] = useState(null);
+    const [productId, setProductId] = useState(null);
     let {data: agent, isLoading, isError} = useGetOneQuery({id, key: KEYS.agents, url: `${URLS.agents}/show`})
     const {mutate: updateRequest, isLoading: updateIsLoading} = usePutQuery({listKeyId: KEYS.agents})
     const setPersonTypeForSelect = (val, name) => {
@@ -132,13 +135,33 @@ const AgentsUpdateContainer = () => {
         "name"
     );
 
+    let {data: groups} = useGetAllQuery({key: KEYS.groupsofproducts, url: `${URLS.groupsofproducts}/list`})
+    groups = getSelectOptionsListFromData(get(groups, `data.data`, []), '_id', 'name')
 
-    let { data: products } = useGetAllQuery({
-        key: ["products-list"],
-        url: `${URLS.products}`,
-    });
-    products = getSelectOptionsListFromData(
-        get(products, `data.data`, []),
+    let {data: subGroups} = useGetAllQuery({
+        key: [KEYS.subgroupsofproductsFilter, productGroupId],
+        url: URLS.subgroupsofproductsFilter,
+        params: {
+            params: {
+                group: productGroupId
+            }
+        },
+        enabled: !!productGroupId
+    })
+    subGroups = getSelectOptionsListFromData(get(subGroups, `data.data`, []), '_id', 'name')
+    let {data: productsList} = useGetAllQuery({
+        key: [KEYS.productsfilter, productSubGroupId],
+        url: URLS.products,
+        params: {
+            params: {
+                subGroup: productSubGroupId
+            }
+        },
+        enabled: !!productSubGroupId
+    })
+
+    let products = getSelectOptionsListFromData(
+        get(productsList, `data.data`, []),
         "_id",
         ["name"]
     );
@@ -227,7 +250,7 @@ const AgentsUpdateContainer = () => {
     if(isLoading){
         return <OverlayLoader />
     }
-    console.log('agent',agent)
+
     return (
         <>
             {/*{isLoading && <OverlayLoader />}*/}
@@ -692,6 +715,24 @@ const AgentsUpdateContainer = () => {
                             <Row align={"flex-end"}>
                                 <Col xs={3}>
                                     <Field
+                                        label={t('Выберите категорию')}
+                                        options={groups}
+                                        type={'select'}
+                                        name={'group'}
+                                        property={{onChange: (val) => setProductGroupId(val)}}
+                                    />
+                                </Col>
+                                <Col xs={3}>
+                                    <Field
+                                        label={t('Выберите подкатегорию')}
+                                        options={subGroups}
+                                        type={'select'}
+                                        name={'subGroup'}
+                                        property={{onChange: (val) => setProductSubGroupId(val)}}
+                                    />
+                                </Col>
+                                <Col xs={3}>
+                                    <Field
                                         label={"Продукты"}
                                         type={"select"}
                                         name={"tariff[0].product"}
@@ -700,6 +741,7 @@ const AgentsUpdateContainer = () => {
                                         params={{
                                             required: get(product, "riskData", []).length > 0,
                                         }}
+                                        property={{onChange: (val) => setProductId(val)}}
                                     />
                                 </Col>
                                 <Col xs={3}>
@@ -707,11 +749,7 @@ const AgentsUpdateContainer = () => {
                                         label={"Разрешить заключение договоров"}
                                         type={"switch"}
                                         name={"tariff[0].allowAgreement"}
-                                        defaultValue={get(
-                                            product,
-                                            "tariff[0].allowAgreement",
-                                            false
-                                        )}
+                                        defaultValue={get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),productId)),'tariff.allowAgreement',false)}
                                     />
                                 </Col>
                                 <Col xs={3}>
@@ -719,7 +757,7 @@ const AgentsUpdateContainer = () => {
                                         label={"Лимит ответственности"}
                                         type={"number-format-input"}
                                         name={"tariff[0].limitOfAgreement"}
-                                        defaultValue={get(product, "tariff[0].limitOfAgreement", 0)}
+                                        defaultValue={get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),productId)),'tariff.limitOfAgreement',0)}
                                         property={{ placeholder: "Введите значение" }}
                                     />
                                 </Col>
