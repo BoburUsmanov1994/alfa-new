@@ -24,6 +24,7 @@ const AgentsCommissionContainer = () => {
     const [productGroupId, setProductGroupId] = useState(null);
     const [productSubGroupId, setProductSubGroupId] = useState(null);
     const [productId, setProductId] = useState(null);
+    const [branchId, setBranchId] = useState(null);
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const user = useStore(state => get(state, 'user'))
@@ -74,11 +75,11 @@ const AgentsCommissionContainer = () => {
         enabled: !!productSubGroupId
     })
     const productsList = getSelectOptionsListFromData(get(products, `data.data`, []), '_id', 'name')
-    const {data: agents, isLoading: isLoadingAgents} = useGetAllQuery({
+    const {data: agents} = useGetAllQuery({
         key: KEYS.agents, url: `${URLS.agents}/list`,
         params: {
             params: {
-                branch: get(user, 'branch._id'),
+                branch:!includes([config.ROLES.admin],get(user,'role.name')) ? get(user, 'branch._id') : branchId,
                 limit: 1000
             }
         }
@@ -120,7 +121,7 @@ const AgentsCommissionContainer = () => {
                         <Form>
                             <Row>
                                 <Col xs={3}>
-                                    <Field type={'select'} name={'branch'} options={branches} label={t("Branch")} defaultValue={get(user,'branch._id')} disabled={!includes([config.ROLES.admin],get(user,'role.name'))} />
+                                    <Field property={{onChange:(val)=>setBranchId(val)}} type={'select'} name={'branch'} options={branches} label={t("Branch")} defaultValue={get(user,'branch._id')} disabled={!includes([config.ROLES.admin],get(user,'role.name'))} />
                                 </Col>
                                 <Col xs={3}>
                                     <Field label={t('Выберите категорию')} options={groups} type={'select'}
