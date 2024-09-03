@@ -93,7 +93,7 @@ const AgentsContainer = ({...rest}) => {
                 createUrl={'/agents/create'}
                 updateUrl={'/agents/update'}
                 isHideColumn
-                hasUpdateBtn
+                hasUpdateBtn={false}
             />
         </>
     );

@@ -137,7 +137,7 @@ const StepOne = ({id = null, ...props}) => {
     const agentFilter = ({data}, type = 'insurer') => {
         filterRequest({
             url: URLS.findOrCreateClient,
-            attributes: isEqual(get(type === 'insurer' ? insurer : pledger, 'type'), PERSON_TYPE.organization) ? {
+            attributes: isEqual(get(type === 'insurer' ?  insurer : type === 'pledger' ? pledger : beneficiary, 'type'), PERSON_TYPE.organization) ? {
                 organization: {
                     inn: get(data, 'organization.inn'),
                 },

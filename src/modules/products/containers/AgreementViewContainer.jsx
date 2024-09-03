@@ -249,7 +249,7 @@ const AgentViewContainer = () => {
                                             {get(data, "data.insurant.organization") ? get(data, "data.insurant.organization.name") : `${get(data, "data.insurant.person.fullName.lastname")} ${get(data, "data.insurant.person.fullName.firstname")} ${get(data, "data.insurant.person.fullName.middlename")}`}
                                         </td>
                                         <td>
-                                            {get(item, 'blank')}
+                                            {get(item, 'blank.blank.blank_number')}
                                         </td>
                                         <td>
                                             {dayjs(get(item, 'issueDate')).format('DD/MM/YYYY')}
