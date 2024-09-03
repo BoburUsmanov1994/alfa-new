@@ -1118,64 +1118,11 @@ const StepTwo = ({id = null, ...props}) => {
                                             defaultValue={get(property, 'address')}
                                             name={'objectOfInsurance.details.address'}/>
                                     </Col>
-                                </>}
-                            {
-                                isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.REALESTATE) && <>
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            options={propertyRightTypeList}
-                                            label={'Property right type'}
-                                            type={'select'}
-                                            name={'objectOfInsurance.details.propertyRightType'}/>
-                                    </Col>
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            params={{required: true}}
-                                            label={'Кадастровый номер'}
-                                            type={'input'}
-                                            name={'objectOfInsurance.details.cadastralNumber'}/>
-                                    </Col>
-
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            params={{required: true}}
-                                            label={'Дата кадастрового документа'}
-                                            type={'datepicker'}
-                                            name={'objectOfInsurance.details.dateCadastr'}/>
-                                    </Col>
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            params={{required: true}}
-                                            options={propertyTypeList}
-                                            label={'Property type'}
-                                            defaultValue={parseInt(get(property, 'tip'))}
-                                            type={'select'}
-                                            name={'objectOfInsurance.details.propertyClassification'}/>
-                                    </Col>
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            label={'Описание имущества'}
-                                            type={'input'}
-                                            name={'objectOfInsurance.details.propertyDescription'}/>
-                                    </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             label={'Страховая стоимость'}
                                             type={'number-format-input'}
                                             name={'objectOfInsurance.details.insuredValue'}/>
-                                    </Col>
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            label={'Почтовый индекс'}
-                                            type={'input'}
-                                            name={'objectOfInsurance.details.postcode'}/>
-                                    </Col>
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            label={'Адрес имущества'}
-                                            type={'input'}
-                                            defaultValue={get(property, 'address')}
-                                            name={'objectOfInsurance.details.address'}/>
                                     </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
@@ -1271,6 +1218,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             name={'objectOfInsurance.details.smr.insuranceSumAnswer'}/>
                                     </Col>
                                 </>}
+
                             {
                                 isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.AGRICULTURE) && <>
                                     <Col xs={4} className={'mb-25'}>
