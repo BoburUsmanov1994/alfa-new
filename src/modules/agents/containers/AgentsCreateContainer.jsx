@@ -781,7 +781,7 @@ const AgentsCreateContainer = () => {
                         />
                       </td>
                       <td colSpan={3}>
-                        {isArray(get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),get(item,'tariff[0].product'))),'tariff',[])) && get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),get(item,'tariff[0].product'))),'tariff',[]).map(
+                        {get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),get(item,'tariff[0].product'))),'tariff.tariffPerClass',[]).map(
                           (c, j) => (
                             <Flex>
                               <Field
@@ -796,7 +796,7 @@ const AgentsCreateContainer = () => {
                                   bgColor: get(
                                     findItem(
                                       get(classes, "data.data"),
-                                      get(c, "tariffPerClass[0].class._id")
+                                      get(c, "class._id")
                                     ),
                                     "color"
                                   ),
@@ -805,7 +805,7 @@ const AgentsCreateContainer = () => {
                                 defaultValue={get(
                                   findItem(
                                     get(classes, "data.data"),
-                                    get(c, "tariffPerClass[0].class._id")
+                                    get(c, "class._id")
                                   ),
                                   "_id"
                                 )}
@@ -818,7 +818,7 @@ const AgentsCreateContainer = () => {
                                 name={`tariff[${
                                   i + 1
                                 }].tariffPerClass[${j}].max`}
-                                defaultValue={get(c, "tariffPerClass[0].max", 0)}
+                                defaultValue={get(c, "max", 0)}
                                 property={{
                                   // disabled: true,
                                   placeholder: "Введите значение",
@@ -832,7 +832,7 @@ const AgentsCreateContainer = () => {
                                 name={`tariff[${
                                   i + 1
                                 }].tariffPerClass[${j}].min`}
-                                defaultValue={get(c, "tariffPerClass[0].min", 0)}
+                                defaultValue={get(c, "min", 0)}
                                 property={{
                                   // disabled: true,
                                   placeholder: "Введите значение",
