@@ -231,6 +231,7 @@ const AgentsCreateContainer = () => {
   });
 
   const create = ({ data }) => {
+    console.log("DATA",data)
     createRequest(
       {
         url: URLS.agents,
@@ -250,7 +251,6 @@ const AgentsCreateContainer = () => {
 
   console.log('productList',get(productsList, `data.data`, []))
   console.log('tariffList',tariffList)
-  console.log('limitOfAgreement',get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),productId)),'tariff.limitOfAgreement',0))
 
   return (
     <>
@@ -739,13 +739,13 @@ const AgentsCreateContainer = () => {
                   ]}
                 >
                   {tariffList.map((item, i) => (
-                    <tr key={i + 1}>
+                    <tr key={i}>
                       <td>
                         <Field
                           className={"minWidth300"}
                           options={products}
                           type={"select"}
-                          name={`tariff[${i + 1}].product`}
+                          name={`tariff[${i}].product`}
                           defaultValue={get(item, "tariff[0].product")}
                           property={{ hideLabel: true }}
                           isDisabled={true}
@@ -756,7 +756,7 @@ const AgentsCreateContainer = () => {
                         <Field
                           property={{ hideLabel: true }}
                           type={"switch"}
-                          name={`tariff[${i + 1}].allowAgreement`}
+                          name={`tariff[${i}].allowAgreement`}
                           defaultValue={get(
                             item,
                             "tariff[0].allowAgreement",
@@ -768,7 +768,7 @@ const AgentsCreateContainer = () => {
                       <td>
                         <Field
                           type={"number-format-input"}
-                          name={`tariff[${i + 1}].limitOfAgreement`}
+                          name={`tariff[${i}].limitOfAgreement`}
                           defaultValue={get(
                             item,
                             "tariff[0].limitOfAgreement",
@@ -789,7 +789,7 @@ const AgentsCreateContainer = () => {
                                 key={j}
                                 className={"mb-15 mr-16 flex-none"}
                                 name={`tariff[${
-                                  i + 1
+                                  i
                                 }].tariffPerClass[${j}].class`}
                                 type={"select"}
                                 property={{
@@ -817,7 +817,7 @@ const AgentsCreateContainer = () => {
                                 className={"mb-15 mr-16 ml-15"}
                                 type={"number-format-input"}
                                 name={`tariff[${
-                                  i + 1
+                                  i
                                 }].tariffPerClass[${j}].max`}
                                 defaultValue={get(c, "max", 0)}
                                 property={{
@@ -831,7 +831,7 @@ const AgentsCreateContainer = () => {
                                 className={"mb-15"}
                                 type={"number-format-input"}
                                 name={`tariff[${
-                                  i + 1
+                                  i
                                 }].tariffPerClass[${j}].min`}
                                 defaultValue={get(c, "min", 0)}
                                 property={{
