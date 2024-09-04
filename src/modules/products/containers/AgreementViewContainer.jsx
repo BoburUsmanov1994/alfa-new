@@ -62,7 +62,7 @@ const AgentViewContainer = () => {
             }
         }
     })
-    const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: KEYS.transactions})
+    const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: [KEYS.transactions,KEYS.policyFilter]})
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [
@@ -145,7 +145,7 @@ const AgentViewContainer = () => {
     if (isLoading || deleteLoading || policyIsLoading || endorsementIsLoading || deleteEndorsementLoading || isLoadingAllow) {
         return <OverlayLoader/>
     }
-
+console.log('selectedPolice',selectedPolice)
     return (
         <>
             <Section>
