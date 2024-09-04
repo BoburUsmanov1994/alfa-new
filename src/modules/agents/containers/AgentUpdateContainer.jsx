@@ -753,7 +753,7 @@ const AgentsUpdateContainer = () => {
                             </Row>
                         </Col>
                         { (
-                            <Col xs={12} className={"mb-25"}>
+                            <Col xs={12} className={"mb-25 horizontal-scroll"}>
                                 <hr />
                                 <Table
                                     hideThead={false}
@@ -814,6 +814,7 @@ const AgentsUpdateContainer = () => {
                                                     get(item,'tariffPerClass',[]).map((_item,j)=>get(_item,'class') && <Flex key={get(_item,'class')} className={'mb-15'}>
 
                                                         <Field
+                                                            className={"minWidth300"}
                                                             name={`tariff[${i}].tariffPerClass[${j}].class`}
                                                             type={"select"}
                                                             property={{
@@ -907,6 +908,7 @@ const AgentsUpdateContainer = () => {
                                                     get(item,'tariffPerClass',[]).map((_item,j)=> <Flex key={get(_item,'class')} className={'mb-15'}>
 
                                                         <Field
+                                                            className={"minWidth300"}
                                                             name={`tariff[${i+get(agent, "data.tariff", [])?.length}].tariffPerClass[${j}].class`}
                                                             type={"select"}
                                                             property={{
