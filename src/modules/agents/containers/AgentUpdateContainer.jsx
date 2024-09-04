@@ -802,7 +802,7 @@ const AgentsUpdateContainer = () => {
                                                     className={"minWidth300"}
                                                     options={productsListWithoutFilter}
                                                     type={"select"}
-                                                    name={`tariff[${i + 1}].product`}
+                                                    name={`tariff[${i}].product`}
                                                     defaultValue={get(item, "product")}
                                                     property={{ hideLabel: true }}
                                                     isDisabled={true}
@@ -812,7 +812,7 @@ const AgentsUpdateContainer = () => {
                                                 <Field
                                                     property={{ hideLabel: true }}
                                                     type={"switch"}
-                                                    name={`tariff[${i + 1}].allowAgreement`}
+                                                    name={`tariff[${i}].allowAgreement`}
                                                     defaultValue={get(
                                                         item,
                                                         "allowAgreement",
@@ -824,7 +824,7 @@ const AgentsUpdateContainer = () => {
                                             <td>
                                                 <Field
                                                     type={"number-format-input"}
-                                                    name={`tariff[${i + 1}].limitOfAgreement`}
+                                                    name={`tariff[${i}].limitOfAgreement`}
                                                     defaultValue={get(
                                                         item,
                                                         "limitOfAgreement",
@@ -906,13 +906,13 @@ const AgentsUpdateContainer = () => {
                                     ]}
                                 >
                                     {tariffList.map((item, i) => (
-                                        <tr key={i + 1}>
+                                        <tr key={i}>
                                             <td>
                                                 <Field
                                                     className={"minWidth300"}
                                                     options={products}
                                                     type={"select"}
-                                                    name={`tariff[${i + 1}].product`}
+                                                    name={`tariff[${i + get(agent, "data.tariff", [])?.length}].product`}
                                                     defaultValue={get(item, "tariff[0].product")}
                                                     property={{ hideLabel: true }}
                                                     isDisabled={true}
@@ -923,7 +923,7 @@ const AgentsUpdateContainer = () => {
                                                 <Field
                                                     property={{ hideLabel: true }}
                                                     type={"switch"}
-                                                    name={`tariff[${i + 1}].allowAgreement`}
+                                                    name={`tariff[${i + get(agent, "data.tariff", [])?.length}].allowAgreement`}
                                                     defaultValue={get(
                                                         item,
                                                         "tariff[0].allowAgreement",
@@ -935,7 +935,7 @@ const AgentsUpdateContainer = () => {
                                             <td>
                                                 <Field
                                                     type={"number-format-input"}
-                                                    name={`tariff[${i + 1}].limitOfAgreement`}
+                                                    name={`tariff[${i + get(agent, "data.tariff", [])?.length}].limitOfAgreement`}
                                                     defaultValue={get(
                                                         item,
                                                         "tariff[0].limitOfAgreement",
@@ -956,7 +956,7 @@ const AgentsUpdateContainer = () => {
                                                                 key={j}
                                                                 className={"mb-15 mr-16 flex-none"}
                                                                 name={`tariff[${
-                                                                    i + 1
+                                                                    i + get(agent, "data.tariff", [])?.length
                                                                 }].tariffPerClass[${j}].class`}
                                                                 type={"select"}
                                                                 property={{
@@ -984,7 +984,7 @@ const AgentsUpdateContainer = () => {
                                                                 className={"mb-15 mr-16 ml-15"}
                                                                 type={"number-format-input"}
                                                                 name={`tariff[${
-                                                                    i + 1
+                                                                    i + get(agent, "data.tariff", [])?.length
                                                                 }].tariffPerClass[${j}].max`}
                                                                 defaultValue={get(c, "max", 0)}
                                                                 property={{
@@ -998,7 +998,7 @@ const AgentsUpdateContainer = () => {
                                                                 className={"mb-15"}
                                                                 type={"number-format-input"}
                                                                 name={`tariff[${
-                                                                    i + 1
+                                                                    i + get(agent, "data.tariff", [])?.length
                                                                 }].tariffPerClass[${j}].min`}
                                                                 defaultValue={get(c, "min", 0)}
                                                                 property={{
