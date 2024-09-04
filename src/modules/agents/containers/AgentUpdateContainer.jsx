@@ -741,7 +741,7 @@ const AgentsUpdateContainer = () => {
                                         property={{ placeholder: "Введите значение" }}
                                     />
                                 </Col>
-                                <Col xs={3} className={"text-right"}>
+                                <Col xs={3} >
                                     <Button
                                         onClick={addTariff}
                                         type={"button"}
