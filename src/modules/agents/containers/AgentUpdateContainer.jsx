@@ -25,7 +25,6 @@ import { getSelectOptionsListFromData } from "../../../utils";
 
 const AgentsUpdateContainer = () => {
     const {id} = useParams()
-    const [tarif, setTarif] = useState({});
     const [tariffList, setTariffList] = useState([]);
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -185,58 +184,28 @@ const AgentsUpdateContainer = () => {
         "name"
     );
 
-    const setFieldValue = (value, name = "") => {
-        if (
-            includes(
-                [
-                    "tariff[0].product",
-                    "tariff[0].allowAgreement",
-                    "tariff[0].limitOfAgreement",
-                ],
-                name
-            )
-        ) {
-            setTarif((prev) => ({ ...prev, [name]: value }));
-        }
-
-        if (includes(name, "tariff[0].tariffPerClass")) {
-            setTarif({ ...setWith(tarif, name, value) });
-        }
-    };
+    const setFieldValue = () => {}
 
     const findItem = (list = [], id = null) => {
         return find(list, (l) => isEqual(get(l, "_id"), id));
     };
 
     const addTariff = () => {
-        let result = [];
-        let { ...rest } = tarif;
-        if (!isNil(get(tarif, "tariff[0].product"))) {
-            const res = tariffList.filter(
-                (t) =>
-                    !isEqual(get(t, "tariff[0].product"), get(rest, "tariff[0].product"))
-            );
-            result = [...res, rest];
-            setTariffList(result);
-            setTarif({
-                ...tarif,
-                tariffPerClass: get(tarif, "tariff.tariffPerClass", []).map(
-                    ({ class: classes, min, max }) => ({
-                        classes,
-                        min: 0,
-                        max: 0,
-                    })
-                ),
-            });
+        if(get(findSelectedProductTarif(productId),'tariff') && productId) {
+            setTariffList(prev=>[...prev,{product:productId,tariffPerClass:get(findSelectedProductTarif(productId),'tariff.risk',[]),...get(findSelectedProductTarif(productId),'tariff')}])
         } else {
             toast.warn("Select all fields");
         }
     };
 
     const removeTariffFromList = (i) => {
-        setTariffList((prev) => prev.filter((f, j) => !isEqual(i, j)));
+        setTariffList((prev) => prev?.filter((f, j) => !isEqual(get(f,'product'), i)));
     };
 
+
+    const findSelectedProductTarif = (_productId) => {
+        return find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),_productId))
+    }
 
 
     const create = ({ data }) => {
@@ -259,10 +228,12 @@ const AgentsUpdateContainer = () => {
     if(isLoading){
         return <OverlayLoader />
     }
+    console.log('tariffList',tariffList)
+
 
     return (
         <>
-            {/*{isLoading && <OverlayLoader />}*/}
+            {updateIsLoading && <OverlayLoader />}
             <Panel>
                 <Row>
                     <Col xs={12}>
@@ -744,9 +715,9 @@ const AgentsUpdateContainer = () => {
                                     <Field
                                         label={"Продукты"}
                                         type={"select"}
-                                        name={"tariff[0].product"}
+                                        name={`tariff[${get(agent, "data.tariff", [])?.length}].product`}
                                         options={products}
-                                        defaultValue={get(product, "tariff[0].product")}
+                                        defaultValue={get(product, `tariff[${get(agent, "data.tariff", [])?.length}].product`)}
                                         params={{
                                             required: get(product, "riskData", []).length > 0,
                                         }}
@@ -757,16 +728,16 @@ const AgentsUpdateContainer = () => {
                                     <Field
                                         label={"Разрешить заключение договоров"}
                                         type={"switch"}
-                                        name={"tariff[0].allowAgreement"}
-                                        defaultValue={get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),productId)),'tariff.allowAgreement',false)}
+                                        name={`tariff[${get(agent, "data.tariff", [])?.length}].allowAgreement`}
+                                        defaultValue={get(findSelectedProductTarif(productId),'tariff.allowAgreement',false)}
                                     />
                                 </Col>
                                 <Col xs={3}>
                                     <Field
                                         label={"Лимит ответственности"}
                                         type={"number-format-input"}
-                                        name={"tariff[0].limitOfAgreement"}
-                                        defaultValue={get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),productId)),'tariff.limitOfAgreement',0)}
+                                        name={`tariff[${get(agent, "data.tariff", [])?.length}].limitOfAgreement`}
+                                        defaultValue={get(findSelectedProductTarif(productId),'tariff.limitOfAgreement',0)}
                                         property={{ placeholder: "Введите значение" }}
                                     />
                                 </Col>
@@ -781,7 +752,7 @@ const AgentsUpdateContainer = () => {
                                 </Col>
                             </Row>
                         </Col>
-                        {get(agent, "data.tariff", []).length > 0 && (
+                        { (
                             <Col xs={12} className={"mb-25"}>
                                 <hr />
                                 <Table
@@ -796,6 +767,7 @@ const AgentsUpdateContainer = () => {
                                     ]}
                                 >
                                     {get(agent, "data.tariff", []).map((item, i) => (
+                                        get(item, "product") &&
                                         <tr key={i + 1}>
                                             <td>
                                                 <Field
@@ -839,10 +811,10 @@ const AgentsUpdateContainer = () => {
                                             </td>
                                             <td colSpan={3} >
                                                 {
-                                                    get(item,'tariffPerClass',[]).map(_item=><Flex key={get(_item,'class')} className={'mb-15'}>
+                                                    get(item,'tariffPerClass',[]).map((_item,j)=>get(_item,'class') && <Flex key={get(_item,'class')} className={'mb-15'}>
 
                                                         <Field
-                                                            name={`tariff[0].tariffPerClass[${i}].class`}
+                                                            name={`tariff[${i}].tariffPerClass[${j}].class`}
                                                             type={"select"}
                                                             property={{
                                                                 hideLabel: true,
@@ -860,7 +832,7 @@ const AgentsUpdateContainer = () => {
                                                         />
                                                         <Field
                                                             className={'mr-8'}
-                                                            name={`tariff[0].tariffPerClass[${i}].min`}
+                                                            name={`tariff[${i}].tariffPerClass[${j}].min`}
                                                             type={"number-format-input"}
                                                             property={{
                                                                 hideLabel: true,
@@ -871,7 +843,7 @@ const AgentsUpdateContainer = () => {
                                                         />
                                                         <Field
                                                             className={'mr-8'}
-                                                            name={`tariff[0].tariffPerClass[${i}].max`}
+                                                            name={`tariff[${i}].tariffPerClass[${j}].max`}
                                                             type={"number-format-input"}
                                                             property={{
                                                                 hideLabel: true,
@@ -884,49 +856,31 @@ const AgentsUpdateContainer = () => {
                                                 }
 
                                             </td>
+                                            <td></td>
 
                                         </tr>
                                     ))}
-                                </Table>
-                            </Col>
-                        )}
-                        {tariffList.length > 0 && (
-                            <Col xs={12} className={"horizontal-scroll"}>
-                                <hr />
-                                <Table
-                                    hideThead={false}
-                                    thead={[
-                                        "Продукт",
-                                        "Разрешить заключение договоров",
-                                        "Лимит ответственности",
-                                        "Class",
-                                        "Max",
-                                        "Min",
-                                        "Delete",
-                                    ]}
-                                >
-                                    {tariffList.map((item, i) => (
-                                        <tr key={i}>
+                                    {tariffList.length > 0 && tariffList.map((item, i) => (
+                                        <tr key={i + 1}>
                                             <td>
                                                 <Field
                                                     className={"minWidth300"}
-                                                    options={products}
+                                                    options={productsListWithoutFilter}
                                                     type={"select"}
-                                                    name={`tariff[${i + get(agent, "data.tariff", [])?.length}].product`}
-                                                    defaultValue={get(item, "tariff[0].product")}
+                                                    name={`tariff[${i+get(agent, "data.tariff", [])?.length}].product`}
+                                                    defaultValue={get(item, "product")}
                                                     property={{ hideLabel: true }}
                                                     isDisabled={true}
                                                 />
                                             </td>
-
-                                            <td className={"text-center"}>
+                                            <td>
                                                 <Field
                                                     property={{ hideLabel: true }}
                                                     type={"switch"}
-                                                    name={`tariff[${i + get(agent, "data.tariff", [])?.length}].allowAgreement`}
+                                                    name={`tariff[${i+get(agent, "data.tariff", [])?.length}].allowAgreement`}
                                                     defaultValue={get(
                                                         item,
-                                                        "tariff[0].allowAgreement",
+                                                        "allowAgreement",
                                                         false
                                                     )}
                                                     disabled={true}
@@ -935,10 +889,10 @@ const AgentsUpdateContainer = () => {
                                             <td>
                                                 <Field
                                                     type={"number-format-input"}
-                                                    name={`tariff[${i + get(agent, "data.tariff", [])?.length}].limitOfAgreement`}
+                                                    name={`tariff[${i+get(agent, "data.tariff", [])?.length}].limitOfAgreement`}
                                                     defaultValue={get(
                                                         item,
-                                                        "tariff[0].limitOfAgreement",
+                                                        "limitOfAgreement",
                                                         0
                                                     )}
                                                     property={{
@@ -948,75 +902,60 @@ const AgentsUpdateContainer = () => {
                                                     }}
                                                 />
                                             </td>
-                                            <td colSpan={3}>
-                                                {get(item, `tariff[0].tariffPerClass`, []).map(
-                                                    (c, j) => (
-                                                        <Flex>
-                                                            <Field
-                                                                key={j}
-                                                                className={"mb-15 mr-16 flex-none"}
-                                                                name={`tariff[${
-                                                                    i + get(agent, "data.tariff", [])?.length
-                                                                }].tariffPerClass[${j}].class`}
-                                                                type={"select"}
-                                                                property={{
-                                                                    hideLabel: true,
-                                                                    bgColor: get(
-                                                                        findItem(
-                                                                            get(classes, "data.data"),
-                                                                            get(c, "_id")
-                                                                        ),
-                                                                        "color"
-                                                                    ),
-                                                                }}
-                                                                options={classOptions}
-                                                                defaultValue={get(
+                                            <td colSpan={3} >
+                                                {
+                                                    get(item,'tariffPerClass',[]).map((_item,j)=> <Flex key={get(_item,'class')} className={'mb-15'}>
+
+                                                        <Field
+                                                            name={`tariff[${i+get(agent, "data.tariff", [])?.length}].tariffPerClass[${j}].class`}
+                                                            type={"select"}
+                                                            property={{
+                                                                hideLabel: true,
+                                                                bgColor: get(
                                                                     findItem(
                                                                         get(classes, "data.data"),
-                                                                        get(c, "class")
+                                                                        get(item, "_id")
                                                                     ),
-                                                                    "_id"
-                                                                )}
-                                                                isDisabled={true}
-                                                            />
-                                                            <Field
-                                                                key={j}
-                                                                className={"mb-15 mr-16 ml-15"}
-                                                                type={"number-format-input"}
-                                                                name={`tariff[${
-                                                                    i + get(agent, "data.tariff", [])?.length
-                                                                }].tariffPerClass[${j}].max`}
-                                                                defaultValue={get(c, "max", 0)}
-                                                                property={{
-                                                                    disabled: true,
-                                                                    placeholder: "Введите значение",
-                                                                    hideLabel: true,
-                                                                }}
-                                                            />
-                                                            <Field
-                                                                key={j}
-                                                                className={"mb-15"}
-                                                                type={"number-format-input"}
-                                                                name={`tariff[${
-                                                                    i + get(agent, "data.tariff", [])?.length
-                                                                }].tariffPerClass[${j}].min`}
-                                                                defaultValue={get(c, "min", 0)}
-                                                                property={{
-                                                                    disabled: true,
-                                                                    placeholder: "Введите значение",
-                                                                    hideLabel: true,
-                                                                }}
-                                                            />
-                                                        </Flex>
-                                                    )
-                                                )}
+                                                                    "color"
+                                                                ),
+                                                            }}
+                                                            options={classOptions}
+                                                            defaultValue={get(_item,'class._id')}
+                                                            isDisabled={true}
+                                                        />
+                                                        <Field
+                                                            className={'mr-8'}
+                                                            name={`tariff[${i+get(agent, "data.tariff", [])?.length}].tariffPerClass[${j}].min`}
+                                                            type={"number-format-input"}
+                                                            property={{
+                                                                hideLabel: true,
+                                                                placeholder: "Мин",
+                                                                suffix: " %",
+                                                            }}
+                                                            defaultValue={get(_item,'min')}
+                                                        />
+                                                        <Field
+                                                            className={'mr-8'}
+                                                            name={`tariff[${i+get(agent, "data.tariff", [])?.length}].tariffPerClass[${j}].max`}
+                                                            type={"number-format-input"}
+                                                            property={{
+                                                                hideLabel: true,
+                                                                placeholder: "Макс",
+                                                                suffix: " %",
+                                                            }}
+                                                            defaultValue={get(_item,'max')}
+                                                        />
+                                                    </Flex>)
+                                                }
+
                                             </td>
                                             <td
                                                 className={"cursor-pointer"}
-                                                onClick={() => removeTariffFromList(i)}
+                                                onClick={() => removeTariffFromList(get(item, "product"))}
                                             >
                                                 <Trash2 color={"#dc2626"} />
                                             </td>
+
                                         </tr>
                                     ))}
                                 </Table>
