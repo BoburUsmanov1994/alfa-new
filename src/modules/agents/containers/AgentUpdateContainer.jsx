@@ -159,9 +159,18 @@ const AgentsUpdateContainer = () => {
         },
         enabled: !!productSubGroupId
     })
+    let {data: productsListWithoutFilter} = useGetAllQuery({
+        key: [KEYS.productsfilter, productSubGroupId],
+        url: URLS.products,
+    })
 
     let products = getSelectOptionsListFromData(
         get(productsList, `data.data`, []),
+        "_id",
+        ["name"]
+    );
+     productsListWithoutFilter = getSelectOptionsListFromData(
+        get(productsListWithoutFilter, `data.data`, []),
         "_id",
         ["name"]
     );
@@ -778,6 +787,9 @@ const AgentsUpdateContainer = () => {
                                 <Table
                                     hideThead={false}
                                     thead={[
+                                        "Продукт",
+                                        "Разрешить заключение договоров",
+                                        "Лимит ответственности",
                                         "Класс",
                                         "минимальную и  ставку по классу ",
                                         "максимальную ставку по классу",
@@ -787,65 +799,92 @@ const AgentsUpdateContainer = () => {
                                         <tr key={i + 1}>
                                             <td>
                                                 <Field
-                                                    name={`tariff[0].tariffPerClass[${i}].class`}
+                                                    className={"minWidth300"}
+                                                    options={productsListWithoutFilter}
                                                     type={"select"}
-                                                    property={{
-                                                        hideLabel: true,
-                                                        bgColor: get(
-                                                            findItem(
-                                                                get(classes, "data.data"),
-                                                                get(item, "_id")
-                                                            ),
-                                                            "color"
-                                                        ),
-                                                    }}
-                                                    options={classOptions}
-                                                    defaultValue={get(
-                                                        findItem(
-                                                            get(classes, "data.data"),
-                                                            get(item, "classeId")
-                                                        ),
-                                                        "_id"
-                                                    )}
+                                                    name={`tariff[${i + 1}].product`}
+                                                    defaultValue={get(item, "product")}
+                                                    property={{ hideLabel: true }}
                                                     isDisabled={true}
                                                 />
                                             </td>
                                             <td>
-                                                <Flex justify={"center"}>
-                                                    <Field
-                                                        name={`tariff[0].tariffPerClass[${i}].min`}
-                                                        type={"number-format-input"}
-                                                        property={{
-                                                            hideLabel: true,
-                                                            placeholder: "Мин",
-                                                            suffix: " %",
-                                                        }}
-                                                        defaultValue={get(
-                                                            product,
-                                                            `tariff[0].tariffPerClass[${i}].min`,
-                                                            0
-                                                        )}
-                                                    />
-                                                </Flex>
+                                                <Field
+                                                    property={{ hideLabel: true }}
+                                                    type={"switch"}
+                                                    name={`tariff[${i + 1}].allowAgreement`}
+                                                    defaultValue={get(
+                                                        item,
+                                                        "allowAgreement",
+                                                        false
+                                                    )}
+                                                    disabled={true}
+                                                />
                                             </td>
                                             <td>
-                                                <Flex justify={"flex-end"}>
-                                                    <Field
-                                                        name={`tariff[0].tariffPerClass[${i}].max`}
-                                                        type={"number-format-input"}
-                                                        property={{
-                                                            hideLabel: true,
-                                                            placeholder: "Макс",
-                                                            suffix: " %",
-                                                        }}
-                                                        defaultValue={get(
-                                                            product,
-                                                            `tariff[0].tariffPerClass[${i}].max`,
-                                                            0
-                                                        )}
-                                                    />
-                                                </Flex>
+                                                <Field
+                                                    type={"number-format-input"}
+                                                    name={`tariff[${i + 1}].limitOfAgreement`}
+                                                    defaultValue={get(
+                                                        item,
+                                                        "limitOfAgreement",
+                                                        0
+                                                    )}
+                                                    property={{
+                                                        disabled: true,
+                                                        placeholder: "Введите значение",
+                                                        hideLabel: true,
+                                                    }}
+                                                />
                                             </td>
+                                            <td colSpan={3} >
+                                                {
+                                                    get(item,'tariffPerClass',[]).map(_item=><Flex key={get(_item,'class')} className={'mb-15'}>
+
+                                                        <Field
+                                                            name={`tariff[0].tariffPerClass[${i}].class`}
+                                                            type={"select"}
+                                                            property={{
+                                                                hideLabel: true,
+                                                                bgColor: get(
+                                                                    findItem(
+                                                                        get(classes, "data.data"),
+                                                                        get(item, "_id")
+                                                                    ),
+                                                                    "color"
+                                                                ),
+                                                            }}
+                                                            options={classOptions}
+                                                            defaultValue={get(_item,'class')}
+                                                            isDisabled={true}
+                                                        />
+                                                        <Field
+                                                            className={'mr-8'}
+                                                            name={`tariff[0].tariffPerClass[${i}].min`}
+                                                            type={"number-format-input"}
+                                                            property={{
+                                                                hideLabel: true,
+                                                                placeholder: "Мин",
+                                                                suffix: " %",
+                                                            }}
+                                                            defaultValue={get(_item,'min')}
+                                                        />
+                                                        <Field
+                                                            className={'mr-8'}
+                                                            name={`tariff[0].tariffPerClass[${i}].max`}
+                                                            type={"number-format-input"}
+                                                            property={{
+                                                                hideLabel: true,
+                                                                placeholder: "Макс",
+                                                                suffix: " %",
+                                                            }}
+                                                            defaultValue={get(_item,'max')}
+                                                        />
+                                                    </Flex>)
+                                                }
+
+                                            </td>
+
                                         </tr>
                                     ))}
                                 </Table>
