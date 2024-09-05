@@ -13,7 +13,7 @@ import {useTranslation} from "react-i18next";
 import {useNavigate, useParams} from "react-router-dom";
 import dayjs from "dayjs";
 import Button from "../../../components/ui/button";
-import {DollarSign, Send, Trash2} from "react-feather";
+import {DollarSign, Download, Send, Trash2} from "react-feather";
 import Swal from "sweetalert2";
 import NumberFormat from "react-number-format";
 import Form from "../../../containers/form/form";
@@ -265,7 +265,7 @@ console.log('selectedPolice',selectedPolice)
                                         <td>{get(data, "data.copyOfDocuments") && <FilePreview fileId={get(data, "data.copyOfDocuments")} />}</td>
                                         <td>{get(data, "data.copyOfAgreement") && <FilePreview fileId={get(data, "data.copyOfAgreement")} />}</td>
                                         <td>{get(data, "data.documents._id") && <FilePreview fileId={get(data, "data.documents._id")} />}</td>
-                                        <td>{head(get(item,'documents',[])) && <FilePreview fileId={head(get(item,'documents',[]))} />}</td>
+                                        <td>{head(get(item,'url',[])) && <a target={"_blank"} href={get(item,'url','#')}><Download /></a>}</td>
                                         <td>{get(item, "fondStatus")}</td>
 
                                         <td className={''}
