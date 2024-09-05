@@ -1122,7 +1122,7 @@ const StepTwo = ({id = null, ...props}) => {
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             params={{required: true, valueAsNumber: true}}
-                                            property={{type: 'number'}}
+                                            property={{type: 'number',max:10000000000}}
                                             label={'Грузоподъемность'}
                                             defaultValue={get(vehicle, 'emptyWeight')}
                                             type={'input'}
