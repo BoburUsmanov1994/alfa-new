@@ -112,7 +112,7 @@ const CreateContainer = ({
                             {/*    />*/}
                             {/*</Col>*/}
                             <Col xs={4}>
-                                <Field label={t('Policy blank')} options={policyBlankList} type={'select'}
+                                <Field params={{required:true}} label={t('Policy blank')} options={policyBlankList} type={'select'}
                                        name={'blank'}
                                 />
                             </Col>

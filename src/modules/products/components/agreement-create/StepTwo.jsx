@@ -1132,7 +1132,7 @@ const StepTwo = ({id = null, ...props}) => {
                                         <Field
                                             params={{required: true, valueAsNumber: true}}
                                             property={{type: 'number'}}
-                                            label={'Количество мест сидения'}
+                                            label={'Количество мест сидения'}Скачать сгенерированный полис
                                             defaultValue={get(vehicle, 'seats')}
                                             type={'input'}
                                             name={'objectOfInsurance.details.seatNumber'}/>

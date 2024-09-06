@@ -274,7 +274,7 @@ console.log('selectedPolice',selectedPolice)
                                             <DollarSign onClick={() => setSelectedPolice(item)}
                                                         className={'cursor-pointer'}
                                                         color={'#71BC70'}/>}
-                                            {includes(['paid'], get(item, "fondStatus")) &&
+                                            {!includes(['sent'], get(item, "fondStatus")) &&
                                             <Send className={'cursor-pointer ml-15'} color={'#13D6D1'}
                                                   onClick={() => sendToFond(id, get(item, '_id'))}/>}
                                             {includes(['new'], get(item, "fondStatus")) &&
@@ -327,7 +327,7 @@ console.log('selectedPolice',selectedPolice)
                 }
                 {
                     <Table bordered hideThead={false}
-                           thead={['', '№', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления', 'Available sum']}>{get(transactions, 'data.data', []).map((item, i) =>
+                           thead={['', '№', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления','Детали платежа', 'Available sum']}>{get(transactions, 'data.data', []).map((item, i) =>
                         <tr key={get(item, '_id')}>
                             <td><Checkbox disabled={!get(item, 'available_sum', 0)}
                                           checked={isEqual(transactionId, get(item, '_id'))} onChange={(e) => {
@@ -342,6 +342,8 @@ console.log('selectedPolice',selectedPolice)
                             <td>{get(item, 'sender_name')}</td>
                             <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                               value={get(item, 'payment_amount', 0)}/></td>
+
+                            <td>{get(item, 'payment_details')}</td>
                             <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                               value={get(item, 'available_sum', 0)}/></td>
                         </tr>)}</Table>}
