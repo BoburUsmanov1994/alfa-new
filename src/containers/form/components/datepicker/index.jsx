@@ -3,7 +3,7 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Label from "../../../../components/ui/label";
-import {get, isEmpty, isFunction} from "lodash";
+import {get, isEmpty, isFunction,isEqual} from "lodash";
 import {ErrorMessage} from "@hookform/error-message";
 import {Calendar} from "react-feather";
 import dayjs from "dayjs";
@@ -65,13 +65,13 @@ const CustomDatepicker = ({
 
     useEffect(() => {
         setValue(name, dayjs(startDate).format(dateFormat))
-        if (get(property, 'onChange') && isFunction(get(property, 'onChange'))) {
+        if (get(property, 'onChange') && isFunction(get(property, 'onChange')) && !isEqual(defaultValue,startDate)) {
             get(property, 'onChange')(startDate)
         }
     }, [startDate])
 
     useEffect(() => {
-        if (defaultValue) {
+        if (defaultValue && !isEqual(defaultValue,startDate)) {
             if (dayjs(defaultValue).isValid()) {
                 setStartDate(dayjs(defaultValue).toDate())
             }

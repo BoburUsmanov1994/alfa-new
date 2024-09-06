@@ -60,7 +60,7 @@ const AgentsReportContainer = () => {
                 limit: 1000
             }
         },
-        enabled: !!(get(params, 'startDate') && get(params, 'endDate'))
+
     })
 
     const {mutate: actPostRequest, isLoading: isLoadingActPost} = usePostQuery({listKeyId: KEYS.policyByAgent})

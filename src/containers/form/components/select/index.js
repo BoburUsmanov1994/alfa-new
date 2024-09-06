@@ -172,7 +172,14 @@ const FormSelect = ({
                                 options={options}
                                 disabled={disabled}
                                 placeholder={get(property, 'placeholder', 'Select...')}
-                                onChange={handleChange}
+                                onChange={(selectedOption, triggeredAction)=>{
+                                    handleChange(selectedOption)
+                                    if (triggeredAction?.action === 'clear') {
+                                        if (isFunction(get(property, 'onChange'))) {
+                                            get(property, 'onChange')(null)
+                                        }
+                                    }
+                                }}
                                 styles={customStyles}
                                 components={{DropdownIndicator}}
                                 isMulti={isMulti}

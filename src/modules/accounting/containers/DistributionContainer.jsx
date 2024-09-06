@@ -22,11 +22,10 @@ import {getSelectOptionsListFromData} from "../../../utils";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 
-const DistributionContainer = ({
-                                   ...rest
-                               }) => {
+const DistributionContainer = () => {
     const {t} = useTranslation()
     const navigate = useNavigate()
+    const [filter, setFilter] = useState({branch:null,status:null,fromDate:dayjs().subtract(1, 'year').format("YYYY-MM-DD"),toDate:dayjs().format("YYYY-MM-DD")})
     const [params, setParams] = useState({
         branchId: null
     })
@@ -36,9 +35,15 @@ const DistributionContainer = ({
     let {data: transactions, isLoading} = useGetAllQuery({
         key: KEYS.transactions, url: `${URLS.transactions}/list`, params: {
             params: {
-                limit: 1000
+                limit: 25,
+                page: 1,
+                branch: get(filter, 'branch'),
+                status: get(filter, 'status'),
+                fromDate: get(filter, 'fromDate'),
+                toDate: get(filter, 'toDate'),
             }
-        }
+        },
+        // enabled: !!(fromDate && toDate)
     })
     let {data: branches, isLoading: isLoadingBranches} = useGetAllQuery({
         key: KEYS.branches, url: `${URLS.branches}/list`, params: {
@@ -82,7 +87,7 @@ const DistributionContainer = ({
                 attributes: {
                     attach: attach,
                     transactions: idList,
-                    branch: get(params, 'branchId')
+                    branch: get(params, 'branchId'),
                 }
             })
             navigate(`/accounting/policy`)
@@ -91,6 +96,7 @@ const DistributionContainer = ({
     if (isLoading || isLoadingBranches) {
         return <OverlayLoader/>
     }
+    console.log("filter", filter)
 
     return (
         <Section>
@@ -105,18 +111,61 @@ const DistributionContainer = ({
                     <Flex justify={'flex-end'}>
                         <Button onClick={() => create(false)} type={'button'} className={'mr-16'}
                                 danger> Открепить</Button>
-                        <Button type={'button'} onClick={()=>create(true)} className={'mr-16'}>Распределить</Button>
+                        <Button type={'button'} onClick={() => create(true)} className={'mr-16'}>Распределить</Button>
                         <Form getValueFromField={(value, name) => {
                             if (includes(['branchId'], name)) {
                                 setParams(prev => ({...prev, [name]: value}))
                             }
                         }}>
-                            <Field name={'branchId'} property={{
+                            <Field className={'minWidth300'} name={'branchId'} property={{
                                 placeholder: 'Филиалы',
                                 hideLabel: true,
                             }} type={'select'} options={branches}/>
                         </Form>
                     </Flex>
+                </Col>
+                <Col xs={12} className={'mt-30'}>
+                    <Form formRequest={({data})=>setFilter({...data})}>
+                        <Row>
+                            <Col xs={3}>
+                                <Field
+                                    defaultValue={get(filter, 'branch')}
+                                    name={'branch'} property={{
+                                    placeholder: 'Filter by branch',
+                                    hideLabel: true,
+                                }}
+                                    type={'select'}
+                                    options={branches}
+                                />
+                            </Col>
+                            <Col xs={3}>
+                                <Field
+                                    defaultValue={get(filter, 'status')}
+                                    name={'status'} property={{
+                                    placeholder: 'Filter by status',
+                                    hideLabel: true,
+                                }} type={'select'}
+                                    options={[{value: 'Новый', label: 'Новый'}, {value: 'Готов', label: 'Готов'}]}/>
+                            </Col>
+                            <Col xs={6}>
+                                <Flex>
+                                <Field
+                                    className={'mr-16'}
+                                    defaultValue={get(filter,'fromDate')}
+                                       type={'datepicker'}
+                                       name={'fromDate'} property={{
+                                    hideLabel: true,
+                                }}
+                                />
+                                <Field  defaultValue={get(filter,'toDate')}  className={'mr-16'} property={{
+                                    hideLabel: true,
+                                }} type={'datepicker'} name={'toDate'} label={t("End date")}
+                                />
+                                <Button>{t("Search")}</Button>
+                                </Flex>
+                            </Col>
+                        </Row>
+                    </Form>
                 </Col>
             </Row>
             <Row className={'mb-20'}>
@@ -128,7 +177,7 @@ const DistributionContainer = ({
                             } else {
                                 setIdList([])
                             }
-                        }}/>, '№', 'Статус прикрепления', 'Филиал', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления', 'Снято на договор', 'Available sum','Детали платежа', 'ИНН отправителя', 'ИНН банка отправителя', 'МФО отправителя', 'Р/С отправителя', 'ИНН банка получателя', 'МФО банка получателя', 'Р/С получателя', 'Дата ввода']}>{get(transactions, 'data.data', []).map((item, i) =>
+                        }}/>, '№', 'Статус прикрепления', 'Филиал', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления', 'Снято на договор', 'Available sum', 'Детали платежа', 'ИНН отправителя', 'ИНН банка отправителя', 'МФО отправителя', 'Р/С отправителя', 'ИНН банка получателя', 'МФО банка получателя', 'Р/С получателя', 'Дата ввода']}>{get(transactions, 'data.data', []).map((item, i) =>
                             <tr key={get(item, '_id')}>
                                 <td><Checkbox checked={includes(idList, get(item, '_id'))} onChange={(e) => {
                                     if (e.target?.checked) {
@@ -139,7 +188,7 @@ const DistributionContainer = ({
                                 }}/></td>
                                 <td>{i + 1}</td>
                                 <td>{get(item, 'status_of_attachment')}</td>
-                                <td>{get(item, 'branch.branchname')}</td>
+                                <td>{get(item, 'branch.branchName')}</td>
                                 <td>{dayjs(get(item, 'payment_order_date')).format("DD.MM.YYYY")}</td>
                                 <td>{get(item, 'sender_name')}</td>
                                 <td><NumberFormat displayType={'text'} thousandSeparator={" "}
