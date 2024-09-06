@@ -199,7 +199,82 @@ const JuridicalClientCreateContainer = ({...rest}) => {
                                 type={'input'}
                                 name={'organization.address'}/>
                         </Col>
-
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                noMaxWidth
+                                params={{required: true}}
+                                defaultValue={get(organization, 'representativeDoc')}
+                                label={'Representative document'}
+                                type={'input'}
+                                name={'organization.representativeDoc'}/>
+                        </Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                noMaxWidth
+                                params={{required: true}}
+                                defaultValue={get(organization, 'representativeDocNumber')}
+                                label={'Representative document number'}
+                                type={'input'}
+                                name={'organization.representativeDocNumber'}/>
+                        </Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                noMaxWidth
+                                params={{required: true}}
+                                defaultValue={get(organization, 'representativePinfl')}
+                                label={'Representative PINFL'}
+                                type={"input-mask"}
+                                property={{ mask: "99999999999999", maskChar: "_" }}
+                                name={'organization.representativePinfl'}/>
+                        </Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                noMaxWidth
+                                params={{required: true}}
+                                defaultValue={get(organization, 'representativePassportSeria')}
+                                label={'Representative Passport Seria'}
+                                type={"input-mask"}
+                                property={{ mask: "aa", maskChar: "_" }}
+                                name={'organization.representativePassportSeria'}/>
+                        </Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                noMaxWidth
+                                params={{required: true}}
+                                defaultValue={get(organization, 'representativePassportNumber')}
+                                label={'Representative Passport Number'}
+                                type={"input-mask"}
+                                property={{ mask: "9999999", maskChar: "_" }}
+                                name={'organization.representativePassportNumber'}/>
+                        </Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                noMaxWidth
+                                params={{required: true}}
+                                defaultValue={get(organization, 'bankMfo')}
+                                label={'Bank Mfo'}
+                                type={"input"}
+                                name={'organization.bankMfo'}/>
+                        </Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                noMaxWidth
+                                params={{required: true}}
+                                defaultValue={get(organization, 'bankName')}
+                                label={'Bank name'}
+                                type={"input"}
+                                name={'organization.bankName'}/>
+                        </Col>
+                        <Col xs={4} className={'mb-25'}>
+                            <Field
+                                noMaxWidth
+                                params={{required: true}}
+                                defaultValue={get(organization, 'bankInn')}
+                                label={'Bank Inn'}
+                                type={"input-mask"}
+                                property={{ mask: "999999999", maskChar: "_", }}
+                                name={'organization.bankInn'}/>
+                        </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 label={'isUseOurPanel?'}
