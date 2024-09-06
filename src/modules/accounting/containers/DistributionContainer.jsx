@@ -21,10 +21,12 @@ import Field from "../../../containers/form/field";
 import {getSelectOptionsListFromData} from "../../../utils";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
+import Pagination from "../../../components/pagination";
 
 const DistributionContainer = () => {
     const {t} = useTranslation()
     const navigate = useNavigate()
+    const [page,setPage] = useState(1)
     const [filter, setFilter] = useState({branch:null,status:null,fromDate:dayjs().subtract(1, 'year').format("YYYY-MM-DD"),toDate:dayjs().format("YYYY-MM-DD")})
     const [params, setParams] = useState({
         branchId: null
@@ -35,8 +37,8 @@ const DistributionContainer = () => {
     let {data: transactions, isLoading} = useGetAllQuery({
         key: KEYS.transactions, url: `${URLS.transactions}/list`, params: {
             params: {
-                limit: 10000,
-                page: 1,
+                limit: 50,
+                page,
                 branch: get(filter, 'branch'),
                 status: get(filter, 'status'),
                 fromDate: get(filter, 'fromDate'),
@@ -96,7 +98,7 @@ const DistributionContainer = () => {
     if (isLoading || isLoadingBranches) {
         return <OverlayLoader/>
     }
-    console.log("filter", filter)
+
 
     return (
         <Section>
@@ -186,7 +188,7 @@ const DistributionContainer = () => {
                                         setIdList(idList.filter(id => !isEqual(id, get(item, '_id'))))
                                     }
                                 }}/></td>
-                                <td>{i + 1}</td>
+                                <td>{i + 1 + (page-1)*50}</td>
                                 <td>{get(item, 'status_of_attachment')}</td>
                                 <td>{get(item, 'branch.branchName')}</td>
                                 <td>{dayjs(get(item, 'payment_order_date')).format("DD.MM.YYYY")}</td>
@@ -208,6 +210,7 @@ const DistributionContainer = () => {
                                 <td>{dayjs(get(item, 'created_at')).format("DD.MM.YYYY")}</td>
                             </tr>)}</Table>}
                 </Col>
+                <Pagination limit={50} page={page} setPage={setPage} totalItems={get(transactions, `data.count`, 0)}/>
             </Row>
 
         </Section>
