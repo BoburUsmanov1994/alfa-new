@@ -265,7 +265,7 @@ console.log('selectedPolice',selectedPolice)
                                         <td>{get(data, "data.copyOfDocuments") && <FilePreview fileId={get(data, "data.copyOfDocuments")} />}</td>
                                         <td>{get(data, "data.copyOfAgreement") && <FilePreview fileId={get(data, "data.copyOfAgreement")} />}</td>
                                         <td>{get(data, "data.documents._id") && <FilePreview fileId={get(data, "data.documents._id")} />}</td>
-                                        <td>{head(get(item,'url',[])) && <a target={"_blank"} href={get(item,'url','#')}><Download /></a>}</td>
+                                        <td>{get(item,'url') && <a target={"_blank"} href={get(item,'url','#')}><Download /></a>}</td>
                                         <td>{get(item, "fondStatus")}</td>
 
                                         <td className={''}
@@ -274,7 +274,7 @@ console.log('selectedPolice',selectedPolice)
                                             <DollarSign onClick={() => setSelectedPolice(item)}
                                                         className={'cursor-pointer'}
                                                         color={'#71BC70'}/>}
-                                            {!includes(['sent'], get(item, "fondStatus")) &&
+                                            {!includes(['sent'], get(item, "fondStatus")) && !get(item,'url') &&
                                             <Send className={'cursor-pointer ml-15'} color={'#13D6D1'}
                                                   onClick={() => sendToFond(id, get(item, '_id'))}/>}
                                             {includes(['new'], get(item, "fondStatus")) &&
