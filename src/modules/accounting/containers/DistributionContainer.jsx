@@ -35,7 +35,7 @@ const DistributionContainer = () => {
     let {data: transactions, isLoading} = useGetAllQuery({
         key: KEYS.transactions, url: `${URLS.transactions}/list`, params: {
             params: {
-                limit: 25,
+                limit: 10000,
                 page: 1,
                 branch: get(filter, 'branch'),
                 status: get(filter, 'status'),
