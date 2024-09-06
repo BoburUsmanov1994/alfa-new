@@ -142,7 +142,10 @@ const BranchUpdateContainer = ({...rest}) => {
                         <Col xs={4}>
                             <Field name={'telephone'} type={'input'}
                                    label={'telephone'}
-                                   params={{required: true}}
+                                   params={{required: true, pattern: {
+                                           value: /^998[0-9]{9}$/,
+                                           message: 'Invalid format'
+                                       }}}
                                    defaultValue={get(branch, 'data.data.telephone')}
                             />
                         </Col>
@@ -230,7 +233,10 @@ const BranchUpdateContainer = ({...rest}) => {
                                 <Col xs={3}>
                                     <Field name={`employees[${count}].telephonenumber`} type={'input'}
                                            label={'telephonenumber'}
-                                           params={{required: true}}
+                                           params={{required: true, pattern: {
+                                                   value: /^998[0-9]{9}$/,
+                                                   message: 'Invalid format'
+                                               }}}
                                            defaultValue={get(branch, `data.data.employees[${count}].telephonenumber`)}
                                     />
                                 </Col>

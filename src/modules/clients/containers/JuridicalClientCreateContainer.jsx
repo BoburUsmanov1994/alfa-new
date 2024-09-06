@@ -145,6 +145,10 @@ const JuridicalClientCreateContainer = ({...rest}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field defaultValue={get(organization, 'phone')} params={{
                                 required: true,
+                                pattern: {
+                                    value: /^998[0-9]{9}$/,
+                                    message: 'Invalid format'
+                                }
                             }}
                                    property={{placeholder: '998XXXXXXXXX'}}
                                    label={'Телефон'} type={'input'}

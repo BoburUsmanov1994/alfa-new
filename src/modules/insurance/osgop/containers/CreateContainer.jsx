@@ -614,6 +614,10 @@ const CreateContainer = () => {
                                     <Field
                                         params={{
                                             required: true,
+                                            pattern: {
+                                                value: /^998[0-9]{9}$/,
+                                                message: 'Invalid format'
+                                            }
                                         }}
                                         defaultValue={get(ownerPerson, 'phone')}
                                         label={'Phone'}
@@ -940,7 +944,11 @@ const CreateContainer = () => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         params={{
-                                            required: true
+                                            required: true,
+                                            pattern: {
+                                                value: /^998[0-9]{9}$/,
+                                                message: 'Invalid format'
+                                            }
                                         }}
                                         property={{placeholder: '998XXXXXXXXX'}}
                                         defaultValue={insurantIsOwner ? get(otherPrams, 'insurant.person.phone') : null}

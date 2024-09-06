@@ -651,7 +651,11 @@ const UpdateContainer = ({form_id}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         params={{
-                                            required: true
+                                            required: true,
+                                            pattern: {
+                                                value: /^998[0-9]{9}$/,
+                                                message: 'Invalid format'
+                                            }
                                         }}
                                         defaultValue={get(person, 'phone',get(data,'data.result.insurant.person.phone'))}
                                         label={'Phone'}

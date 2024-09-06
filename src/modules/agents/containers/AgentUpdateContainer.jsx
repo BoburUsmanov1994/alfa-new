@@ -502,6 +502,12 @@ const AgentsUpdateContainer = () => {
                                 </Col>
                                 <Col xs={4}>
                                     <Field
+                                        params={{
+                                            pattern: {
+                                                value: /^998[0-9]{9}$/,
+                                                message: 'Invalid format'
+                                            }
+                                        }}
                                         defaultValue={get(agent,'data.person.telephonenumber')}
                                         name={"person.telephonenumber"}
                                         type={"input"}

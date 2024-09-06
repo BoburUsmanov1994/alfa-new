@@ -554,7 +554,11 @@ const StepOne = ({id = null, ...props}) => {
                             <Col xs={4} className={'mb-25'}>
                                 <Field
                                     params={{
-                                        required: true
+                                        required: true,
+                                        pattern: {
+                                            value: /^998[0-9]{9}$/,
+                                            message: t('Invalid format')
+                                        }
                                     }}
                                     label={'Phone'}
                                     type={'input'}
@@ -631,7 +635,11 @@ const StepOne = ({id = null, ...props}) => {
                             <Col xs={4} className={'mb-25'}>
                                 <Field
                                     params={{
-                                        required: true
+                                        required: true,
+                                        pattern: {
+                                            value: /^998[0-9]{9}$/,
+                                            message: 'Invalid format'
+                                        }
                                     }}
                                     label={'Phone'}
                                     type={'input'}
@@ -712,7 +720,11 @@ const StepOne = ({id = null, ...props}) => {
                             <Col xs={4} className={'mb-25'}>
                                 <Field
                                     params={{
-                                        required: true
+                                        required: true,
+                                        pattern: {
+                                            value: /^998[0-9]{9}$/,
+                                            message: 'Invalid format'
+                                        }
                                     }}
                                     label={'Phone'}
                                     type={'input'}

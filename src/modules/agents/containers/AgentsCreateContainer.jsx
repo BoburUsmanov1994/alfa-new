@@ -498,6 +498,12 @@ const AgentsCreateContainer = () => {
                 </Col>
                 <Col xs={4}>
                   <Field
+                      params={{
+                        pattern: {
+                          value: /^998[0-9]{9}$/,
+                          message: t('Invalid format')
+                        }
+                      }}
                     name={"person.telephonenumber"}
                     type={"input"}
                     label={"telephonenumber"}

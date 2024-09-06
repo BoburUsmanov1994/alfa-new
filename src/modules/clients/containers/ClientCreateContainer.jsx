@@ -211,6 +211,10 @@ const ClientCreateContainer = ({...rest}) => {
                             <Field
                                 params={{
                                     required: true,
+                                    pattern: {
+                                        value: /^998[0-9]{9}$/,
+                                        message: 'Invalid format'
+                                    }
                                 }}
                                 defaultValue={get(person, 'phone')}
                                 label={'Phone'}

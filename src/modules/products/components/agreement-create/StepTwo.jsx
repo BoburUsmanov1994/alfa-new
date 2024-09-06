@@ -839,11 +839,18 @@ const StepTwo = ({id = null, ...props}) => {
                                             <Col xs={4} className={'mb-25'}>
                                                 <Field
                                                     params={{
-                                                        required: true
+                                                        required: true,
+                                                        pattern: {
+                                                            value: /^998[0-9]{9}$/,
+                                                            message: t('Invalid format')
+                                                        }
                                                     }}
                                                     label={'Phone'}
                                                     type={'input'}
-                                                    property={{placeholder: '998XXXXXXXXX'}}
+                                                    property={{placeholder: '998XXXXXXXXX', pattern: {
+                                                            value: /^998[0-9]{9}$/,
+                                                            message: 'Invalid format'
+                                                        }}}
                                                     name={'objectOfInsurance.details.person.phone'}/>
                                             </Col>
                                             <Col xs={4} className={'mb-25'}>
@@ -909,7 +916,10 @@ const StepTwo = ({id = null, ...props}) => {
                                                     required: true
                                                 }}
                                                        defaultValue={get(organization, 'phone')}
-                                                       property={{placeholder: '998XXXXXXXXX'}}
+                                                       property={{placeholder: '998XXXXXXXXX', pattern: {
+                                                               value: /^998[0-9]{9}$/,
+                                                               message: 'Invalid format'
+                                                           }}}
                                                        label={'Телефон'} type={'input'}
                                                        name={'objectOfInsurance.details.organization.phone'}/>
                                             </Col>

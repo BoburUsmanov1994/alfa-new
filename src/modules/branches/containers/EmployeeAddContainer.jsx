@@ -118,7 +118,10 @@ const EmployeeAddContainer = () => {
                         <Col xs={4}>
                             <Field name={'telephonenumber'} type={'input'}
                                    label={'Phone'}
-                                   params={{required: true}}
+                                   params={{required: true, pattern: {
+                                           value: /^998[0-9]{9}$/,
+                                           message: 'Invalid format'
+                                       }}}
                             />
                         </Col>
                         <Col xs={4}>

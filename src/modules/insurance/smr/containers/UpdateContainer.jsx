@@ -352,7 +352,11 @@ const UpdateContainer = ({contract_id = null}) => {
                                     <Field
                                         defaultValue={get(organization, 'data.phone', get(data, 'data.insurant.phone'))}
                                         params={{
-                                            required: true
+                                            required: true,
+                                            pattern: {
+                                                value: /^998[0-9]{9}$/,
+                                                message: 'Invalid format'
+                                            }
                                         }}
                                         label={'Телефон'} type={'input'}
                                         name={'insurant.phone'}/>
