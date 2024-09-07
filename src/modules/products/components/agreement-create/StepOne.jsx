@@ -253,7 +253,7 @@ const StepOne = ({id = null, ...props}) => {
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field params={{required: true}} name={'agreementDate'} type={'datepicker'}
+                            <Field property={{minDate:new Date()}} params={{required: true}} name={'agreementDate'} type={'datepicker'}
                                    label={'Agreement date'}
                                    defaultValue={get(agreement, 'agreementDate')}
                             />
@@ -277,13 +277,13 @@ const StepOne = ({id = null, ...props}) => {
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field params={{required: true}} name={'startOfInsurance'} type={'datepicker'}
+                            <Field property={{minDate:new Date()}} params={{required: true}} name={'startOfInsurance'} type={'datepicker'}
                                    label={'Начало страхового покрытия'}
                                    defaultValue={get(agreement, 'startOfInsurance')}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field  name={'endOfInsurance'} type={'datepicker'}
+                            <Field params={{required: true}}  name={'endOfInsurance'} type={'datepicker'}
                                    label={'Окончание страхового покрытия'}
                                    defaultValue={get(agreement, 'endOfInsurance')}
                             />

@@ -89,12 +89,12 @@ const CreateContainer = ({
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field label={t('Issue date')} type={'datepicker'}
+                                <Field property={{minDate:new Date()}} label={t('Issue date')} type={'datepicker'}
                                        name={'issueDate'} params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field defaultValue={get(agreementData, 'data.startOfInsurance')} label={t('Start')}
+                                <Field property={{minDate:new Date()}} defaultValue={get(agreementData, 'data.startOfInsurance')} label={t('Start')}
                                        type={'datepicker'}
                                        name={'startDate'} params={{required: true}}
                                 />
