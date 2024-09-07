@@ -234,7 +234,7 @@ const StepTwo = ({id = null, ...props}) => {
     const {data: otherObjectType} = useGetAllQuery({
         key: KEYS.otherObjectType, url: `${URLS.otherObjectType}`
     })
-    const otherObjectTypeList = getSelectOptionsListFromData(get(otherObjectType, `data.data`, []), '_id', 'name')
+    const otherObjectTypeList = getSelectOptionsListFromData(get(otherObjectType, `data.data`, []), 'id', 'name')
 
     const {data: measurementType} = useGetAllQuery({
         key: KEYS.measurementType, url: `${URLS.measurementType}/list`
