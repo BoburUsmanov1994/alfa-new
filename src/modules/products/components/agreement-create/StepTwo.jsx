@@ -231,6 +231,11 @@ const StepTwo = ({id = null, ...props}) => {
     })
     const agriculturalTypeList = getSelectOptionsListFromData(get(agriculturalType, `data.data`, []), '_id', 'name')
 
+    const {data: otherObjectType} = useGetAllQuery({
+        key: KEYS.otherObjectType, url: `${URLS.otherObjectType}`
+    })
+    const otherObjectTypeList = getSelectOptionsListFromData(get(otherObjectType, `data.data`, []), '_id', 'name')
+
     const {data: measurementType} = useGetAllQuery({
         key: KEYS.measurementType, url: `${URLS.measurementType}/list`
     })
@@ -1444,10 +1449,10 @@ const StepTwo = ({id = null, ...props}) => {
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             params={{required: true}}
-                                            options={agriculturalTypeList}
-                                            label={'Agricultural type'}
+                                            options={otherObjectTypeList}
+                                            label={'Object type'}
                                             type={'select'}
-                                            name={'objectOfInsurance.details.agriculturalObjectType'}/>
+                                            name={'objectOfInsurance.details.objectType'}/>
                                     </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field

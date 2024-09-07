@@ -75,6 +75,7 @@ const ClientCreateContainer = ({...rest}) => {
     const {mutate: createRequest, isLoading} = usePostQuery({listKeyId: KEYS.clients})
 
     const create = ({data}) => {
+        debugger
         createRequest({
             url: URLS.clients,
             attributes: {

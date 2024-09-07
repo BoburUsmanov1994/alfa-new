@@ -201,4 +201,5 @@ export const URLS = {
     agentActStatus: 'api/agent/act/status',
     agentActList: 'api/agent/act/list',
     showFile: 'api/file/show',
+    otherObjectType: 'api/references/other-type/list',
 }

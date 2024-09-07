@@ -193,4 +193,5 @@ export const KEYS = {
     agentAct: 'agentAct',
     agentActList: 'agentActList',
     showFile: 'showFile',
+    otherObjectType: 'otherObjectType',
 }
