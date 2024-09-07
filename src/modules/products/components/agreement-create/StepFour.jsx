@@ -79,7 +79,7 @@ const StepFour = ({id = null, ...props}) => {
                     </Row>
                     <Row>
                         <Col xs={3}>
-                            <Field name={'applicationDate'}
+                            <Field params={{required:true}} name={'applicationDate'}
                                    type={'datepicker'}
                                    label={'Анкета заявления'}
                             />
@@ -92,7 +92,7 @@ const StepFour = ({id = null, ...props}) => {
                             />
                         </Col>
                         <Col xs={3}>
-                            <Field name={'applicationDate'} type={'datepicker'}
+                            <Field params={{required:true}} name={'applicationDate'} type={'datepicker'}
                                    label={'Дата заявления'}
                             />
                         </Col>

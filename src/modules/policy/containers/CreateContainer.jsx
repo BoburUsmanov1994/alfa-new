@@ -67,7 +67,6 @@ const CreateContainer = ({
     if (isLoading) {
         return <OverlayLoader/>;
     }
-    console.log('agreementData', agreementData)
     return (
         <Section>
             {isLoadingPolicy && <ContentLoader/>}
@@ -103,7 +102,7 @@ const CreateContainer = ({
                             <Col xs={4}>
                                 <Field defaultValue={get(agreementData, 'data.endOfInsurance')} label={t('End')}
                                        type={'datepicker'}
-                                       name={'endDate'} params={{required: true}}
+                                       name={'endDate'}
                                 />
                             </Col>
                             {/*<Col xs={4}>*/}

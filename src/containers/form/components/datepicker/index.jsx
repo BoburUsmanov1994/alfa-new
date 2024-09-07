@@ -9,6 +9,7 @@ import {Calendar} from "react-feather";
 import dayjs from "dayjs";
 import ru from "date-fns/locale/ru"
 import MaskedInput from "react-input-mask";
+import classNames from "classnames";
 
 const Styled = styled.div`
   .react-datepicker-wrapper{
@@ -85,7 +86,7 @@ const CustomDatepicker = ({
     return (
         <Styled {...rest}>
             <div className="form-group">
-                {!get(property, 'hideLabel', false) && <Label>{label ?? name}</Label>}
+                {!get(property, 'hideLabel', false) && <Label className={classNames({required:get(property,'hasRequiredLabel',get(params,'required'))})}>{label ?? name}</Label>}
                 <div className={"custom__box"}>
                     <DatePicker
                         minDate={get(property,'minDate')}

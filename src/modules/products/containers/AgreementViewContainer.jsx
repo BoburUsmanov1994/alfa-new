@@ -163,7 +163,7 @@ console.log('selectedPolice',selectedPolice)
                             <tr>
                                 <td>{t("Страхователь")}</td>
                                 <td>
-                                    <strong>{get(data, "data.insurant.organization") ? get(data, "data.insurant.organization.name") : `${get(data, "data.insurant.person.fullName.lastname")} ${get(data, "data.insurant.person.fullName.firstname")} ${get(data, "data.insurant.person.fullName.middlename")}`}</strong>
+                                    <strong>{get(data, "data.insurant.organization.name") ? get(data, "data.insurant.organization.name") : `${get(data, "data.insurant.person.fullName.lastname")} ${get(data, "data.insurant.person.fullName.firstname")} ${get(data, "data.insurant.person.fullName.middlename")}`}</strong>
                                 </td>
                             </tr>
                             <tr>

@@ -283,7 +283,7 @@ const StepOne = ({id = null, ...props}) => {
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field params={{required: true}} name={'endOfInsurance'} type={'datepicker'}
+                            <Field  name={'endOfInsurance'} type={'datepicker'}
                                    label={'Окончание страхового покрытия'}
                                    defaultValue={get(agreement, 'endOfInsurance')}
                             />
