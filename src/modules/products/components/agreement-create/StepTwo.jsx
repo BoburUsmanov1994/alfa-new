@@ -824,6 +824,12 @@ const StepTwo = ({id = null, ...props}) => {
                                             </Col>
                                             <Col xs={4} className={'mb-25'}>
                                                 <Field params={{required: true}}
+                                                       label={'Дата рождения'}
+                                                       type={'datepicker'}
+                                                       name={'objectOfInsurance.details.person.birthDate'}/>
+                                            </Col>
+                                            <Col xs={4} className={'mb-25'}>
+                                                <Field params={{required: true}}
                                                        label={'Кем выдан'}
                                                        defaultValue={get(person, 'issuedBy')}
                                                        type={'input'}
