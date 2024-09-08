@@ -280,7 +280,6 @@ const StepTwo = ({id = null, ...props}) => {
         }
     }, [agreement])
 
-    console.log('objects',objects)
 
 
     return (
@@ -824,6 +823,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             </Col>
                                             <Col xs={4} className={'mb-25'}>
                                                 <Field params={{required: true}}
+                                                       defaultValue={get(person, 'birthDate')}
                                                        label={'Дата рождения'}
                                                        type={'datepicker'}
                                                        name={'objectOfInsurance.details.person.birthDate'}/>
