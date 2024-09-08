@@ -270,7 +270,7 @@ console.log('selectedPolice',selectedPolice)
 
                                         <td className={''}
                                         >
-                                            {includes(['new', 'partialPaid'], get(item, "fondStatus")) &&
+                                            {includes(['new', 'partialPaid','sent'], get(item, "fondStatus")) &&
                                             <DollarSign onClick={() => setSelectedPolice(item)}
                                                         className={'cursor-pointer'}
                                                         color={'#71BC70'}/>}

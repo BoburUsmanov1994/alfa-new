@@ -68,7 +68,8 @@ const JuridicalClientsContainer = ({...rest}) => {
                 params={{type: PERSON_TYPE.organization}}
                 // viewUrl={'/clients/view'}
                 createUrl={'/clients/juridical/create'}
-                // updateUrl={'/clients/update'}
+                updateUrl={'/clients/juridical/update'}
+                hasUpdateBtn
 
             />
         </>

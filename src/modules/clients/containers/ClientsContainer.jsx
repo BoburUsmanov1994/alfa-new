@@ -68,6 +68,11 @@ const ClientsContainer = ({...rest}) => {
                         key: 'person.passportData.number',
                         title: 'Passport number'
                     },
+                    {
+                        id: 7,
+                        key: 'person.phone',
+                        title: 'Phone number'
+                    },
 
                 ]}
                 keyId={KEYS.clients}
@@ -78,7 +83,8 @@ const ClientsContainer = ({...rest}) => {
                 params={{type:PERSON_TYPE.person}}
                 // viewUrl={'/clients/view'}
                 createUrl={'/clients/physical/create'}
-                // updateUrl={'/clients/update'}
+                updateUrl={'/clients/physical/update'}
+                hasUpdateBtn
 
             />
         </>

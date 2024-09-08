@@ -28,12 +28,14 @@ import AddPoliceBlankPage from "../modules/handbook/pages/AddPoliceBlankPage";
 import UsersPage from "../modules/users/pages/UsersPage";
 import ClientsPage from "../modules/clients/pages/ClientsPage";
 import ClientCreatePage from "../modules/clients/pages/ClientCreatePage";
+import ClientUpdatePage from "../modules/clients/pages/ClientUpdatePage";
 import BcoTypePage from "../modules/bco/pages/BcoTypePage";
 import BcoBlankPage from "../modules/accounting/pages/PolicyBlankPage";
 import BcoPage from "../modules/bco/pages/BcoPage";
 import LogOutPage from "../modules/auth/pages/LogOutPage";
 import InsuranceFormPage from "../modules/handbook/pages/InsuranceFormPage";
 import JuridicalClientCreatePage from "../modules/clients/pages/JuridicalClientCreatePage";
+import JuridicalClientUpdatePage from "../modules/clients/pages/JuridicalClientUpdatePage";
 import JuridicalClientsPage from "../modules/clients/pages/JuridicalClientsPage";
 import VehicleTypePage from "../modules/handbook/pages/VehicleTypePage";
 import PropertyTypePage from "../modules/handbook/pages/PropertyTypePage";
@@ -166,7 +168,9 @@ const Router = ({...rest}) => {
                                 <Route path={"physical"} element={<ClientsPage/>}/>
                                 <Route path={"juridical"} element={<JuridicalClientsPage/>}/>
                                 <Route path={"physical/create"} element={<ClientCreatePage/>}/>
+                                <Route path={"physical/update/:id"} element={<ClientUpdatePage/>}/>
                                 <Route path={"juridical/create"} element={<JuridicalClientCreatePage/>}/>
+                                <Route path={"juridical/update/:id"} element={<JuridicalClientUpdatePage/>}/>
                             </Route>
 
                             <Route path={"accounts"}>
