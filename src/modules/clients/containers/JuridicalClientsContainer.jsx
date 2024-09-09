@@ -70,7 +70,7 @@ const JuridicalClientsContainer = ({...rest}) => {
                 createUrl={'/clients/juridical/create'}
                 updateUrl={'/clients/juridical/update'}
                 hasUpdateBtn
-
+                hideDeleteBtn
             />
         </>
     );

@@ -85,7 +85,7 @@ const ClientsContainer = ({...rest}) => {
                 createUrl={'/clients/physical/create'}
                 updateUrl={'/clients/physical/update'}
                 hasUpdateBtn
-
+                hideDeleteBtn
             />
         </>
     );
