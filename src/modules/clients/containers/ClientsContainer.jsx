@@ -1,15 +1,17 @@
 import React, {useEffect, useMemo} from 'react';
 import {useStore} from "../../../store";
-import {get} from "lodash";
+import {get, includes} from "lodash";
 import GridView from "../../../containers/grid-view/grid-view";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import Field from "../../../containers/form/field";
 import {useTranslation} from "react-i18next";
 import {PERSON_TYPE} from "../../../constants";
+import config from "../../../config";
 
-const ClientsContainer = ({...rest}) => {
+const ClientsContainer = () => {
     const {t} = useTranslation()
+    const user = useStore(state => get(state, 'user'))
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [
@@ -37,6 +39,7 @@ const ClientsContainer = ({...rest}) => {
         <>
             <GridView
                 ModalBody={ModalBody}
+
                 tableHeaderData={[
                     {
                         id: 1,
@@ -80,8 +83,7 @@ const ClientsContainer = ({...rest}) => {
                 listUrl={`${URLS.clients}/list`}
                 title={t('Clients')}
                 responseDataKey={'data.data'}
-                params={{type:PERSON_TYPE.person}}
-                // viewUrl={'/clients/view'}
+                params={{type:PERSON_TYPE.person,branch: !includes([config.ROLES.admin],get(user,'role.name')) ? get(user, 'branch._id') : undefined}}
                 createUrl={'/clients/physical/create'}
                 updateUrl={'/clients/physical/update'}
                 hasUpdateBtn

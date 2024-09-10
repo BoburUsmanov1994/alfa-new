@@ -1,14 +1,15 @@
 import React, {useEffect, useMemo} from 'react';
 import {useStore} from "../../../store";
-import {get} from "lodash";
+import {get, includes} from "lodash";
 import GridView from "../../../containers/grid-view/grid-view";
-import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import Field from "../../../containers/form/field";
 import {useTranslation} from "react-i18next";
 import {PERSON_TYPE} from "../../../constants";
+import config from "../../../config";
 
-const JuridicalClientsContainer = ({...rest}) => {
+const JuridicalClientsContainer = () => {
+    const user = useStore(state => get(state, 'user'))
     const {t} = useTranslation()
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
@@ -65,8 +66,7 @@ const JuridicalClientsContainer = ({...rest}) => {
                 listUrl={`${URLS.clients}/list`}
                 title={t('Clients')}
                 responseDataKey={'data.data'}
-                params={{type: PERSON_TYPE.organization}}
-                // viewUrl={'/clients/view'}
+                params={{type:PERSON_TYPE.organization,branch: !includes([config.ROLES.admin],get(user,'role.name')) ? get(user, 'branch._id') : undefined}}
                 createUrl={'/clients/juridical/create'}
                 updateUrl={'/clients/juridical/update'}
                 hasUpdateBtn
