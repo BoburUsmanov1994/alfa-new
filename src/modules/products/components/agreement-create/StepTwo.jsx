@@ -858,10 +858,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                     }}
                                                     label={'Phone'}
                                                     type={'input'}
-                                                    property={{placeholder: '998XXXXXXXXX', pattern: {
-                                                            value: /^998[0-9]{9}$/,
-                                                            message: 'Invalid format'
-                                                        }}}
+                                                    property={{placeholder: '998XXXXXXXXX'}}
                                                     name={'objectOfInsurance.details.person.phone'}/>
                                             </Col>
                                             <Col xs={4} className={'mb-25'}>
