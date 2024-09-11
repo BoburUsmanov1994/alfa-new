@@ -5,7 +5,7 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, isEqual, isNil, range, round, sum, find, entries, head, last, values} from "lodash"
+import {get, isEqual, isNil, range, round, sum, find, entries, head, last, values, sumBy, includes} from "lodash"
 import Title from "../../../../components/ui/title";
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
@@ -24,6 +24,7 @@ import {toast} from "react-toastify";
 import Label from "../../../../components/ui/label";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import {isEmpty} from "@chakra-ui/utils";
 
 const StepTwo = ({id = null, ...props}) => {
     const reactQuillRef = React.useRef();
@@ -245,7 +246,7 @@ const StepTwo = ({id = null, ...props}) => {
         key: KEYS.measurementType, url: `${URLS.measurementType}/list`
     })
     const measurementTypeList = getSelectOptionsListFromData(get(measurementType, `data.data`, []), '_id', 'name')
-   const setFieldValue = (value, name = "") => {
+    const setFieldValue = (value, name = "") => {
 
         _setFields(prev => ({...prev, [name]: value}))
 
@@ -285,7 +286,9 @@ const StepTwo = ({id = null, ...props}) => {
         }
     }, [agreement])
 
-
+    console.log('agreement', get(agreement, 'product.risk', []))
+    console.log('objects', objects)
+    console.log('riskFields', riskFields)
 
     return (
         <Row>
@@ -402,7 +405,14 @@ const StepTwo = ({id = null, ...props}) => {
                                                     hideLabel: true,
                                                     placeholder: 'ввод значения',
                                                 }}
-                                                defaultValue={get(agreement, `riskDetails[${i}].insuranceSum`, 0)}
+                                                defaultValue={sumBy(objects, (_object) => {
+                                                    if(!isEmpty(get(_object, 'objectOfInsurance.risk', []))) {
+                                                        if (includes(get(_object, 'objectOfInsurance.risk', []), get(item, '_id'))) {
+                                                            return round(get(_object, 'objectOfInsurance.insuranceSum', 0) / get(_object, 'objectOfInsurance.risk', [])?.length)
+                                                        }
+                                                    }
+                                                    return 0;
+                                                })}
                                             />
                                         </Flex>
                                     </td>
@@ -718,7 +728,8 @@ const StepTwo = ({id = null, ...props}) => {
                     </Row>
                     <Row className={'mb-25'}>
                         <Col xs={12}>
-                            <ReactQuill style={{height: 250}} theme="snow" value={comment} onChange={setComment}   onKeyDown={checkCharacterCount}
+                            <ReactQuill style={{height: 250}} theme="snow" value={comment} onChange={setComment}
+                                        onKeyDown={checkCharacterCount}
                                         ref={reactQuillRef}/>
                         </Col>
                     </Row>
@@ -930,10 +941,12 @@ const StepTwo = ({id = null, ...props}) => {
                                                     required: true
                                                 }}
                                                        defaultValue={get(organization, 'phone')}
-                                                       property={{placeholder: '998XXXXXXXXX', pattern: {
+                                                       property={{
+                                                           placeholder: '998XXXXXXXXX', pattern: {
                                                                value: /^998[0-9]{9}$/,
                                                                message: 'Invalid format'
-                                                           }}}
+                                                           }
+                                                       }}
                                                        label={'Телефон'} type={'input'}
                                                        name={'objectOfInsurance.details.organization.phone'}/>
                                             </Col>
@@ -995,7 +1008,7 @@ const StepTwo = ({id = null, ...props}) => {
                                     <Col xs={4}>
                                         <Field
                                             type={'input'}
-                                            property={{type:'number',max:1000000000}}
+                                            property={{type: 'number', max: 1000000000}}
                                             name={`objectOfInsurance.details.insuranceCredit.waitingPeriod`}
                                             label={t('Период ожидания')}
                                             params={{valueAsNumber: true}}
@@ -1004,7 +1017,7 @@ const StepTwo = ({id = null, ...props}) => {
                                     <Col xs={4}>
                                         <Field
                                             type={'input'}
-                                            property={{type:'number',max:1000000000}}
+                                            property={{type: 'number', max: 1000000000}}
                                             name={`objectOfInsurance.details.exportContractInsurance.contractNumber`}
                                             label={t('Номер контракта')}
                                             params={{valueAsNumber: true}}
@@ -1041,19 +1054,19 @@ const StepTwo = ({id = null, ...props}) => {
                                     <Col xs={4}>
                                         <Field
                                             type={'input'}
-                                            property={{type:'number',max:1000000000}}
+                                            property={{type: 'number', max: 1000000000}}
                                             name={`objectOfInsurance.details.exportContractInsurance.creditPeriod`}
                                             label={t('Кредитный период')}
-                                            params={{valueAsNumber:true}}
+                                            params={{valueAsNumber: true}}
                                         />
                                     </Col>
                                     <Col xs={4}>
                                         <Field
                                             type={'input'}
-                                            property={{type:'number',max:1000000000}}
+                                            property={{type: 'number', max: 1000000000}}
                                             name={`objectOfInsurance.details.exportContractInsurance.creditLimit`}
                                             label={t('Кредитный лимит')}
-                                            params={{valueAsNumber:true}}
+                                            params={{valueAsNumber: true}}
                                         />
                                     </Col>
                                 </>
@@ -1146,7 +1159,7 @@ const StepTwo = ({id = null, ...props}) => {
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             params={{required: true, valueAsNumber: true}}
-                                            property={{type: 'number',max:10000000000}}
+                                            property={{type: 'number', max: 10000000000}}
                                             label={'Грузоподъемность'}
                                             defaultValue={get(vehicle, 'emptyWeight')}
                                             type={'input'}
@@ -1156,7 +1169,7 @@ const StepTwo = ({id = null, ...props}) => {
                                         <Field
                                             params={{required: true, valueAsNumber: true}}
                                             property={{type: 'number'}}
-                                            label={'Количество мест сидения'}Скачать сгенерированный полис
+                                            label={'Количество мест сидения'} Скачать сгенерированный полис
                                             defaultValue={get(vehicle, 'seats')}
                                             type={'input'}
                                             name={'objectOfInsurance.details.seatNumber'}/>
@@ -1439,7 +1452,7 @@ const StepTwo = ({id = null, ...props}) => {
                                     </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
-                                            params={{required: true,valueAsNumber:true}}
+                                            params={{required: true, valueAsNumber: true}}
                                             label={'Страховая стоимость'}
                                             type={'number-format-input'}
                                             name={'objectOfInsurance.details.insuredValue'}/>
@@ -1507,13 +1520,33 @@ const StepTwo = ({id = null, ...props}) => {
                                     </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
-                                            params={{required: true,valueAsNumber:true}}
+                                            params={{required: true, valueAsNumber: true}}
                                             label={'Страховая стоимость'}
                                             type={'number-format-input'}
                                             name={'objectOfInsurance.details.insuredValue'}/>
                                     </Col>
                                 </>}
-
+                            <Col xs={4}>
+                                <Field
+                                    type={'number-format-input'}
+                                    name={`objectOfInsurance.insuranceSum`}
+                                    label={t('Страховая сумма')}
+                                    params={{valueAsNumber: true}}
+                                />
+                            </Col>
+                            <Col xs={4}>
+                                <Field
+                                    options={get(agreement, 'product.risk', []).map(_risk => ({
+                                        value: get(_risk, '_id'),
+                                        label: get(_risk, 'name')
+                                    }))}
+                                    type={'select'}
+                                    isMulti
+                                    name={`objectOfInsurance.risk`}
+                                    label={t('Risk')}
+                                    // params={{required: true}}
+                                />
+                            </Col>
                             <Col xs={4}>
                                 <Field
                                     options={countryList}
