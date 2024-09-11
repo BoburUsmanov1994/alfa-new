@@ -26,6 +26,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 const StepTwo = ({id = null, ...props}) => {
+    const reactQuillRef = React.useRef();
     const {t} = useTranslation()
     const [count, setCount] = useState(0)
     const [person, setPerson] = useState(null)
@@ -82,7 +83,11 @@ const StepTwo = ({id = null, ...props}) => {
     const prevStep = () => {
         props.previousStep();
     }
-
+    const checkCharacterCount = (event) => {
+        const unprivilegedEditor = reactQuillRef.current.unprivilegedEditor;
+        if (unprivilegedEditor.getLength() > 1600 && event.key !== 'Backspace')
+            event.preventDefault();
+    };
     const reset = () => {
         resetAgreement();
         resetRiskList();
@@ -713,7 +718,8 @@ const StepTwo = ({id = null, ...props}) => {
                     </Row>
                     <Row className={'mb-25'}>
                         <Col xs={12}>
-                            <ReactQuill style={{height: 250}} theme="snow" value={comment} onChange={setComment}/>
+                            <ReactQuill style={{height: 250}} theme="snow" value={comment} onChange={setComment}   onKeyDown={checkCharacterCount}
+                                        ref={reactQuillRef}/>
                         </Col>
                     </Row>
                     <Row>
