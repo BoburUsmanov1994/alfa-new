@@ -1195,27 +1195,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             type={'number-format-input'}
                                             name={'objectOfInsurance.details.insuredValue'}/>
                                     </Col>
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            params={{valueAsNumber: true}}
-                                            label={'Страховая сумма по ТС'}
-                                            type={'number-format-input'}
-                                            name={'objectOfInsurance.details.cascoInsurance.insuranceSum'}/>
-                                    </Col>
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            params={{valueAsNumber: true}}
-                                            label={'Страховая сумма по отв.'}
-                                            type={'number-format-input'}
-                                            name={'objectOfInsurance.details.cascoInsurance.insuranceSumAnswer'}/>
-                                    </Col>
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            params={{valueAsNumber: true}}
-                                            label={'Страховая сумма по НС'}
-                                            type={'number-format-input'}
-                                            name={'objectOfInsurance.details.cascoInsurance.insuranceSumAccidents'}/>
-                                    </Col>
+
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             label={'Водители'}
@@ -1375,20 +1355,6 @@ const StepTwo = ({id = null, ...props}) => {
                                             type={'input'}
                                             name={'objectOfInsurance.details.smr.constructionPlace'}/>
                                     </Col>
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            params={{valueAsNumber: true}}
-                                            label={'Страховая сумма по имуществу'}
-                                            type={'number-format-input'}
-                                            name={'objectOfInsurance.details.smr.insuranceSumProperty'}/>
-                                    </Col>
-                                    <Col xs={4} className={'mb-25'}>
-                                        <Field
-                                            params={{valueAsNumber: true}}
-                                            label={'Страховая сумма по отв.'}
-                                            type={'number-format-input'}
-                                            name={'objectOfInsurance.details.smr.insuranceSumAnswer'}/>
-                                    </Col>
                                 </>}
 
                             {
@@ -1543,7 +1509,7 @@ const StepTwo = ({id = null, ...props}) => {
                                     type={'select'}
                                     isMulti
                                     name={`objectOfInsurance.risk`}
-                                    label={t('Risk')}
+                                    label={t('К каким рискам относится')}
                                     // params={{required: true}}
                                 />
                             </Col>
