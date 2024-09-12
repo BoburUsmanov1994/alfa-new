@@ -39,6 +39,7 @@ const StepTwo = ({id = null, ...props}) => {
     const [_fields, _setFields] = useState({})
     const [_modalFields, _setModalFields] = useState({})
     const [premium, setPremium] = useState({})
+    const [insuranceSum, setInsuranceSum] = useState({})
     const [comment, setComment] = useState('');
     const setAgreement = useSettingsStore(state => get(state, 'setAgreement', () => {
     }))
@@ -286,9 +287,7 @@ const StepTwo = ({id = null, ...props}) => {
         }
     }, [agreement])
 
-    console.log('agreement', get(agreement, 'product.risk', []))
-    console.log('objects', objects)
-    console.log('riskFields', riskFields)
+
 
     return (
         <Row>
@@ -382,7 +381,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                     placeholder: 'ввод значения',
                                                     onChange: (val) => setPremium(prev => ({...prev, [i]: val}))
                                                 }}
-                                                defaultValue={round((((dayjs(get(_fields, `riskDetails[${i}].endDate`)).diff(get(_fields, `riskDetails[${i}].startDate`), 'day') + 1) / 365) * get(_fields, `riskDetails[${i}].insuranceSum`, 0) * get(_fields, `riskDetails[${i}].insuranceRate`, 0) / 100), 2)}
+                                                defaultValue={round((((dayjs(get(_fields, `riskDetails[${i}].endDate`)).diff(get(_fields, `riskDetails[${i}].startDate`), 'day') + 1) / 365) * get(insuranceSum, `${i}`, 0) * get(_fields, `riskDetails[${i}].insuranceRate`, 0) / 100), 2)}
                                             />
                                         </Flex>
                                     </td>
@@ -404,6 +403,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: 'ввод значения',
+                                                    onChange: (val) => setInsuranceSum(prev => ({...prev, [i]: val}))
                                                 }}
                                                 defaultValue={sumBy(objects, (_object) => {
                                                     if(!isEmpty(get(_object, 'objectOfInsurance.risk', []))) {
@@ -431,7 +431,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             placeholder: 'ввод значения',
                                             disabled: true
                                         }}
-                                        defaultValue={sum(range(0, riskFields?.length).map(i => get(_fields, `riskDetails[${i}].insuranceSum`)))}
+                                        defaultValue={round(sum(values(insuranceSum)), 2)}
                                     />
                                 </Col>
                                 <Col xs={3}>
