@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {ceil, isEqual, range} from "lodash"
 import classNames from "classnames";
 import {ChevronLeft,ChevronRight} from "react-feather";
+import ReactPaginate from "react-paginate";
 
 const Styled = styled.ul`
   display: flex;
@@ -12,8 +13,7 @@ const Styled = styled.ul`
   margin-top: 25px;
 flex-wrap: wrap;
   li {
-    width: 40px;
-    height: 40px;
+
     font-size: 16px;
     display: flex;
     align-items: center;
@@ -27,11 +27,18 @@ flex-wrap: wrap;
     margin-right: 10px;
     cursor: pointer;
     margin-bottom: 5px;
+    a{
+      display: flex;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+    }
     &:last-child{
       margin-right: 0;
     }
 
-    &.active {
+    &.selected {
       background-color: #13D6D1;
       border-color: #13D6D1;
       color: #fff;
@@ -49,17 +56,10 @@ const Pagination = ({
     const count = ceil(totalItems / limit)
     return (
         <Styled {...rest}>
-            {!!(page > 1) && <li onClick={()=>setPage(page-1)} className={'prev'}>
-                <ChevronLeft />
-            </li>}
-            {
-                count > 1 && range(1, count + 1).map(item => <li className={classNames({'active':isEqual(page,item)})} onClick={()=>setPage(item)} key={item}>
-                    {item}
-                </li>)
-            }
-            {!!(count > 1 && page < count) && <li onClick={()=>setPage(page+1)} className={'next'}>
-                <ChevronRight />
-            </li>}
+            <ReactPaginate forcePage={page - 1} onPageChange={({selected}) => setPage(selected + 1)}
+                           pageCount={count}
+                           nextLabel={<ChevronRight />}
+                           previousLabel={<ChevronLeft />} className={'pagination d-flex'}/>
         </Styled>
     );
 };

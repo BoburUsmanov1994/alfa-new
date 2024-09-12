@@ -81,7 +81,9 @@ const GlobalStyles = createGlobalStyle`
   .cursor-pointer {
     cursor: pointer;
   }
-
+  .pagination {
+    display: flex;
+  }
   .rodal, .rodal-mask {
     z-index: 999 !important;
   }

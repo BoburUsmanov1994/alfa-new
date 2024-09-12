@@ -1,14 +1,16 @@
 import React, {useEffect, useMemo} from 'react';
 import {useSettingsStore, useStore} from "../../../store";
-import {get} from "lodash";
+import {get, includes} from "lodash";
 import GridView from "../../../containers/grid-view/grid-view";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import Field from "../../../containers/form/field";
 import {useTranslation} from "react-i18next";
+import config from "../../../config";
 
-const ProductsContainer = ({...rest}) => {
+const ProductsContainer = () => {
     const {t} = useTranslation()
+    const user = useStore(state => get(state, 'user'))
     const resetProduct = useSettingsStore(state => get(state, 'resetProduct', () => {
     }))
     const resetRiskList = useSettingsStore(state => get(state, 'resetRiskList', []))
@@ -77,6 +79,8 @@ const ProductsContainer = ({...rest}) => {
                 // updateUrl={'/products/update'}
                 isHideColumn
                 responseDataKey={'data.data'}
+                hideCreateBtn={!includes([config.ROLES.admin],get(user,'role.name'))}
+                hideDeleteBtn={!includes([config.ROLES.admin],get(user,'role.name'))}
 
             />
         </>
