@@ -5,7 +5,22 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, isEqual, isNil, range, round, sum, find, entries, head, last, values, sumBy, includes} from "lodash"
+import {
+    get,
+    isEqual,
+    isNil,
+    range,
+    round,
+    sum,
+    find,
+    entries,
+    head,
+    last,
+    values,
+    sumBy,
+    includes,
+    isNumber
+} from "lodash"
 import Title from "../../../../components/ui/title";
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
@@ -288,7 +303,7 @@ const StepTwo = ({id = null, ...props}) => {
     }, [agreement])
 
 
-
+    console.log('premium',premium)
     return (
         <Row>
             <Col xs={12}>
@@ -379,7 +394,13 @@ const StepTwo = ({id = null, ...props}) => {
                                                 property={{
                                                     hideLabel: true,
                                                     placeholder: 'ввод значения',
-                                                    onChange: (val) => setPremium(prev => ({...prev, [i]: val}))
+                                                    onChange: (val) => {
+                                                        if(isNumber(val)){
+                                                            setPremium(prev => ({...prev, [i]: val}))
+                                                        }else{
+                                                            setPremium(prev => ({...prev, [i]: 0}))
+                                                        }
+                                                    }
                                                 }}
                                                 defaultValue={round((((dayjs(get(_fields, `riskDetails[${i}].endDate`)).diff(get(_fields, `riskDetails[${i}].startDate`), 'day') + 1) / 365) * get(insuranceSum, `${i}`, 0) * get(_fields, `riskDetails[${i}].insuranceRate`, 0) / 100), 2)}
                                             />
@@ -391,7 +412,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 name={`riskDetails[${i}].insuranceRate`}
                                                 type={'number-format-input'}
                                                 property={{hideLabel: true, placeholder: 'insuranceRate', suffix: ' %'}}
-                                                defaultValue={round((365 * 100 * get(_fields, `riskDetails[${i}].insurancePremium`, 0) / ((dayjs(get(_fields, `riskDetails[${i}].endDate`)).diff(get(_fields, `riskDetails[${i}].startDate`), 'day') + 1) * get(_fields, `riskDetails[${i}].insuranceSum`, 0))), 2)}
+                                                defaultValue={round((365 * 100 * get(_fields, `riskDetails[${i}].insurancePremium`, 0) / ((dayjs(get(_fields, `riskDetails[${i}].endDate`)).diff(get(_fields, `riskDetails[${i}].startDate`), 'day') + 1) * get(insuranceSum, `${i}`, 0))), 2) || 0}
                                             />
                                         </Flex>
                                     </td>
