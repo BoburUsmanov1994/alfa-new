@@ -39,8 +39,7 @@ const SmrDistributeContainer = ({
     let {data: transactions, isLoading: _isLoading} = useGetAllQuery({
         key: KEYS.smrList, url: `${URLS.smrList}`, params: {
             params: {
-                branch: get(user, 'branch._id'),
-                limit: 100
+                limit: 1000
             }
         }
     })
@@ -119,7 +118,7 @@ const SmrDistributeContainer = ({
                                 setParams(prev => ({...prev, [name]: value}))
                             }
                         }}>
-                            <Field name={'branchId'} property={{
+                            <Field className={'minWidth300'} name={'branchId'} property={{
                                 placeholder: 'Филиалы',
                                 hideLabel: true,
                             }} type={'select'} options={branches}/>

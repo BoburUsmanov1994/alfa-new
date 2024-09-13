@@ -117,7 +117,7 @@ const ListContainer = ({...rest}) => {
                 hideCreateBtn={true}
                 hasUpdateBtn
                 params={{
-                    branch:get(user,'branch.id')
+                    branch: get(user, 'branch._id')
                 }}
             />
         </>
