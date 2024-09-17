@@ -303,7 +303,6 @@ const StepTwo = ({id = null, ...props}) => {
     }, [agreement])
 
 
-    console.log('premium',premium)
     return (
         <Row>
             <Col xs={12}>
@@ -429,7 +428,7 @@ const StepTwo = ({id = null, ...props}) => {
                                                 defaultValue={sumBy(objects, (_object) => {
                                                     if(!isEmpty(get(_object, 'objectOfInsurance.risk', []))) {
                                                         if (includes(get(_object, 'objectOfInsurance.risk', []), get(item, '_id'))) {
-                                                            return round(get(_object, 'objectOfInsurance.insuranceSum', 0) / get(_object, 'objectOfInsurance.risk', [])?.length)
+                                                            return round(get(_object, 'objectOfInsurance.insuranceSum', 0) / get(_object, 'objectOfInsurance.risk', [])?.length,2)
                                                         }
                                                     }
                                                     return 0;
