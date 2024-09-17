@@ -332,6 +332,8 @@ const CreateContainer = ({...rest}) => {
         return <OverlayLoader/>
     }
 
+
+
     return (<>
         {(isLoadingPersonalInfo || isLoadingOrganizationInfo) && <OverlayLoader/>}
         <Panel>
@@ -769,8 +771,8 @@ const CreateContainer = ({...rest}) => {
                                     <Col xs={6} className={'mb-25'}>
                                         <Field
                                             params={{required: true}}
-                                            property={{type: 'number', disabled: isEqual(agentId, '0')}}
-                                            defaultValue={isEqual(agentId, '0') ? 0 : 25}
+                                            property={{type: 'number', disabled: isEqual(agentId, '662a2c60577082fb291c0000')}}
+                                            defaultValue={isEqual(agentId, '662a2c60577082fb291c0000') ? 0 : 25}
                                             label={'Вознограждение %'}
                                             type={'input'}
                                             name={'policies[0].agentReward'}/>
