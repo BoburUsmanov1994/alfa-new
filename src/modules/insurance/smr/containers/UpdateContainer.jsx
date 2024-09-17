@@ -37,7 +37,6 @@ const UpdateContainer = ({contract_id = null}) => {
 
     const {t} = useTranslation()
 
-    const username = useSettingsStore(state => get(state, 'username', {}))
 
     const {data, isLoading} = useGetAllQuery({
         key: KEYS.smrView,
@@ -144,9 +143,10 @@ const UpdateContainer = ({contract_id = null}) => {
     }
 
     const update = ({data}) => {
-        const {insurant, agent_comission, branch_id, ...rest} = data;
+        const {insurant, agent_comission, branch_id,agent, ...rest} = data;
         updateRequest({
                 url: URLS.smrEdit, attributes: {
+                    agent:agent ?? undefined,
                     branch_id: String(branch_id),
                     agent_comission: parseFloat(agent_comission),
                     insurant: {...insurant, phone: `${get(insurant, 'phone')}`, oked: String(get(insurant, 'oked'))},
@@ -157,9 +157,9 @@ const UpdateContainer = ({contract_id = null}) => {
             {
                 onSuccess: ({data: response}) => {
                     if (get(response, 'data.contract_id')) {
-                        navigate(`/smr/view/${get(response, 'data.contract_id')}`);
+                        navigate(`/insurance/smr/view/${get(response, 'data.contract_id')}`);
                     } else {
-                        navigate(`/smr`);
+                        navigate(`/insurance/smr`);
                     }
                 },
             }
@@ -190,7 +190,6 @@ const UpdateContainer = ({contract_id = null}) => {
         return <OverlayLoader/>
     }
 
-    console.log('branch',get(data,'data.branch'))
     return (<>
         {(isLoadingPatch || isLoadingOrganizationInfo) && <OverlayLoader/>}
         <Panel>
@@ -363,7 +362,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        defaultValue={parseInt(get(organization, 'data.oked', get(data, 'data.insurant.oked'))) || null}
+                                        defaultValue={String(get(organization, 'data.oked', get(data, 'data.insurant.oked'))) || null}
                                         params={{required: true}}
                                         options={okedList}
                                         label={'ОКЭД'}
@@ -396,6 +395,7 @@ const UpdateContainer = ({contract_id = null}) => {
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
+                                        params={{valueAsNumber:true}}
                                         defaultValue={'210'}
                                         options={countryList}
                                         label={'Страна'}
@@ -404,8 +404,8 @@ const UpdateContainer = ({contract_id = null}) => {
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        params={{required:true}}
-                                        defaultValue={parseInt(get(organization, 'data.regionId', get(data, 'data.insurant.regionId'))) || null}
+                                        params={{required:true,valueAsNumber:true}}
+                                        defaultValue={String(get(organization, 'data.regionId', get(data, 'data.insurant.regionId'))) || null}
                                         options={regionsList}
                                         property={{onChange:(val)=>setRegionId(val)}}
                                         label={'Область'}
@@ -414,8 +414,8 @@ const UpdateContainer = ({contract_id = null}) => {
                                 </Col>
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
-                                        params={{required:true}}
-                                        defaultValue={parseInt(get(organization, 'data.districtId', get(data, 'data.insurant.districtId'))) || null}
+                                        params={{required:true,valueAsNumber:true}}
+                                        defaultValue={String(get(organization, 'data.districtId', get(data, 'data.insurant.districtId'))) || null}
                                         options={districtList}
                                         label={'Район'}
                                         type={'select'}
@@ -582,7 +582,7 @@ const UpdateContainer = ({contract_id = null}) => {
                             <Col xs={4}>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col className={'text-right'} xs={5}>Агент (автоматически): </Col>
-                                    <Col xs={7}><Field defaultValue={username ? get(data, 'data.agent', '') : ''}
+                                    <Col xs={7}><Field defaultValue={get(user,'agent',get(data, 'data.agent', ''))}
                                                        property={{hideLabel: true, disabled: true}} type={'input'}
                                                        name={'agent'}/></Col>
                                 </Row>
