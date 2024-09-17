@@ -23,6 +23,7 @@ import Table from "../../../../components/table";
 import Checkbox from "rc-checkbox";
 import NumberFormat from "react-number-format";
 import Modal from "../../../../components/modal";
+import {Download, Upload} from "react-feather";
 
 
 const ViewContainer = ({contract_id = null}) => {
@@ -219,6 +220,7 @@ const ViewContainer = ({contract_id = null}) => {
     if (isLoading || isLoadingImgData || isLoadingBranches || isLoadingOkeds || isLoadingOwnershipForms || isLoadingAreaTypes || isLoadingCountry || isLoadingRegion) {
         return <OverlayLoader/>
     }
+
     return (<>
         {(deleteLoading || isLoadingConfirmPayed || isLoadingSendFond) && <OverlayLoader/>}
         <Panel>
@@ -673,14 +675,14 @@ const ViewContainer = ({contract_id = null}) => {
                                                        name={'policy.payment_date'}/></Col>
                                 </Row>
                             </Col>
-                            {get(imgData, 'data.data') && <Col xs={4}>
+                            {get(imgData, 'data.data.url') && <Col xs={4}>
                                 <Row align={'center'} className={'mb-25'}>
-                                    <Col className={'text-right'} xs={5}>Прикрепить полис: </Col>
+                                    <Col className={'text-right'} xs={5}>Скачать полис: </Col>
                                     <Col xs={7}>
                                         <a style={{color: '#1774FF', textDecoration: 'underline', cursor: 'pointer'}}
-                                           download={get(imgData, 'data.file_name')}
-                                           href={`data:application/pdf;base64,${get(imgData, 'data.content_string')}`}>
-                                            {get(imgData, 'data.file_name')}
+                                           target={"_blank"}
+                                           href={get(imgData, 'data.data.url','#')}>
+                                            <Download />
                                         </a>
                                     </Col>
                                 </Row>
