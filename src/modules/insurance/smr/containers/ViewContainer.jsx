@@ -127,17 +127,17 @@ const ViewContainer = ({contract_id = null}) => {
     })
     const {
         mutate: confirmPayedRequest, isLoading: isLoadingConfirmPayed
-    } = usePostQuery({listKeyId: KEYS.osgorView})
+    } = usePostQuery({listKeyId: KEYS.smrView})
     const {
         mutate: sendFondRequest, isLoading: isLoadingSendFond
-    } = usePostQuery({listKeyId: KEYS.osgorView})
-    const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: KEYS.osgopDelete})
+    } = usePostQuery({listKeyId: KEYS.smrView})
+    const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: KEYS.smrDelete})
 
     const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: KEYS.smrView})
 
     const confirmPayed = () => {
         confirmPayedRequest({
-                url: URLS.osgorConfirmPayment, attributes: {
+                url: URLS.smrConfirmPayment, attributes: {
                     contract_id: parseInt(contract_id),
                     payment_date: dayjs().format("YYYY-MM-DD HH:mm:ss"),
                     ins_premium: String(get(data, 'data.policy.ins_premium'))
