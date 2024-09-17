@@ -75,7 +75,7 @@ const ViewContainer = ({contract_id = null}) => {
         url: URLS.okeds,
     })
 
-    const okedList = getSelectOptionsListFromData(get(okeds, `data.data`, []), 'id', 'name')
+    const okedList = get(okeds, `data`, []).map(_item => ({value: _item, label: _item}))
 
     const {data: areaTypes, isLoading: isLoadingAreaTypes} = useGetAllQuery({
         key: KEYS.areaTypes,
@@ -89,7 +89,7 @@ const ViewContainer = ({contract_id = null}) => {
         url: `${URLS.ownershipForms}/list`,
     })
 
-    const ownershipFormsList = getSelectOptionsListFromData(get(ownershipForms, `data.data`, []), 'id', 'name')
+    const ownershipFormsList = getSelectOptionsListFromData(get(ownershipForms, `data.data`, []), '_id', 'name')
 
     const {data: country, isLoading: isLoadingCountry} = useGetAllQuery({
         key: KEYS.countries,
@@ -413,7 +413,7 @@ const ViewContainer = ({contract_id = null}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         disabled
-                                        defaultValue={parseInt(get(data, 'data.insurant.oked'))}
+                                        defaultValue={String(get(data, 'data.insurant.oked'))}
                                         params={{required: true}}
                                         options={okedList}
                                         label={'ОКЭД'}
@@ -450,7 +450,7 @@ const ViewContainer = ({contract_id = null}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         disabled
-                                        defaultValue={210}
+                                        defaultValue={'210'}
                                         options={countryList}
                                         label={'Страна'}
                                         type={'select'}
@@ -459,7 +459,7 @@ const ViewContainer = ({contract_id = null}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         disabled
-                                        defaultValue={parseInt(get(data, 'data.insurant.regionId'))}
+                                        defaultValue={String(get(data, 'data.insurant.regionId'))}
                                         options={regionsList}
                                         label={'Область'}
                                         type={'select'}
@@ -468,7 +468,7 @@ const ViewContainer = ({contract_id = null}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         disabled
-                                        defaultValue={parseInt(get(data, 'data.insurant.districtId'))}
+                                        defaultValue={String(get(data, 'data.insurant.districtId'))}
                                         options={districtList}
                                         label={'Район'}
                                         type={'select'}
