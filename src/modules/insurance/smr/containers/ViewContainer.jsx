@@ -153,7 +153,7 @@ const ViewContainer = ({contract_id = null}) => {
 
     const sendFond = () => {
         sendFondRequest({
-                url: `${URLS.osgorSendFond}?contract_id=${parseInt(contract_id)}`
+                url: `${URLS.smrSendFond}?contract_id=${parseInt(contract_id)}`
             },
             {
                 onSuccess: ({data}) => {
