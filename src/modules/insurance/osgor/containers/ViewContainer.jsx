@@ -648,7 +648,7 @@ const ViewContainer = ({form_id = null}) => {
                                     </Col>
                                     <Col xs={6} className={'mb-25'}>
                                         <Field
-                                            defaultValue={round(get(data, 'data.agent') == '0' ? 0 : 25 * get(data, 'data.policies[0].insurancePremium') / 100, 2)}
+                                            defaultValue={get(data, 'data.policies[0].insurancePremium')*get(data, 'data.policies[0].agentReward')}
                                             property={{disabled: true}}
                                             label={'Сумма'}
                                             type={'number-format-input'}
@@ -656,7 +656,7 @@ const ViewContainer = ({form_id = null}) => {
                                     </Col>
                                     <Col xs={6} className={'mb-25'}>
                                         <Field
-                                            defaultValue={round(5 * get(data, 'data.policies[0].insurancePremium') / 100, 2)}
+                                            defaultValue={round(get(data, 'data.policies[0].rpm') * get(data, 'data.policies[0].insurancePremium') / 100, 2)}
                                             property={{disabled: true}}
                                             label={'Сумма'}
                                             type={'number-format-input'}
