@@ -82,7 +82,9 @@ const GridView = ({
                       isFormData = false,
                       dataKey = '_id',
                       deleteUrl = null,
-                      extraActions=()=>{}
+                      extraActions = () => {
+                      },
+                      extraFilters = <></>
                   }) => {
     const navigate = useNavigate()
     const {t} = useTranslation()
@@ -142,7 +144,7 @@ const GridView = ({
     }
 
     const update = ({data}) => {
-        const {password,...rest} = data;
+        const {password, ...rest} = data;
         if (rowId) {
             updateRequest({url: `${url}/${rowId}`, attributes: rest}, {
                 onSuccess: () => {
@@ -237,13 +239,16 @@ const GridView = ({
                                             key={get(column, 'id')}>
                                             <span>{t(get(column, 'title'))}</span>
                                             {includes(columns.map(({key}) => key), get(column, 'key')) &&
-                                            <Check size={18}/>}
+                                                <Check size={18}/>}
                                         </li>)
                                     }
 
                                 </ul>
                             </Dropdown>}
                         </Flex>
+                    </Col>
+                    <Col xs={12}>
+                        {extraFilters}
                     </Col>
                     <Col xs={12}>
                         <GridModal
@@ -276,7 +281,7 @@ const GridView = ({
                                                                     extraActions={extraActions}
                     /></div>
                     {!hidePagination &&
-                    <Pagination page={page} setPage={setPage} totalItems={get(data, `data.count`, 0)}/>}
+                        <Pagination page={page} setPage={setPage} totalItems={get(data, `data.count`, 0)}/>}
                 </>}
             </Section>
         </Styled>

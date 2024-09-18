@@ -25,15 +25,12 @@ const Styled = styled.div`
     border: 1px solid #BABABA;
     border-radius: 5px;
     outline: none;
-    //max-width: 400px;
     font-family: 'Gilroy-Regular', sans-serif;
-
   }
 
   .custom__box {
     position: relative;
-    //max-width: 400px;
-
+    
     .custom__icon {
       position: absolute;
       right: 8px;
