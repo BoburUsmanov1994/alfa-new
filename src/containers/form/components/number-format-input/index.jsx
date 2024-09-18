@@ -19,8 +19,7 @@ const Styled = styled.div`
     outline: none;
     font-family: 'Gilroy-Regular', sans-serif;
     max-width: 400px;
-
-    &.error {
+    &.error{
       border-color: #ef466f;
     }
 
@@ -30,25 +29,25 @@ const Styled = styled.div`
   }
 `;
 const NumberFormatInput = ({
-                               Controller,
-                               control,
-                               register,
-                               disabled = false,
-                               name,
-                               errors,
-                               params,
-                               property,
-                               defaultValue = null,
-                               getValues,
-                               watch,
-                               label,
-                               setValue,
-                               getValueFromField = () => {
-                               },
-                               ...rest
-                           }) => {
+                         Controller,
+                         control,
+                         register,
+                         disabled = false,
+                         name,
+                         errors,
+                         params,
+                         property,
+                         defaultValue = null,
+                         getValues,
+                         watch,
+                         label,
+                         setValue,
+                         getValueFromField = () => {
+                         },
+                         ...rest
+                     }) => {
 
-    const [val, setVal] = useState(0)
+    const [val,setVal] = useState(0)
 
     useEffect(() => {
         setVal(defaultValue)
@@ -56,19 +55,18 @@ const NumberFormatInput = ({
 
     useEffect(() => {
         setValue(name, val)
-        if (get(property, 'onChange') && isFunction(get(property, 'onChange'))) {
+        if(get(property,'onChange') && isFunction(get(property,'onChange'))) {
             get(property, 'onChange')(val)
         }
     }, [val])
 
     useEffect(() => {
-        getValueFromField(getValues(name), name);
+            getValueFromField(getValues(name), name);
     }, [watch(name)]);
     return (
         <Styled {...rest}>
             <div className="form-group">
-                {!get(property, 'hideLabel', false) && <Label
-                    className={classNames({required: get(property, 'hasRequiredLabel', get(params, 'required'))})}>{label ?? name}</Label>}
+                {!get(property,'hideLabel',false) && <Label className={classNames({required:get(property,'hasRequiredLabel',get(params,'required'))})}>{label ?? name}</Label>}
                 <Controller
                     as={NumberFormat}
                     control={control}
@@ -81,14 +79,14 @@ const NumberFormatInput = ({
                             value={val}
                             className={`masked-input ${get(errors, `${name}`) ? "error" : ''}`}
                             placeholder={get(property, "placeholder")}
-                            suffix={get(property, "suffix", '')}
-                            thousandSeparator={get(property, "thousandSeparator", " ")}
+                            suffix={get(property, "suffix",'')}
+                            thousandSeparator={get(property, "thousandSeparator"," ")}
                             isNumericString={true}
                             onValueChange={(value) => {
                                 setVal(value.floatValue)
                             }}
-                            allowNegative={get(property, "allowNegative", false)}
-                            disabled={get(property, 'disabled', false)}
+                            allowNegative={get(property, "allowNegative",false)}
+                            disabled={get(property,'disabled',false)}
                         />
                     )}
                 />
@@ -97,11 +95,13 @@ const NumberFormatInput = ({
                     name={name}
                     render={() => {
                         let messages = '';
-                        if (get(errors, `${name}.type`) === 'required') {
+                        if (get(errors,`${name}.type`) === 'required') {
                             messages = `${label ?? name} is required`;
-                        } else if (get(errors, `${name}.type`) === 'pattern') {
+                        }
+                        else if(get(errors,`${name}.type`) === 'pattern') {
                             messages = `${label ?? name} is not valid`;
-                        } else {
+                        }
+                        else {
                             messages = `${label ?? name} ${errors[name]?.message}`;
                         }
 
