@@ -1291,14 +1291,14 @@ const StepTwo = ({id = null, ...props}) => {
                                     </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
-                                            params={{valueAsNumber: 'true'}}
+                                            params={{valueAsNumber: true}}
                                             label={'Страховая стоимость'}
                                             type={'number-format-input'}
                                             name={'objectOfInsurance.details.insuredValue'}/>
                                     </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
-                                            params={{valueAsNumber: 'true'}}
+                                            params={{valueAsNumber: true}}
                                             label={'Номер контракта'}
                                             type={'input'}
                                             name={'objectOfInsurance.details.cargoInsurance.contractNumber'}/>
