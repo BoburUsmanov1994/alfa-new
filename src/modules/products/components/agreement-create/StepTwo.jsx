@@ -1530,7 +1530,7 @@ const StepTwo = ({id = null, ...props}) => {
                                     isMulti
                                     name={`objectOfInsurance.risk`}
                                     label={t('К каким рискам относится')}
-                                    // params={{required: true}}
+                                    params={{required: true}}
                                 />
                             </Col>
                             <Col xs={4}>
