@@ -403,6 +403,8 @@ const CreateContainer = () => {
         return <OverlayLoader/>
     }
 
+    console.log('osgopCalculateResponse',osgopCalculateResponse)
+
     return (<>
         {(isLoadingCountry || isLoadingPersonalInfo || isLoadingOrganizationInfo || isLoadingVehicleInfo || isLoadingPost) &&
             <OverlayLoader/>}
