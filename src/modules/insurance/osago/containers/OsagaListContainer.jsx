@@ -190,13 +190,13 @@ const ListContainer = () => {
                     />
                 </Col>
                 <Col xs={3}>
-                    <Field label={t('Страховая сумма')} type={'number-format-input'}
+                    <Field label={t('Страховая сумма')} type={'number-format-input-filter'}
                            name={'sumInsured'}
                            defaultValue={get(filter, 'sumInsured', null)}
                     />
                 </Col>
                 <Col xs={3}>
-                    <Field label={t('Оплачено')} type={'number-format-input'}
+                    <Field label={t('Оплачено')} type={'number-format-input-filter'}
                            name={'sumInsured'}
                            defaultValue={get(filter, 'insurancePremiumPaidToInsurer', null)}
                     />

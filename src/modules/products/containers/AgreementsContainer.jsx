@@ -257,26 +257,26 @@ const AgreementsContainer = ({...rest}) => {
                         </Col>
 
                         <Col xs={3}>
-                            <Field label={t('Общая страховая премия от')} type={'number-format-input'}
+                            <Field label={t('Общая страховая премия от')} type={'number-format-input-filter'}
                                    name={'totalInsurancePremiumFrom'}
                                    defaultValue={get(filter, 'totalInsurancePremiumFrom', null)}
                             />
                         </Col>
                         <Col xs={3}>
-                            <Field label={t('Общая страховая премия до')} type={'number-format-input'}
+                            <Field label={t('Общая страховая премия до')} type={'number-format-input-filter'}
                                    name={'totalInsurancePremiumTo'}
                                    defaultValue={get(filter, 'totalInsurancePremiumTo', null)}
                             />
                         </Col>
                         <Col xs={3}>
-                            <Field label={t('Общая страховая сумма от')} type={'number-format-input'}
+                            <Field label={t('Общая страховая сумма от')} type={'number-format-input-filter'}
                                    name={'totalInsuranceSumFrom'}
                                    defaultValue={get(filter, 'totalInsuranceSumFrom', null)}
 
                             />
                         </Col>
                         <Col xs={3}>
-                            <Field label={t('Общая страховая сумма до')} type={'number-format-input'}
+                            <Field label={t('Общая страховая сумма до')} type={'number-format-input-filter'}
                                    name={'totalInsuranceSumTo'}
                                    defaultValue={get(filter, 'totalInsuranceSumTo', null)}
                             />
