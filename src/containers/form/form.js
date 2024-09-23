@@ -2,6 +2,7 @@ import React from "react";
 import {Controller, useForm} from "react-hook-form";
 import styled from "styled-components";
 import FormProvider from "../../context/form/FormProvider";
+import {isFunction} from "lodash";
 
 const StyledForm = styled.form`
   .form-group {
@@ -41,6 +42,8 @@ const Form = ({
         setValue,
         watch,
         control,
+        resetField,
+        reset
     } = useForm({mode: "onChange"});
 
   const onSubmit = (data) => {
@@ -55,6 +58,8 @@ const Form = ({
       watch,
       setError,
       setValue,
+      resetField,
+      reset,
       ...rest,
   };
 
@@ -66,7 +71,7 @@ const Form = ({
             className={mainClassName}
         >
             <FormProvider value={{attrs, getValueFromField}}>
-                {children}
+                {isFunction(children) ? children(attrs) : children}
             </FormProvider>
             {footer}
         </StyledForm>

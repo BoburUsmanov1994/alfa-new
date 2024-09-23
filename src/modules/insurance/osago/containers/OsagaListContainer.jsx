@@ -1,19 +1,40 @@
-import React, { useEffect, useMemo } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import { useStore } from "../../../../store";
-import { get } from "lodash";
+import {get, includes} from "lodash";
 import GridView from "../../../../containers/grid-view/grid-view";
 import { KEYS } from "../../../../constants/key";
 import { URLS } from "../../../../constants/url";
 import Field from "../../../../containers/form/field";
 import { useTranslation } from "react-i18next";
 import NumberFormat from "react-number-format";
+import Form from "../../../../containers/form/form";
+import {useNavigate} from "react-router-dom";
+import {useGetAllQuery} from "../../../../hooks/api";
+import {getSelectOptionsListFromData} from "../../../../utils";
+import {Col, Row} from "react-grid-system";
+import Button from "../../../../components/ui/button";
+import {Filter, Trash} from "react-feather";
+import Flex from "../../../../components/flex";
+import config from "../../../../config";
 
 const ListContainer = () => {
   const { t } = useTranslation();
-
+    const user = useStore(state => get(state, 'user', null))
   const setBreadcrumbs = useStore((state) =>
     get(state, "setBreadcrumbs", () => {})
   );
+    const navigate = useNavigate();
+    const [filter, setFilter] = useState({
+        branch: get(user, 'branch._id'),
+    });
+    let {data: branches} = useGetAllQuery({
+        key: KEYS.branches, url: `${URLS.branches}/list`, params: {
+            params: {
+                limit: 100
+            }
+        }
+    })
+    branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
   const breadcrumbs = useMemo(
     () => [
       {
@@ -143,7 +164,7 @@ const ListContainer = () => {
             title: "Status",
           },
         ]}
-        keyId={KEYS.osagoList}
+        keyId={[KEYS.osagoList,filter]}
         url={URLS.osagoList}
         listUrl={`${URLS.osagoList}`}
         deleteKey={`${URLS.osagoDelete}`}
@@ -154,7 +175,82 @@ const ListContainer = () => {
         updateUrl={"/insurance/osago/update"}
         isHideColumn
         dataKey={"application_number"}
+        params={{...filter}}
         deleteUrl={URLS.osagoDelete}
+        extraFilters={<Form formRequest={({data: {group, subGroup, ...rest} = {}}) => {
+            setFilter(rest);
+        }}
+                            mainClassName={'mt-15'}>
+
+            {() => <Row align={'flex-end'}>
+                <Col xs={3}>
+                    <Field label={t('Страховая премия')} type={'number-format-input'}
+                           name={'insurancePremium'}
+                           defaultValue={get(filter, 'insurancePremium', null)}
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Страховая сумма')} type={'number-format-input'}
+                           name={'sumInsured'}
+                           defaultValue={get(filter, 'sumInsured', null)}
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Оплачено')} type={'number-format-input'}
+                           name={'sumInsured'}
+                           defaultValue={get(filter, 'insurancePremiumPaidToInsurer', null)}
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Транспортное средство')} type={'input'}
+                           name={'modelCustomName'}
+                           defaultValue={get(filter, 'modelCustomName')}
+
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Applicant')} type={'input'}
+                           name={'applicant'}
+                           defaultValue={get(filter, 'applicant')}
+
+                    />
+                </Col>
+
+                <Col xs={3}><Field type={'select'} label={'Status'} name={'status'}
+                                   options={[{value: 'new', label: 'new'},{value: 'payed', label: 'paid'}]}
+                                   defaultValue={get(filter, 'status')}
+                /></Col>
+                <Col xs={3}>
+                    <Field label={t('Серия полиса')}
+                           name={'seria'}
+                           defaultValue={get(filter, 'seria')}
+
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Номер полиса')}
+                           name={'number'}
+                           defaultValue={get(filter, 'number')}
+
+                    />
+                </Col>
+
+                <Col xs={3}><Field type={'select'} label={'Филиал'} name={'branch'}
+                                   options={branches} defaultValue={get(filter, 'branch')}
+                                   isDisabled={!includes([config.ROLES.admin], get(user, 'role.name'))}/></Col>
+                <Col xs={9}>
+                    <div className="mb-25">
+                        <Button htmlType={'submit'}><Flex justify={'center'}><Filter size={18}/><span
+                            style={{marginLeft: '5px'}}>{t("ПРИМЕНИТЬ")}</span></Flex></Button>
+                        <Button onClick={() => {
+                            navigate(0)
+                        }} className={'ml-15'} danger type={'button'}><Flex justify={'center'}><Trash
+                            size={18}/><span
+                            style={{marginLeft: '5px'}}>{t("ОЧИСТИТЬ")}</span></Flex></Button>
+                    </div>
+                </Col>
+            </Row>}
+        </Form>}
       />
     </>
   );

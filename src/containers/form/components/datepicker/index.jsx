@@ -49,7 +49,7 @@ const CustomDatepicker = ({
                               errors,
                               params,
                               property,
-                              defaultValue,
+                              defaultValue=undefined,
                               getValues,
                               watch,
                               label,
@@ -59,10 +59,10 @@ const CustomDatepicker = ({
                               dateFormat = "YYYY-MM-DD",
                               ...rest
                           }) => {
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(null);
 
     useEffect(() => {
-        setValue(name, dayjs(startDate).format(dateFormat))
+        setValue(name, startDate ? dayjs(startDate).format(dateFormat) : null)
         if (get(property, 'onChange') && isFunction(get(property, 'onChange')) && !isEqual(defaultValue,startDate)) {
             get(property, 'onChange')(startDate)
         }
@@ -91,15 +91,16 @@ const CustomDatepicker = ({
                         calendarStartDay={1}
                         dateFormat={get(property, 'dateFormat', 'dd.MM.yyyy')}
                         className={`custom-datepicker ${!isEmpty(errors) ? "error" : ''}`}
-                        selected={dayjs(startDate).toDate()}
+                        selected={startDate ? dayjs(startDate).toDate() : null}
                         onChange={(date) => {
                             if (dayjs(date).isValid()) {
                                 setStartDate(date)
                             }
                         }}
                         customInput={
-                            <MaskedInput  mask={'99.99.9999'} />
+                            <MaskedInput   mask={'99.99.9999'} />
                         }
+                        allowClear
                         readOnly={disabled}
                     />
                     <Calendar className={'custom__icon'}/>

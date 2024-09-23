@@ -15,6 +15,7 @@ import Button from "../../../components/ui/button";
 import {Filter, Trash} from "react-feather";
 import Flex from "../../../components/flex";
 import config from "../../../config";
+import {useNavigate} from "react-router-dom";
 
 const AgreementsContainer = ({...rest}) => {
     const {t} = useTranslation()
@@ -23,9 +24,8 @@ const AgreementsContainer = ({...rest}) => {
     const [productSubGroupId, setProductSubGroupId] = useState(null);
     const [filter, setFilter] = useState({
         branch: get(user, 'branch._id'),
-        startOfInsurance: dayjs().subtract(1, 'year').format("YYYY-MM-DD"),
-        endOfInsurance: dayjs().add(3, 'year').format("YYYY-MM-DD")
     });
+    const navigate = useNavigate();
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [
@@ -99,44 +99,62 @@ const AgreementsContainer = ({...rest}) => {
                         title: 'agreementNumber'
                     },
                     {
-                        id: 1111,
+                        id: 2,
                         key: 'agreementDate',
                         title: 'agreementDate',
                         render: (val) => dayjs(get(val, 'agreementDate')).format("DD.MM.YYYY")
                     },
                     {
-                        id: 11,
+                        id: 3,
+                        key: 'insurant',
+                        title: 'Страхователь',
+                        render: (_tr) => get(_tr, 'insurant.organization.name', `${get(_tr, 'insurant.person.fullName.lastname', '-')} ${get(_tr, 'insurant.person.fullName.firstname', '-')} ${get(_tr, 'insurant.person.fullName.middlename', '-')}`)
+                    },
+                    {
+                        id: 4,
+                        key: 'beneficiary',
+                        title: 'Выгодоприобретатель',
+                        render: (_tr) => get(_tr, 'beneficiary.organization.name', `${get(_tr, 'beneficiary.person.fullName.lastname', '-')} ${get(_tr, 'beneficiary.person.fullName.firstname', '-')} ${get(_tr, 'beneficiary.person.fullName.middlename', '-')}`)
+                    },
+                    {
+                        id: 5,
                         key: 'startOfInsurance',
                         title: 'startOfInsurance',
                         date: true
                     },
                     {
-                        id: 12,
+                        id: 6,
                         key: 'endOfInsurance',
                         title: 'endOfInsurance',
                         date: true
                     },
                     {
-                        id: 2,
+                        id: 7,
                         key: 'product.name',
                         title: 'Наименование продукта'
                     },
                     {
-                        id: 7,
+                        id: 8,
                         key: 'totalInsuranceSum',
                         title: 'totalInsuranceSum',
                         hasNumberFormat: true
                     },
                     {
-                        id: 77,
+                        id: 9,
                         key: 'totalInsurancePremium',
                         title: 'totalInsurancePremium',
                         hasNumberFormat: true
                     },
                     {
-                        id: 8,
+                        id: 10,
                         key: 'status',
                         title: 'Status',
+                    },
+                    {
+                        id: 11,
+                        key: 'createdAt',
+                        title: 'Дата ввода в систему',
+                        render: (val) => dayjs(get(val, 'createdAt')).format("DD.MM.YYYY HH:mm")
                     },
                 ]}
                 params={{...filter}}
@@ -151,82 +169,152 @@ const AgreementsContainer = ({...rest}) => {
                 extraFilters={<Form formRequest={({data: {group, subGroup, ...rest} = {}}) => {
                     setFilter(rest);
                 }}
-                                    mainClassName={'mt-15'}><Row align={'flex-end'}>
-                    <Col xs={3}>
-                        <Field label={t('Выберите категорию')} options={groups} type={'select'}
-                               name={'group'}
-                               property={{onChange: (val) => setProductGroupId(val)}}
-                               defaultValue={productGroupId}
-                        />
-                    </Col>
-                    <Col xs={3}>
-                        <Field label={t('Выберите подкатегорию ')} options={subGroups} type={'select'}
-                               name={'subGroup'}
-                               property={{onChange: (val) => setProductSubGroupId(val)}}
-                               defaultValue={productSubGroupId}
-                        />
-                    </Col>
-                    <Col xs={3}>
-                        <Field label={t('Выберите продукта')} options={productsList} type={'select'}
-                               name={'product'}
-                               defaultValue={get(filter, 'product')}
-                        />
-                    </Col>
-                    <Col xs={3}>
-                        <Field label={t('agreementnumber')} type={'input'}
-                               name={'agreementNumber'}
-                               defaultValue={get(filter, 'agreementNumber')}
+                                    mainClassName={'mt-15'}>
 
-                        />
-                    </Col>
-                    <Col xs={3}>
-                        <Field label={t('totalInsurancePremium')} type={'number-format-input'}
-                               name={'totalInsurancePremium'}
-                               defaultValue={get(filter, 'totalInsurancePremium', 0)}
-                        />
-                    </Col>
-                    <Col xs={3}>
-                        <Field label={t('totalInsuranceSum')} type={'number-format-input'}
-                               name={'totalInsuranceSum'}
-                               defaultValue={get(filter, 'totalInsuranceSum', 0)}
+                    {(attrs) => <Row align={'flex-end'}>
+                        <Col xs={3}>
+                            <Field label={t('agreementnumber')} type={'input'}
+                                   name={'agreementNumber'}
+                                   defaultValue={get(filter, 'agreementNumber')}
 
-                        />
-                    </Col>
-                    <Col xs={3}>
-                        <Field label={t('startOfInsurance')} type={'datepicker'}
-                               name={'startOfInsurance'}
-                               defaultValue={get(filter, 'startOfInsurance')}
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Дата соглашения от')} type={'datepicker'}
+                                   name={'agreementDateFrom'}
+                                   defaultValue={get(filter, 'agreementDateFrom')}
 
-                        />
-                    </Col>
-                    <Col xs={3}>
-                        <Field label={t('endOfInsurance')} type={'datepicker'}
-                               name={'endOfInsurance'}
-                               defaultValue={get(filter, 'endOfInsurance')}
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Дата соглашения до')} type={'datepicker'}
+                                   name={'agreementDateTo'}
+                                   defaultValue={get(filter, 'agreementDateTo')}
 
-                        />
-                    </Col>
-                    <Col xs={3}><Field type={'select'} label={'Филиал'} name={'branch'}
-                                       options={branches} defaultValue={get(filter, 'branch')}
-                                       isDisabled={!includes([config.ROLES.admin], get(user, 'role.name'))}/></Col>
-                    <Col xs={9}>
-                        <div className="mb-25">
-                            <Button htmlType={'submit'}><Flex justify={'center'}><Filter size={18}/><span
-                                style={{marginLeft: '5px'}}>{t("Фильтр")}</span></Flex></Button>
-                            <Button onClick={() => {
-                                setProductGroupId(null);
-                                setProductSubGroupId(null);
-                                setFilter({
-                                    branch: get(user, 'branch._id'),
-                                    startOfInsurance: dayjs().subtract(1, 'year').format("YYYY-MM-DD"),
-                                    endOfInsurance: dayjs().add(3, 'year').format("YYYY-MM-DD")
-                                });
-                            }} className={'ml-15'} danger type={'button'}><Flex justify={'center'}><Trash
-                                size={18}/><span
-                                style={{marginLeft: '5px'}}>{t("Очистить фильтр")}</span></Flex></Button>
-                        </div>
-                    </Col>
-                </Row></Form>}
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Страхователь')} type={'input'}
+                                   name={'insurant'}
+                                   defaultValue={get(filter, 'insurant')}
+
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Выгодоприобретатель')} type={'input'}
+                                   name={'beneficiary'}
+                                   defaultValue={get(filter, 'beneficiary')}
+
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Начало периода страхования от')} type={'datepicker'}
+                                   name={'startOfInsuranceFrom'}
+                                   defaultValue={get(filter, 'startOfInsuranceFrom')}
+
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Начало периода страхования до')} type={'datepicker'}
+                                   name={'startOfInsuranceTo'}
+                                   defaultValue={get(filter, 'startOfInsuranceTo')}
+
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Конец периода страхования от')} type={'datepicker'}
+                                   name={'endOfInsuranceFrom'}
+                                   defaultValue={get(filter, 'endOfInsuranceFrom')}
+
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Конец периода страхования до')} type={'datepicker'}
+                                   name={'endOfInsuranceTo'}
+                                   defaultValue={get(filter, 'endOfInsuranceTo')}
+
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Выберите категорию')} options={groups} type={'select'}
+                                   name={'group'}
+                                   property={{onChange: (val) => setProductGroupId(val)}}
+                                   defaultValue={productGroupId}
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Выберите подкатегорию ')} options={subGroups} type={'select'}
+                                   name={'subGroup'}
+                                   property={{onChange: (val) => setProductSubGroupId(val)}}
+                                   defaultValue={productSubGroupId}
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Выберите продукта')} options={productsList} type={'select'}
+                                   name={'product'}
+                                   defaultValue={get(filter, 'product')}
+                            />
+                        </Col>
+
+                        <Col xs={3}>
+                            <Field label={t('Общая страховая премия от')} type={'number-format-input'}
+                                   name={'totalInsurancePremiumFrom'}
+                                   defaultValue={get(filter, 'totalInsurancePremiumFrom', null)}
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Общая страховая премия до')} type={'number-format-input'}
+                                   name={'totalInsurancePremiumTo'}
+                                   defaultValue={get(filter, 'totalInsurancePremiumTo', null)}
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Общая страховая сумма от')} type={'number-format-input'}
+                                   name={'totalInsuranceSumFrom'}
+                                   defaultValue={get(filter, 'totalInsuranceSumFrom', null)}
+
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Общая страховая сумма до')} type={'number-format-input'}
+                                   name={'totalInsuranceSumTo'}
+                                   defaultValue={get(filter, 'totalInsuranceSumTo', null)}
+                            />
+                        </Col>
+                        <Col xs={3}><Field type={'select'} label={'Status'} name={'status'}
+                                           options={[{value:'new',label:'new'},{value:'partialPaid',label:'partialPaid'},{value:'paid',label:'paid'},{value:'sent',label:'sent'}]} defaultValue={get(filter, 'status')}
+                                         /></Col>
+                        <Col xs={3}>
+                            <Field label={t('Дата создания от')} type={'datepicker'}
+                                   name={'createdAtFrom'}
+                                   defaultValue={get(filter, 'createdAtFrom')}
+
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Дата создания до')} type={'datepicker'}
+                                   name={'createdAtTo'}
+                                   defaultValue={get(filter, 'createdAtTo')}
+
+                            />
+                        </Col>
+
+                        <Col xs={3}><Field type={'select'} label={'Филиал'} name={'branch'}
+                                           options={branches} defaultValue={get(filter, 'branch')}
+                                           isDisabled={!includes([config.ROLES.admin], get(user, 'role.name'))}/></Col>
+                        <Col xs={9}>
+                            <div className="mb-25">
+                                <Button htmlType={'submit'}><Flex justify={'center'}><Filter size={18}/><span
+                                    style={{marginLeft: '5px'}}>{t("ПРИМЕНИТЬ")}</span></Flex></Button>
+                                <Button onClick={() => {
+                                    navigate(0)
+                                }} className={'ml-15'} danger type={'button'}><Flex justify={'center'}><Trash
+                                    size={18}/><span
+                                    style={{marginLeft: '5px'}}>{t("ОЧИСТИТЬ")}</span></Flex></Button>
+                            </div>
+                        </Col>
+                    </Row>}
+                </Form>}
             />
         </>
     );
