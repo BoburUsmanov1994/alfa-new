@@ -1255,10 +1255,10 @@ const CreateContainer = () => {
                                             params={{required: true}}
                                             property={{
                                                 type: 'number',
-                                                disabled: isEqual(agentId, '0'),
+                                                disabled: isEqual(agentId, '662a2c60577082fb291c0000'),
                                                 valueAsNumber: true
                                             }}
-                                            defaultValue={isEqual(agentId, '0') ? 0 : 10}
+                                            defaultValue={isEqual(agentId, '662a2c60577082fb291c0000') ? 0 : 10}
                                             label={'Вознограждение %'}
                                             type={'input'}
                                             name={'agentReward'}/>
