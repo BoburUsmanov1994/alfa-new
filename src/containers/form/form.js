@@ -71,7 +71,7 @@ const Form = ({
             className={mainClassName}
         >
             <FormProvider value={{attrs, getValueFromField}}>
-                {isFunction(children) ? children(attrs) : children}
+                {children}
             </FormProvider>
             {footer}
         </StyledForm>

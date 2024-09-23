@@ -87,6 +87,9 @@ const GlobalStyles = createGlobalStyle`
   .rodal, .rodal-mask {
     z-index: 999 !important;
   }
+.rodal-dialog form{
+  max-height: 75vh !important;
+}
 
   .rodal-dialog {
     z-index: 1000;
