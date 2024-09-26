@@ -92,7 +92,7 @@ const CreateContainer = ({...rest}) => {
     const {data: region, isLoading: isLoadingRegion} = useGetAllQuery({
         key: KEYS.regions, url: `${URLS.regions}/list`
     })
-    const regionList = getSelectOptionsListFromData(get(region, `data.data`, []), 'id', 'name')
+    const regionList = getSelectOptionsListFromData(get(region, `data.data`, []), '_id', 'name')
 
     const {data: genders} = useGetAllQuery({
         key: KEYS.genders, url: `${URLS.genders}/list`
@@ -129,7 +129,7 @@ const CreateContainer = ({...rest}) => {
         },
         enabled: !!(regionId || get(person, 'regionId'))
     })
-    const districtList = getSelectOptionsListFromData(get(district, `data.data`, []), 'id', 'name')
+    const districtList = getSelectOptionsListFromData(get(district, `data.data`, []), '_id', 'name')
 
     const {data: agents} = useGetAllQuery({
         key: [KEYS.agents, agencyId],
