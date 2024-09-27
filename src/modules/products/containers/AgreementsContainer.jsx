@@ -111,7 +111,8 @@ const AgreementsContainer = () => {
         resetPledger()
         resetObjects()
     }, [])
-
+console.log('createdAtFrom',createdAtFrom)
+console.log('createdAtTo',createdAtTo)
     return (
         <>
             <GridView
@@ -306,13 +307,17 @@ const AgreementsContainer = () => {
                                    }, {value: 'paid', label: 'paid'}, {value: 'sent', label: 'sent'}]}
                                    defaultValue={get(filter, 'status')}
                             />
-                            <Field sm property={{onChange: (val) => setCreatedAtFrom(val)}} label={t('Дата создания от')}
+                            <Field sm property={{onChange: (val) => {
+                                    setCreatedAtFrom(dayjs(val).add(1,'days').toDate())
+                                }}} label={t('Дата создания от')}
                                    type={'datepicker'}
                                    name={'createdAtFrom'}
                                    defaultValue={get(filter, 'createdAtFrom')}
 
                             />
-                            <Field sm property={{onChange: (val) => setCreatedAtTo(val)}} label={t('Дата создания до')}
+                            <Field sm property={{onChange: (val) => {
+                                    setCreatedAtTo(dayjs(val).add(1,'days').toDate())
+                                }}} label={t('Дата создания до')}
                                    type={'datepicker'}
                                    name={'createdAtTo'}
                                    defaultValue={get(filter, 'createdAtTo')}

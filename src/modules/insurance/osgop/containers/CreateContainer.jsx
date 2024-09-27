@@ -403,7 +403,7 @@ const CreateContainer = () => {
         return <OverlayLoader/>
     }
 
-    console.log('osgopCalculateResponse',osgopCalculateResponse)
+    console.log('osgopCalculateResponse', osgopCalculateResponse)
 
     return (<>
         {(isLoadingCountry || isLoadingPersonalInfo || isLoadingOrganizationInfo || isLoadingVehicleInfo || isLoadingPost) &&
@@ -1392,6 +1392,44 @@ const CreateContainer = () => {
                                    defaultValue={get(vehicle, 'regionId')} label={'Регион регистрации'}
                                    type={'select'}
                                    name={'vehicle.objects[0].vehicle.regionId'}/>
+                        </Col>
+                        <Col xs={12} className={'mt-15'}>
+                            <hr/>
+                        </Col>
+                        <Col xs={4} className={'mt-15'}>
+                            <Field params={{required: true}}
+                                   name={'vehicle.objects[0].vehicle.license.seria'}
+                                   type={'input'}
+                                   label={'Серия лицензии'}
+                            />
+                        </Col>
+                        <Col xs={4} className={'mt-15'}>
+                            <Field params={{required: true}}
+                                   name={'vehicle.objects[0].vehicle.license.number'}
+                                   type={'input'}
+                                   label={'Номер лицензии'}
+                            />
+                        </Col>
+                        <Col xs={4} className={'mt-15'}>
+                            <Field params={{required: true}}
+                                   name={'vehicle.objects[0].vehicle.license.beginDate'}
+                                   type={'datepicker'}
+                                   label={'Дата начала'}
+                            />
+                        </Col>
+                        <Col xs={4} className={'mt-15'}>
+                            <Field params={{required: true}}
+                                   name={'vehicle.objects[0].vehicle.license.endDate'}
+                                   type={'datepicker'}
+                                   label={'Дата окончания'}
+                            />
+                        </Col>
+                        <Col xs={4} className={'mt-15'}>
+                            <Field params={{required: true}}
+                                   name={'vehicle.objects[0].vehicle.license.typeCode'}
+                                   type={'input'}
+                                   label={'Тип лицензии'}
+                            />
                         </Col>
                         <Col xs={12} className={'mt-15'}>
                             <hr/>
