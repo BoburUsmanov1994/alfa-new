@@ -195,7 +195,7 @@ const AgreementsContainer = () => {
                                     mainClassName={'mt-15'}>
 
                     {() => <Row align={'end'} gutterWidth={10}>
-                        <Col xs={1}>
+                        <Col xs={1.25}>
                             <Field sm property={{onChange: (val) => setBranch(val)}} type={'select'}
                                    label={'Филиал'} name={'branch'}
                                    options={branches} defaultValue={get(filter, 'branch')}
@@ -276,7 +276,7 @@ const AgreementsContainer = () => {
                         </Col>
 
 
-                        <Col xs={1}>
+                        <Col xs={1.25}>
                             <Field sm label={t('Общая страховая премия от')} type={'number-format-input-filter'}
                                    name={'totalInsurancePremiumFrom'}
                                    defaultValue={get(filter, 'totalInsurancePremiumFrom', null)}
@@ -286,7 +286,7 @@ const AgreementsContainer = () => {
                                    defaultValue={get(filter, 'totalInsurancePremiumTo', null)}
                             />
                         </Col>
-                        <Col xs={1}>
+                        <Col xs={1.25}>
                             <Field sm label={t('Общая страховая сумма от')} type={'number-format-input-filter'}
                                    name={'totalInsuranceSumFrom'}
                                    defaultValue={get(filter, 'totalInsuranceSumFrom', null)}
@@ -298,14 +298,14 @@ const AgreementsContainer = () => {
                             />
                         </Col>
 
-                        <Col xs={1}><Field sm type={'select'} label={'Status'} name={'status'}
-                                           options={[{value: 'new', label: 'new'}, {
-                                               value: 'partialPaid',
-                                               label: 'partialPaid'
-                                           }, {value: 'paid', label: 'paid'}, {value: 'sent', label: 'sent'}]}
-                                           defaultValue={get(filter, 'status')}
-                        /></Col>
-                        <Col xs={1}>
+                        <Col xs={1.25}>
+                            <Field sm type={'select'} label={'Status'} name={'status'}
+                                   options={[{value: 'new', label: 'new'}, {
+                                       value: 'partialPaid',
+                                       label: 'partialPaid'
+                                   }, {value: 'paid', label: 'paid'}, {value: 'sent', label: 'sent'}]}
+                                   defaultValue={get(filter, 'status')}
+                            />
                             <Field sm property={{onChange: (val) => setCreatedAtFrom(val)}} label={t('Дата создания от')}
                                    type={'datepicker'}
                                    name={'createdAtFrom'}
