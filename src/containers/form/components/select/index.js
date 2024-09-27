@@ -55,37 +55,41 @@ const DropdownIndicator = props => {
         )
     );
 };
-const customStyles = {
-
-    control: (base, state, error) => ({
-        ...base,
-        background: "#fff",
-        borderColor: error ? "#ef466f" : "#BABABA",
-        borderRadius: '5px',
-        outline: "none",
-        boxShadow: "none",
-        color: "#7E7E7E",
-        display: "flex",
-        overflow: 'hidden',
-        padding: '4px 12px',
-        width: '100%',
-        minHeight: '40px',
-        // maxWidth: '400px',
-        fontSize: '16px',
-        fontWeight: '300',
-        "&:hover": {
-            borderColor: '#13D6D1',
+const customStyles = (sm)=> {
+    return {
+        control: (base, state, error) => ({
+            ...base,
+            background: "#fff",
+            borderColor: error ? "#ef466f" : "#BABABA",
+            borderRadius: '5px',
             outline: "none",
-        },
-        "&:focus": {
-            borderColor: '#13D6D1',
-            outline: "none",
-        }
-    }),
-    indicatorSeparator: (base, state) => ({
-        ...base,
-        display: 'none'
-    })
+            boxShadow: "none",
+            color: "#7E7E7E",
+            display: "flex",
+            overflow: 'hidden',
+            padding: sm ? '0px':'4px 12px',
+            width: '100%',
+            minHeight: sm ? '30px' :'40px',
+            fontSize: sm ? '13px' : '16px',
+            fontWeight: '300',
+            "&:hover": {
+                borderColor: '#13D6D1',
+                outline: "none",
+            },
+            "&:focus": {
+                borderColor: '#13D6D1',
+                outline: "none",
+            }
+        }),
+        indicatorSeparator: (base, state) => ({
+            ...base,
+            display: 'none'
+        }),
+        menu: (provided) => ({
+            ...provided,
+            fontSize: sm ? '13px' : '16px'
+        }),
+    }
 };
 
 const FormSelect = ({
@@ -112,6 +116,7 @@ const FormSelect = ({
                         },
                         getValues = () => {
                         },
+                        sm = false,
                         ...props
                     }) => {
 
@@ -156,8 +161,8 @@ const FormSelect = ({
     return (
         <>
             <div className="form-group">
-                {!get(property, 'hideLabel', false) && <Label
-                    className={classNames({required: get(property, 'hasRequiredLabel', get(params, 'required'))})}>{label ?? name}</Label>}
+                {!get(property, 'hideLabel', false) && <Label sm={sm}
+                                                              className={classNames({required: get(property, 'hasRequiredLabel', get(params, 'required'))})}>{label ?? name}</Label>}
 
                 <StyledFormSelect {...props} large={get(property, 'large', false)}
                                   fullWidth={get(property, 'fullWidth', false)} bgColor={get(property, 'bgColor')}>
@@ -172,7 +177,7 @@ const FormSelect = ({
                                 options={options}
                                 disabled={disabled}
                                 placeholder={get(property, 'placeholder', 'Select...')}
-                                onChange={(selectedOption, triggeredAction)=>{
+                                onChange={(selectedOption, triggeredAction) => {
                                     handleChange(selectedOption)
                                     if (triggeredAction?.action === 'clear') {
                                         if (isFunction(get(property, 'onChange'))) {
@@ -180,7 +185,7 @@ const FormSelect = ({
                                         }
                                     }
                                 }}
-                                styles={customStyles}
+                                styles={customStyles(sm)}
                                 components={{DropdownIndicator}}
                                 isMulti={isMulti}
                                 isDisabled={isDisabled || disabled}

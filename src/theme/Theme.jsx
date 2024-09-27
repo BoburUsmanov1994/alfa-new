@@ -105,7 +105,7 @@ const GlobalStyles = createGlobalStyle`
   .horizontal-scroll {
     display: block;
     overflow-x: auto;
-    white-space: nowrap;
+    //white-space: nowrap;
   }
 
   .mr-16 {

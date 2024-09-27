@@ -202,4 +202,5 @@ export const URLS = {
     agentActList: 'api/agent/act/list',
     showFile: 'api/file/show',
     otherObjectType: 'api/references/other-type/list',
+    agreementWeeklyReport: 'api/agreement/weekly/report',
 }

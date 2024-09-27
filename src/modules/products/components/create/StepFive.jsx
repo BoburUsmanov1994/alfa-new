@@ -11,9 +11,7 @@ import {useGetAllQuery, usePostQuery, usePutQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {OverlayLoader} from "../../../../components/loader";
 import {URLS} from "../../../../constants/url";
-import {getSelectOptionsListFromData, saveFile} from "../../../../utils";
-import {Download} from "react-feather";
-import {request} from "../../../../services/api";
+import {getSelectOptionsListFromData} from "../../../../utils";
 import FilePreview from "../../../../components/file-preview";
 
 const StepFive = ({id = null, ...props}) => {

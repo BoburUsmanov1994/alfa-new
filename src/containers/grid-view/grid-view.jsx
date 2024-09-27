@@ -207,9 +207,9 @@ const GridView = ({
     return (
         <Styled>
             <Panel>
-                <Row>
+                <Row align={'center'}>
                     <Col xs={!hideCreateBtn ? 10 : 12}>
-                        <Search/>
+                        <Title hideSplitter={true}>{title}</Title>
                     </Col>
                     <Col xs={2} className={'text-right'}>
                         {!hideCreateBtn && <Button lg onClick={() => {
@@ -227,26 +227,6 @@ const GridView = ({
             </Panel>
             <Section>
                 <Row>
-                    <Col xs={12}>
-                        <Flex className={'w-100'}>
-                            <Title>{title}</Title>
-                            {isHideColumn && <Dropdown button={<Menu/>}>
-                                <ul className="column__filter">
-                                    <li><span>{t("Выбрать")}</span><ChevronUp/></li>
-                                    {
-                                        tableHeaderData && tableHeaderData.map(column => <li
-                                            onClick={() => hideColumn(get(column, 'key'), includes(columns.map(({key}) => key), get(column, 'key')))}
-                                            key={get(column, 'id')}>
-                                            <span>{t(get(column, 'title'))}</span>
-                                            {includes(columns.map(({key}) => key), get(column, 'key')) &&
-                                                <Check size={18}/>}
-                                        </li>)
-                                    }
-
-                                </ul>
-                            </Dropdown>}
-                        </Flex>
-                    </Col>
                     <Col xs={12}>
                         {extraFilters}
                     </Col>

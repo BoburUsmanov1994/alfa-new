@@ -16,10 +16,10 @@ const Styled = styled.table`
 
   .table-head {
     th {
-      padding: 12px;
+      padding: 6px;
       color: #010101;
       font-family: 'Gilroy-Medium', sans-serif;
-      font-size: 16px;
+      font-size: 14px;
 
       &:first-child {
         text-align: left;
@@ -42,7 +42,8 @@ const Styled = styled.table`
     }
 
     td {
-      padding: 12px;
+      padding: 6px;
+      font-size: 15px;
       font-family: 'Gilroy-Regular', sans-serif;
       color: #000;
 
@@ -86,7 +87,7 @@ const GridTable = ({
             <tr>
                 <th>№</th>
                 {
-                    tableHeaderData && tableHeaderData.map((th, i) => <th key={get(th, 'id', i)}>
+                    tableHeaderData && tableHeaderData.map((th, i) => <th  key={get(th, 'id', i)}>
                         {
                             t(get(th, 'title', '-'))
                         }

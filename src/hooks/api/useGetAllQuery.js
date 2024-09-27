@@ -1,4 +1,3 @@
-import React from 'react';
 import {useQuery} from 'react-query'
 import {request} from "../../services/api";
 import {toast} from "react-toastify";
@@ -18,7 +17,7 @@ const useGetAllQuery = ({
                             },
                         }) => {
 
-    const {isLoading, isError, data, error, isFetching} = useQuery([key, params], () => request.get(url, params), {
+    const {isLoading, isError, data, error, isFetching,refetch} = useQuery([key, params], () => request.get(url, params), {
         onSuccess: ({data}) => {
             cb?.success(data)
         },
@@ -36,7 +35,8 @@ const useGetAllQuery = ({
         isError,
         data,
         error,
-        isFetching
+        isFetching,
+        refetch
     }
 };
 

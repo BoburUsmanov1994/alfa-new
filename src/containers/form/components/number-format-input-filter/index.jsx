@@ -9,16 +9,16 @@ import classNames from "classnames";
 const Styled = styled.div`
   .masked-input {
     display: block;
-    min-width: 275px;
+    min-width:  ${({sm}) => sm ? 'unset':'275px'};
     width: 100%;
-    padding: 12px 18px;
+    padding: ${({sm}) => sm ? '7px':'12px 18px'};
     color: #000;
-    font-size: 16px;
+    font-size:  ${({sm}) => sm ? '14px':'16px'};
     border: 1px solid #BABABA;
     border-radius: 5px;
     outline: none;
     font-family: 'Gilroy-Regular', sans-serif;
-    max-width: 400px;
+    max-width: ${({sm}) => sm ? 'unset':'400px'};
 
     &.error {
       border-color: #ef466f;
@@ -48,6 +48,7 @@ const NumberFormatInputFilter = ({
                                resetField,
                                isNumericString = false,
                                reset,
+    sm=false,
                                ...rest
                            }) => {
 
@@ -68,9 +69,9 @@ const NumberFormatInputFilter = ({
         }
     },[defaultValue])
     return (
-        <Styled {...rest}>
+        <Styled {...rest} sm={sm}>
             <div className="form-group">
-                {!get(property, 'hideLabel', false) && <Label
+                {!get(property, 'hideLabel', false) && <Label sm={sm}
                     className={classNames({required: get(property, 'hasRequiredLabel', get(params, 'required'))})}>{label ?? name}</Label>}
                 <Controller
                     control={control}

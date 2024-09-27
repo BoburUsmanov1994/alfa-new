@@ -3,7 +3,7 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Label from "../../../../components/ui/label";
-import {get, isEmpty, isFunction,isEqual} from "lodash";
+import {get, isEmpty, isFunction, isEqual} from "lodash";
 import {ErrorMessage} from "@hookform/error-message";
 import {Calendar} from "react-feather";
 import dayjs from "dayjs";
@@ -12,16 +12,17 @@ import MaskedInput from "react-input-mask";
 import classNames from "classnames";
 
 const Styled = styled.div`
-  .react-datepicker-wrapper{
+  .react-datepicker-wrapper {
     display: block;
   }
+
   .custom-datepicker {
     display: block;
-    min-width: 275px;
+    min-width: ${({sm}) => sm ? 'unset': '275px'};
     width: 100%;
-    padding: 12px 32px 12px 18px;
+    padding: ${({sm}) => sm ? '6px 16px 7px 9px': ' 12px 32px 12px 18px'};
     color: #000;
-    font-size: 16px;
+    font-size: ${({sm}) => sm ? '14px': '16px'};
     border: 1px solid #BABABA;
     border-radius: 5px;
     outline: none;
@@ -30,11 +31,12 @@ const Styled = styled.div`
 
   .custom__box {
     position: relative;
-    
+
     .custom__icon {
       position: absolute;
       right: 8px;
-      top: 10px;
+      top: ${({sm}) => sm ? '3px': '10px'};
+      width:  ${({sm}) => sm ? '16px': 'unset'};
     }
 
   }
@@ -49,7 +51,7 @@ const CustomDatepicker = ({
                               errors,
                               params,
                               property,
-                              defaultValue=undefined,
+                              defaultValue = undefined,
                               getValues,
                               watch,
                               label,
@@ -57,36 +59,38 @@ const CustomDatepicker = ({
                               getValueFromField = () => {
                               },
                               dateFormat = "YYYY-MM-DD",
+                              sm = false,
                               ...rest
                           }) => {
     const [startDate, setStartDate] = useState(null);
 
     useEffect(() => {
         setValue(name, startDate ? dayjs(startDate).format(dateFormat) : null)
-        if (get(property, 'onChange') && isFunction(get(property, 'onChange')) && !isEqual(defaultValue,startDate)) {
+        if (get(property, 'onChange') && isFunction(get(property, 'onChange')) && !isEqual(defaultValue, startDate)) {
             get(property, 'onChange')(startDate)
         }
     }, [startDate])
 
     useEffect(() => {
-        if (defaultValue && !isEqual(defaultValue,startDate)) {
+        if (defaultValue && !isEqual(defaultValue, startDate)) {
             if (dayjs(defaultValue).isValid()) {
                 setStartDate(dayjs(defaultValue).toDate())
             }
         }
     }, [defaultValue])
     useEffect(() => {
-        if(startDate) {
+        if (startDate) {
             getValueFromField(getValues(name), name);
         }
     }, [watch(name)]);
     return (
-        <Styled {...rest}>
+        <Styled {...rest} sm={sm}>
             <div className="form-group">
-                {!get(property, 'hideLabel', false) && <Label className={classNames({required:get(property,'hasRequiredLabel',get(params,'required'))})}>{label ?? name}</Label>}
+                {!get(property, 'hideLabel', false) && <Label sm={sm}
+                    className={classNames({required: get(property, 'hasRequiredLabel', get(params, 'required'))})}>{label ?? name}</Label>}
                 <div className={"custom__box"}>
                     <DatePicker
-                        minDate={get(property,'minDate')}
+                        minDate={get(property, 'minDate')}
                         locale={ru}
                         calendarStartDay={1}
                         dateFormat={get(property, 'dateFormat', 'dd.MM.yyyy')}
@@ -98,7 +102,7 @@ const CustomDatepicker = ({
                             }
                         }}
                         customInput={
-                            <MaskedInput   mask={'99.99.9999'} />
+                            <MaskedInput mask={'99.99.9999'}/>
                         }
                         allowClear
                         readOnly={disabled}

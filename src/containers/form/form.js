@@ -6,14 +6,14 @@ import {isFunction} from "lodash";
 
 const StyledForm = styled.form`
   .form-group {
-    margin-bottom: 25px;
+    margin-bottom: ${({sm}) => sm ? '12px' : '25px'};
   }
-  .form-btn{
+
+  .form-btn {
     margin-top: 35px;
   }
 
   .form-error-message {
-    display: inline-block;
     font-weight: 500;
     font-size: 14px;
     line-height: 21px;
@@ -24,15 +24,16 @@ const StyledForm = styled.form`
   }
 `;
 const Form = ({
-                      children,
-                      formRequest,
-                      isFetched,
-                      footer = '',
-                      getValueFromField = () => {
-                      },
-                      mainClassName = '',
-                      ...rest
-                  }) => {
+                  children,
+                  formRequest,
+                  isFetched,
+                  footer = '',
+                  getValueFromField = () => {
+                  },
+                  mainClassName = '',
+                  sm = false,
+                  ...rest
+              }) => {
     const {
         register,
         handleSubmit,
@@ -46,22 +47,22 @@ const Form = ({
         reset
     } = useForm({mode: "onChange"});
 
-  const onSubmit = (data) => {
-    formRequest({ data, setError });
-  };
-  const attrs = {
-      Controller,
-      register,
-      errors,
-      control,
-      getValues,
-      watch,
-      setError,
-      setValue,
-      resetField,
-      reset,
-      ...rest,
-  };
+    const onSubmit = (data) => {
+        formRequest({data, setError});
+    };
+    const attrs = {
+        Controller,
+        register,
+        errors,
+        control,
+        getValues,
+        watch,
+        setError,
+        setValue,
+        resetField,
+        reset,
+        ...rest,
+    };
 
 
     return (
@@ -69,6 +70,7 @@ const Form = ({
             onSubmit={handleSubmit(onSubmit)}
             {...rest}
             className={mainClassName}
+            sm={sm}
         >
             <FormProvider value={{attrs, getValueFromField}}>
                 {isFunction(children) ? children(attrs) : children}
