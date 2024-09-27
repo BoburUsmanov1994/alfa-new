@@ -25,7 +25,7 @@ const GridTableBody = ({
         <>
             {
                 tableBodyData && isArray(tableBodyData) && tableBodyData?.map((tr, i) => <tr key={get(tr, '_id', i)}>
-                    <td>{(page - 1) * 10 + (i + 1)}</td>
+                    <td>{(page - 1) * 15 + (i + 1)}</td>
                     {
                         tableHeaderData && isArray(tableHeaderData) && tableHeaderData?.map((td, j) => <td
                             key={get(td, 'id', j)}>

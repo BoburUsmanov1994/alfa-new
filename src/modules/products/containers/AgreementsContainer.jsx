@@ -89,8 +89,8 @@ const AgreementsContainer = () => {
         url: URLS.agreementWeeklyReport,
         params: {
             params: {
-                createdAtFrom: createdAtFrom,
-                createdAtTo: createdAtTo,
+                createdAtFrom: createdAtFrom ? dayjs(createdAtFrom).format("YYYY-MM-DD") : undefined,
+                createdAtTo: createdAtTo ? dayjs(createdAtTo).format("YYYY-MM-DD") : undefined,
                 branch: !includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
             },
             responseType: 'blob'
@@ -111,8 +111,7 @@ const AgreementsContainer = () => {
         resetPledger()
         resetObjects()
     }, [])
-console.log('createdAtFrom',createdAtFrom)
-console.log('createdAtTo',createdAtTo)
+
     return (
         <>
             <GridView
@@ -308,7 +307,7 @@ console.log('createdAtTo',createdAtTo)
                                    defaultValue={get(filter, 'status')}
                             />
                             <Field sm property={{onChange: (val) => {
-                                    setCreatedAtFrom(dayjs(val).add(1,'days').toDate())
+                                    setCreatedAtFrom(val)
                                 }}} label={t('Дата создания от')}
                                    type={'datepicker'}
                                    name={'createdAtFrom'}
@@ -316,7 +315,7 @@ console.log('createdAtTo',createdAtTo)
 
                             />
                             <Field sm property={{onChange: (val) => {
-                                    setCreatedAtTo(dayjs(val).add(1,'days').toDate())
+                                    setCreatedAtTo(val)
                                 }}} label={t('Дата создания до')}
                                    type={'datepicker'}
                                    name={'createdAtTo'}
