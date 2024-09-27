@@ -91,7 +91,7 @@ const AgreementsContainer = () => {
             params: {
                 createdAtFrom: createdAtFrom ? dayjs(createdAtFrom).format("YYYY-MM-DD") : undefined,
                 createdAtTo: createdAtTo ? dayjs(createdAtTo).format("YYYY-MM-DD") : undefined,
-                branch: !includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
+                branch: includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
             },
             responseType: 'blob'
         },
