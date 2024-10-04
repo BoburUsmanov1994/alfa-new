@@ -279,7 +279,6 @@ const ViewContainer = ({form_id = null}) => {
                                                 defaultValue={get(data, 'data.sentDate')} disabled
                                                 property={{
                                                     hideLabel: true,
-                                                    dateFormat: 'yyyy-MM-dd'
                                                 }}
                                                 type={'datepicker'}
                                                 name={'policies[0].sentDate'}/></Col>
