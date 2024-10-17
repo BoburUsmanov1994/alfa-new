@@ -139,6 +139,7 @@ const ListContainer = ({ ...rest }) => {
         isHideColumn
         dataKey={"osgor_formId"}
         deleteUrl={URLS.osgorDelete}
+        deleteQueryParam={"osgor_formId"}
       />
     </>
   );

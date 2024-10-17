@@ -142,6 +142,7 @@ const ListContainer = ({ ...rest }) => {
         dataKey={"osgop_formId"}
         deleteUrl={URLS.osgopDelete}
         deleteParam={"osgop_formId"}
+        deleteQueryParam={"osgop_formId"}
       />
     </>
   );

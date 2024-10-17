@@ -84,7 +84,8 @@ const GridView = ({
                       deleteUrl = null,
                       extraActions = () => {
                       },
-                      extraFilters = <></>
+                      extraFilters = <></>,
+                      deleteQueryParam = null
                   }) => {
     const navigate = useNavigate()
     const {t} = useTranslation()
@@ -181,7 +182,12 @@ const GridView = ({
         }).then((result) => {
             if (result.isConfirmed) {
                 if (deleteUrl) {
-                    deleteRequest({url: `${deleteUrl}/${id}`})
+                    if(deleteQueryParam) {
+                        deleteRequest({url: `${deleteUrl}?${deleteQueryParam}=${id}`})
+                    }
+                   else{
+                        deleteRequest({url: `${deleteUrl}/${id}`})
+                    }
                 } else {
                     deleteRequest({url: `${url}/${id}`})
                 }
