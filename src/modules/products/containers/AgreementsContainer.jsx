@@ -329,8 +329,8 @@ const AgreementsContainer = () => {
                                 <Button xs htmlType={'submit'}><Flex justify={'center'}><Filter size={14}/><span
                                     style={{marginLeft: '5px'}}>{t("Применить")}</span></Flex></Button>
                                 <Button className={'mt-15'} xs onClick={() => {
-                                    navigate(0)
-                                }}  danger type={'button'}><Flex justify={'center'}><Trash
+                                    setFilter({})
+                                }}  danger type={'reset'}><Flex justify={'center'}><Trash
                                     size={14}/><span
                                     style={{marginLeft: '5px'}}>{t("Очистить")}</span></Flex></Button>
                                 <Button xs onClick={() => {

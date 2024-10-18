@@ -32,6 +32,7 @@ const Form = ({
                   },
                   mainClassName = '',
                   sm = false,
+                  resetFields = {},
                   ...rest
               }) => {
     const {
@@ -48,7 +49,7 @@ const Form = ({
     } = useForm({mode: "onChange"});
 
     const onSubmit = (data) => {
-        formRequest({data, setError});
+        formRequest({data, setError,reset: reset});
     };
     const attrs = {
         Controller,
@@ -71,6 +72,7 @@ const Form = ({
             {...rest}
             className={mainClassName}
             sm={sm}
+            onReset={() => reset(resetFields)}
         >
             <FormProvider value={{attrs, getValueFromField}}>
                 {isFunction(children) ? children(attrs) : children}

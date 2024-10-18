@@ -10,9 +10,9 @@ const Styled = styled.div`
   .masked-input {
     display: block;
     width: 100%;
-    padding: 12px 18px;
+    padding:  ${({sm}) => sm ? '6px': '12px 18px'};
     color: #000;
-    font-size: 16px;
+    font-size: ${({sm}) => sm ? '14px': '16px'};
     border: 1px solid #BABABA;
     border-radius: 5px;
     outline: none;
@@ -43,6 +43,7 @@ const MaskedInput = ({
                          setValue,
                          getValueFromField = () => {
                          },
+                         sm = false,
                          ...rest
                      }) => {
 
@@ -62,9 +63,9 @@ const MaskedInput = ({
     }, [watch(name)]);
 
     return (
-        <Styled {...rest}>
+        <Styled {...rest} sm={sm}>
             <div className="form-group">
-                {!get(property,'hideLabel',false) && <Label className={classNames({required:get(property,'hasRequiredLabel',get(params,'required'))})}>{label ?? name}</Label>}
+                {!get(property,'hideLabel',false) && <Label sm={sm} className={classNames({required:get(property,'hasRequiredLabel',get(params,'required'))})}>{label ?? name}</Label>}
                 <Controller
                     as={InputMask}
                     control={control}
