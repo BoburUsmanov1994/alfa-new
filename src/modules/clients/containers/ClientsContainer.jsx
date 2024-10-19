@@ -85,12 +85,16 @@ const ClientsContainer = () => {
                     },
 
                 ]}
-                keyId={KEYS.clients}
+                keyId={[KEYS.clients,filter]}
                 url={URLS.clients}
                 listUrl={`${URLS.clients}/list`}
                 title={t('Clients')}
                 responseDataKey={'data.data'}
-                params={{type:PERSON_TYPE.person,branch: !includes([config.ROLES.admin],get(user,'role.name')) ? get(user, 'branch._id') : undefined}}
+                params={{
+                    ...filter,
+                    type: PERSON_TYPE.person,
+                    branch: !includes([config.ROLES.admin], get(user, 'role.name')) ? get(user, 'branch._id') : undefined
+                }}
                 createUrl={'/clients/physical/create'}
                 updateUrl={'/clients/physical/update'}
                 hasUpdateBtn
@@ -100,7 +104,7 @@ const ClientsContainer = () => {
                 }}
                                     mainClassName={'mt-15'}>
 
-                    {() => <Row align={'end'}  gutterWidth={10}>
+                    {() => <Row align={'end'} gutterWidth={10}>
 
 
                         <Col xs={2}>
@@ -124,13 +128,14 @@ const ClientsContainer = () => {
 
                             />
                         </Col>
+
                         <Col xs={2}>
                             <Field sm label={t('ПИНФЛ')}
-                                   name={'inn'}
-                                   defaultValue={get(filter, 'inn')}
+                                   name={'pinfl'}
+                                   defaultValue={get(filter, 'pinfl')}
                                    type={'input-mask'}
                                    property={{
-                                       mask: '999999999',
+                                       mask: '99999999999999',
                                        maskChar: '_',
                                        hideErrorMsg: true
                                    }}
@@ -138,26 +143,40 @@ const ClientsContainer = () => {
                             />
 
                         </Col>
+                        <Col xs={2}>
+                            <Field sm label={t('Passport seria')}
+                                   name={'seria'}
+                                   defaultValue={get(filter, 'seria')}
+                                   type={'input-mask'}
+                                   property={{mask: "aa", maskChar: "_"}}
 
-                        <Col xs={2.4}>
+                            />
+
+                        </Col>
+                        <Col xs={2}>
+                            <Field sm label={t('Passport number')}
+                                   name={'number'}
+                                   defaultValue={get(filter, 'number')}
+                                   type={'input-mask'}
+                                   property={{mask: "9999999", maskChar: "_"}}
+
+                            />
+                        </Col>
+
+                        <Col xs={2}>
                             <Field sm label={t('Телефон')} type={'input'}
                                    name={'phone'}
                                    defaultValue={get(filter, 'phone')}
 
                             />
                         </Col>
-                        <Col xs={2.4}>
-                            <Field sm label={t('Адрес')} type={'input'}
-                                   name={'address'}
-                                   defaultValue={get(filter, 'address')}
 
-                            />
-                        </Col>
-
-                        <Col xs={2.4}>
+                        <Col xs={2}>
                             <Flex>
-                                <Button  xs htmlType={'submit'}><Flex justify={'center'}><Filter size={14}/><span>{t("Применить")}</span></Flex></Button>
-                                <Button  onClick={() => setFilter({})} className={'mt-15 mb-15 mr-8'} xs   danger type={'reset'}><Flex justify={'center'}><Trash
+                                <Button xs htmlType={'submit'}><Flex justify={'center'}><Filter
+                                    size={14}/><span>{t("Применить")}</span></Flex></Button>
+                                <Button onClick={() => setFilter({})} className={'mt-15 mb-15 mr-8'} xs danger
+                                        type={'reset'}><Flex justify={'center'}><Trash
                                     size={14}/><span>{t("Очистить")}</span></Flex></Button>
 
                             </Flex>

@@ -22,12 +22,13 @@ import {getSelectOptionsListFromData} from "../../../utils";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import Pagination from "../../../components/pagination";
+import {FileText, Filter, Trash} from "react-feather";
 
 const DistributionContainer = () => {
     const {t} = useTranslation()
     const navigate = useNavigate()
-    const [page,setPage] = useState(1)
-    const [filter, setFilter] = useState({branch:null,status:null,fromDate:dayjs().subtract(1, 'year').format("YYYY-MM-DD"),toDate:dayjs().format("YYYY-MM-DD")})
+    const [page, setPage] = useState(1)
+    const [filter, setFilter] = useState({})
     const [params, setParams] = useState({
         branchId: null
     })
@@ -35,14 +36,11 @@ const DistributionContainer = () => {
     }))
     const [idList, setIdList] = useState([])
     let {data: transactions, isLoading} = useGetAllQuery({
-        key: KEYS.transactions, url: `${URLS.transactions}/list`, params: {
+        key: [KEYS.transactions, filter], url: `${URLS.transactions}/list`, params: {
             params: {
                 limit: 50,
                 page,
-                branch: get(filter, 'branch'),
-                status: get(filter, 'status'),
-                fromDate: get(filter, 'fromDate'),
-                toDate: get(filter, 'toDate'),
+                ...filter
             }
         },
         // enabled: !!(fromDate && toDate)
@@ -59,7 +57,7 @@ const DistributionContainer = () => {
     const {
         mutate: distributeRequest,
         isLoading: isLoadingTransactionLog
-    } = usePostQuery({listKeyId: KEYS.transactions})
+    } = usePostQuery({listKeyId: [KEYS.transactions, filter]})
 
     const breadcrumbs = useMemo(() => [
         {
@@ -127,44 +125,143 @@ const DistributionContainer = () => {
                     </Flex>
                 </Col>
                 <Col xs={12} className={'mt-30'}>
-                    <Form formRequest={({data})=>setFilter({...data})}>
-                        <Row>
-                            <Col xs={3}>
+                    <Form formRequest={({data}) => setFilter({...data})}>
+                        <Row align={'end'} gutterWidth={16}>
+                            <Col xs={1.25}>
                                 <Field
+                                    className={'mb-10'}
+                                    sm
+                                    label={'Branch'}
                                     defaultValue={get(filter, 'branch')}
                                     name={'branch'} property={{
                                     placeholder: 'Filter by branch',
-                                    hideLabel: true,
                                 }}
                                     type={'select'}
                                     options={branches}
                                 />
-                            </Col>
-                            <Col xs={3}>
                                 <Field
-                                    defaultValue={get(filter, 'status')}
-                                    name={'status'} property={{
+                                    sm
+                                    label={'Status'}
+                                    defaultValue={get(filter, 'status_of_attachment')}
+                                    name={'status_of_attachment'} property={{
                                     placeholder: 'Filter by status',
-                                    hideLabel: true,
                                 }} type={'select'}
                                     options={[{value: 'Новый', label: 'Новый'}, {value: 'Готов', label: 'Готов'}]}/>
+
                             </Col>
-                            <Col xs={6}>
-                                <Flex>
+                            <Col xs={1}>
                                 <Field
-                                    className={'mr-16'}
-                                    defaultValue={get(filter,'fromDate')}
-                                       type={'datepicker'}
-                                       name={'fromDate'} property={{
-                                    hideLabel: true,
-                                }}
+                                    className={'mb-10'}
+                                    label={'Start date'}
+                                    sm
+                                    defaultValue={get(filter, 'fromDate')}
+                                    type={'datepicker'}
+                                    name={'fromDate'}
                                 />
-                                <Field  defaultValue={get(filter,'toDate')}  className={'mr-16'} property={{
-                                    hideLabel: true,
-                                }} type={'datepicker'} name={'toDate'} label={t("End date")}
+                                <Field sm defaultValue={get(filter, 'toDate')} type={'datepicker'} name={'toDate'}
+                                       label={t("End date")}
                                 />
-                                <Button>{t("Search")}</Button>
-                                </Flex>
+                            </Col>
+                            <Col xs={1.25}>
+                                <Field className={'mb-10'} sm defaultValue={get(filter, 'sender_name')} type={'input'}
+                                       name={'sender_name'}
+                                       label={t("Sender name")}
+                                />
+                                <Field sm defaultValue={get(filter, 'payment_details')} type={'input'}
+                                       name={'payment_details'}
+                                       label={t("Детали платежа")}
+                                />
+                            </Col>
+                            <Col xs={1.25}>
+                                <Field className={'mb-10'} sm defaultValue={get(filter, 'payment_amount_from')}
+                                       type={'number-format-input-filter'} name={'payment_amount_from'}
+                                       label={t("Payment from")}
+                                />
+                                <Field sm defaultValue={get(filter, 'payment_amount_to')}
+                                       type={'number-format-input-filter'} name={'payment_amount_to'}
+                                       label={t("Payment to")}
+                                />
+                            </Col>
+                            <Col xs={1.25}>
+                                <Field className={'mb-10'} sm defaultValue={get(filter, 'attached_sum_from')}
+                                       type={'number-format-input-filter'} name={'attached_sum_from'}
+                                       label={t("Attached from")}
+                                />
+                                <Field sm defaultValue={get(filter, 'attached_sum_to')}
+                                       type={'number-format-input-filter'} name={'attached_sum_to'}
+                                       label={t("Attached to")}
+                                />
+                            </Col>
+                            <Col xs={1.25}>
+                                <Field className={'mb-10'} sm defaultValue={get(filter, 'attached_sum_from')}
+                                       type={'number-format-input-filter'} name={'attached_sum_from'}
+                                       label={t("Available from")}
+                                />
+                                <Field sm defaultValue={get(filter, 'available_sum_from')}
+                                       type={'number-format-input-filter'} name={'available_sum_to'}
+                                       label={t("Available to")}
+                                />
+                            </Col>
+
+                            <Col xs={1.25}>
+                                <Field className={'mb-10'} sm defaultValue={get(filter, 'sender_taxpayer_number')}
+                                       type={'input'} name={'sender_taxpayer_number'}
+                                       label={t("ИНН отправителя")}
+                                />
+                                <Field className={'mb-10'} sm defaultValue={get(filter, 'sender_bank_taxpayer_number')}
+                                       type={'input'} name={'sender_bank_taxpayer_number'}
+                                       label={t("ИНН банка отправителя")}
+                                />
+                                <Field className={'mb-10'} sm defaultValue={get(filter, 'sender_bank_code')}
+                                       type={'input'} name={'sender_bank_code'}
+                                       label={t("МФО отправителя")}
+                                />
+                                <Field sm defaultValue={get(filter, 'sender_bank_account')} type={'input'}
+                                       name={'sender_bank_account'}
+                                       label={t("Р/С отправителя")}
+                                />
+                            </Col>
+                            <Col xs={1.25}>
+                                <Field className={'mb-10'} sm
+                                       defaultValue={get(filter, 'recipient_bank_taxpayer_number')} type={'input'}
+                                       name={'recipient_bank_taxpayer_number'}
+                                       label={t("ИНН банка получателя")}
+                                />
+                                <Field className={'mb-10'} sm defaultValue={get(filter, 'recipient_bank_code')}
+                                       type={'input'} name={'recipient_bank_code'}
+                                       label={t("МФО банка получателя")}
+                                />
+                                <Field sm defaultValue={get(filter, 'recipient_bank_account')} type={'input'}
+                                       name={'recipient_bank_account'}
+                                       label={t("Р/С получателя")}
+                                />
+                            </Col>
+                            <Col xs={1.25}>
+                                <Field
+                                    className={'mb-10'}
+                                    label={'Created from'}
+                                    sm
+                                    defaultValue={get(filter, 'createdAtFrom')}
+                                    type={'datepicker'}
+                                    name={'createdAtFrom'}
+                                />
+                                <Field sm defaultValue={get(filter, 'createdAtTo')} type={'datepicker'}
+                                       name={'createdAtTo'}
+                                       label={t("Created to")}
+                                />
+                            </Col>
+                            <Col xs={1}>
+                                <div>
+                                    <Button xs htmlType={'submit'}><Flex justify={'center'}><Filter size={14}/><span
+                                        style={{marginLeft: '5px'}}>{t("Применить")}</span></Flex></Button>
+                                    <Button className={'mt-15'} xs onClick={() => {
+                                        setFilter({})
+                                        navigate(0)
+                                    }} danger type={'reset'}><Flex justify={'center'}><Trash
+                                        size={14}/><span
+                                        style={{marginLeft: '5px'}}>{t("Очистить")}</span></Flex></Button>
+
+                                </div>
                             </Col>
                         </Row>
                     </Form>
@@ -188,7 +285,7 @@ const DistributionContainer = () => {
                                         setIdList(idList.filter(id => !isEqual(id, get(item, '_id'))))
                                     }
                                 }}/></td>
-                                <td>{i + 1 + (page-1)*50}</td>
+                                <td>{i + 1 + (page - 1) * 50}</td>
                                 <td>{get(item, 'status_of_attachment')}</td>
                                 <td>{get(item, 'branch.branchName')}</td>
                                 <td>{dayjs(get(item, 'payment_order_date')).format("DD.MM.YYYY")}</td>

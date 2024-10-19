@@ -55,7 +55,9 @@ const GlobalStyles = createGlobalStyle`
     height: 4px !important;
     z-index: 99999 !important;
   }
-
+.mb-10{
+  margin-bottom: 10px !important;
+}
   .text-center {
     text-align: center;
   }
