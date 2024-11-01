@@ -195,4 +195,5 @@ export const KEYS = {
     showFile: 'showFile',
     otherObjectType: 'otherObjectType',
     agreementWeeklyReport: 'agreementWeeklyReport',
+    specificList: 'specificList',
 }

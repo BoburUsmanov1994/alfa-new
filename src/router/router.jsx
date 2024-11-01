@@ -53,6 +53,7 @@ import BcoActStatusPage from "../modules/bco/pages/BcoActStatusPage";
 import TransactionLogsPage from "../modules/accounting/pages/TransactionLogsPage";
 import AgentsReportPage from "../modules/agents/pages/AgentsReportPage";
 import AgentsReportControlPage from "../modules/agents/pages/AgentsReportControlPage";
+import BranchBankPage from "../modules/handbook/pages/BranchBankPage";
 //lazy load
 const TypeObjectPage = lazy(() => import("../modules/handbook/pages/TypeObjectPage"));
 const ObjectPage = lazy(() => import("../modules/handbook/pages/ObjectPage"));
@@ -263,6 +264,7 @@ const Router = ({...rest}) => {
                                 <Route path={"agricultural-type"} element={<AgriculturalTypePage/>}/>
                                 <Route path={"measurement-type"} element={<MeasurementTypePage/>}/>
                                 <Route path={"document-type"} element={<DocumentTypePage/>}/>
+                                <Route path={"branch-bank-settings"} element={<BranchBankPage/>}/>
                             </Route>
                             <Route path={"policy"}>
                                 <Route path={"create/:product_id"} element={<PolicyCreatePage/>}/>

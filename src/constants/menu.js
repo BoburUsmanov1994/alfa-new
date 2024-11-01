@@ -156,6 +156,11 @@ export const menuData = (role) => [
                 title: 'Branch status',
                 path: '/handbook/branch-status',
             },
+            {
+                id: 33,
+                title: 'Банк реквизиты филиалов',
+                path: '/handbook/branch-bank-settings',
+            },
         ]
     },
     includes([config.ROLES.admin],role) &&  {
