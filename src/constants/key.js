@@ -196,4 +196,5 @@ export const KEYS = {
     otherObjectType: 'otherObjectType',
     agreementWeeklyReport: 'agreementWeeklyReport',
     specificList: 'specificList',
+    unattachPolicy: 'unattachPolicy',
 }

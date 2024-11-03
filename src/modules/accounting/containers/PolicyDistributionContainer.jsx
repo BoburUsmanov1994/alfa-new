@@ -19,6 +19,7 @@ import Table from "../../../components/table";
 import Checkbox from "rc-checkbox";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
+import {Trash2} from "react-feather";
 
 const PolicyDistributionContainer = ({
                                          id = null
@@ -169,6 +170,7 @@ const PolicyDistributionContainer = ({
                                 <td>{get(item, 'recipient_bank_code')}</td>
                                 <td>{get(item, 'recipient_bank_account')}</td>
                                 <td>{dayjs(get(item, 'created_at')).format("DD.MM.YYYY")}</td>
+
                             </tr>)}</Table>}
                 </Col>
             </Row>

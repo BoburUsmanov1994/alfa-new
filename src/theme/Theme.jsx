@@ -79,6 +79,9 @@ const GlobalStyles = createGlobalStyle`
     min-width: 300px;
     margin-right: 16px;
   }
+  .flex-none.min-none{
+    min-width: unset !important;
+  }
 
   .cursor-pointer {
     cursor: pointer;

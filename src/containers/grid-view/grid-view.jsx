@@ -212,7 +212,7 @@ const GridView = ({
     }
     return (
         <Styled>
-            <Panel>
+            {title && <Panel>
                 <Row align={'center'}>
                     <Col xs={!hideCreateBtn ? 10 : 12}>
                         <Title hideSplitter={true}>{title}</Title>
@@ -230,7 +230,7 @@ const GridView = ({
                         </Button>}
                     </Col>
                 </Row>
-            </Panel>
+            </Panel>}
             <Section>
                 <Row>
                     <Col xs={12}>

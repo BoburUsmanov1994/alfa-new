@@ -204,4 +204,5 @@ export const URLS = {
     otherObjectType: 'api/references/other-type/list',
     agreementWeeklyReport: 'api/agreement/weekly/report',
     specificList: 'api/branch/specific/list',
+    unattachPolicy: 'api/transaction/unattach-all',
 }

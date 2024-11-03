@@ -13,7 +13,7 @@ import {useTranslation} from "react-i18next";
 import {useNavigate, useParams} from "react-router-dom";
 import dayjs from "dayjs";
 import Button from "../../../components/ui/button";
-import {DollarSign, Download, Send, Trash2} from "react-feather";
+import {DollarSign, Download, Eye, Send, Trash2} from "react-feather";
 import Swal from "sweetalert2";
 import NumberFormat from "react-number-format";
 import Form from "../../../containers/form/form";
@@ -21,6 +21,9 @@ import Field from "../../../containers/form/field";
 import Modal from "../../../components/modal";
 import Checkbox from "rc-checkbox";
 import FilePreview from "../../../components/file-preview";
+import Flex from "../../../components/flex";
+import config from "../../../config";
+import GridView from "../../../containers/grid-view";
 
 const AgentViewContainer = () => {
     const {t} = useTranslation();
@@ -28,6 +31,7 @@ const AgentViewContainer = () => {
     const navigate = useNavigate();
     const [selectedPolice, setSelectedPolice] = useState(null);
     const [transactionId, setTransactionId] = useState(null);
+    const [showTransactionId, setShowTransactionId] = useState(null);
     let {data, isLoading} = useGetOneQuery({id, key: KEYS.agreements, url: `${URLS.agreements}/show`})
     let {data: policyData, isLoading: policyIsLoading} = useGetAllQuery({
         id, key: KEYS.policyFilter, url: URLS.policyFilter, params: {
@@ -63,6 +67,7 @@ const AgentViewContainer = () => {
         }
     })
     const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: [KEYS.transactions,KEYS.policyFilter]})
+    const {mutate: unAttachRequest, isLoading: isLoadingUnAttach} = usePostQuery({listKeyId: [KEYS.transactions,KEYS.policyFilter]})
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [
@@ -127,6 +132,32 @@ const AgentViewContainer = () => {
         });
     }
 
+    const unAttach = (_id) => {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            backdrop: 'rgba(0,0,0,0.9)',
+            background: 'none',
+            title: t('Are you sure?'),
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#13D6D1',
+            confirmButtonText: t('Unattach'),
+            cancelButtonText: t('Cancel'),
+            customClass: {
+                title: 'title-color',
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                unAttachRequest({url: URLS.unattachPolicy,attributes:{
+                        agreement:id,
+                        policy:_id
+                    }})
+            }
+        });
+    }
+
 
     const sendToFond = (agreementId, policyId) => {
         sentToFondRequest({url: `${URLS.sendToFond}?agreementId=${agreementId}&policyId=${policyId}`})
@@ -145,10 +176,10 @@ const AgentViewContainer = () => {
     if (isLoading || deleteLoading || policyIsLoading || endorsementIsLoading || deleteEndorsementLoading || isLoadingAllow) {
         return <OverlayLoader/>
     }
-console.log('selectedPolice',selectedPolice)
     return (
         <>
             <Section>
+                {isLoadingUnAttach && <ContentLoader/>}
                 <Row className={''} align={'center'}>
                     <Col xs={12}>
                         <Title>{t('Договор')}</Title>
@@ -268,18 +299,23 @@ console.log('selectedPolice',selectedPolice)
                                         <td>{get(item,'url') && <a target={"_blank"} href={get(item,'url','#')}><Download /></a>}</td>
                                         <td>{get(item, "fondStatus")}</td>
 
-                                        <td className={''}
+                                        <td
                                         >
+                                            <Flex>
                                             {includes(['new', 'partialPaid','sent'], get(item, "fondStatus")) &&
                                             <DollarSign onClick={() => setSelectedPolice(item)}
-                                                        className={'cursor-pointer'}
+                                                        className={'cursor-pointer flex-none min-none' }
                                                         color={'#71BC70'}/>}
                                             {!includes(['sent'], get(item, "fondStatus")) && !get(item,'url') &&
-                                            <Send className={'cursor-pointer ml-15'} color={'#13D6D1'}
+                                            <Send className={'cursor-pointer ml-15 flex-none min-none'} color={'#13D6D1'}
                                                   onClick={() => sendToFond(id, get(item, '_id'))}/>}
+                                                <Eye onClick={() => setShowTransactionId(get(item, '_id', null))}
+                                                        className={'ml-15 cursor-pointer flex-none min-none'} color={'#13D6D1'}/>
                                             {includes(['new'], get(item, "fondStatus")) &&
                                             <Trash2 onClick={() => remove(get(item, '_id', null))}
-                                                    className={'ml-15 cursor-pointer'} color={'#dc2626'}/>}
+                                                    className={'ml-15 cursor-pointer flex-none min-none'} color={'#dc2626'}/>}
+                                                {includes([config.ROLES.admin],get(user,'role.name')) && <Button onClick={()=>unAttach(get(item, '_id'))} sm inline danger>Открепить деньги</Button>}
+                                            </Flex>
                                         </td>
                                     </tr>)}
                                 </Table>
@@ -364,6 +400,56 @@ console.log('selectedPolice',selectedPolice)
                         </Col>
                     </Row>
                 </Form>}
+            </Modal>
+            <Modal title={'Transaction logs'} visible={!isNil(showTransactionId)}
+                   hide={() => setShowTransactionId(null)}>
+                {showTransactionId && <GridView
+                    tableHeaderData={[
+                        {
+                            id: 1,
+                            key: 'typeofdistribute.name',
+                            title: 'Distribute type'
+                        },
+                        {
+                            id: 2,
+                            key: 'payment_order_number',
+                            title: 'Payment order number'
+                        },
+                        {
+                            id: 3,
+                            key: 'amount',
+                            title: 'Amount',
+                            hasNumberFormat: true
+                        },
+                        {
+                            id: 4,
+                            key: 'cred_account_ID',
+                            title: 'cred_account_ID',
+                        },
+                        {
+                            id: 5,
+                            key: 'debt_account_ID',
+                            title: 'debt_account_ID',
+                        },
+                        {
+                            id: 6,
+                            key: 'transaction_date',
+                            title: 'transaction_date',
+                            date: true,
+                            dateFormat: 'MM/DD/YYYY'
+                        },
+                    ]}
+                    keyId={KEYS.transactionLogs}
+                    url={URLS.transactionLogs}
+                    listUrl={`${URLS.transactionLogs}/list`}
+                    params={{
+                        policy:showTransactionId
+                    }}
+                    title={''}
+                    responseDataKey={'data.data'}
+                    hideCreateBtn
+                    hideDeleteBtn
+                />}
             </Modal>
         </>
     )

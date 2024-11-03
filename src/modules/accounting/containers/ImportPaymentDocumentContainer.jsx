@@ -95,18 +95,21 @@ const ImportPaymentDocumentContainer = ({
             </Row>
             <Row className={'mb-20'}>
                 <Col xs={12}>
-                    {isEmpty(items) ? <EmptyPage /> : <Table hideThead={false} thead={['№','транзакция номера','дата транзакции','Наименование отправителя','Сумма поступления','Детали платежа','ИНН отправителя','ИНН банка отправителя','МФО получателя','р/с получателя']}>{items.map((item,i) => <tr key={get(item,'_id')}>
+                    {isEmpty(items) ? <EmptyPage /> : <Table hideThead={false} thead={['№','Номер док.','МФО','Счет клиента','Наименование клиента','ИНН кл-нт','МФО','Счет корреспондента','ИНН кор-т','Наименование корреспондента','Сумма документа','Назначение платежа','Дата']}>{items.map((item,i) => <tr key={get(item,'_id')}>
 
                         <td >{i+1}</td>
                         <td>{get(item,'payment_order_number')}</td>
-                        <td>{dayjs(get(item,'payment_order_date')).format('DD/MM/YYYY')}</td>
+                        <td>{get(item,'sender_bank_code')}</td>
+                        <td>{get(item,'sender_bank_account')}</td>
                         <td>{get(item,'sender_name')}</td>
-                        <td><NumberFormat displayType={'text'} thousandSeparator={" "} value={get(item,'payment_amount',0)}/></td>
-                        <td>{get(item,'payment_details')}</td>
                         <td>{get(item,'sender_taxpayer_number')}</td>
-                        <td>{get(item,'recipient_bank_taxpayer_number')}</td>
                         <td>{get(item,'recipient_bank_code')}</td>
                         <td>{get(item,'recipient_bank_account')}</td>
+                        <td>{get(item,'recipient_taxpayer_number')}</td>
+                        <td>{get(item,'recipient_name')}</td>
+                        <td><NumberFormat displayType={'text'} thousandSeparator={" "} value={get(item,'payment_amount',0)}/></td>
+                        <td>{get(item,'payment_details')}</td>
+                        <td>{get(item,'payment_order_date')}</td>
                     </tr>)}</Table>}
                 </Col>
             </Row>

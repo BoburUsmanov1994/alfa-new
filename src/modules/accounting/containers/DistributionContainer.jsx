@@ -8,7 +8,7 @@ import Title from "../../../components/ui/title";
 import Button from "../../../components/ui/button";
 import Flex from "../../../components/flex";
 import EmptyPage from "../../auth/pages/EmptyPage";
-import {useGetAllQuery, usePostQuery} from "../../../hooks/api";
+import {useDeleteQuery, useGetAllQuery, usePostQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import {ContentLoader, OverlayLoader} from "../../../components/loader";
@@ -22,7 +22,9 @@ import {getSelectOptionsListFromData} from "../../../utils";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import Pagination from "../../../components/pagination";
-import {FileText, Filter, Trash} from "react-feather";
+import {FileText, Filter, Trash, Trash2} from "react-feather";
+import Swal from "sweetalert2";
+import config from "../../../config";
 
 const DistributionContainer = () => {
     const {t} = useTranslation()
@@ -34,8 +36,9 @@ const DistributionContainer = () => {
     })
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
+    const user = useStore(state => get(state, 'user'))
     const [idList, setIdList] = useState([])
-    let {data: transactions, isLoading} = useGetAllQuery({
+    let {data: transactions, isLoading,refetch} = useGetAllQuery({
         key: [KEYS.transactions, filter], url: `${URLS.transactions}/list`, params: {
             params: {
                 limit: 50,
@@ -58,7 +61,9 @@ const DistributionContainer = () => {
         mutate: distributeRequest,
         isLoading: isLoadingTransactionLog
     } = usePostQuery({listKeyId: [KEYS.transactions, filter]})
-
+    const {
+        mutate: deleteRequest
+    } = useDeleteQuery({listKeyId:  [KEYS.transactions, filter]})
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
@@ -92,6 +97,30 @@ const DistributionContainer = () => {
             })
             navigate(`/accounting/policy`)
         }
+    }
+    const remove = (id) => {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            backdrop: 'rgba(0,0,0,0.9)',
+            background: 'none',
+            title: t('Are you sure?'),
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#13D6D1',
+            confirmButtonText: t('Delete'),
+            cancelButtonText: t('Cancel'),
+            customClass: {
+                title: 'title-color',
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteRequest({url: `api/transaction/${id}`},{onSuccess:()=>{
+                        refetch()
+                    }})
+            }
+        });
     }
     if (isLoading || isLoadingBranches) {
         return <OverlayLoader/>
@@ -276,7 +305,7 @@ const DistributionContainer = () => {
                             } else {
                                 setIdList([])
                             }
-                        }}/>, '№', 'Статус прикрепления', 'Филиал', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления', 'Снято на договор', 'Available sum', 'Детали платежа', 'ИНН отправителя', 'ИНН банка отправителя', 'МФО отправителя', 'Р/С отправителя', 'ИНН банка получателя', 'МФО банка получателя', 'Р/С получателя', 'Дата ввода']}>{get(transactions, 'data.data', []).map((item, i) =>
+                        }}/>, '№', 'Статус прикрепления', 'Филиал', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления', 'Снято на договор', 'Available sum', 'Детали платежа', 'ИНН отправителя', 'ИНН банка отправителя', 'МФО отправителя', 'Р/С отправителя', 'ИНН банка получателя', 'МФО банка получателя', 'Р/С получателя', 'Дата ввода','Action']}>{get(transactions, 'data.data', []).map((item, i) =>
                             <tr key={get(item, '_id')}>
                                 <td><Checkbox checked={includes(idList, get(item, '_id'))} onChange={(e) => {
                                     if (e.target?.checked) {
@@ -305,6 +334,8 @@ const DistributionContainer = () => {
                                 <td>{get(item, 'recipient_bank_code')}</td>
                                 <td>{get(item, 'recipient_bank_account')}</td>
                                 <td>{dayjs(get(item, 'created_at')).format("DD.MM.YYYY")}</td>
+                                <td>{includes([config.ROLES.admin],get(user,'role.name')) && <Trash2 onClick={() => remove(get(item, '_id', null))}
+                                        className={'mx-auto cursor-pointer '} color={'#dc2626'}/>}</td>
                             </tr>)}</Table>}
                 </Col>
                 <Pagination limit={50} page={page} setPage={setPage} totalItems={get(transactions, `data.count`, 0)}/>
