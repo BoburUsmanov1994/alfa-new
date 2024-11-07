@@ -333,7 +333,7 @@ const DistributionContainer = () => {
                                 <td>{get(item, 'recipient_bank_taxpayer_number')}</td>
                                 <td>{get(item, 'recipient_bank_code')}</td>
                                 <td>{get(item, 'recipient_bank_account')}</td>
-                                <td>{dayjs(get(item, 'created_at')).format("DD.MM.YYYY")}</td>
+                                <td>{dayjs(get(item, 'createdAt')).format("DD.MM.YYYY")}</td>
                                 <td>{includes([config.ROLES.admin],get(user,'role.name')) && <Trash2 onClick={() => remove(get(item, '_id', null))}
                                         className={'mx-auto cursor-pointer '} color={'#dc2626'}/>}</td>
                             </tr>)}</Table>}
