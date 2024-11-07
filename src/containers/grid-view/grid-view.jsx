@@ -72,7 +72,6 @@ const GridView = ({
                       updateUrl = null,
                       viewUrl = null,
                       responseDataKey = 'data',
-                      isHideColumn = false,
                       hidePagination = false,
                       listUrl = null,
                       hideDeleteBtn = false,
@@ -85,7 +84,8 @@ const GridView = ({
                       extraActions = () => {
                       },
                       extraFilters = <></>,
-                      deleteQueryParam = null
+                      deleteQueryParam = null,
+                      viewIsTab=false
                   }) => {
     const navigate = useNavigate()
     const {t} = useTranslation()
@@ -252,7 +252,7 @@ const GridView = ({
 
                 </Row>
                 {isEmpty(get(data, responseDataKey, [])) ? <EmptyPage/> : <>
-                    <div className={'horizontal-scroll'}><GridTable hasUpdateBtn={hasUpdateBtn}
+                    <div className={'horizontal-scroll'}><GridTable viewIsTab={viewIsTab} hasUpdateBtn={hasUpdateBtn}
                                                                     hideDeleteBtn={hideDeleteBtn}
                                                                     viewUrl={viewUrl}
                                                                     updateUrl={updateUrl}

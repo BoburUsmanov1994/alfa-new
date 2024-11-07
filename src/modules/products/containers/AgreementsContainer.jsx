@@ -187,6 +187,7 @@ const AgreementsContainer = () => {
                 title={t('Agreements')}
                 responseDataKey={'data.data'}
                 viewUrl={'/agreements/view'}
+                viewIsTab
                 createUrl={'/agreements/create'}
                 isHideColumn
                 extraFilters={<Form sm formRequest={({data: {group, subGroup, ...rest} = {}}) => {

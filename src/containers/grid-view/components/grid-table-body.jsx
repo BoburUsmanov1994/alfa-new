@@ -18,7 +18,8 @@ const GridTableBody = ({
                            hideDeleteBtn = false,
                            hasUpdateBtn = false,
                            dataKey,
-                           extraActions
+                           extraActions,
+                           viewIsTab=false
                        }) => {
     const navigate = useNavigate();
     return (
@@ -38,7 +39,13 @@ const GridTableBody = ({
                             }
                         </td>)
                     }
-                    <td>{viewUrl && <Eye onClick={() => navigate(`${viewUrl}/${get(tr, dataKey, null)}`)}
+                    <td>{viewUrl && <Eye onClick={() => {
+                        if(viewIsTab){
+                            window.open(`${viewUrl}/${get(tr, dataKey, null)}`, '_blank')
+                        }else{
+                            navigate(`${viewUrl}/${get(tr, dataKey, null)}`)
+                        }
+                    }}
                                          className={'cursor-pointer mr-10'} size={20} color={'#78716c'}/>}
                         {hasUpdateBtn && <Edit
                             onClick={() => {
