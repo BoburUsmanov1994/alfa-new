@@ -317,7 +317,7 @@ const DistributionContainer = () => {
                                 <td>{i + 1 + (page - 1) * 50}</td>
                                 <td>{get(item, 'status_of_attachment')}</td>
                                 <td>{get(item, 'branch.branchName')}</td>
-                                <td>{dayjs(get(item, 'payment_order_date')).format("DD.MM.YYYY")}</td>
+                                <td>{get(item, 'payment_order_date')}</td>
                                 <td>{get(item, 'sender_name')}</td>
                                 <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                                   value={get(item, 'payment_amount', 0)}/></td>
