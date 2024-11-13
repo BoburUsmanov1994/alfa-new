@@ -54,6 +54,7 @@ import TransactionLogsPage from "../modules/accounting/pages/TransactionLogsPage
 import AgentsReportPage from "../modules/agents/pages/AgentsReportPage";
 import AgentsReportControlPage from "../modules/agents/pages/AgentsReportControlPage";
 import BranchBankPage from "../modules/handbook/pages/BranchBankPage";
+import AgreementUpdatePage from "../modules/products/pages/AgreementUpdatePage";
 //lazy load
 const TypeObjectPage = lazy(() => import("../modules/handbook/pages/TypeObjectPage"));
 const ObjectPage = lazy(() => import("../modules/handbook/pages/ObjectPage"));
@@ -163,6 +164,7 @@ const Router = ({...rest}) => {
                                 <Route index element={<AgreementsPage/>}/>
                                 <Route path={"create"} element={<AgreementCreatePage/>}/>
                                 <Route path={"view/:id"} element={<AgreementViewPage/>}/>
+                                <Route path={"edit/:id"} element={<AgreementUpdatePage/>}/>
                             </Route>
                             <Route path={"clients"}>
                                 <Route path={"person-type"} element={<PersonTypePage/>}/>

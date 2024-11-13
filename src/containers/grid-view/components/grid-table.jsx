@@ -78,6 +78,7 @@ const GridTable = ({
                        dataKey,
                        extraActions,
                        viewIsTab=false,
+                       checkStatus=null,
                        ...rest
                    }) => {
     const {t} = useTranslation()
@@ -99,7 +100,7 @@ const GridTable = ({
             </tr>
             </thead>
             <tbody className={'table-body'}>
-            <TableBody viewIsTab={viewIsTab} extraActions={extraActions} dataKey={dataKey} hasUpdateBtn={hasUpdateBtn} hideDeleteBtn={hideDeleteBtn} viewUrl={viewUrl} updateUrl={updateUrl} page={page} remove={remove} openEditModal={openEditModal} tableHeaderData={tableHeaderData}
+            <TableBody checkStatus={checkStatus} viewIsTab={viewIsTab} extraActions={extraActions} dataKey={dataKey} hasUpdateBtn={hasUpdateBtn} hideDeleteBtn={hideDeleteBtn} viewUrl={viewUrl} updateUrl={updateUrl} page={page} remove={remove} openEditModal={openEditModal} tableHeaderData={tableHeaderData}
                        tableBodyData={tableBodyData}/>
             </tbody>
         </Styled>

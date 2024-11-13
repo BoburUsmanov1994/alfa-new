@@ -85,7 +85,8 @@ const GridView = ({
                       },
                       extraFilters = <></>,
                       deleteQueryParam = null,
-                      viewIsTab=false
+                      viewIsTab=false,
+                      checkStatus=null
                   }) => {
     const navigate = useNavigate()
     const {t} = useTranslation()
@@ -252,7 +253,7 @@ const GridView = ({
 
                 </Row>
                 {isEmpty(get(data, responseDataKey, [])) ? <EmptyPage/> : <>
-                    <div className={'horizontal-scroll'}><GridTable viewIsTab={viewIsTab} hasUpdateBtn={hasUpdateBtn}
+                    <div className={'horizontal-scroll'}><GridTable checkStatus={checkStatus} viewIsTab={viewIsTab} hasUpdateBtn={hasUpdateBtn}
                                                                     hideDeleteBtn={hideDeleteBtn}
                                                                     viewUrl={viewUrl}
                                                                     updateUrl={updateUrl}

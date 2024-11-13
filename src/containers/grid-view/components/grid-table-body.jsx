@@ -1,5 +1,5 @@
 import React from 'react';
-import {get, isArray,isFunction} from "lodash";
+import {get, isArray,isFunction,isEqual} from "lodash";
 import {Trash2, Edit, Eye} from "react-feather";
 import {useNavigate} from "react-router-dom";
 import NumberFormat from 'react-number-format';
@@ -19,7 +19,8 @@ const GridTableBody = ({
                            hasUpdateBtn = false,
                            dataKey,
                            extraActions,
-                           viewIsTab=false
+                           viewIsTab=false,
+                           checkStatus=null
                        }) => {
     const navigate = useNavigate();
     return (
@@ -47,7 +48,7 @@ const GridTableBody = ({
                         }
                     }}
                                          className={'cursor-pointer mr-10'} size={20} color={'#78716c'}/>}
-                        {hasUpdateBtn && <Edit
+                        {(checkStatus ? isEqual(get(tr, 'status'),'new')  : hasUpdateBtn) && <Edit
                             onClick={() => {
                                 if (updateUrl) {
                                     navigate(`${updateUrl}/${get(tr, dataKey, null)}`)

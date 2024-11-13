@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from "styled-components";
-import ProductViewContainer from "../containers/ProductViewContainer";
 import {useParams} from "react-router-dom";
 import ProductupdateContainer from "../containers/ProductUpdateContainer";
 

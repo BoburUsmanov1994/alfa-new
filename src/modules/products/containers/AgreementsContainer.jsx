@@ -28,7 +28,6 @@ const AgreementsContainer = () => {
     const [filter, setFilter] = useState({
         branch: get(user, 'branch._id'),
     });
-    const navigate = useNavigate();
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [
@@ -84,7 +83,7 @@ const AgreementsContainer = () => {
     })
     branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
 
-    let {isLoading: isLoadingReport, refetch} = useGetAllQuery({
+    let {refetch} = useGetAllQuery({
         key: KEYS.agreementWeeklyReport,
         url: URLS.agreementWeeklyReport,
         params: {
@@ -189,7 +188,9 @@ const AgreementsContainer = () => {
                 viewUrl={'/agreements/view'}
                 viewIsTab
                 createUrl={'/agreements/create'}
+                updateUrl={'/agreements/edit'}
                 isHideColumn
+                checkStatus
                 extraFilters={<Form sm formRequest={({data: {group, subGroup, ...rest} = {}}) => {
                     setFilter(rest);
                 }}
