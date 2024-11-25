@@ -5,7 +5,7 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, includes, find, isEqual, isNil, setWith} from "lodash"
+import {get, includes, find, isEqual, setWith} from "lodash"
 import Title from "../../../../components/ui/title";
 import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
@@ -13,14 +13,15 @@ import {URLS} from "../../../../constants/url";
 import {getSelectOptionsListFromData} from "../../../../utils";
 import Table from "../../../../components/table";
 import Flex from "../../../../components/flex";
-import {Trash2} from "react-feather";
-import {toast} from "react-toastify";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'
 
 const StepFour = ({id = null, ...props}) => {
+    const reactQuillRef = React.useRef();
     const [fields, setFields] = useState({riskOptions: []})
     const [otherParams, setOtherParams] = useState({})
     const [tarif, setTarif] = useState({})
-    const [tariffList, setTariffList] = useState([])
+    const [comment, setComment] = useState('');
     const setProduct = useSettingsStore(state => get(state, 'setProduct', () => {
     }))
     const resetProduct = useSettingsStore(state => get(state, 'resetProduct', () => {
@@ -31,7 +32,7 @@ const StepFour = ({id = null, ...props}) => {
 
     const nextStep = ({data}) => {
         let {riskOptions, agentlist, Isagreement, limitofagreement, tariffperclasses, ...rest} = data;
-        setProduct({...rest});
+        setProduct({riskComment:comment,...rest});
         props.nextStep();
     }
 
@@ -259,6 +260,15 @@ const StepFour = ({id = null, ...props}) => {
                                 </tr>)}
                             </Table>
                         </Col>}
+                    </Row>
+                    <Row className={'mb-25'}>
+                        <Col xs={12}><Title>Комментарий о риске</Title></Col>
+                    </Row>
+                    <Row className={'mb-25'}>
+                        <Col xs={12}>
+                            <ReactQuill style={{height: 250}} theme="snow" value={comment} onChange={setComment}
+                                        ref={reactQuillRef}/>
+                        </Col>
                     </Row>
                     <Row>
                         <Col xs={12} className={'mt-32'}>
