@@ -1188,7 +1188,7 @@ const OsagaCreateContainer = () => {
                                     maskChar: '_'
                                 }} name={'driver.passportData.pinfl'} type={'input-mask'}/>
                                 <Button type={'button'} onClick={() => getDriverInfo()} className={'ml-15'}
-                                        type={'button'}>Получить
+                                        >Получить
                                     данные</Button>
                             </Flex></Col>
                         <Col xs={4} className={'mt-15'}>

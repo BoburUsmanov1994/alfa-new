@@ -33,7 +33,7 @@ const AgreementsContainer = () => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Agreements',
+            title: t("Agreements"),
             path: '/agreements',
         },
     ], [])
@@ -118,64 +118,64 @@ const AgreementsContainer = () => {
                     {
                         id: 1,
                         key: 'agreementNumber',
-                        title: 'agreementNumber'
+                        title: t("agreementNumber")
                     },
                     {
                         id: 2,
                         key: 'agreementDate',
-                        title: 'agreementDate',
+                        title: t("agreementDate"),
                         render: (val) => dayjs(get(val, 'agreementDate')).format("DD.MM.YYYY")
                     },
                     {
                         id: 3,
                         key: 'insurant',
-                        title: 'Страхователь',
+                        title: t("Страхователь"),
                         render: (_tr) => get(_tr, 'insurant.organization.name', `${get(_tr, 'insurant.person.fullName.lastname', '-')} ${get(_tr, 'insurant.person.fullName.firstname', '-')} ${get(_tr, 'insurant.person.fullName.middlename', '-')}`)
                     },
                     {
                         id: 4,
                         key: 'beneficiary',
-                        title: 'Выгодоприобретатель',
+                        title: t("Выгодоприобретатель"),
                         render: (_tr) => get(_tr, 'beneficiary.organization.name', `${get(_tr, 'beneficiary.person.fullName.lastname', '-')} ${get(_tr, 'beneficiary.person.fullName.firstname', '-')} ${get(_tr, 'beneficiary.person.fullName.middlename', '-')}`)
                     },
                     {
                         id: 5,
                         key: 'startOfInsurance',
-                        title: 'startOfInsurance',
+                        title: t("startOfInsurance"),
                         date: true
                     },
                     {
                         id: 6,
                         key: 'endOfInsurance',
-                        title: 'endOfInsurance',
+                        title: t("endOfInsurance"),
                         date: true
                     },
                     {
                         id: 7,
                         key: 'product.name',
-                        title: 'Наименование продукта'
+                        title: t("Наименование продукта")
                     },
                     {
                         id: 8,
                         key: 'totalInsuranceSum',
-                        title: 'totalInsuranceSum',
+                        title: t("totalInsuranceSum"),
                         hasNumberFormat: true
                     },
                     {
                         id: 9,
                         key: 'totalInsurancePremium',
-                        title: 'totalInsurancePremium',
+                        title: t("totalInsurancePremium"),
                         hasNumberFormat: true
                     },
                     {
                         id: 10,
                         key: 'status',
-                        title: 'Status',
+                        title: t("Status"),
                     },
                     {
                         id: 11,
                         key: 'createdAt',
-                        title: 'Дата ввода в систему',
+                        title: t("Дата ввода в систему"),
                         render: (val) => dayjs(get(val, 'createdAt')).format("DD.MM.YYYY HH:mm")
                     },
                 ]}
@@ -199,7 +199,7 @@ const AgreementsContainer = () => {
                     {() => <Row align={'end'} gutterWidth={10}>
                         <Col xs={1.25}>
                             <Field sm property={{onChange: (val) => setBranch(val)}} type={'select'}
-                                   label={'Филиал'} name={'branch'}
+                                   label={t("Филиал")} name={'branch'}
                                    options={branches} defaultValue={get(filter, 'branch')}
                                    isDisabled={!includes([config.ROLES.admin], get(user, 'role.name'))}/>
                             <Field sm label={t('agreementnumber')} type={'input'}
@@ -266,7 +266,7 @@ const AgreementsContainer = () => {
                                    property={{onChange: (val) => setProductGroupId(val)}}
                                    defaultValue={productGroupId}
                             />
-                            <Field sm label={t('Выберите подкатегорию ')} options={subGroups} type={'select'}
+                            <Field sm label={t('Bыберите подкатегорию')} options={subGroups} type={'select'}
                                    name={'subGroup'}
                                    property={{onChange: (val) => setProductSubGroupId(val)}}
                                    defaultValue={productSubGroupId}
@@ -301,7 +301,7 @@ const AgreementsContainer = () => {
                         </Col>
 
                         <Col xs={1.25}>
-                            <Field sm type={'select'} label={'Status'} name={'status'}
+                            <Field sm type={'select'} label={t("Status")} name={'status'}
                                    options={[{value: 'new', label: 'new'}, {
                                        value: 'partialPaid',
                                        label: 'partialPaid'

@@ -46,7 +46,7 @@ const BranchViewContainer = ({...rest}) => {
             <Section>
                 <Row className={''}>
                     <Col xs={12}>
-                        <Title>Branch view</Title>
+                        <Title>{("Branch view")}</Title>
                     </Col>
                 </Row>
                 <Row>
@@ -90,7 +90,7 @@ const BranchViewContainer = ({...rest}) => {
                     <Col xs={6}>
                         <Table thead={['1', '2']}>
                             <tr>
-                                <td>{t("email")}</td>
+                                <td>{t("Email")}</td>
                                 <td><strong>{get(data,"data.data.email")}</strong></td>
                             </tr>
                             <tr>
@@ -98,11 +98,11 @@ const BranchViewContainer = ({...rest}) => {
                                 <td><strong>{dayjs(get(data,"data.data.expirationdate")).format("DD/MM/YYYY")}</strong></td>
                             </tr>
                             <tr>
-                                <td>{t("Inn")}</td>
+                                <td>{t("INN")}</td>
                                 <td><strong>{get(data,"data.data.inn")}</strong></td>
                             </tr>
                             <tr>
-                                <td>{t("MFO")}</td>
+                                <td>{t("mfo")}</td>
                                 <td><strong>{get(data,"data.data.mfo")}</strong></td>
                             </tr>
                             <tr>

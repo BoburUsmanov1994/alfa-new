@@ -5,19 +5,21 @@ import GridView from "../../../containers/grid-view/grid-view";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import Field from "../../../containers/form/field";
+import { useTranslation } from 'react-i18next';
 
 const BcoLanguageContainer = ({...rest}) => {
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
+    const {t} = useTranslation()
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'БСО',
+            title: t("БСО"),
             path: '/bco',
         },
         {
             id: 2,
-            title: 'БСО language',
+            title: t("БСО language"),
             path: '/bco/language',
         }
     ], [])
@@ -27,7 +29,7 @@ const BcoLanguageContainer = ({...rest}) => {
     }, [])
 
     const ModalBody = ({data, rowId = null}) => <>
-        <Field name={'name'} type={'input'} label={'Название'} defaultValue={rowId ? get(data, 'name') : null}
+        <Field name={'name'} type={'input'} label={t("Название")} defaultValue={rowId ? get(data, 'name') : null}
                params={{required: true}}/>
     </>
     return (
@@ -38,13 +40,13 @@ const BcoLanguageContainer = ({...rest}) => {
                     {
                         id: 2,
                         key: 'name',
-                        title: 'Название'
+                        title: t("Название")
                     },
                 ]}
                 keyId={KEYS.bcoLanguage}
                 url={URLS.bcoLanguage}
                 listUrl={`${URLS.bcoLanguage}/list`}
-                title={'БСО language'}
+                title={t("БСО language")}
                 responseDataKey={'data.data'}
             />
         </>

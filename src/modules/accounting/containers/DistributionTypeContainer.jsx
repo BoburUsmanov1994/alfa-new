@@ -7,19 +7,22 @@ import {URLS} from "../../../constants/url";
 import Field from "../../../containers/form/field";
 import {useGetAllQuery} from "../../../hooks/api";
 import {getSelectOptionsListFromData} from "../../../utils";
+import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 const DistributionTypeContainer = ({...rest}) => {
+    const {t} = useTranslation()
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Бухгалтерия',
+            title: t("Бухгалтерия"),
             path: '/accounting',
         },
         {
             id: 2,
-            title: 'Тип распределения',
+            title: t("Тип распределения"),
             path: '#',
         }
     ], [])
@@ -50,23 +53,23 @@ const DistributionTypeContainer = ({...rest}) => {
                     {
                         id: 1,
                         key: 'name',
-                        title: 'Название'
+                        title: t("Название")
                     },
                     {
                         id: 2,
                         key: 'debt_account.account_ID',
-                        title: 'Debit code'
+                        title: t('Debit code')
                     },
                     {
                         id: 3,
                         key: 'cred_account.account_ID',
-                        title: 'Credit code'
+                        title: t('Credit code')
                     },
                 ]}
                 keyId={KEYS.distributeType}
                 url={URLS.distributeType}
                 listUrl={`${URLS.distributeType}/list`}
-                title={'Тип распределения'}
+                title={t('Тип распределения')}
                 responseDataKey={'data.data'}
             />
         </>

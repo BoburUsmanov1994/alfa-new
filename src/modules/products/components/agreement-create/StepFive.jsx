@@ -54,14 +54,14 @@ const StepFive = ({...props}) => {
                 <Form formRequest={nextStep}>
                     <Row className={'mb-15'}>
                         <Col xs={12}>
-                            <Title>Анкета заявления</Title>
+                            <Title>{t("Анкета заявления")}</Title>
                         </Col>
                     </Row>
 
 
                     <Row className={'mb-15'}>
                         <Col xs={12}>
-                            <Title>Договор</Title>
+                            <Title>{t("Договор")}</Title>
                         </Col>
                     </Row>
 
@@ -69,10 +69,10 @@ const StepFive = ({...props}) => {
                     <Row>
                         <Col xs={12} className={'mt-32'}>
                             <Button className={'mr-16'} type={'button'} onClick={reset} danger outlined
-                                    back>Отменить</Button>
+                                    back>{t("Отменить")}</Button>
                             <Button dark className={'mr-16'} type={'button'} onClick={prevStep}
-                                    outlined>Назад</Button>
-                            <Button type={'button'} success>Продолжить</Button>
+                                    outlined>{t("Назад")}</Button>
+                            <Button type={'button'} success>{t("Продолжить")}</Button>
                         </Col>
                     </Row>
                 </Form>

@@ -30,12 +30,12 @@ const AgentsReportContainer = () => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Агенты',
+            title: t("Агенты"),
             path: '/agents',
         },
         {
             id: 2,
-            title: 'Подготовка актов выполненных работ',
+            title: t("Подготовка актов выполненных работ"),
             path: '/agents/report',
         }
     ], [])
@@ -146,19 +146,16 @@ const AgentsReportContainer = () => {
                     {isEmpty(get(policyByAgentList, 'data.data', [])) ? <EmptyPage/> :
                         <Form formRequest={actPost}
                               footer={<>
-                                  <Button on className={'mt-30'} type={"submit"} lg>Сформировать акт выполненных
-                                      работ</Button>
+                                  <Button on className={'mt-30'} type={"submit"} lg>{t("Сформировать акт выполненных работ")}</Button>
                                   <br/>
                                   <Button onClick={actId ? actBlankPost : () => {
                                   }} gray={!actId} yellow={actId} className={'mt-30 mr-16'} type={"button"} lg>Акт
-                                      выполненных
-                                      работ</Button>
+                                    {t("выполненных работ")}  </Button>
                                   <Button onClick={actId ? actBorderoPost : () => {
                                   }} gray={!actId} green={actId} className={'mt-30 mr-16'} type={"button"}
-                                          lg>Бордеро</Button>
+                                          lg>{t("Бордеро")}</Button>
                                   <Button onClick={actId ? actReportPost : () => {
-                                  }} gray={!actId} dark={actId} className={'mt-30 mr-16'} type={"button"} lg>Докладная
-                                      записка</Button>
+                                  }} gray={!actId} dark={actId} className={'mt-30 mr-16'} type={"button"} lg>{t("Докладная записка")}</Button>
                               </>}>
                             <Row>
                                 <Col xs={3}>

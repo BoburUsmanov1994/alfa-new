@@ -27,12 +27,12 @@ const AgentsReportControlContainer = () => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Агенты',
+            title: t("Агенты"),
             path: '/agents',
         },
         {
             id: 2,
-            title: 'Управления актами выполненных работ',
+            title: t("Управления актами выполненных работ"),
             path: '/agents/report-control',
         }
     ], [])

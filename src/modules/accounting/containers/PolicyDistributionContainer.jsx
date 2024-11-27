@@ -133,7 +133,7 @@ const PolicyDistributionContainer = ({
             {isLoading && <OverlayLoader/>}
             <Row className={'mb-15'} align={'center'}>
                 <Col xs={12}>
-                    <Title>Распределение к полису</Title>
+                    <Title>{t("Распределение к полису")}</Title>
                 </Col>
             </Row>
 
@@ -202,8 +202,8 @@ const PolicyDistributionContainer = ({
                             setAttachmentSum(value)
                         }
                     }} footer={<Flex>
-                        <Button type={'submit'} className={'mr-16'}>Прикрепить</Button>
-                        <Button onClick={detach} type={'button'} danger> Открепить средства</Button>
+                        <Button type={'submit'} className={'mr-16'}>{t("Прикрепить")}</Button>
+                        <Button onClick={detach} type={'button'} danger> {t("Открепить средства")}</Button>
                     </Flex>}>
                         <Field
                             defaultValue={get(find(get(policies, `data.data`, []), (_item) => isEqual(get(_item, "_id"), policyId)), 'insurancePremium', 0)}

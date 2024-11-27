@@ -17,10 +17,11 @@ import {useGetAllQuery, useGetOneQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import {OverlayLoader} from "../../../components/loader";
+import { useTranslation } from 'react-i18next';
 
 
 const ProductUpdateContainer = ({id, ...rest}) => {
-
+    const {t} = useTranslation()
     let {data, isLoading, isError} = useGetOneQuery({id, key: KEYS.products, url: URLS.products})
     const setProduct = useSettingsStore(state => get(state, 'setProduct', () => {
     }))
@@ -31,7 +32,7 @@ const ProductUpdateContainer = ({id, ...rest}) => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Продукты',
+            title: t("Продукты"),
             path: '/products',
         },
         {
@@ -94,7 +95,7 @@ const ProductUpdateContainer = ({id, ...rest}) => {
             <Section>
                 <Row>
                     <Col xs={12}>
-                        <Title>Изменить продукт ({get(data, 'data.data.productname')})</Title>
+                        <Title>{t("Изменить продукт")} ({get(data, 'data.data.productname')})</Title>
                     </Col>
                 </Row>
                 <Row>

@@ -17,6 +17,7 @@ import {useGetOneQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import {OverlayLoader} from "../../../components/loader";
+import { useTranslation } from "react-i18next";
 
 const AgreementUpdateContainer = ({id}) => {
   const setBreadcrumbs = useStore((state) =>
@@ -24,6 +25,7 @@ const AgreementUpdateContainer = ({id}) => {
   );
   const setAgreement = useSettingsStore(state => get(state, 'setAgreement', () => {
   }))
+  const {t} = useTranslation()
   const setInsurer = useSettingsStore(state => get(state, 'setInsurer', () => {
   }))
   let {data, isLoading} = useGetOneQuery({id, key: KEYS.agreements, url: `${URLS.agreements}/show`})
@@ -31,12 +33,12 @@ const AgreementUpdateContainer = ({id}) => {
     () => [
       {
         id: 1,
-        title: "Agreements",
+        title: t("Agreements"),
         path: "/agreements",
       },
       {
         id: 2,
-        title: "Edit  agreement",
+        title: t("Edit  agreement"),
         path: "/agreements/edit",
       },
     ],
@@ -65,7 +67,7 @@ const AgreementUpdateContainer = ({id}) => {
       <Section>
         <Row>
           <Col xs={12}>
-            <Title>Продажа страховых полисов</Title>
+            <Title>{t("Продажа страховых полисов")}</Title>
           </Col>
         </Row>
         <Row>

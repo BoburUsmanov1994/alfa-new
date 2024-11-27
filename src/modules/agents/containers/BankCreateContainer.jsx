@@ -58,35 +58,35 @@ const BankCreateContainer = () => {
             <Section>
                 <Row className={'mb-25'}>
                     <Col xs={12}>
-                        <Title>Bank create</Title>
+                        <Title>{t("Bank create")}</Title>
                     </Col>
                 </Row>
                 <Form
-                    footer={<Button>Save</Button>} formRequest={(values) => create(values)}>
+                    footer={<Button>{t("Save")}</Button>} formRequest={(values) => create(values)}>
                     <Row>
                         <Col xs={4}>
-                            <Field name={'inn'} type={'input-mask'} label={'INN'}
+                            <Field name={'inn'} type={'input-mask'} label={t("INN")}
                                    property={{mask: '999999999', maskChar: '_'}}
                                    params={{pattern: /^[0-9]*$/}}/>
                         </Col>
                         <Col xs={4}>
-                            <Field name={'mainBank'} type={'select'} label={'Main bank'} options={banks}
+                            <Field name={'mainBank'} type={'select'} label={t("Main bank")} options={banks}
                             />
                         </Col>
 
                         <Col xs={4}>
                             <Field name={'name'} type={'input'}
-                                   label={'Name'}
+                                   label={t("Name")}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
                             <Field name={'username'} type={'input'}
-                                   label={'Username'}
+                                   label={t("Username")}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
                             <Field property={{type: 'password'}} name={'password'} type={'input'}
-                                   label={'Password'}
+                                   label={t("Password")}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={11} className={"mb-15"}>
@@ -103,28 +103,28 @@ const BankCreateContainer = () => {
                                         <Row>
                                             <Col xs={3}>
                                                 <Field name={`rates[${index}].productCode`} type={'select'}
-                                                       label={'Product'}
+                                                       label={t("Product")}
                                                        options={products}
                                                        params={{required: true}}
                                                 />
                                             </Col>
                                             <Col xs={3}>
                                                 <Field
-                                                    label={'Rate'}
+                                                    label={t("Rate")}
                                                     type={'number-format-input'}
                                                     name={`rates[${index}].rate`}
                                                     params={{required: true}}/>
                                             </Col>
                                             <Col xs={3}>
                                                 <Field
-                                                    label={'Allow change rate?'}
+                                                    label={t("Allow change rate?")}
                                                     type={'switch'}
                                                     name={`rates[${index}].allowChangeRate`}
                                                     params={{required: true}}/>
                                             </Col>
                                             <Col xs={3}>
                                                 <Field
-                                                    label={'Has rate tied to term?'}
+                                                    label={t("Has rate tied to term?")}
                                                     type={'switch'}
                                                     name={`rates[${index}].hasRateTiedToTerm`}
                                                     params={{required: true}}/>

@@ -259,11 +259,10 @@ const AgentViewContainer = () => {
                 <Row className={'mt-15'}>
                     <Col xs={12}>
                         <Row align={'center'}>
-                            <Col xs={8}><Title sm>Полис</Title></Col>
+                            <Col xs={8}><Title sm>{t("Полис")}</Title></Col>
                             <Col xs={4} className={'text-right'}>
                                 <Button green onClick={() => navigate(`/policy/create/${id}`)} className={'mr-16'}
-                                        type={'button'}>Добавить
-                                    полис</Button>
+                                        type={'button'}>{t("Добавить полис")}</Button>
 
                             </Col>
                         </Row>
@@ -327,7 +326,7 @@ const AgentViewContainer = () => {
                 <Row className={'mt-30'}>
                     <Col xs={12}>
                         <Row align={'center'}>
-                            <Col xs={12}><Title sm>Индоссамент</Title></Col>
+                            <Col xs={12}><Title sm>{t("Индоссамент")}</Title></Col>
                         </Row>
                         <Row className={'mt-15'}>
                             {get(endorsementData, "data.data", []).length > 0 && <Col xs={12}  className={'horizontal-scroll'}>
@@ -383,58 +382,58 @@ const AgentViewContainer = () => {
                             <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                               value={get(item, 'available_sum', 0)}/></td>
                         </tr>)}</Table>}
-                {transactionId && <Form formRequest={attach} footer={<Button type={'submit'}>Прикрепить</Button>}>
+                {transactionId && <Form formRequest={attach} footer={<Button type={'submit'}>{t("Прикрепить")}</Button>}>
                     <Row className={'mt-15'}>
                         <Col xs={6}>
                             <Field defaultValue={get(selectedPolice, 'insurancePremium', 0)}
-                                   label={'Сумма оплаты по полису:'} property={{disabled: true}}
+                                   label={t("Сумма оплаты по полису:")} property={{disabled: true}}
                                    type={'number-format-input'} name={'sumInsurancePremium'}/>
                         </Col>
                         <Col xs={6}>
                             <Field defaultValue={get(selectedPolice, 'attachedSum', 0)} property={{disabled: true}}
                                    type={'number-format-input'}
-                                   name={'attachedSum'} label={'Сумма прикреплённых средств:'}/>
+                                   name={'attachedSum'} label={t("Сумма прикреплённых средств:")}/>
                         </Col>
                         <Col xs={6}>
-                            <Field type={'number-format-input'} name={'attachmentSum'} label={'Сумма к прикреплению:'}/>
+                            <Field type={'number-format-input'} name={'attachmentSum'} label={t("Сумма к прикреплению:")}/>
                         </Col>
                     </Row>
                 </Form>}
             </Modal>
-            <Modal title={'Transaction logs'} visible={!isNil(showTransactionId)}
+            <Modal title={t("Transaction logs")} visible={!isNil(showTransactionId)}
                    hide={() => setShowTransactionId(null)}>
                 {showTransactionId && <GridView
                     tableHeaderData={[
                         {
                             id: 1,
                             key: 'typeofdistribute.name',
-                            title: 'Distribute type'
+                            title: t("Distribute type")
                         },
                         {
                             id: 2,
                             key: 'payment_order_number',
-                            title: 'Payment order number'
+                            title: t("Payment order number")
                         },
                         {
                             id: 3,
                             key: 'amount',
-                            title: 'Amount',
+                            title: t("Amount"),
                             hasNumberFormat: true
                         },
                         {
                             id: 4,
                             key: 'cred_account_ID',
-                            title: 'cred_account_ID',
+                            title: t("cred_account_ID"),
                         },
                         {
                             id: 5,
                             key: 'debt_account_ID',
-                            title: 'debt_account_ID',
+                            title: t("debt_account_ID"),
                         },
                         {
                             id: 6,
                             key: 'transaction_date',
-                            title: 'transaction_date',
+                            title: t("transaction_date"),
                             date: true,
                             dateFormat: 'MM/DD/YYYY'
                         },

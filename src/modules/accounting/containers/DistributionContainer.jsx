@@ -83,9 +83,9 @@ const DistributionContainer = () => {
 
     const create = (attach = true) => {
         if (isEmpty(idList)) {
-            toast.warn("Please select transaction")
+            toast.warn(t("Please select transaction"))
         } else if (isNil(get(params, 'branchId'))) {
-            toast.warn("Please select branch")
+            toast.warn(t("Please select branch"))
         } else {
             distributeRequest({
                 url: URLS.transactionDistribute,
@@ -132,15 +132,15 @@ const DistributionContainer = () => {
             {isLoadingTransactionLog && <ContentLoader/>}
             <Row className={'mb-15'} align={'center'}>
                 <Col xs={12}>
-                    <Title>Распределение</Title>
+                    <Title>{t("Распределение")}</Title>
                 </Col>
             </Row>
             <Row className={'mb-20'}>
                 <Col xs={12}>
                     <Flex justify={'flex-end'}>
                         <Button onClick={() => create(false)} type={'button'} className={'mr-16'}
-                                danger> Открепить</Button>
-                        <Button type={'button'} onClick={() => create(true)} className={'mr-16'}>Распределить</Button>
+                                danger> {t("Открепить")}</Button>
+                        <Button type={'button'} onClick={() => create(true)} className={'mr-16'}>{t("Распределить")}</Button>
                         <Form getValueFromField={(value, name) => {
                             if (includes(['branchId'], name)) {
                                 setParams(prev => ({...prev, [name]: value}))
@@ -163,7 +163,7 @@ const DistributionContainer = () => {
                                     label={'Branch'}
                                     defaultValue={get(filter, 'branch')}
                                     name={'branch'} property={{
-                                    placeholder: 'Filter by branch',
+                                    placeholder: t("Filter by branch"),
                                 }}
                                     type={'select'}
                                     options={branches}
@@ -173,7 +173,7 @@ const DistributionContainer = () => {
                                     label={'Status'}
                                     defaultValue={get(filter, 'status_of_attachment')}
                                     name={'status_of_attachment'} property={{
-                                    placeholder: 'Filter by status',
+                                    placeholder: t("Filter by status"),
                                 }} type={'select'}
                                     options={[{value: 'Новый', label: 'Новый'}, {value: 'Готов', label: 'Готов'}]}/>
 
@@ -181,7 +181,7 @@ const DistributionContainer = () => {
                             <Col xs={1}>
                                 <Field
                                     className={'mb-10'}
-                                    label={'Start date'}
+                                    label={t("Start date")}
                                     sm
                                     defaultValue={get(filter, 'fromDate')}
                                     type={'datepicker'}
@@ -268,7 +268,7 @@ const DistributionContainer = () => {
                             <Col xs={1.25}>
                                 <Field
                                     className={'mb-10'}
-                                    label={'Created from'}
+                                    label={t("Created from")}
                                     sm
                                     defaultValue={get(filter, 'createdAtFrom')}
                                     type={'datepicker'}

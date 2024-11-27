@@ -1,14 +1,15 @@
-import React from 'react';
-import {Col, Row} from "react-grid-system";
+import React from "react";
+import { Col, Row } from "react-grid-system";
 import StepNav from "../../../../components/step-nav";
 import styled from "styled-components";
 import checkImg from "../../../../assets/images/check.png";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Styled = styled.div`
   .result {
     padding: 30px 50px;
-    border: 1px solid #ADADAD;
+    border: 1px solid #adadad;
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 15px;
@@ -16,40 +17,41 @@ const Styled = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-around;
-    p{
+    p {
       font-size: 32px;
     }
-   
   }
-  a{
+  a {
     margin-top: 25px;
     display: inline-block;
-    color: #1D283A;
+    color: #1d283a;
     transition: 0.3s ease;
-    &:hover{
-      color: #13D6D1;
+    &:hover {
+      color: #13d6d1;
     }
   }
-`
+`;
 
-const StepSix = ({...rest}) => {
-
-    return (<Styled {...rest}>
-        <Row justify={'center'}>
-            <Col xs={12}>
-                <StepNav step={6}/>
-            </Col>
-            <Col xs={6}>
-                <div className="result">
-                    <img className={'img-fluid'} src={checkImg} alt="check"/>
-                    <p>Продукт успешно добавлен!</p>
-                </div>
-                <div className="text-center">
-                    <Link to={'/dashboard'}>Перейти на главную страницу</Link>
-                </div>
-            </Col>
-        </Row>
-    </Styled>);
+const StepSix = ({ ...rest }) => {
+  const { t } = useTranslation();
+  return (
+    <Styled {...rest}>
+      <Row justify={"center"}>
+        <Col xs={12}>
+          <StepNav step={6} />
+        </Col>
+        <Col xs={6}>
+          <div className="result">
+            <img className={"img-fluid"} src={checkImg} alt="check" />
+            <p>{t("Продукт успешно добавлен!")}</p>
+          </div>
+          <div className="text-center">
+            <Link to={"/dashboard"}>{t("Перейти на главную страницу")}</Link>
+          </div>
+        </Col>
+      </Row>
+    </Styled>
+  );
 };
 
 export default StepSix;

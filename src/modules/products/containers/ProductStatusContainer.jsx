@@ -14,12 +14,12 @@ const ProductStatusContainer = ({...rest}) => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Продукты',
+            title: t("Продукты"),
             path: '/products',
         },
         {
             id: 2,
-            title: 'Статус продукта',
+            title: t("Статус продукта"),
             path: '/products/product-status',
         }
     ], [])
@@ -29,7 +29,7 @@ const ProductStatusContainer = ({...rest}) => {
     }, [])
 
     const ModalBody = ({data,rowId = null}) =>  <>
-        <Field  name={'name'} type={'input'} label={'Название'} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
+        <Field  name={'name'} type={'input'} label={t("Название")} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
     </>
     return (
         <>
@@ -39,7 +39,7 @@ const ProductStatusContainer = ({...rest}) => {
                     {
                         id: 2,
                         key: 'name',
-                        title: 'Название'
+                        title: t("Название")
                     },
                 ]}
                 keyId={KEYS.statusofproduct}

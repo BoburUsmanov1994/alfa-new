@@ -4,6 +4,7 @@ import StepNav from "../../../../components/step-nav";
 import styled from "styled-components";
 import checkImg from "../../../../assets/images/check.png";
 import {Link} from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const Styled = styled.div`
   .result {
@@ -33,7 +34,7 @@ const Styled = styled.div`
 `
 
 const StepSix = ({...rest}) => {
-
+  const {t} = useTranslation()
     return (<Styled {...rest}>
         <Row justify={'center'}>
             <Col xs={12}>
@@ -42,10 +43,10 @@ const StepSix = ({...rest}) => {
             <Col xs={6}>
                 <div className="result">
                     <img className={'img-fluid'} src={checkImg} alt="check"/>
-                    <p>Продукт успешно добавлен!</p>
+                    <p>{t("Продукт успешно добавлен!")}</p>
                 </div>
                 <div className="text-center">
-                    <Link to={'/products/all'}>Перейти на главную страницу</Link>
+                    <Link to={'/products/all'}>{t("Перейти на главную страницу")}</Link>
                 </div>
             </Col>
         </Row>

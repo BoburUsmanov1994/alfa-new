@@ -18,12 +18,12 @@ const ProductSubGroupContainer = ({...rest}) => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Справочники',
+            title: t("Справочники"),
             path: '/handbook',
         },
         {
             id: 2,
-            title: 'Подгруппы продуктов',
+            title: t("Подгруппы продуктов"),
             path: '/handbook/product-subgroup',
         }
     ], [])
@@ -33,8 +33,8 @@ const ProductSubGroupContainer = ({...rest}) => {
     }, [])
 
     const ModalBody = ({data,rowId = null}) =>  <>
-        <Field  name={'name'} type={'input'} label={'Название подгруппы продуктов'} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
-        <Field  name={'group'} type={'select'} label={'Название продукта '} options={typesOptions} defaultValue={rowId ? get(data,'group'):null} params={{required: true}} />
+        <Field  name={'name'} type={'input'} label={t("Название подгруппы продуктов")} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
+        <Field  name={'group'} type={'select'} label={t("Название продукта")} options={typesOptions} defaultValue={rowId ? get(data,'group'):null} params={{required: true}} />
     </>
     return (
         <>
@@ -44,12 +44,12 @@ const ProductSubGroupContainer = ({...rest}) => {
                     {
                         id: 2,
                         key: 'name',
-                        title: 'Название подгруппы продуктов'
+                        title: t("Название подгруппы продуктов")
                     },
                     {
                         id: 3,
                         key: 'group.name',
-                        title: 'Название продукта'
+                        title: t("Название продукта")
                     },
                 ]}
                 keyId={KEYS.subgroupsofproducts}

@@ -27,7 +27,7 @@ const UsersContainer = () => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Users',
+            title: t("Users"),
             path: '/users',
         }
     ], [])
@@ -39,37 +39,37 @@ const UsersContainer = () => {
     const ModalBody = ({data, rowId = null}) => <>
         <Row>
             <Col xs={6}>
-                <Field name={'name'} type={'input'} label={'Name'} defaultValue={rowId ? get(data, 'name') : null}
+                <Field name={'name'} type={'input'} label={t("name")} defaultValue={rowId ? get(data, 'name') : null}
                        />
             </Col>
             <Col xs={6}>
-                <Field name={'branch'} type={'select'} label={'Branch'} options={branchList}
+                <Field name={'branch'} type={'select'} label={t("Branch")} options={branchList}
                        defaultValue={rowId ? get(data, 'branch') : null} />
             </Col>
             <Col xs={6}>
-                <Field name={'employee'} type={'select'} label={'Employee'} options={employeeList}
+                <Field name={'employee'} type={'select'} label={t("Employee")} options={employeeList}
                        defaultValue={rowId ? get(data, 'employee') : null} />
             </Col>
             <Col xs={6}>
-                <Field name={'agent'} type={'select'} label={'Agent'} options={agents}
+                <Field name={'agent'} type={'select'} label={t("Agent")} options={agents}
                        defaultValue={rowId ? get(data, 'agent') : null} />
             </Col>
             <Col xs={6}>
-                <Field name={'username'} type={'input'} label={'Username'}
+                <Field name={'username'} type={'input'} label={t("Username")}
                        defaultValue={rowId ? get(data, 'username') : null}
                        params={{required: true}}/>
             </Col>
             {!rowId && <Col xs={6}>
-                <Field name={'password'} type={'input'} label={'Password'}
+                <Field name={'password'} type={'input'} label={t("Password")}
                        defaultValue={rowId ? get(data, 'password') : null}
                        params={{required: true}} property={{type: 'password'}}/>
             </Col>}
             <Col xs={6}>
-                <Field name={'role'} type={'select'} label={'Role'} options={roles}
+                <Field name={'role'} type={'select'} label={t("Role")} options={roles}
                        defaultValue={rowId ? get(data, 'role') : null} params={{required: true}}/>
             </Col>
             <Col xs={6}>
-                <Field name={'status'} type={'select'} label={'Status'} options={status}
+                <Field name={'status'} type={'select'} label={t("Status")} options={status}
                        defaultValue={rowId ? get(data, 'status') : null} params={{required: true}}/>
             </Col>
         </Row>
@@ -82,27 +82,27 @@ const UsersContainer = () => {
                     {
                         id: 2,
                         key: 'name',
-                        title: 'Name'
+                        title: t("Name")
                     },
                     {
                         id: 3,
                         key: 'username',
-                        title: 'Username',
+                        title: t("Username"),
                     },
                     {
                         id: 4,
                         key: 'branch.branchName',
-                        title: 'Branch',
+                        title: t("Branch"),
                     },
                     {
                         id: 4,
                         key: 'role.name',
-                        title: 'Role',
+                        title: t("Role"),
                     },
                     {
                         id: 5,
                         key: 'status.name',
-                        title: 'Status',
+                        title: t("Status"),
                     }
                 ]}
                 keyId={KEYS.user}

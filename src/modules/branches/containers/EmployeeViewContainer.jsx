@@ -72,10 +72,10 @@ const EmployeeViewContainer = ({...rest}) => {
             <Section>
                 <Row className={''}>
                     <Col xs={10}>
-                        <Title>Employee view</Title>
+                        <Title>{t("Employee view")}</Title>
                     </Col>
                     <Col className={'text-right'} xs={2}>
-                        <Button onClick={() => setOpen(true)}>Add Account</Button>
+                        <Button onClick={() => setOpen(true)}>{t("Add Account")}</Button>
                     </Col>
                 </Row>
                 <Row>
@@ -94,7 +94,7 @@ const EmployeeViewContainer = ({...rest}) => {
                                 <td><strong>{get(data, "data.data.districts.name")}</strong></td>
                             </tr>
                             <tr>
-                                <td>{t("address")}</td>
+                                <td>{t("Address")}</td>
                                 <td><strong>{get(data, "data.data.address")}</strong></td>
                             </tr>
                             <tr>
@@ -110,7 +110,7 @@ const EmployeeViewContainer = ({...rest}) => {
                                 <td><strong>{get(data, "data.data.secondname")}</strong></td>
                             </tr>
                             <tr>
-                                <td>{t("middlename")}</td>
+                                <td>{t("Middlename")}</td>
                                 <td><strong>{get(data, "data.data.middlename")}</strong></td>
                             </tr>
 
@@ -132,7 +132,7 @@ const EmployeeViewContainer = ({...rest}) => {
                                 </td>
                             </tr>
                             <tr>
-                                <td>{t("Pinfl")}</td>
+                                <td>{t("PINFL")}</td>
                                 <td><strong>{get(data, "data.data.pin")}</strong></td>
                             </tr>
                             <tr>
@@ -140,18 +140,18 @@ const EmployeeViewContainer = ({...rest}) => {
                                 <td><strong>{get(data, "data.data.telephonenumber")}</strong></td>
                             </tr>
                             <tr>
-                                <td>{t("citizenship")}</td>
+                                <td>{t("Citizenship")}</td>
                                 <td><strong>{get(data, "data.data.citizenship.name")}</strong></td>
                             </tr>
                             <tr>
-                                <td>{t("gender")}</td>
+                                <td>{t("Gender")}</td>
                                 <td><strong>{get(data, "data.data.gender.name")}</strong></td>
                             </tr>
 
                         </Table>
                     </Col>
                     <Col xs={12} className={'mt-15'}>
-                        <Title sm>Account info</Title>
+                        <Title sm>{t("Account info")}</Title>
                     </Col>
                     <Col xs={6}>
                         <Table thead={['1', '2']}>
@@ -177,21 +177,21 @@ const EmployeeViewContainer = ({...rest}) => {
                 </Row>
                 <Rodal visible={open} onClose={() => setOpen(false)}>
                     <Form
-                        footer={<Button>Add</Button>} formRequest={(values) => addAccount(values)}>
+                        footer={<Button>{t("Add")}</Button>} formRequest={(values) => addAccount(values)}>
                         <Row className={'mt-15'}>
                             <Col xs={6}>
-                                <Field name={'email'} type={'input'} label={'Email'}
+                                <Field name={'email'} type={'input'} label={t("Email")}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={6}>
-                                <Field name={'password'} type={'input'} label={'Password'}
+                                <Field name={'password'} type={'input'} label={t("Password")}
                                        params={{required: true}}  property={{type: 'password'}}/>
                             </Col>
                             <Col xs={6}>
-                                <Field  name={'accountrole'} type={'select'} label={'Role'} options={roles}  params={{required: true}} />
+                                <Field  name={'accountrole'} type={'select'} label={t("Role")} options={roles}  params={{required: true}} />
                             </Col>
                             <Col xs={6}>
-                                <Field  name={'accountstatus'} type={'select'} label={'Status'} options={status}  params={{required: true}} />
+                                <Field  name={'accountstatus'} type={'select'} label={t("Status")} options={status}  params={{required: true}} />
                             </Col>
                         </Row>
                     </Form>

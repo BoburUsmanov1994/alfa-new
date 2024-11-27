@@ -14,12 +14,12 @@ const ProductGroupsContainer = ({...rest}) => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Справочники',
+            title: t("Справочники"),
             path: '/handbook',
         },
         {
             id: 2,
-            title: 'Группы продуктов',
+            title: t("Группы продуктов"),
             path: '/handbook/product-groups',
         }
     ], [])
@@ -39,7 +39,7 @@ const ProductGroupsContainer = ({...rest}) => {
                     {
                         id: 2,
                         key: 'name',
-                        title: 'Название продукта'
+                        title: t("Название продукта")
                     },
                 ]}
                 keyId={KEYS.groupsofproducts}

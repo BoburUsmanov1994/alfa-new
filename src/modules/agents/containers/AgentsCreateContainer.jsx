@@ -249,8 +249,8 @@ const AgentsCreateContainer = () => {
     );
   };
 
-  console.log('productList',get(productsList, `data.data`, []))
-  console.log('tariffList',tariffList)
+  // console.log('productList',get(productsList, `data.data`, []))
+  // console.log('tariffList',tariffList)
 
   return (
     <>
@@ -265,7 +265,7 @@ const AgentsCreateContainer = () => {
       <Section>
         <Row className={"mb-25"}>
           <Col xs={12}>
-            <Title>Создать агента</Title>
+            <Title>{t("Создать агента")}</Title>
           </Col>
         </Row>
         <Form
@@ -273,7 +273,7 @@ const AgentsCreateContainer = () => {
             setPersonTypeForSelect(val, name);
             setFieldValue(val, name);
           }}
-          footer={<Button>Save</Button>}
+          footer={<Button>{t("Save")}</Button>}
           formRequest={(values) => create(values)}
         >
           <Row>
@@ -300,7 +300,7 @@ const AgentsCreateContainer = () => {
               <Field
                 name={"agreementnumber"}
                 type={"input"}
-                label={"agreementnumber"}
+                label={t("agreementnumber")}
                 params={{ required: true }}
               />
             </Col>
@@ -309,7 +309,7 @@ const AgentsCreateContainer = () => {
                 name={"agreementdate"}
                 dateFormat={"MM/DD/YYYY"}
                 type={"datepicker"}
-                label={"agreementdate"}
+                label={t("agreementdate")}
                 params={{ required: true }}
               />
             </Col>
@@ -319,7 +319,7 @@ const AgentsCreateContainer = () => {
                 params={{ required: true }}
                 name={"typeofagent"}
                 type={"select"}
-                label={"Agent type"}
+                label={t("Agent type")}
                 options={agentTypes}
               />
             </Col>
@@ -327,7 +327,7 @@ const AgentsCreateContainer = () => {
               <Field
                 label={"isbeneficiary"}
                 type={"switch"}
-                name={"isbeneficiary"}
+                name={t("isbeneficiary")}
                 params={{ required: true }}
               />
             </Col>
@@ -335,7 +335,7 @@ const AgentsCreateContainer = () => {
               <Field
                 label={"isfixedpolicyholder"}
                 type={"switch"}
-                name={"isfixedpolicyholder"}
+                name={t("isfixedpolicyholder")}
                 params={{ required: true }}
               />
             </Col>
@@ -343,7 +343,7 @@ const AgentsCreateContainer = () => {
               <Field
                 name={"typeofpersons"}
                 type={"select"}
-                label={"Person type"}
+                label={t("Person type")}
                 options={[
                   {
                     value: PERSON_TYPE.person,
@@ -366,7 +366,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.name"}
                     type={"input"}
-                    label={"name"}
+                    label={t("name")}
                     params={{ required: true }}
                   />
                 </Col>
@@ -374,7 +374,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.secondname"}
                     type={"input"}
-                    label={"secondname"}
+                    label={t("secondname")}
                     params={{ required: true }}
                   />
                 </Col>
@@ -382,7 +382,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.middlename"}
                     type={"input"}
-                    label={"middlename"}
+                    label={t("middlename")}
                     params={{ required: true }}
                   />
                 </Col>
@@ -390,7 +390,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.gender"}
                     type={"select"}
-                    label={"Gender"}
+                    label={t("Gender")}
                     options={genders}
                     params={{ required: true }}
                   />
@@ -400,7 +400,7 @@ const AgentsCreateContainer = () => {
                     name={"person.dateofbirth"}
                     dateFormat={"MM/DD/YYYY"}
                     type={"datepicker"}
-                    label={"dateofbirth"}
+                    label={t("dateofbirth")}
                     params={{ required: true }}
                   />
                 </Col>
@@ -409,7 +409,7 @@ const AgentsCreateContainer = () => {
                     name={"person.citizenship"}
                     type={"select"}
                     options={citizenshipList}
-                    label={"Citizenship"}
+                    label={t("Citizenship")}
                     params={{ required: true }}
                   />
                 </Col>
@@ -417,7 +417,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.typeofdocument"}
                     type={"dropzone"}
-                    label={"typeofdocument"}
+                    label={t("typeofdocument")}
                     params={{ required: true }}
                   />
                 </Col>
@@ -425,7 +425,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.passportSeries"}
                     type={"input-mask"}
-                    label={"Passport seria"}
+                    label={t("Passport seria")}
                     property={{ mask: "aa", maskChar: "_" }}
                     params={{ required: true }}
                   />
@@ -434,7 +434,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.passportNumber"}
                     type={"input-mask"}
-                    label={"Passport number"}
+                    label={t("Passport number")}
                     property={{ mask: "9999999", maskChar: "_" }}
                     params={{ required: true }}
                   />
@@ -443,7 +443,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.pin"}
                     type={"input-mask"}
-                    label={"PINFL"}
+                    label={t("PINFL")}
                     property={{ mask: "99999999999999", maskChar: "_" }}
                   />
                 </Col>
@@ -451,7 +451,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.passportissuancedate"}
                     dateFormat={"MM/DD/YYYY"}
-                    type={"datepicker"}
+                    type={t("datepicker")}
                     label={"passportissuancedate"}
                   />
                 </Col>
@@ -459,14 +459,14 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.passportissuedby"}
                     type={"input"}
-                    label={"passportissuedby"}
+                    label={t("passportissuedby")}
                   />
                 </Col>
                 <Col xs={4}>
                   <Field
                     name={"person.region"}
                     type={"select"}
-                    label={"Region"}
+                    label={t("Region")}
                     options={regions}
                     params={{ required: true }}
                   />
@@ -475,7 +475,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.district"}
                     type={"select"}
-                    label={"District"}
+                    label={t("District")}
                     options={districts}
                     params={{ required: true }}
                   />
@@ -485,7 +485,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.address"}
                     type={"input"}
-                    label={"address"}
+                    label={t("address")}
                     params={{ required: true }}
                   />
                 </Col>
@@ -493,7 +493,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.postcode"}
                     type={"input"}
-                    label={"postcode"}
+                    label={t("postcode")}
                   />
                 </Col>
                 <Col xs={4}>
@@ -506,28 +506,28 @@ const AgentsCreateContainer = () => {
                       }}
                     name={"person.telephonenumber"}
                     type={"input"}
-                    label={"telephonenumber"}
+                    label={t("telephonenumber")}
                   />
                 </Col>
                 <Col xs={4}>
                   <Field
                     name={"person.emailforcontact"}
                     type={"input"}
-                    label={"emailforcontact"}
+                    label={t("emailforcontact")}
                   />
                 </Col>
                 <Col xs={4}>
                   <Field
                     name={"person.personalaccount"}
                     type={"input"}
-                    label={"personalaccount"}
+                    label={t("personalaccount")}
                   />
                 </Col>
                 <Col xs={4}>
                   <Field
                     name={"person.transitaccount"}
                     type={"input"}
-                    label={"transitaccount"}
+                    label={t("transitaccount")}
                   />
                 </Col>
                 <Col xs={4}>
@@ -537,14 +537,14 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"person.nameofbank"}
                     type={"input"}
-                    label={"nameofbank"}
+                    label={t("nameofbank")}
                   />
                 </Col>
                 <Col xs={4}>
                   <Field
                     name={"person.numberofcard"}
                     type={"input"}
-                    label={"numberofcard"}
+                    label={t("numberofcard")}
                   />
                 </Col>
               </>
@@ -555,7 +555,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"organization.nameoforganization"}
                     type={"input"}
-                    label={"nameoforganization"}
+                    label={t("nameoforganization")}
                     params={{ required: true }}
                   />
                 </Col>
@@ -563,28 +563,28 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"organization.oked"}
                     type={"input"}
-                    label={"oked"}
+                    label={t("oked")}
                   />
                 </Col>
                 <Col xs={4}>
                   <Field
                     name={"organization.mfo"}
                     type={"input"}
-                    label={"mfo"}
+                    label={t("mfo")}
                   />
                 </Col>
                 <Col xs={4}>
                   <Field
                     name={"organization.nameofbank"}
                     type={"input"}
-                    label={"nameofbank"}
+                    label={t("nameofbank")}
                   />
                 </Col>
                 <Col xs={4}>
                   <Field
                     name={"organization.innofbank"}
                     type={"input"}
-                    label={"innofbank"}
+                    label={t("innofbank")}
                   />
                 </Col>
 
@@ -592,14 +592,14 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"organization.scheduledaccount"}
                     type={"input"}
-                    label={"scheduledaccount"}
+                    label={t("scheduledaccount")}
                   />
                 </Col>
                 <Col xs={4}>
                   <Field
                     name={"organization.region"}
                     type={"select"}
-                    label={"Region"}
+                    label={t("Region")}
                     options={regions}
                     params={{ required: true }}
                   />
@@ -608,7 +608,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"organization.district"}
                     type={"select"}
-                    label={"District"}
+                    label={t("District")}
                     options={districts}
                     params={{ required: true }}
                   />
@@ -618,7 +618,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"organization.address"}
                     type={"input"}
-                    label={"address"}
+                    label={t("address")} 
                     params={{ required: true }}
                   />
                 </Col>
@@ -626,14 +626,14 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"organization.postcode"}
                     type={"input"}
-                    label={"postcode"}
+                    label={t("postcode")}
                   />
                 </Col>
                 <Col xs={4}>
                   <Field
                     name={"organization.checkingaccount"}
                     type={"input"}
-                    label={"checkingaccount"}
+                    label={t("checkingaccount")}
                   />
                 </Col>
                 <Col xs={8}>
@@ -642,7 +642,7 @@ const AgentsCreateContainer = () => {
                     name={"organization.employees"}
                     type={"select"}
                     options={employeeList}
-                    label={"Employees"}
+                    label={t("employees")}
                     params={{ required: true }}
                   />
                 </Col>
@@ -652,7 +652,7 @@ const AgentsCreateContainer = () => {
               <Field
                 label={"isUsedourpanel"}
                 type={"switch"}
-                name={"isUsedourpanel"}
+                name={t("isUsedourpanel")}
                 params={{ required: true }}
               />
             </Col>
@@ -660,7 +660,7 @@ const AgentsCreateContainer = () => {
               <Field
                 label={"isUserRestAPI"}
                 type={"switch"}
-                name={"isUserRestAPI"}
+                name={t("isUserRestAPI")}
                 params={{ required: true }}
               />
             </Col>
@@ -668,7 +668,7 @@ const AgentsCreateContainer = () => {
 
           <Row className={"mb-15"}>
             <Col xs={12}>
-              <Title>Тарифы</Title>
+              <Title>{t("Тарифы")}</Title>
             </Col>
           </Row>
 
@@ -689,7 +689,7 @@ const AgentsCreateContainer = () => {
                 </Col>
                 <Col xs={3}>
                   <Field
-                    label={"Продукты"}
+                    label={t("Продукты")}
                     type={"select"}
                     name={"tariff[0].product"}
                     options={products}
@@ -702,7 +702,7 @@ const AgentsCreateContainer = () => {
                 </Col>
                 <Col xs={3}>
                   <Field
-                    label={"Разрешить заключение договоров"}
+                    label={t("Разрешить заключение договоров")}
                     type={"switch"}
                     name={"tariff[0].allowAgreement"}
                     defaultValue={get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),productId)),'tariff.allowAgreement',false)}
@@ -710,7 +710,7 @@ const AgentsCreateContainer = () => {
                 </Col>
                 <Col xs={3}>
                   <Field
-                    label={"Лимит ответственности"}
+                    label={t("Лимит ответственности")}
                     type={"input"}
                     name={"tariff[0].limitOfAgreement"}
                     defaultValue={get(find(get(productsList, `data.data`, []),(_item)=>isEqual(get(_item,'_id'),productId)),'tariff.limitOfAgreement',0)}
@@ -723,7 +723,7 @@ const AgentsCreateContainer = () => {
                     type={"button"}
                     className={"mb-25"}
                   >
-                    Применить
+                    {t("Применить")}
                   </Button>
                 </Col>
               </Row>

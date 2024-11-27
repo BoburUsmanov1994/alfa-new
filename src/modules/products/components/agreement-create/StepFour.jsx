@@ -74,40 +74,40 @@ const StepFour = ({id = null, ...props}) => {
                 <Form formRequest={nextStep}>
                     <Row className={'mb-15'}>
                         <Col xs={12}>
-                            <Title>Анкета заявления</Title>
+                            <Title>{t("Анкета заявления")}</Title>
                         </Col>
                     </Row>
                     <Row>
                         <Col xs={3}>
                             <Field property={{minDate:new Date()}} params={{required:true}} name={'applicationDate'}
                                    type={'datepicker'}
-                                   label={'Анкета заявления'}
+                                   label={t("Анкета заявления")}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field
                                 name={`registrationNumber`}
                                 type={'input'}
-                                label={'Номер регистрации'}
+                                label={t("Номер регистрации")}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field property={{minDate:new Date()}} params={{required:true}} name={'applicationDate'} type={'datepicker'}
-                                   label={'Дата заявления'}
+                                   label={t("Дата заявления")}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field
                                 name={`whoAccepted`}
                                 type={'input'}
-                                label={'Кем принято'}
+                                label={t("Кем принято")}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field
                                 name={`copyOfDocuments`}
                                 type={'dropzone'}
-                                label={'Скан копии документов'}
+                                label={t("Скан копии документов")}
                             />
                         </Col>
 
@@ -115,7 +115,7 @@ const StepFour = ({id = null, ...props}) => {
 
                     <Row className={'mb-15'}>
                         <Col xs={12}>
-                            <Title>Договор</Title>
+                            <Title>{t("Договор")}</Title>
                         </Col>
                     </Row>
                     <Row>
@@ -131,13 +131,13 @@ const StepFour = ({id = null, ...props}) => {
                             <Field
                                 name={`copyOfAgreement`}
                                 type={'dropzone'}
-                                label={'Скан копии договоров'}
+                                label={t("Скан копии договоров")}
                             />
                         </Col>
                     </Row>
                     <Row className={'mb-15'}>
                         <Col xs={12}>
-                            <Title>Приложения</Title>
+                            <Title>{t("Приложения")}</Title>
                         </Col>
                     </Row>
                     <Row>
@@ -145,7 +145,7 @@ const StepFour = ({id = null, ...props}) => {
                             <Field
                                 name={`documents`}
                                 type={'dropzone'}
-                                label={'Скан копии документов'}
+                                label={t("Скан копии документов")}
                             />
                         </Col>
                     </Row>
@@ -153,10 +153,10 @@ const StepFour = ({id = null, ...props}) => {
                     <Row>
                         <Col xs={12} className={'mt-32'}>
                             <Button className={'mr-16'} type={'button'} onClick={reset} danger outlined
-                                    back>Отменить</Button>
+                                    back>{t("Отменить")}</Button>
                             <Button dark className={'mr-16'} type={'button'} onClick={prevStep}
-                                    outlined>Назад</Button>
-                            <Button type={'submit'} success>Подтвердить</Button>
+                                    outlined>{t("Назад")}</Button>
+                            <Button type={'submit'} success>{t("Подтвердить")}</Button>
                         </Col>
                     </Row>
                 </Form>

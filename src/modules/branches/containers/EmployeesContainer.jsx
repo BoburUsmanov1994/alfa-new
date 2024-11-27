@@ -8,21 +8,23 @@ import Field from "../../../containers/form/field";
 import {useGetAllQuery} from "../../../hooks/api";
 import {getSelectOptionsListFromData} from "../../../utils";
 import {Col, Row} from "react-grid-system";
+import { useTranslation } from 'react-i18next';
 
 const EmployeesContainer = ({...rest}) => {
 
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
+    const {t} = useTranslation()
 
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Справочники',
+            title: t("Справочники"),
             path: '/handbook',
         },
         {
             id: 2,
-            title: 'Employees',
+            title: t("Employees"),
             path: '/handbook/branches',
         }
     ], [])
@@ -38,38 +40,38 @@ const EmployeesContainer = ({...rest}) => {
                     {
                         id: 1,
                         key: 'fullname',
-                        title: 'Fullname '
+                        title: t("Fullname")
                     },
                     {
                         id: 2,
                         key: 'photo',
-                        title: 'Photo'
+                        title: t("Photo")
                     },
                     {
                         id: 3,
                         key: 'documentnumber',
-                        title: 'Passport'
+                        title: t("Passport")
                     },
                     {
                         id: 4,
                         key: 'position.name',
-                        title: 'Position'
+                        title: t("Position")
                     },
                     {
                         id: 6,
                         key: 'telephonenumber',
-                        title: 'Phone'
+                        title: t("Phone")
                     },
                     {
                         id: 7,
                         key: 'emailforcontacts',
-                        title: 'Email'
+                        title: t("Email")
                     },
                 ]}
                 keyId={KEYS.employee}
                 url={URLS.employee}
                 listUrl={`${URLS.employee}/list`}
-                title={'Employees'}
+                title={t("Employees")}
                 responseDataKey={'data.data'}
                 // viewUrl={'/branches/employee/view'}
                 createUrl={'/branches/employee/create'}

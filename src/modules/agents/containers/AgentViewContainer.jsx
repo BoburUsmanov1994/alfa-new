@@ -70,10 +70,10 @@ const AgentViewContainer = ({...rest}) => {
             <Section>
                 <Row className={''}>
                     <Col xs={10}>
-                        <Title>Agent view</Title>
+                        <Title>{t("Agent view")}</Title>
                     </Col>
                     <Col className={'text-right'} xs={2}>
-                        <Button onClick={() => setOpen(true)}>Add Account</Button>
+                        <Button onClick={() => setOpen(true)}>{t("Add Account")}</Button>
                     </Col>
                 </Row>
                 <Row>
@@ -282,7 +282,7 @@ const AgentViewContainer = ({...rest}) => {
                         </Table>
                     </Col>
                     <Col xs={12} className={'mt-15'}>
-                        <Title sm>Account info</Title>
+                        <Title sm>{t("Account info")}</Title>
                     </Col>
                     <Col xs={6}>
                         <Table thead={['1', '2']}>
@@ -308,21 +308,21 @@ const AgentViewContainer = ({...rest}) => {
                 </Row>
                 <Rodal visible={open} onClose={() => setOpen(false)}>
                     <Form
-                          footer={<Button>Add</Button>} formRequest={(values) => addAccount(values)}>
+                          footer={<Button>{t("Add")}</Button>} formRequest={(values) => addAccount(values)}>
                         <Row className={'mt-15'}>
                             <Col xs={6}>
-                                <Field name={'email'} type={'input'} label={'Email'}
+                                <Field name={'email'} type={'input'} label={t("Email")}
                                        params={{required: true}}/>
                             </Col>
                             <Col xs={6}>
-                                <Field name={'password'} type={'input'} label={'Password'}
+                                <Field name={'password'} type={'input'} label={t("Password")}
                                        params={{required: true}}  property={{type: 'password'}}/>
                             </Col>
                             <Col xs={6}>
-                                <Field  name={'accountrole'} type={'select'} label={'Role'} options={roles}  params={{required: true}} />
+                                <Field  name={'accountrole'} type={'select'} label={t("Role")} options={roles}  params={{required: true}} />
                             </Col>
                             <Col xs={6}>
-                                <Field  name={'accountstatus'} type={'select'} label={'Status'} options={status}  params={{required: true}} />
+                                <Field  name={'accountstatus'} type={'select'} label={t("Status")} options={status}  params={{required: true}} />
                             </Col>
                         </Row>
                     </Form>

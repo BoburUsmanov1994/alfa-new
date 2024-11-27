@@ -103,7 +103,7 @@ const ProductViewContainer = ({id, ...rest}) => {
 
                         <Table thead={['1', '2']}>
                             <tr>
-                                <td>Категория</td>
+                                <td>{t("Категория")}</td>
                                 <td><strong>{get(product, 'group.name', '-')}</strong></td>
                             </tr>
                             <tr>
@@ -115,47 +115,47 @@ const ProductViewContainer = ({id, ...rest}) => {
                                 <td><strong>{get(product, 'code', '-')}</strong></td>
                             </tr>
                             <tr>
-                                <td>Работа по версии продукта (Версия продукта)</td>
+                                <td>{t("Работа по версии продукта (Версия продукта)")}</td>
                                 <td><strong>{get(product, 'version', '-')}</strong></td>
                             </tr>
                             <tr>
-                                <td>Тип страховщика</td>
+                                <td>{t("Тип страховщика")}</td>
                                 <td><strong>{get(product, 'personType', []).map(({name}) => name).join(" , ")}</strong>
                                 </td>
 
                             </tr>
                             <tr>
-                                <td>Наименование продукта</td>
+                                <td>{t("Наименование продукта")}</td>
                                 <td><strong>{get(product, 'name', '-')}</strong></td>
                             </tr>
                             <tr>
-                                <td>Статус договора</td>
+                                <td>{t("Статус договора")}</td>
                                 <td><strong>{get(product, 'status.name', '-')}</strong></td>
                             </tr>
                             <tr>
-                                <td>Требует разрешения</td>
+                                <td>{t("Требует разрешения")}</td>
                                 <td><strong>{get(product, 'isRequirePermission', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
-                                <td>Тип полиса</td>
+                                <td>{t("Тип полиса")}</td>
                                 <td><strong>{get(product, 'policyTypes', []).map(({name}) => name).join(" , ")}</strong>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Разрешить несколько агентов</td>
+                                <td>{t("Разрешить несколько агентов")}</td>
                                 <td><strong>{get(product, 'allowMultipleAgents', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
-                                <td>Имеет фиксированный превентивных мероприятий</td>
+                                <td>{t("Имеет фиксированный превентивных мероприятий")}</td>
                                 <td><strong>{get(product, 'fixedPreventiveMeasures', false) ? 'Да' : 'Нет'}</strong>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Разрешить иностранную валюту</td>
+                                <td>{t("Разрешить иностранную валюту")}</td>
                                 <td><strong>{get(product, 'allowForeignCurrency', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
-                                <td>Разрешение изменение франшизы</td>
+                                <td>{t("Разрешение изменение франшизы")}</td>
                                 <td><strong>{get(product, 'allowChangeFranchise', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                         </Table>
@@ -163,61 +163,61 @@ const ProductViewContainer = ({id, ...rest}) => {
                     <Col xs={6}>
                         <Table thead={['1', '2']}>
                             {get(product, 'applicationForm._id') && <tr>
-                                <td>Форма анкеты</td>
+                                <td>{t("Форма анкеты")}</td>
 
                                 <td>
                                     {get(product, 'applicationForm._id') && <FilePreview fileId={get(product, 'applicationForm._id')} />}
                                     </td>
                             </tr>}
                             {get(product, 'contractForm._id') && <tr>
-                                <td>Договор</td>
+                                <td>{t("Договор")}</td>
                                 <td>
                                     {get(product, 'contractForm._id') && <FilePreview fileId={get(product, 'contractForm._id')} />}
                                 </td>
                             </tr>}
                             {get(product, 'additionalDocuments._id') && <tr>
-                                <td>Приложения</td>
+                                <td>{t("Приложения")}</td>
                                 <td>
                                     {get(product, 'additionalDocuments._id') && <FilePreview fileId={get(product, 'additionalDocuments._id')} />}
                                 </td>
                             </tr>}
                             <tr>
-                                <td>Имеет фиксированного страхователя</td>
+                                <td>{t("Имеет фиксированного страхователя")}</td>
                                 <td><strong>{get(product, 'hasFixedPolicyHolder', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
-                                <td>Имеет выгодоприобретеля</td>
+                                <td>{t("Имеет выгодоприобретеля")}</td>
                                 <td><strong>{get(product, 'hasBeneficary', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
-                                <td>Имеет фиксированного выгодоприобретеля</td>
+                                <td>{t("Имеет фиксированного выгодоприобретеля")}</td>
                                 <td><strong>{get(product, 'hasFixedBeneficary', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
-                                <td>Имеет фиксированную страховую сумму</td>
+                                <td>{t("Имеет фиксированную страховую сумму")}</td>
                                 <td><strong>{get(product, 'hasFixedFee', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
-                                <td>Разрешить полис без оплаты</td>
+                                <td>{t("Разрешить полис без оплаты")}</td>
                                 <td><strong>{get(product, 'allowPolicyWithoutPayment', false) ? 'Да' : 'Нет'}</strong>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Тип оплаты</td>
+                                <td>{t("Тип оплаты")}</td>
                                 <td>
                                     <strong>{get(product, 'paymentType', []).map(({name}) => name).join(" , ")}</strong>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Имеет фиксированную комиссию</td>
+                                <td>{t("Имеет фиксированную комиссию")}</td>
                                 <td><strong>{get(product, 'hasFixedFee', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
-                                <td>Имеет диапазон ставок</td>
+                                <td>{t("Имеет диапазон ставок")}</td>
                                 <td><strong>{get(product, 'hasBettingRange', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                             <tr>
-                                <td>Имеет франшизу</td>
+                                <td>{t("Имеет франшизу")}</td>
                                 <td><strong>{get(product, 'allowChangeFranchise', false) ? 'Да' : 'Нет'}</strong></td>
                             </tr>
                         </Table>
