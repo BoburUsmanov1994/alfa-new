@@ -5,7 +5,6 @@ import I18NextHttpBackend from "i18next-http-backend";
 import config from "../../config";
 import storage from "../storage";
 import { get } from "lodash";
-import { resource } from "../locales";
 
 const i18config = i18n
   .use(initReactI18next)
@@ -34,7 +33,6 @@ const i18config = i18n
       loadPath: `${config.API_ROOT}/api/references/translation/{{lng}}`,
       addPath: `${config.API_ROOT}/api/references/translation`,
     },
-    resources: resource,
   });
 
 export default i18config;
