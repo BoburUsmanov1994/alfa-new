@@ -5,7 +5,7 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, includes, some, values, isEmpty, isEqual, head, isNil, find} from "lodash"
+import {get, some, values, isEmpty, isEqual, isNil, find} from "lodash"
 import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
@@ -15,12 +15,14 @@ import {toast} from "react-toastify";
 import Table from "../../../../components/table";
 import {Trash2} from "react-feather";
 import {useTranslation} from "react-i18next";
+import ReactQuill from "react-quill";
 
 const StepOne = ({id = null, ...props}) => {
     const {t} = useTranslation()
-
+    const reactQuillRef = React.useRef();
     const [riskItem, setRiskItem] = useState({riskType: null, risk: null, classeId: null});
     const [productGroupId, setProductGroupId] = useState(null);
+    const [comment, setComment] = useState('');
 
     const setProduct = useSettingsStore(state => get(state, 'setProduct', () => {
     }))
@@ -52,7 +54,7 @@ const StepOne = ({id = null, ...props}) => {
         if (isEmpty(riskList)) {
             toast.warn('You have to add risk')
         } else {
-            setProduct({...rest, risk: riskList.map(({risk}) => risk), riskData: riskList});
+            setProduct({...rest, risk: riskList.map(({risk}) => risk), riskData: riskList,riskComment:comment});
             props.nextStep();
         }
     }
@@ -328,6 +330,16 @@ const StepOne = ({id = null, ...props}) => {
                                     </Table>
                                 </Col>}
                             </Row>
+                        </Col>
+
+                    </Row>
+                    <Row className={'mb-25'}>
+                        <Col xs={12}><Title>Комментарий о риске</Title></Col>
+                    </Row>
+                    <Row className={'mb-25'}>
+                        <Col xs={12}>
+                            <ReactQuill style={{height: 250}} theme="snow" value={comment} onChange={setComment}
+                                        ref={reactQuillRef}/>
                         </Col>
                     </Row>
                     <Row>

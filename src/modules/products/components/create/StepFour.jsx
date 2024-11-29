@@ -13,15 +13,14 @@ import {URLS} from "../../../../constants/url";
 import {getSelectOptionsListFromData} from "../../../../utils";
 import Table from "../../../../components/table";
 import Flex from "../../../../components/flex";
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'
 
 const StepFour = ({id = null, ...props}) => {
-    const reactQuillRef = React.useRef();
+
     const [fields, setFields] = useState({riskOptions: []})
     const [otherParams, setOtherParams] = useState({})
     const [tarif, setTarif] = useState({})
-    const [comment, setComment] = useState('');
+
     const setProduct = useSettingsStore(state => get(state, 'setProduct', () => {
     }))
     const resetProduct = useSettingsStore(state => get(state, 'resetProduct', () => {
@@ -32,7 +31,7 @@ const StepFour = ({id = null, ...props}) => {
 
     const nextStep = ({data}) => {
         let {riskOptions, agentlist, Isagreement, limitofagreement, tariffperclasses, ...rest} = data;
-        setProduct({riskComment:comment,...rest});
+        setProduct({...rest});
         props.nextStep();
     }
 
@@ -261,15 +260,8 @@ const StepFour = ({id = null, ...props}) => {
                             </Table>
                         </Col>}
                     </Row>
-                    <Row className={'mb-25'}>
-                        <Col xs={12}><Title>Комментарий о риске</Title></Col>
-                    </Row>
-                    <Row className={'mb-25'}>
-                        <Col xs={12}>
-                            <ReactQuill style={{height: 250}} theme="snow" value={comment} onChange={setComment}
-                                        ref={reactQuillRef}/>
-                        </Col>
-                    </Row>
+
+
                     <Row>
                         <Col xs={12} className={'mt-32'}>
                             <Button className={'mr-16'} type={'button'} onClick={reset} danger outlined

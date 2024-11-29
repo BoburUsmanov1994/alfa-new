@@ -72,6 +72,10 @@ const UsersContainer = () => {
                 <Field name={'status'} type={'select'} label={'Status'} options={status}
                        defaultValue={rowId ? get(data, 'status') : null} params={{required: true}}/>
             </Col>
+            <Col xs={6}>
+                <Field name={'isCheckPayment'} type={'switch'} label={'Выдавать полис без оплаты'}
+                       defaultValue={rowId ? get(data, 'isCheckPayment') : null} />
+            </Col>
         </Row>
     </>
     return (

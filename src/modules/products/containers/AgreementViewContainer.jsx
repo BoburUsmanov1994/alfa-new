@@ -306,8 +306,8 @@ const AgentViewContainer = () => {
                                             <DollarSign onClick={() => setSelectedPolice(item)}
                                                         className={'cursor-pointer flex-none min-none' }
                                                         color={'#71BC70'}/>}
-                                            {!includes(['sent'], get(item, "fondStatus")) && !get(item,'url') &&
-                                            <Send className={'cursor-pointer ml-15 flex-none min-none'} color={'#13D6D1'}
+                                            {get(user,'isCheckPayment') && !includes(['sent'], get(item, "fondStatus")) && !get(item,'url') &&
+                                            <Send  className={'cursor-pointer ml-15 flex-none min-none'} color={'#13D6D1'}
                                                   onClick={() => sendToFond(id, get(item, '_id'))}/>}
                                                 <Eye onClick={() => setShowTransactionId(get(item, '_id', null))}
                                                         className={'ml-15 cursor-pointer flex-none min-none'} color={'#13D6D1'}/>

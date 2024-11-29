@@ -300,6 +300,9 @@ const StepTwo = ({id = null, ...props}) => {
                 insuranceSum: 0
             })))
         }
+        if(get(agreement,'product.riskComment')) {
+            setComment(get(agreement,'product.riskComment'))
+        }
     }, [agreement])
 
 
@@ -748,7 +751,7 @@ const StepTwo = ({id = null, ...props}) => {
                     </Row>
                     <Row className={'mb-25'}>
                         <Col xs={12}>
-                            <ReactQuill style={{height: 250}} theme="snow" value={comment} onChange={setComment}
+                            <ReactQuill  style={{height: 250}} theme="snow" value={comment} onChange={setComment}
                                         onKeyDown={checkCharacterCount}
                                         ref={reactQuillRef}/>
                         </Col>
