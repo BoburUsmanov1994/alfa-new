@@ -18,12 +18,12 @@ const ListContainer = ({ ...rest }) => {
     () => [
       {
         id: 1,
-        title: "Продукты",
+        title: t("Продукты"),
         path: "/osgor",
       },
       {
         id: 2,
-        title: "Все продукты",
+        title: t("Все продукты"),
         path: "/osgor/list",
       },
     ],

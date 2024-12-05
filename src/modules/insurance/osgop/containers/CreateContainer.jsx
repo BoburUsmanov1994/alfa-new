@@ -418,18 +418,18 @@ const CreateContainer = () => {
         <Section>
             <Row>
                 <Col xs={12}>
-                    <Title>Параметры полиса</Title>
+                    <Title>{t("Параметры полиса")}</Title>
                 </Col>
             </Row>
             <Row>
                 <Col xs={12}>
                     <Form formRequest={create} getValueFromField={(value, name) => getFieldData(name, value)}
-                          footer={<Flex className={'mt-32'}><Button className={'mr-16'}>Сохранить</Button></Flex>}>
+                          footer={<Flex className={'mt-32'}><Button className={'mr-16'}>{t("Сохранить")}</Button></Flex>}>
                         <Row gutterWidth={60} className={'mt-32'}>
                             <Col xs={4} style={{borderRight: '1px solid #DFDFDF'}}>
                                 <Row align={'center'} className={'mb-25'}>
-                                    <Col xs={5}>Статус</Col>
-                                    <Col xs={7}><Button green>Новый</Button></Col>
+                                    <Col xs={5}>{t("Статус")}</Col>
+                                    <Col xs={7}><Button green>{t("Новый")}</Button></Col>
                                 </Row>
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Филиал</Col>
@@ -1169,7 +1169,7 @@ const CreateContainer = () => {
                         <Row gutterWidth={60} className={'mt-30'}>
                             <Col xs={12} className={'mb-15'}><Title>Убыточность предыдущих периодов</Title></Col>
                             <Col xs={3}>
-                                <Field params={{required: true}} label={'Сумма старховых возмещений в предыдущем году'}
+                                <Field params={{required: true}} label={t("Сумма старховых возмещений в предыдущем году")}
                                        type={'number-format-input'}
                                        name={'lastYearPayment'}/>
                             </Col>
