@@ -140,9 +140,10 @@ const StepOne = ({id = null, ...props}) => {
     const agentFilter = ({data}, type = 'insurer') => {
         filterRequest({
             url: URLS.findOrCreateClient,
-            attributes: isEqual(get(type === 'insurer' ?  insurer : type === 'pledger' ? pledger : beneficiary, 'type'), PERSON_TYPE.organization) ? {
+            attributes: isEqual(get(type === 'insurer' ? insurer : type === 'pledger' ? pledger : beneficiary, 'type'), PERSON_TYPE.organization) ? {
                 organization: {
                     inn: get(data, 'organization.inn'),
+                    isNbu: get(data, 'organization.isNbu')
                 },
                 type: PERSON_TYPE.organization
             } : {
@@ -151,6 +152,7 @@ const StepOne = ({id = null, ...props}) => {
                     phone: get(data, 'person.phone'),
                     seria: get(data, 'person.seria'),
                     number: get(data, 'person.number'),
+                    isNbu: get(data, 'person.isNbu')
                 },
                 type: PERSON_TYPE.person
             }
@@ -253,7 +255,8 @@ const StepOne = ({id = null, ...props}) => {
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field property={{minDate:new Date()}} params={{required: true}} name={'agreementDate'} type={'datepicker'}
+                            <Field property={{minDate: new Date()}} params={{required: true}} name={'agreementDate'}
+                                   type={'datepicker'}
                                    label={'Agreement date'}
                                    defaultValue={get(agreement, 'agreementDate')}
                             />
@@ -277,13 +280,14 @@ const StepOne = ({id = null, ...props}) => {
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field property={{minDate:new Date()}} params={{required: true}} name={'startOfInsurance'} type={'datepicker'}
+                            <Field property={{minDate: new Date()}} params={{required: true}} name={'startOfInsurance'}
+                                   type={'datepicker'}
                                    label={'Начало страхового покрытия'}
                                    defaultValue={get(agreement, 'startOfInsurance')}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field params={{required: true}}  name={'endOfInsurance'} type={'datepicker'}
+                            <Field params={{required: true}} name={'endOfInsurance'} type={'datepicker'}
                                    label={'Окончание страхового покрытия'}
                                    defaultValue={get(agreement, 'endOfInsurance')}
                             />
@@ -298,7 +302,7 @@ const StepOne = ({id = null, ...props}) => {
                                     <Col xs={4}>
                                         {get(product, 'applicationForm._id') && <>
                                             <span>Форма анкеты</span>
-<FilePreview fileId={get(product, 'applicationForm._id')} />
+                                            <FilePreview fileId={get(product, 'applicationForm._id')}/>
 
                                         </>}
 
@@ -306,14 +310,14 @@ const StepOne = ({id = null, ...props}) => {
                                     <Col xs={4}>
                                         {get(product, 'contractForm._id') && <>
                                             <span>Договор</span>
-                                            <FilePreview fileId={get(product, 'contractForm._id')} />
+                                            <FilePreview fileId={get(product, 'contractForm._id')}/>
                                         </>}
 
                                     </Col>
                                     <Col xs={4}>
                                         {get(product, 'additionalDocuments._id') && <>
                                             <span>Приложения</span>
-                                            <FilePreview fileId={get(product, 'additionalDocuments._id')} />
+                                            <FilePreview fileId={get(product, 'additionalDocuments._id')}/>
                                         </>}
                                     </Col>
                                 </Row>
@@ -565,8 +569,14 @@ const StepOne = ({id = null, ...props}) => {
                                     property={{placeholder: '998XXXXXXXXX', hideErrorMsg: true}}
                                     name={'person.phone'}/>
                             </Col>
+                            <Col xs={4} className={'mb-25'}>
+                                <Field
+                                    label={'Is NBU'}
+                                    type={'switch'}
+                                    name={'person.isNbu'}/>
+                            </Col>
 
-                        </Row> : <Row className={'mt-15'}>
+                        </Row> : <Row className={'mt-15'} align={'end'}>
 
                             <Col xs={6}>
                                 <Field
@@ -581,6 +591,15 @@ const StepOne = ({id = null, ...props}) => {
                                         hideErrorMsg: true
                                     }}
                                 />
+                            </Col>
+                            <Col xs={6}>
+                                <Field
+                                    property={{
+                                        hideErrorMsg: true
+                                    }}
+                                    label={'Is NBU'}
+                                    type={'switch'}
+                                    name={'organization.isNbu'}/>
                             </Col>
                         </Row>}
 
@@ -646,6 +665,7 @@ const StepOne = ({id = null, ...props}) => {
                                     property={{placeholder: '998XXXXXXXXX', hideErrorMsg: true}}
                                     name={'person.phone'}/>
                             </Col>
+
 
                         </Row> : <Row className={'mt-15'}>
 

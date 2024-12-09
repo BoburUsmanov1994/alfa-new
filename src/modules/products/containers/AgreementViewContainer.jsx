@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {Row, Col} from "react-grid-system";
 import Section from "../../../components/section";
 import Title from "../../../components/ui/title";
-import {get, head, includes, isEqual, isNil} from "lodash";
+import {get, includes, isEqual, isNil} from "lodash";
 import {useDeleteQuery, useGetAllQuery, useGetOneQuery, usePostQuery, usePutQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
@@ -50,7 +50,7 @@ const AgentViewContainer = () => {
             }
         }
     })
-    const {mutate: sentToFondRequest, isLoadingSendToFond} = usePostQuery({listKeyId: KEYS.agreements})
+    const {mutate: sentToFondRequest} = usePostQuery({listKeyId: KEYS.agreements})
     const {mutate: deleteRequest, isLoading: deleteLoading} = useDeleteQuery({listKeyId: KEYS.policyFilter})
     const {
         mutate: deleteEndorsementRequest,
@@ -253,7 +253,12 @@ const AgentViewContainer = () => {
                                 <td>{t("Status")}</td>
                                 <td><strong>{t(get(data, "data.status"))}</strong></td>
                             </tr>
+                            <tr>
+                                <td></td>
+                                <td onClick={()=>navigate(`/agreements/edit/${id}`)}><Button>Доп.соглашение</Button></td>
+                            </tr>
                         </Table>
+
                     </Col>
                 </Row>
                 <Row className={'mt-15'}>
@@ -299,6 +304,7 @@ const AgentViewContainer = () => {
                                         <td>{get(item,'url') && <a target={"_blank"} href={get(item,'url','#')}><Download /></a>}</td>
                                         <td>{get(item, "fondStatus")}</td>
 
+
                                         <td
                                         >
                                             <Flex>
@@ -315,6 +321,7 @@ const AgentViewContainer = () => {
                                             <Trash2 onClick={() => remove(get(item, '_id', null))}
                                                     className={'ml-15 cursor-pointer flex-none min-none'} color={'#dc2626'}/>}
                                                 {includes([config.ROLES.admin],get(user,'role.name')) && <Button onClick={()=>unAttach(get(item, '_id'))} sm inline danger>Открепить деньги</Button>}
+                                                {includes([config.ROLES.admin],get(user,'role.name')) && <Button className={'ml-15'} onClick={()=>navigate(`/policy/termination/${id}/${get(item, '_id')}`)} sm inline danger>Расторжение</Button>}
                                             </Flex>
                                         </td>
                                     </tr>)}

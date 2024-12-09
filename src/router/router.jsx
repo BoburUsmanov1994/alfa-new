@@ -55,6 +55,7 @@ import AgentsReportPage from "../modules/agents/pages/AgentsReportPage";
 import AgentsReportControlPage from "../modules/agents/pages/AgentsReportControlPage";
 import BranchBankPage from "../modules/handbook/pages/BranchBankPage";
 import AgreementUpdatePage from "../modules/products/pages/AgreementUpdatePage";
+import PolicyTerminationPage from "../modules/policy/pages/PolicyTerminationPage";
 //lazy load
 const TypeObjectPage = lazy(() => import("../modules/handbook/pages/TypeObjectPage"));
 const ObjectPage = lazy(() => import("../modules/handbook/pages/ObjectPage"));
@@ -270,6 +271,7 @@ const Router = ({...rest}) => {
                             </Route>
                             <Route path={"policy"}>
                                 <Route path={"create/:product_id"} element={<PolicyCreatePage/>}/>
+                                <Route path={"termination/:id/:policyId"} element={<PolicyTerminationPage/>}/>
                             </Route>
                             <Route path={"bco"}>
                                 <Route index element={<BcoPage/>}/>

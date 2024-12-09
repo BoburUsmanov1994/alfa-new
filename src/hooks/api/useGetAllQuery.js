@@ -6,7 +6,6 @@ const useGetAllQuery = ({
                             key = "get-all",
                             url = "/",
                             params = {},
-                            showSuccessMsg = false,
                             hideErrorMsg = false,
                             enabled = true,
                             cb = {

@@ -72,20 +72,23 @@ const Switcher = ({
 
     useEffect(() => {
         getValueFromField(getValues(name), name);
+        if (isFunction(get(property, 'onChange'))) {
+            get(property, 'onChange')(watch(name))
+        }
     }, [watch(name)]);
 
     return (
         <Styled {...rest}>
             <div className="form-group">
                 {!get(property, 'hideLabel', false) && <Label
-                    className={classNames({required: get(property, 'hasRequiredLabel', get(params,'required'))})}>{label ?? name}</Label>}
+                    className={classNames({required: get(property, 'hasRequiredLabel', get(params, 'required'))})}>{label ?? name}</Label>}
                 <Flex>
                     <span>{get(head(options), 'label', '-')}</span>
                     <Switch
                         checked={checked}
                         onChange={(val) => {
                             setChecked(val);
-                            if(isFunction(get(property,'handleChange'))) {
+                            if (isFunction(get(property, 'handleChange'))) {
                                 property?.handleChange(val)
                             }
                         }}

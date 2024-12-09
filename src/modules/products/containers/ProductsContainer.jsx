@@ -76,11 +76,11 @@ const ProductsContainer = () => {
                 // responseDataKey={'data.data'}
                 viewUrl={'/products/view'}
                 createUrl={'/products/create'}
-                // updateUrl={'/products/update'}
-                isHideColumn
+                updateUrl={'/products/update'}
                 responseDataKey={'data.data'}
                 hideCreateBtn={!includes([config.ROLES.admin],get(user,'role.name'))}
                 hideDeleteBtn={!includes([config.ROLES.admin],get(user,'role.name'))}
+                hasUpdateBtn={includes([config.ROLES.admin],get(user,'role.name'))}
 
             />
         </>

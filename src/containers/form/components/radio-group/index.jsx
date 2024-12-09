@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import Label from "../../../../components/ui/label";
 import classNames from "classnames";
-import {get, isEmpty} from "lodash";
+import {get, isEmpty, isFunction} from "lodash";
 import {ErrorMessage} from "@hookform/error-message";
 import {Radio, RadioGroup} from '@chakra-ui/react'
 
@@ -64,6 +64,14 @@ const RadioGroupComponent = ({
                                  ...rest
                              }) => {
     const [val, setVal] = useState(defaultValue)
+    useEffect(()=>{
+        if(val){
+            if(isFunction(get(property,'onChange'))){
+                get(property,'onChange')(val)
+            }
+        }
+
+    },[val])
     return (
         <Styled {...rest}>
             <div className="form-group">

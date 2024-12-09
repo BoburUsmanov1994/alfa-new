@@ -13,15 +13,15 @@ import StepThree from "../components/create/StepThree";
 import StepFour from "../components/create/StepFour";
 import StepFive from "../components/create/StepFive";
 import StepSix from "../components/create/StepSix";
-import {useGetAllQuery, useGetOneQuery} from "../../../hooks/api";
+import {useGetOneQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import {OverlayLoader} from "../../../components/loader";
 
 
-const ProductUpdateContainer = ({id, ...rest}) => {
+const ProductUpdateContainer = ({id}) => {
 
-    let {data, isLoading, isError} = useGetOneQuery({id, key: KEYS.products, url: URLS.products})
+    let {data, isLoading} = useGetOneQuery({id, key: KEYS.products, url: `${URLS.product}/show`})
     const setProduct = useSettingsStore(state => get(state, 'setProduct', () => {
     }))
     const resetProduct = useSettingsStore(state => get(state, 'resetProduct', () => {
@@ -36,7 +36,7 @@ const ProductUpdateContainer = ({id, ...rest}) => {
         },
         {
             id: 2,
-            title: get(data, 'data.data.productname'),
+            title: get(data, 'data.name'),
             path: '#',
         }
     ], [data])
@@ -54,7 +54,7 @@ const ProductUpdateContainer = ({id, ...rest}) => {
                 fixedpolicyholder, fixedbeneficiary, policyformatId, typeofclaimsettlement,
                 typeofpayment, typeofpolice, agentlist, typeofrefund,
                 ...rest
-            } = get(data, 'data.data', {})
+            } = get(data, 'data', {})
 
             setProduct({
                 ...rest,
@@ -63,20 +63,17 @@ const ProductUpdateContainer = ({id, ...rest}) => {
                 typeofinsurerId: get(typeofinsurerId, '_id'),
                 typeofsectorId: get(typeofsectorId, '_id'),
                 fixedpolicyholder: get(fixedpolicyholder, '_id'),
-                fixedbeneficiary: fixedbeneficiary.map(({_id}) => _id),
+                fixedbeneficiary: fixedbeneficiary?.map(({_id}) => _id),
                 policyformatId: get(policyformatId, '_id'),
                 typeofclaimsettlement: get(typeofclaimsettlement, '_id'),
-                typeofpayment: typeofpayment.map(({_id}) => _id),
-                typeofpolice: typeofpolice.map(({_id}) => _id),
-                agentlist: agentlist.map(({_id}) => _id),
+                typeofpayment: typeofpayment?.map(({_id}) => _id),
+                typeofpolice: typeofpolice?.map(({_id}) => _id),
+                agentlist: agentlist?.map(({_id}) => _id),
                 typeofrefund: get(typeofrefund, '_id')
             })
         }
 
-    }, [get(data, 'data.data')])
-
-    const product = useSettingsStore(state => get(state, 'product', {}))
-    console.log('Product', product)
+    }, [get(data, 'data')])
 
     if (isLoading) {
         return <OverlayLoader/>
@@ -94,7 +91,7 @@ const ProductUpdateContainer = ({id, ...rest}) => {
             <Section>
                 <Row>
                     <Col xs={12}>
-                        <Title>Изменить продукт ({get(data, 'data.data.productname')})</Title>
+                        <Title>Изменить продукт ({get(data, 'data.name')})</Title>
                     </Col>
                 </Row>
                 <Row>

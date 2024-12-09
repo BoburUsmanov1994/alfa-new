@@ -40,11 +40,11 @@ const StepOne = ({id = null, ...props}) => {
     bcoTypes = getSelectOptionsListFromData(get(bcoTypes, `data.data`, []), '_id', 'policy_type_name')
 
     useEffect(() => {
-        if (id && isEmpty(riskItem) && !isEmpty(get(product, 'riskId', []))) {
-            addRiskList(...get(product, 'riskId', []).map(({classeId, risk, riskType}) => ({
-                risk: get(risk, '_id'),
+        if (id &&  !isEmpty(get(product, 'risk', []))) {
+            addRiskList(...get(product, 'risk', []).map(({insuranceClass, _id, riskType}) => ({
+                risk: _id,
                 riskType: get(riskType, '_id'),
-                classeId: get(classeId, '_id'),
+                classeId: get(insuranceClass, '_id'),
             })))
         }
     }, [product])
@@ -129,7 +129,6 @@ const StepOne = ({id = null, ...props}) => {
 
     }
 
-
     const findItem = (list = [], id = null) => {
         return find(list, l => isEqual(get(l, "_id"), id))
     }
@@ -145,14 +144,14 @@ const StepOne = ({id = null, ...props}) => {
                             <Field label={t('Выберите категорию')} options={groups} type={'select'}
                                    name={'group'} params={{required: true}}
                                    property={{onChange: (val)=>setProductGroupId(val)}}
-                                   defaultValue={get(product, 'group')}
+                                   defaultValue={id ? get(product, 'group._id') : get(product, 'group')}
                             />
                         </Col>
                         <Col xs={3}>
                             <Field label={t('Выберите подкатегорию ')} options={subGroups} type={'select'}
                                    name={'subGroup'} params={{required: true}}
                                    property={{hasRequiredLabel: true}}
-                                   defaultValue={get(product, 'subGroup')}
+                                   defaultValue={id ? get(product, 'subGroup._id'):get(product, 'subGroup')}
                             />
                         </Col>
                         <Col xs={3}>
@@ -188,7 +187,7 @@ const StepOne = ({id = null, ...props}) => {
                                 label={t('Форма страхования')}
                                 type={'select'}
                                 name={'insuranceForm'}
-                                defaultValue={get(product, 'insuranceForm')}
+                                defaultValue={id ? get(product, 'insuranceForm._id'):get(product, 'insuranceForm')}
                             />
                         </Col>
                         <Col xs={3}>
@@ -197,7 +196,7 @@ const StepOne = ({id = null, ...props}) => {
                                 label={t('Указать сектор')}
                                 type={'select'}
                                 name={'sectorType'}
-                                defaultValue={get(product, 'sectorType')}
+                                defaultValue={id ? get(product, 'sectorType._id'):get(product, 'sectorType')}
                             />
                         </Col>
                         <Col xs={3}>
@@ -206,7 +205,7 @@ const StepOne = ({id = null, ...props}) => {
                                 label={t('Bco type')}
                                 type={'select'}
                                 name={'bcoType'}
-                                defaultValue={get(product, 'bcoType')}
+                                defaultValue={id ? get(product, 'bcoType._id'):get(product, 'bcoType')}
                             />
                         </Col>
                         <Col xs={3}>
@@ -222,7 +221,7 @@ const StepOne = ({id = null, ...props}) => {
                                 label={t('Выбрать тип страховщика')}
                                 type={'checkbox'}
                                 name={'personType'}
-                                defaultValue={get(product, 'personType', [])}
+                                defaultValue={id ? get(product, 'personType', [])?.map(({_id})=>_id):get(product, 'personType', [])}
                             />
                         </Col>
                         <Col xs={3}>
