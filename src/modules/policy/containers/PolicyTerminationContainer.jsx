@@ -30,6 +30,8 @@ const PolicyTerminationContainer = ({
     const [whereToReturnPremium, setWhereToReturnPremium] = useState(null)
     const [isReturnAgentCommission, setIsReturnAgentCommission] = useState(false)
     const [hasDemonstrableCosts, setHasDemonstrableCosts] = useState(false)
+    const [isReturnDemonstrableCosts, setIsReturnDemonstrableCosts] = useState(false)
+    const [sumDemonstrableCosts, setSumDemonstrableCosts] = useState(0)
     let {data: policyData, isLoading, refetch} = useGetAllQuery({
         key: `terminate-${policyId}-${terminateDate}`,
         url: `${URLS.policy}/terminate-details`,
@@ -179,7 +181,7 @@ const PolicyTerminationContainer = ({
                                 />
                             </Col>
                                 <Col xs={4}>
-                                    <Field  property={{disabled: !hasDemonstrableCosts}}
+                                    <Field  property={{disabled: !hasDemonstrableCosts,onChange:(val)=>setSumDemonstrableCosts(val)}}
                                            defaultValue={get(policyData, "data.sumDemonstrableCosts", 0)}
                                            label={t('Сумма')} type={'number-format-input'}
                                            name={'sumDemonstrableCosts'} params={{required: true}}
@@ -187,14 +189,14 @@ const PolicyTerminationContainer = ({
                                 </Col>
                                 <Col xs={4}>
                                     <Field
-
+                                        property={{onChange:(val)=>setIsReturnDemonstrableCosts(val)}}
                                            label={t('Удержать доказуемые расходы')} type={'switch'}
                                            name={'isReturnDemonstrableCosts'} params={{required: true}}
                                     />
                                 </Col>
                                 <Col xs={4}>
                                     <Field property={{disabled: true}}
-                                           defaultValue={get(policyData, "data.returningPremium", 0)}
+                                           defaultValue={hasDemonstrableCosts ? (isReturnDemonstrableCosts ? get(policyData, "data.returningPremium", 0) - sumDemonstrableCosts : get(policyData, "data.returningPremium", 0)) : get(policyData, "data.returningPremium", 0)}
                                            label={t('Итого премия к возврату')} type={'number-format-input'}
                                            name={'returningPremium'} params={{required: true,valueAsNumber:true}}
                                     />

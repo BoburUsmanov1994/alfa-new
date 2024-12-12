@@ -5,7 +5,7 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore, useStore} from "../../../../store";
-import {get, isEmpty, isEqual, find} from "lodash"
+import {get, isEmpty, isEqual, find, isNil} from "lodash"
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
@@ -28,6 +28,7 @@ const StepOne = ({id = null, ...props}) => {
     const {t} = useTranslation()
     const [productGroupId, setProductGroupId] = useState(null);
     const [productSubGroupId, setProductSubGroupId] = useState(null);
+    const [isNbu, setIsNbu] = useState(false);
     const [product, setProduct] = useState({});
     const user = useStore(state => get(state, 'user'))
 
@@ -127,6 +128,9 @@ const StepOne = ({id = null, ...props}) => {
     })
     const productsList = getSelectOptionsListFromData(get(products, `data.data`, []), '_id', 'name')
 
+    let {data: clientList} = useGetAllQuery({key: KEYS.agents, url: `${URLS.clients}/list?isNbu=true&limit=200&type=ORGANIZATION`})
+   let clients = getSelectOptionsListFromData(get(clientList, `data.data`, []), '_id', ['organization.name'])
+
 
     const {mutate: filterRequest, isLoading: filterLoading} = usePostQuery({})
 
@@ -143,7 +147,6 @@ const StepOne = ({id = null, ...props}) => {
             attributes: isEqual(get(type === 'insurer' ? insurer : type === 'pledger' ? pledger : beneficiary, 'type'), PERSON_TYPE.organization) ? {
                 organization: {
                     inn: get(data, 'organization.inn'),
-                    isNbu: get(data, 'organization.isNbu')
                 },
                 type: PERSON_TYPE.organization
             } : {
@@ -152,7 +155,6 @@ const StepOne = ({id = null, ...props}) => {
                     phone: get(data, 'person.phone'),
                     seria: get(data, 'person.seria'),
                     number: get(data, 'person.number'),
-                    isNbu: get(data, 'person.isNbu')
                 },
                 type: PERSON_TYPE.person
             }
@@ -231,7 +233,6 @@ const StepOne = ({id = null, ...props}) => {
             toast.warn('Select pledger')
         }
     }
-
 
     return (
         <Row>
@@ -569,16 +570,10 @@ const StepOne = ({id = null, ...props}) => {
                                     property={{placeholder: '998XXXXXXXXX', hideErrorMsg: true}}
                                     name={'person.phone'}/>
                             </Col>
-                            <Col xs={4} className={'mb-25'}>
-                                <Field
-                                    label={'Is NBU'}
-                                    type={'switch'}
-                                    name={'person.isNbu'}/>
-                            </Col>
 
                         </Row> : <Row className={'mt-15'} align={'end'}>
 
-                            <Col xs={6}>
+                            <Col xs={5}>
                                 <Field
                                     params={{required: true}}
                                     type={'input-mask'}
@@ -592,15 +587,39 @@ const StepOne = ({id = null, ...props}) => {
                                     }}
                                 />
                             </Col>
-                            <Col xs={6}>
+                            <Col xs={2}>
                                 <Field
                                     property={{
-                                        hideErrorMsg: true
+                                        hideErrorMsg: true,
+                                        onChange:(val)=>{
+                                            if(!isNil(val)) {
+                                                setIsNbu(val)
+                                            }
+                                        }
                                     }}
                                     label={'Is NBU'}
                                     type={'switch'}
                                     name={'organization.isNbu'}/>
                             </Col>
+                            {isNbu && <Col xs={5}>
+                                <Field
+                                    property={{
+                                        hideErrorMsg: true,
+                                        onChange:(val)=>{
+                                            setInsurer({
+                                                ...insurer, openModal: false, data: {
+                                                    ...get(find(get(clientList, `data.data`, []),(_client)=>isEqual(get(_client,'_id'),val)),'organization',{}),
+                                                    id: val
+                                                }
+                                            })
+                                        }
+                                    }}
+                                    label={'Clients'}
+                                    type={'select'}
+                                    name={'organization.isNbu'}
+                                    options={clients}
+                                />
+                            </Col>}
                         </Row>}
 
                     </Form>
