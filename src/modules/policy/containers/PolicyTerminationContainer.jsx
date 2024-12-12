@@ -25,11 +25,11 @@ const PolicyTerminationContainer = ({
                                     }) => {
     const {t} = useTranslation();
     const navigate = useNavigate();
-    const user = useStore(state => get(state, 'user', null))
     const [terminateDate, setTerminateDate] = useState(new Date())
     const [isReturnPremium, setIsReturnPremium] = useState(false)
     const [whereToReturnPremium, setWhereToReturnPremium] = useState(null)
     const [isReturnAgentCommission, setIsReturnAgentCommission] = useState(false)
+    const [hasDemonstrableCosts, setHasDemonstrableCosts] = useState(false)
     let {data: policyData, isLoading, refetch} = useGetAllQuery({
         key: `terminate-${policyId}-${terminateDate}`,
         url: `${URLS.policy}/terminate-details`,
@@ -102,7 +102,7 @@ const PolicyTerminationContainer = ({
                     <Table thead={['1', '2']}>
                         <tr>
                             <td>{t("Конец покрытия")}</td>
-                            <td><strong>{dayjs(get(policyData, "endDate")).format("DD-MM-YYYY")}</strong>
+                            <td><strong>{dayjs(get(policyData, "data.endDate")).format("DD-MM-YYYY")}</strong>
                             </td>
                         </tr>
                         <tr>
@@ -173,13 +173,13 @@ const PolicyTerminationContainer = ({
                                 />
                             </Col>
                             {isReturnPremium && <><Col xs={4}>
-                                <Field defaultValue={get(policyData, "data.hasDemonstrableCosts", false)}
+                                <Field  property={{onChange:(val)=>setHasDemonstrableCosts(val)}} defaultValue={get(policyData, "data.hasDemonstrableCosts", false)}
                                        label={t('Доказуемые расходы')} type={'switch'}
                                        name={'hasDemonstrableCosts'} params={{required: true}}
                                 />
                             </Col>
                                 <Col xs={4}>
-                                    <Field property={{disabled: true}}
+                                    <Field  property={{disabled: !hasDemonstrableCosts}}
                                            defaultValue={get(policyData, "data.sumDemonstrableCosts", 0)}
                                            label={t('Сумма')} type={'number-format-input'}
                                            name={'sumDemonstrableCosts'} params={{required: true}}
@@ -187,6 +187,7 @@ const PolicyTerminationContainer = ({
                                 </Col>
                                 <Col xs={4}>
                                     <Field
+
                                            label={t('Удержать доказуемые расходы')} type={'switch'}
                                            name={'isReturnDemonstrableCosts'} params={{required: true}}
                                     />

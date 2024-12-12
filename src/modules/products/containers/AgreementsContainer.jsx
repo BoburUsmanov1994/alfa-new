@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {useSettingsStore, useStore} from "../../../store";
-import {get, includes} from "lodash";
+import {get, includes, isNil} from "lodash";
 import GridView from "../../../containers/grid-view/grid-view";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
@@ -9,13 +9,13 @@ import {useTranslation} from "react-i18next";
 import dayjs from "dayjs";
 import {Col, Row} from "react-grid-system";
 import Form from "../../../containers/form/form";
-import {useGetAllQuery} from "../../../hooks/api";
+import {useGetAllQuery, usePostQuery} from "../../../hooks/api";
 import {getSelectOptionsListFromData, saveFile} from "../../../utils";
 import Button from "../../../components/ui/button";
-import {FileText, Filter, Trash} from "react-feather";
+import {FileText, Filter, MessageCircle, Trash} from "react-feather";
 import Flex from "../../../components/flex";
 import config from "../../../config";
-import {useNavigate} from "react-router-dom";
+import Modal from "../../../components/modal";
 
 const AgreementsContainer = () => {
     const {t} = useTranslation()
@@ -25,6 +25,7 @@ const AgreementsContainer = () => {
     const [createdAtFrom, setCreatedAtFrom] = useState(null);
     const [createdAtTo, setCreatedAtTo] = useState(null);
     const [branch, setBranch] = useState(null);
+    const [tr, setTr] = useState(null);
     const [filter, setFilter] = useState({
         branch: get(user, 'branch._id'),
     });
@@ -102,6 +103,8 @@ const AgreementsContainer = () => {
         }
     })
 
+    const {mutate:annualRequest,isLoading:isLoadingAnnual} = usePostQuery({listKeyId:[KEYS.agreements, filter]})
+
     useEffect(() => {
         setBreadcrumbs(breadcrumbs)
         resetInsurer()
@@ -110,7 +113,7 @@ const AgreementsContainer = () => {
         resetPledger()
         resetObjects()
     }, [])
-
+    console.log('tr',tr)
     return (
         <>
             <GridView
@@ -191,7 +194,8 @@ const AgreementsContainer = () => {
                 updateUrl={'/agreements/edit'}
                 isHideColumn
                 checkStatus
-                extraFilters={<Form sm formRequest={({data: {group, subGroup, ...rest} = {}}) => {
+                extraActions={(_tr)=><MessageCircle onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}
+                                                  extraFilters={<Form sm formRequest={({data: {group, subGroup, ...rest} = {}}) => {
                     setFilter(rest);
                 }}
                                     mainClassName={'mt-15'}>
@@ -345,6 +349,20 @@ const AgreementsContainer = () => {
                     </Row>}
                 </Form>}
             />
+            <Modal title={'Annual'} visible={!isNil(tr)}
+                   hide={() => setTr(null)}>
+                <br/>
+                <Form formRequest={({data:attrs})=>{
+                    annualRequest({url:`/api/agreement/annual/${get(tr,'_id')}`,attributes:{...attrs}},{
+                        onSuccess:()=>{
+                            refetch();
+                            setTr(null)
+                        }
+                    })
+                }} footer={<Button type={"submit"} block>{t("Send")}</Button>}>
+                    <Field params={{required:true}} label={'Reason'} name={'reason'} type={'textarea'} />
+                </Form>
+            </Modal>
         </>
     );
 };
