@@ -113,7 +113,6 @@ const AgreementsContainer = () => {
         resetPledger()
         resetObjects()
     }, [])
-    console.log('tr',tr)
     return (
         <>
             <GridView
@@ -355,7 +354,6 @@ const AgreementsContainer = () => {
                 <Form formRequest={({data:attrs})=>{
                     annualRequest({url:`/api/agreement/annual/${get(tr,'_id')}`,attributes:{...attrs}},{
                         onSuccess:()=>{
-                            refetch();
                             setTr(null)
                         }
                     })
