@@ -320,7 +320,7 @@ const AgentViewContainer = () => {
                                             {includes(['new'], get(item, "fondStatus")) &&
                                             <Trash2 onClick={() => remove(get(item, '_id', null))}
                                                     className={'ml-15 cursor-pointer flex-none min-none'} color={'#dc2626'}/>}
-                                                {includes([config.ROLES.admin],get(user,'role.name')) && <Button onClick={()=>unAttach(get(item, '_id'))} sm inline danger>Открепить деньги</Button>}
+                                                {includes([config.ROLES.admin],get(user,'role.name')) && includes(['paid', 'partialPaid'], get(item, "fondStatus")) && <Button onClick={()=>unAttach(get(item, '_id'))} sm inline danger>Открепить деньги</Button>}
                                                 {includes([config.ROLES.admin],get(user,'role.name')) && <Button className={'ml-15'} onClick={()=>navigate(`/policy/termination/${id}/${get(item, '_id')}`)} sm inline danger>Расторжение</Button>}
                                             </Flex>
                                         </td>
