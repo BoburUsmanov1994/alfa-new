@@ -94,8 +94,12 @@ const DistributionContainer = () => {
                     transactions: idList,
                     branch: get(params, 'branchId'),
                 }
+            },{
+                onSuccess:()=>{
+                    navigate(`/accounting/policy`)
+                }
             })
-            navigate(`/accounting/policy`)
+
         }
     }
     const remove = (id) => {
