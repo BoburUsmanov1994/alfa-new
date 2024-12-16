@@ -381,7 +381,7 @@ const AgentViewContainer = () => {
                                 }
                             }}/></td>
                             <td>{i + 1}</td>
-                            <td>{dayjs(get(item, 'payment_order_date')).format("DD.MM.YYYY")}</td>
+                            <td>{get(item, 'payment_order_date')}</td>
                             <td>{get(item, 'sender_name')}</td>
                             <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                               value={get(item, 'payment_amount', 0)}/></td>
