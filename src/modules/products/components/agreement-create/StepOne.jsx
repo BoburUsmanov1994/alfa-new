@@ -74,7 +74,8 @@ const StepOne = ({id = null, ...props}) => {
                 product,
                 insurant: get(insurer, 'data.id'),
                 beneficiary: get(beneficiary, 'data.id'),
-                pledgers: pledgers.map(({id}) => id)
+                pledgers: pledgers.map(({id}) => id),
+                pledgersSelect:pledgers.map((_pledger) => ({value:get(_pledger,'id'),label:`${get(_pledger, 'fullName.lastname', '')} ${get(_pledger, 'fullName.firstname', '')} ${get(_pledger, 'name', '')}`}))
             });
             props.nextStep();
         } else {

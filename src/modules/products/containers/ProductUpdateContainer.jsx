@@ -20,11 +20,8 @@ import {OverlayLoader} from "../../../components/loader";
 import { useTranslation } from 'react-i18next';
 
 
-const ProductUpdateContainer = ({id, ...rest}) => {
-    const {t} = useTranslation()
-    let {data, isLoading, isError} = useGetOneQuery({id, key: KEYS.products, url: URLS.products})
 const ProductUpdateContainer = ({id}) => {
-
+    const {t} = useTranslation()
     let {data, isLoading} = useGetOneQuery({id, key: KEYS.products, url: `${URLS.product}/show`})
     const setProduct = useSettingsStore(state => get(state, 'setProduct', () => {
     }))

@@ -1096,6 +1096,14 @@ const StepTwo = ({id = null, ...props}) => {
                             }
                             {
                                 isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.VEHICLE) && <>
+                                    <Col xs={4}>
+                                        <Field
+                                            options={get(agreement,'pledgersSelect',[])}
+                                            type={'select'}
+                                            name={`objectOfInsurance.details.owner`}
+                                            label={t('Owner')}
+                                        />
+                                    </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             params={{required: true}}
@@ -1228,6 +1236,14 @@ const StepTwo = ({id = null, ...props}) => {
                                 </>}
                             {
                                 isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.PROPERTY) && <>
+                                    <Col xs={4}>
+                                        <Field
+                                            options={get(agreement,'pledgersSelect',[])}
+                                            type={'select'}
+                                            name={`objectOfInsurance.details.owner`}
+                                            label={t('Owner')}
+                                        />
+                                    </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             params={{required: true}}
@@ -1382,6 +1398,14 @@ const StepTwo = ({id = null, ...props}) => {
 
                             {
                                 isEqual(get(_modalFields, 'objectOfInsurance.type'), INSURANCE_OBJECT_TYPES.AGRICULTURE) && <>
+                                    <Col xs={4}>
+                                        <Field
+                                            options={get(agreement,'pledgersSelect',[])}
+                                            type={'select'}
+                                            name={`objectOfInsurance.details.owner`}
+                                            label={t('Owner')}
+                                        />
+                                    </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             params={{required: true}}
@@ -1450,6 +1474,14 @@ const StepTwo = ({id = null, ...props}) => {
 
                             {
                                 isEqual(get(_modalFields, 'objectOfInsurance.type'), "OTHEROBJECT") && <>
+                                    <Col xs={4}>
+                                        <Field
+                                            options={get(agreement,'pledgersSelect',[])}
+                                            type={'select'}
+                                            name={`objectOfInsurance.details.owner`}
+                                            label={t('Owner')}
+                                        />
+                                    </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
                                             params={{required: true}}

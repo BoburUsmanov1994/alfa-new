@@ -5,7 +5,7 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, includes, find, isEqual, isNil, setWith} from "lodash"
+import {get, includes, find, isEqual, setWith} from "lodash"
 import Title from "../../../../components/ui/title";
 import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
@@ -14,6 +14,7 @@ import {getSelectOptionsListFromData} from "../../../../utils";
 import Table from "../../../../components/table";
 import Flex from "../../../../components/flex";
 import 'react-quill/dist/quill.snow.css'
+import {useTranslation} from "react-i18next";
 
 const StepFour = ({id = null, ...props}) => {
 
