@@ -76,7 +76,7 @@ const ImportPaymentDocumentContainer = ({
             {isLoading && <ContentLoader />}
             <Row className={'mb-15'} align={'center'}>
                 <Col xs={12}>
-                    <Title>Результат импорта</Title>
+                    <Title>{t("Результат импорта")}</Title>
                 </Col>
             </Row>
             <Row className={'mb-20'}>
@@ -86,7 +86,7 @@ const ImportPaymentDocumentContainer = ({
                             <section>
                                 <div {...getRootProps()}>
                                     <input {...getInputProps()} />
-                                   <Flex><span style={{marginRight:'15px'}}>{get(file,'path') ?? 'No file selected'}</span> <Button>Выбрать</Button></Flex>
+                                   <Flex><span style={{marginRight:'15px'}}>{get(file,'path') ?? 'No file selected'}</span> <Button>{t("Выбрать")}</Button></Flex>
                                 </div>
                             </section>
                         )}
@@ -116,9 +116,9 @@ const ImportPaymentDocumentContainer = ({
             <Row className={'mt-32'}>
                 <Col xs={12}>
                     {isEmpty(items) ? <Flex>
-                        <Button type={'button'} className={'mr-16'} onClick={()=>upload(file)}>Импортировать</Button>
-                        <Button type={'button'} danger  onClick={()=>setFile(null)}>Сбросить</Button>
-                    </Flex> : <Button type={'button'} className={'mr-16'} onClick={()=>navigate('/accounting/distribution')}>Распределять</Button>}
+                        <Button type={'button'} className={'mr-16'} onClick={()=>upload(file)}>{t("Импортировать")}</Button>
+                        <Button type={'button'} danger  onClick={()=>setFile(null)}>{t("Сбросить")}</Button>
+                    </Flex> : <Button type={'button'} className={'mr-16'} onClick={()=>navigate('/accounting/distribution')}>{t("Распределять")}</Button>}
                 </Col>
             </Row>
         </Section>

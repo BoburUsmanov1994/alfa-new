@@ -19,12 +19,12 @@ const ProductsContainer = () => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Продукты',
+            title: t("Продукты"),
             path: '/products',
         },
         {
             id: 2,
-            title: 'Все продукты',
+            title: t("Все продукты"),
             path: '/products/all',
         }
     ], [])
@@ -36,7 +36,7 @@ const ProductsContainer = () => {
     }, [])
 
     const ModalBody = ({data, rowId = null}) => <>
-        <Field name={'name'} type={'input'} label={'Название продукта'} defaultValue={rowId ? get(data, 'name') : null}
+        <Field name={'name'} type={'input'} label={t("Название продукта")} defaultValue={rowId ? get(data, 'name') : null}
                params={{required: true}}/>
     </>
     return (
@@ -47,26 +47,26 @@ const ProductsContainer = () => {
                     {
                         id: 2,
                         key: 'name',
-                        title: 'Наименование продукта'
+                        title: t("Наименование продукта")
                     },
                     {
                         id: 3,
                         key: 'policyTypes',
-                        title: 'Тип страховщика',
+                        title: t("Тип страховщика"),
                         arrayKey: 'name',
                         isArray: true
                     },
                     {
                         id: 4,
                         key: 'paymentType',
-                        title: 'Тип оплаты',
+                        title: t("Тип оплаты"),
                         arrayKey: 'name',
                         isArray: true
                     },
                     {
                         id: 7,
                         key: 'fixedPremium',
-                        title: 'Страховая сумма',
+                        title: t("Страховая сумма"),
                         hasNumberFormat: true
                     },
                 ]}

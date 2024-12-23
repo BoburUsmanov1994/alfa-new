@@ -86,13 +86,13 @@ const BranchUpdateContainer = ({...rest}) => {
             <Section>
                 <Row className={'mb-25'}>
                     <Col xs={12}>
-                        <Title>Branch update</Title>
+                        <Title>{t("Branch update")}</Title>
                     </Col>
                 </Row>
-                <Form footer={<Button type={"submit"} lg>Update</Button>} formRequest={(values) => update(values)}>
+                <Form footer={<Button type={"submit"} lg>{t("Update")}</Button>} formRequest={(values) => update(values)}>
                     <Row className={'mb-15'}>
                         <Col xs={4}>
-                            <Field name={'levelofbreanches'} type={'select'} label={'Branch level'}
+                            <Field name={'levelofbreanches'} type={'select'} label={t("Branch level")}
                                    options={branchLevels}
                                    params={{required: true}}
                                    defaultValue={get(branch, 'data.data.levelofbreanches')}
@@ -100,48 +100,48 @@ const BranchUpdateContainer = ({...rest}) => {
                         </Col>
                         <Col xs={4}>
                             <Field name={'codeofbreanches'} type={'input'}
-                                   label={'codeofbreanches'}
+                                   label={t("codeofbreanches")}
                                    params={{required: true}}
                                    defaultValue={get(branch, 'data.data.codeofbreanches')}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field name={'inn'} type={'input-mask'} label={'INN'}
+                            <Field name={'inn'} type={'input-mask'} label={t("INN")}
                                    property={{mask: '999999999', maskChar: '_'}}
                                    params={{required: true, pattern: /^[0-9]*$/}}
                                    defaultValue={get(branch, 'data.data.inn')}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field name={'region'} type={'select'} label={'Region'} options={regions}
+                            <Field name={'region'} type={'select'} label={t("Region")} options={regions}
                                    params={{required: true}}
                                    defaultValue={get(branch, 'data.data.region._id')}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field name={'branchname'} type={'input'}
-                                   label={'branchname'}
+                                   label={t("branchname")}
                                    params={{required: true}}
                                    defaultValue={get(branch, 'data.data.branchname')}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field name={'shorttitleofbranch'} type={'input'}
-                                   label={'shorttitleofbranch'}
+                                   label={t("shorttitleofbranch")}
                                    params={{required: true}}
                                    defaultValue={get(branch, 'data.data.shorttitleofbranch')}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field name={'address'} type={'input'}
-                                   label={'address'}
+                                   label={t("address")}
                                    params={{required: true}}
                                    defaultValue={get(branch, 'data.data.address')}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field name={'telephone'} type={'input'}
-                                   label={'telephone'}
+                                   label={t("telephone")}
                                    params={{required: true, pattern: {
                                            value: /^998[0-9]{9}$/,
                                            message: 'Invalid format'
@@ -151,7 +151,7 @@ const BranchUpdateContainer = ({...rest}) => {
                         </Col>
                         <Col xs={4}>
                             <Field name={'email'} type={'input'}
-                                   label={'email'}
+                                   label={t("Email")}
                                    property={{type: "email"}}
                                    params={{required: true}}
                                    defaultValue={get(branch, 'data.data.email')}
@@ -159,47 +159,47 @@ const BranchUpdateContainer = ({...rest}) => {
                         </Col>
                         <Col xs={4}>
                             <Field name={'agreementnumber'} type={'input'}
-                                   label={'agreementnumber'}
+                                   label={t("agreementnumber")}
                                    params={{required: true}}
                                    defaultValue={get(branch, 'data.data.agreementnumber')}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field name={'agreementdate'} type={'datepicker'}
-                                   label={'agreementdate'}
+                                   label={t("agreementdate")}
                                    defaultValue={get(branch, 'data.data.agreementdate')}
 
                             />
                         </Col>
                         <Col xs={4}>
                             <Field name={'expirationdate'} type={'datepicker'}
-                                   label={'expirationdate'}
+                                   label={t("expirationdate")}
                                    defaultValue={get(branch, 'data.data.expirationdate')}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field name={`checkingaccount`} type={'input'}
-                                   label={'checkingaccount'}
+                                   label={t("checkingaccount")}
                                    params={{required: true}}
                                    defaultValue={get(branch, 'data.data.checkingaccount')}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field name={`mfo`} type={'input'}
-                                   label={'mfo'}
+                                   label={t("mfo")}
                                    params={{required: true}}
                                    defaultValue={get(branch, 'data.data.mfo')}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field name={`nameofbank`} type={'input'}
-                                   label={'nameofbank'}
+                                   label={t("nameofbank")}
                                    params={{required: true}}
                                    defaultValue={get(branch, 'data.data.nameofbank')}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field name={'breanchstatus'} type={'select'} label={'Branch status'}
+                            <Field name={'breanchstatus'} type={'select'} label={t("Branch status")}
                                    options={branchStatusList}
                                    params={{required: true}}
                                    defaultValue={get(branch, 'data.data.breanchstatus._id')}
@@ -210,7 +210,7 @@ const BranchUpdateContainer = ({...rest}) => {
                     </Row>
                     <Row className={"mb-15"}>
                         <Col xs={12}>
-                            <Title sm>Add employee</Title>
+                            <Title sm>{t("Add employee")}</Title>
                         </Col>
                     </Row>
                     {range(0, empCount).map((count, i) => <Row align={'center'}>
@@ -218,13 +218,13 @@ const BranchUpdateContainer = ({...rest}) => {
                             <Row>
                                 <Col xs={3}>
                                     <Field name={`employees[${count}].fullname`} type={'input'}
-                                           label={'Fullname'}
+                                           label={t("Fullname")}
                                            params={{required: true}}
                                            defaultValue={get(branch, `data.data.employees[${count}].fullname`)}
                                     />
                                 </Col>
                                 <Col xs={3}>
-                                    <Field name={`employees[${count}].positions`} type={'select'} label={'Positions'}
+                                    <Field name={`employees[${count}].positions`} type={'select'} label={t("Positions")}
                                            options={positions}
                                            params={{required: true}}
                                            defaultValue={get(branch, `data.data.employees[${count}].positions._id`)}
@@ -232,7 +232,7 @@ const BranchUpdateContainer = ({...rest}) => {
                                 </Col>
                                 <Col xs={3}>
                                     <Field name={`employees[${count}].telephonenumber`} type={'input'}
-                                           label={'telephonenumber'}
+                                           label={t("telephonenumber")}
                                            params={{required: true, pattern: {
                                                    value: /^998[0-9]{9}$/,
                                                    message: 'Invalid format'
@@ -242,7 +242,7 @@ const BranchUpdateContainer = ({...rest}) => {
                                 </Col>
                                 <Col xs={3}>
                                     <Field name={`employees[${count}].emailforcontacts`} type={'input'}
-                                           label={'emailforcontacts'}
+                                           label={t("emailforcontacts")}
                                            property={{type: "email"}}
                                            params={{required: true}}
                                            defaultValue={get(branch, `data.data.employees[${count}].emailforcontacts`)}

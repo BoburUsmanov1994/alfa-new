@@ -19,7 +19,7 @@ const EndorsementContainer = () => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Индоссамент',
+            title: t("Индоссамент"),
             path: '/endorsements',
         },
     ], [])
@@ -47,65 +47,65 @@ const EndorsementContainer = () => {
                     {
                         id: 1,
                         key: 'agreement.agreementNumber',
-                        title: '№ договора'
+                        title: t("№ договора")
                     },
                     {
                         id: 2,
                         key: 'createdAt',
-                        title: 'Дата договора',
+                        title: t("Дата договора"),
                         render: (_tr) => dayjs(get(_tr, 'createdAt')).format("DD.MM.YYYY")
                     },
                     {
                         id: 3,
                         key: 'reason',
-                        title: 'Причина',
+                        title: t("Причина"),
                     },
                     {
                         id: 4,
                         key: 'product.name',
-                        title: 'Продукт',
+                        title: t("Продукт"),
                     },
                     {
                         id: 5,
                         key: 'insuranceSum',
-                        title: 'Страховая сумма',
+                        title: t("Страховая сумма"),
                         render: (_tr) => <NumberFormat thousandSeparator={' '} displayType={'text'}
                                                        value={get(_tr, 'insuranceSum')}/>
                     },
                     {
                         id: 6,
                         key: 'insurancePremium',
-                        title: 'Страховая премия',
+                        title: t("Страховая премия"),
                         render: (_tr) => <NumberFormat thousandSeparator={' '} displayType={'text'}
                                                        value={get(_tr, 'insurancePremium')}/>
                     },
                     {
                         id: 7,
                         key: 'startDate',
-                        title: 'Начало покрытия',
+                        title: t("Начало покрытия"),
                         render: (_tr) => dayjs(get(_tr, 'startDate')).format("DD.MM.YYYY")
                     },
                     {
                         id: 8,
                         key: 'endDate',
-                        title: 'Конец покрытия',
+                        title: t("Конец покрытия"),
                         render: (_tr) => dayjs(get(_tr, 'endDate')).format("DD.MM.YYYY")
                     },
                     {
                         id: 10,
                         key: 'createdAt',
-                        title: 'Дата решения',
+                        title: t("Дата решения"),
                         render: (_tr) => dayjs(get(_tr, 'createdAt')).format("DD.MM.YYYY")
                     },
                     {
                         id: 11,
                         key: 'request_creator.name',
-                        title: 'Кем принято решение',
+                        title: t("Кем принято решение"),
                     },
                     {
                         id: 12,
                         key: 'request_creator.name',
-                        title: 'Решение',
+                        title: t("Решение"),
                         render: (_tr) => get(_tr, 'decision') === 'waiting' ? <><Button danger
                                                                                         onClick={() => allow(get(_tr, '_id'), false)}>{t('Отказать')}</Button><Button
                             className={'ml-15'}
@@ -115,7 +115,7 @@ const EndorsementContainer = () => {
                 keyId={KEYS.endorsements}
                 url={URLS.endorsements}
                 listUrl={`${URLS.endorsements}/list`}
-                title={'Индоссамент'}
+                title={t("Индоссамент")}
                 responseDataKey={'data.data'}
                 hideCreateBtn
                 hideDeleteBtn

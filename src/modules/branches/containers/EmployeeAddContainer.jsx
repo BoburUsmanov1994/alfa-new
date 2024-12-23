@@ -15,9 +15,11 @@ import {useNavigate} from "react-router-dom";
 import {OverlayLoader} from "../../../components/loader";
 import dayjs from "dayjs";
 import {getSelectOptionsListFromData} from "../../../utils";
+import { useTranslation } from 'react-i18next';
 
 const EmployeeAddContainer = () => {
     const navigate = useNavigate();
+    const {t} = useTranslation()
     const [regionId, setRegionId] = useState(null)
     let {data: positionList} = useGetAllQuery({key: KEYS.position, url: `${URLS.position}/list`})
     positionList = getSelectOptionsListFromData(get(positionList, `data.data`, []), '_id', 'name')
@@ -77,24 +79,24 @@ const EmployeeAddContainer = () => {
             <Section>
                 <Row className={'mb-25'}>
                     <Col xs={12}>
-                        <Title>Add employee</Title>
+                        <Title>{t("Add employee")}</Title>
                     </Col>
                 </Row>
                 <Form getValueFromField={(val, name) => console.log(val, name)}
-                      footer={<Button type={"submit"} lg>Add</Button>} formRequest={(values) => create(values)}>
+                      footer={<Button type={"submit"} lg>{t("Add")}</Button>} formRequest={(values) => create(values)}>
                     <Row className={'mb-15'}>
                         <Col xs={4}>
                             <Field name={'fullname'} type={'input'}
-                                   label={'Fullname'}
+                                   label={t("Fullname")}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
-                            <Field name={'position'} type={'select'} label={'Position'} options={positionList}
+                            <Field name={'position'} type={'select'} label={t("Position")} options={positionList}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
                             <Field name={'typeofdocumentsformanager'} type={'select'} options={documentTypeList}
-                                   label={'Document type'}
+                                   label={t("Document type")}
                                    params={{required: true}}
                             />
                         </Col>
@@ -105,19 +107,19 @@ const EmployeeAddContainer = () => {
                         </Col>
                         <Col xs={4}>
                             <Field name={'dateofmanagerdocument'} type={'datepicker'}
-                                   label={'Document date'}
+                                   label={t("Document date")}
                                    params={{required: true}}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field name={'expirationdate'} type={'datepicker'}
-                                   label={'Expration date'}
+                                   label={t("Expration date")}
                                    params={{required: true}}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field name={'telephonenumber'} type={'input'}
-                                   label={'Phone'}
+                                   label={t("Phone")}
                                    params={{required: true, pattern: {
                                            value: /^998[0-9]{9}$/,
                                            message: 'Invalid format'
@@ -125,60 +127,60 @@ const EmployeeAddContainer = () => {
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field name={'emailforcontacts'} type={'input'} label={'Email'}
+                            <Field name={'emailforcontacts'} type={'input'} label={t("Email")}
                                    params={{
                                        required: true,
                                        pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                                    }}/>
                         </Col>
                         <Col xs={4}>
-                            <Field name={'branch'} type={'select'} label={'Branch'} options={branchList}
+                            <Field name={'branch'} type={'select'} label={t("Branch")} options={branchList}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
-                            <Field name={'gender'} type={'select'} label={'Gender'} options={genderList}
+                            <Field name={'gender'} type={'select'} label={t("Gender")} options={genderList}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
                             <Field params={{required: true}} name={'passportSeries'} type={'input-mask'}
-                                   label={'Passport seria'}
+                                   label={t("Passport seria")}
                                    property={{mask: 'aa', maskChar: '_'}}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field params={{required: true}} name={'passportNumber'} type={'input-mask'}
-                                   label={'Passport number'}
+                                   label={t("Passport number")}
                                    property={{mask: '9999999', maskChar: '_'}}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field params={{required: true}} name={'pin'} type={'input-mask'}
-                                   label={'PINFL'}
+                                   label={t("PINFL")}
                                    property={{mask: '99999999999999', maskChar: '_'}}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field property={{onChange: (val) => setRegionId(val)}} name={'region'} type={'select'}
-                                   label={'Region'} options={regions}
+                                   label={t("Region")} options={regions}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
-                            <Field name={'district'} type={'select'} label={'District'} options={districtList}
+                            <Field name={'district'} type={'select'} label={t("District")} options={districtList}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
                             <Field name={'address'} type={'input'}
-                                   label={'Address'}
+                                   label={t("Address")}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
                             <Field name={'job_title'} type={'input'}
-                                   label={'Job title'}
+                                   label={t("Job title")}
                                    params={{required: true}}/>
                         </Col>
                         <Col xs={4}>
                             <Field name={'dateofbirth'} type={'datepicker'}
-                                   label={'Date of birth'}
+                                   label={t("Date of birth")}
                                    params={{required: true}}/>
                         </Col>
                     </Row>

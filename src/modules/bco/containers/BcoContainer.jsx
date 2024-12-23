@@ -10,21 +10,24 @@ import {getSelectOptionsListFromData} from "../../../utils";
 import {Row, Col} from "react-grid-system";
 import Button from "../../../components/ui/button";
 import {useNavigate} from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const BcoContainer = ({...rest}) => {
     const navigate = useNavigate();
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
 
+    const {t} = useTranslation()
+
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'БСО',
+            title: t("БСО"),
             path: '/bco',
         },
         {
             id: 2,
-            title: 'Bco list',
+            title: t("Bco list"),
             path: '/bco',
         }
     ], [])
@@ -63,28 +66,28 @@ const BcoContainer = ({...rest}) => {
     const ModalBody = ({data, rowId = null}) => <>
         <Row>
             <Col xs={6}>
-                <Field name={'bcoType'} type={'select'} options={policyList} label={'Bco type'}
+                <Field name={'bcoType'} type={'select'} options={policyList} label={t("Bco type")}
                        defaultValue={rowId ? get(data, 'bcoType') : null}
                        params={{required: true}}/>
             </Col>
             <Col xs={6}>
-                <Field name={'branch'} type={'select'} options={branchList} label={'Branch'}
+                <Field name={'branch'} type={'select'} options={branchList} label={t("Branch")}
                        defaultValue={rowId ? get(data, 'branch') : null}
                        params={{required: true}}/>
             </Col>
             <Col xs={6}>
-                <Field name={'employee'} type={'select'} options={employeeList} label={'Employee'}
+                <Field name={'employee'} type={'select'} options={employeeList} label={t("Employee")}
                        defaultValue={rowId ? get(data, 'employee') : null}
                        params={{required: true}}/>
             </Col>
             <Col xs={6}>
                 <Field isMulti name={'blanks'} type={'select'} options={policyBlankList}
-                       label={'Policy blank'} defaultValue={rowId ? get(data, 'blanks') : null}
+                       label={t("Policy blank")} defaultValue={rowId ? get(data, 'blanks') : null}
                        params={{required: true}}/>
             </Col>
             <Col xs={6}>
                 <Field name={'act'} type={'select'} options={actList}
-                       label={'Act'} defaultValue={rowId ? get(data, 'act') : null}
+                       label={t("Act")} defaultValue={rowId ? get(data, 'act') : null}
                 />
             </Col>
         </Row>
@@ -99,31 +102,31 @@ const BcoContainer = ({...rest}) => {
                     {
                         id: 1,
                         key: 'branch.branchName',
-                        title: 'Branch'
+                        title: t("Branch")
                     },
                     {
                         id: 2,
                         key: 'employee.fullname',
-                        title: 'Employee'
+                        title: t("Employee")
                     },
                     {
                         id: 3,
                         key: 'blanks',
-                        title: 'Policy blank numbers',
+                        title: t("Policy blank numbers"),
                         isArray: true,
                         arrayKey: 'blank_number'
                     },
                     {
                         id: 3,
                         key: 'bcoType.policy_type_name',
-                        title: 'Bco type',
+                        title: t("Bco type"),
                     },
 
                 ]}
                 keyId={KEYS.bco}
                 url={URLS.bco}
                 listUrl={`${URLS.bco}/list`}
-                title={'Bco list'}
+                title={t("Bco list")}
                 responseDataKey={'data.data'}
             />
 

@@ -8,10 +8,12 @@ import Field from "../../../containers/form/field";
 import {useGetAllQuery} from "../../../hooks/api";
 import {getSelectOptionsListFromData} from "../../../utils";
 import {Col, Row} from "react-grid-system";
+import { useTranslation } from 'react-i18next';
 
 const BcoTypeContainer = ({...rest}) => {
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
+    const {t} = useTranslation()
 
     let {data: bcoStatusList} = useGetAllQuery({
         key: KEYS.statusoftypebco,
@@ -33,12 +35,12 @@ const BcoTypeContainer = ({...rest}) => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Accounting',
+            title: t("Accounting"),
             path: '/accounting',
         },
         {
             id: 2,
-            title: 'Bco type',
+            title: t("Bco type"),
             path: '/accounting/bco-type',
         }
     ], [])
@@ -49,32 +51,32 @@ const BcoTypeContainer = ({...rest}) => {
 
     const ModalBody = ({data, rowId = null}) => <Row>
         <Col xs={6}>
-            <Field name={'policy_type_name'} type={'input'} label={'Название'}
+            <Field name={'policy_type_name'} type={'input'} label={t("Название")}
                    defaultValue={rowId ? get(data, 'policy_type_name') : null}
                    params={{required: true}}/>
         </Col>
         <Col xs={6}>
-            <Field name={'policy_size_id'} options={policyFormatList} type={'select'} label={'Policy size'}
+            <Field name={'policy_size_id'} options={policyFormatList} type={'select'} label={t("Policy size")}
                    defaultValue={rowId ? get(data, 'policy_size_id') : null}
                    params={{required: true}}/>
         </Col>
         <Col xs={6}>
-            <Field isMulti name={'language'} options={languageList} type={'select'} label={'Language'}
+            <Field isMulti name={'language'} options={languageList} type={'select'} label={t("Language")}
                    defaultValue={rowId ? get(data, 'language') : null}
                    params={{required: true}}/>
         </Col>
         <Col xs={6}>
-            <Field name={'policy_series'} type={'input'} label={'Policy series'}
+            <Field name={'policy_series'} type={'input'} label={t("Policy series")}
                    defaultValue={rowId ? get(data, 'policy_series') : null}
                    params={{required: true}}/>
         </Col>
         <Col xs={6}>
-            <Field name={'policy_number_of_digits'} type={'input'} label={'Digit number'}
+            <Field name={'policy_number_of_digits'} type={'input'} label={t("Digit number")}
                    defaultValue={rowId ? get(data, 'policy_number_of_digits') : null}
                    params={{required: true, valueAsNumber: true}}/>
         </Col>
         <Col xs={6}>
-            <Field name={'status'} options={bcoStatusList} type={'select'} label={'Policy status'}
+            <Field name={'status'} options={bcoStatusList} type={'select'} label={t("Policy status")}
                    defaultValue={rowId ? get(data, 'status') : null}
                    params={{required: true}}/>
         </Col>
@@ -87,35 +89,35 @@ const BcoTypeContainer = ({...rest}) => {
                     {
                         id: 1,
                         key: 'policy_type_name',
-                        title: 'Название'
+                        title: t("Название")
                     },
                     {
                         id: 2,
                         key: 'policy_size_id.name',
-                        title: 'Size'
+                        title: t("Size")
                     },
                     {
                         id: 3,
                         key: 'status.name',
-                        title: 'Status'
+                        title: t("Status")
                     },
                     {
                         id: 33,
                         key: 'language',
-                        title: 'Language',
+                        title: t("Language"),
                         isArray: true,
                         arrayKey: 'name'
                     },
                     {
                         id: 4,
                         key: 'policy_number_of_digits',
-                        title: 'Digit number'
+                        title: t("Digit number")
                     },
                 ]}
                 keyId={KEYS.typeofbco}
                 url={URLS.bcoType}
                 listUrl={`${URLS.bcoType}/list`}
-                title={'BCO types'}
+                title={t("BCO types")}
                 responseDataKey={'data.data'}
             />
         </>

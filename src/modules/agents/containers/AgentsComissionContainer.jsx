@@ -31,12 +31,12 @@ const AgentsCommissionContainer = () => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Агенты',
+            title: t("Агенты"),
             path: '/agents',
         },
         {
             id: 2,
-            title: 'Страховые агенты',
+            title: t("Страховые агенты"),
             path: '/agents/insurance-agents',
         }
     ], [])
@@ -146,7 +146,7 @@ const AgentsCommissionContainer = () => {
                         </Form>
                     </Col>
                     {!productId ? <EmptyPage  /> :
-                        <Form formRequest={commissionSet} footer={ <Button className={'mt-30'} type={"submit"} lg>Установить выбранным
+                        <Form formRequest={commissionSet} footer={ <Button className={'mt-30'} type={"submit"} lg>{t("Установить выбранным")}
                     </Button>}>
                         <div className={'horizontal-scroll'}>
                         <Table hideThead={false}

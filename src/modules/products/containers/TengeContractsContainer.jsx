@@ -39,12 +39,12 @@ const TengeContractsContainer = ({id, ...rest}) => {
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Продукты',
+            title: t("Продукты"),
             path: '/products',
         },
         {
             id: 2,
-            title: "Tenge bank contracts",
+            title: t("Tenge bank contracts"),
             path: '#',
         }
     ], [])

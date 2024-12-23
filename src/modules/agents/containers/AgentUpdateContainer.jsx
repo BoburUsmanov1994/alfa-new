@@ -252,7 +252,7 @@ const AgentsUpdateContainer = () => {
                         setPersonTypeForSelect(val, name);
                         setFieldValue(val, name);
                     }}
-                    footer={<Button>Save</Button>}
+                    footer={<Button>{t("Save")}</Button>}
                     formRequest={(values) => create(values)}
                 >
                     <Row>
@@ -261,7 +261,7 @@ const AgentsUpdateContainer = () => {
                                 defaultValue={get(agent,'data.branch')}
                                 name={"branch"}
                                 type={"select"}
-                                label={"Branch"}
+                                label={t("Branch")}
                                 options={branches}
                                 params={{ required: true }}
                             />
@@ -271,7 +271,7 @@ const AgentsUpdateContainer = () => {
                                 name={"inn"}
                                 defaultValue={get(agent,'data.inn')}
                                 type={"input-mask"}
-                                label={"INN"}
+                                label={t("INN")}
                                 property={{ mask: "999999999", maskChar: "_", }}
                                 params={{ pattern: /^[0-9]*$/ }}
                             />
@@ -282,7 +282,7 @@ const AgentsUpdateContainer = () => {
                                 defaultValue={get(agent,'data.agreementnumber')}
                                 name={"agreementnumber"}
                                 type={"input"}
-                                label={"agreementnumber"}
+                                label={t("agreementnumber")}
                                 params={{ required: true }}
                             />
                         </Col>
@@ -292,7 +292,7 @@ const AgentsUpdateContainer = () => {
                                 name={"agreementdate"}
                                 dateFormat={"MM/DD/YYYY"}
                                 type={"datepicker"}
-                                label={"agreementdate"}
+                                label={t("agreementdate")}
                                 params={{ required: true }}
                             />
                         </Col>
@@ -303,14 +303,14 @@ const AgentsUpdateContainer = () => {
                                 params={{ required: true }}
                                 name={"typeofagent"}
                                 type={"select"}
-                                label={"Agent type"}
+                                label={t("Agent type")}
                                 options={agentTypes}
                             />
                         </Col>
                         <Col xs={4}>
                             <Field
                                 defaultValue={get(agent,'data.isbeneficiary')}
-                                label={"isbeneficiary"}
+                                label={t("isbeneficiary")}
                                 type={"switch"}
                                 name={"isbeneficiary"}
                                 params={{ required: true }}
@@ -319,7 +319,7 @@ const AgentsUpdateContainer = () => {
                         <Col xs={4}>
                             <Field
                                 defaultValue={get(agent,'data.isfixedpolicyholder')}
-                                label={"isfixedpolicyholder"}
+                                label={t("isfixedpolicyholder")}
                                 type={"switch"}
                                 name={"isfixedpolicyholder"}
                                 params={{ required: true }}
@@ -329,7 +329,7 @@ const AgentsUpdateContainer = () => {
                             <Field
                                 name={"typeofpersons"}
                                 type={"select"}
-                                label={"Person type"}
+                                label={t("Person type")}
                                 defaultValue={get(agent,'data.person') ? PERSON_TYPE.person : PERSON_TYPE.organization}
                                 options={[
                                     {
@@ -354,7 +354,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.name')}
                                         name={"person.name"}
                                         type={"input"}
-                                        label={"name"}
+                                        label={t("name")}
                                         params={{ required: true }}
                                     />
                                 </Col>
@@ -363,7 +363,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.secondname')}
                                         name={"person.secondname"}
                                         type={"input"}
-                                        label={"secondname"}
+                                        label={t("secondname")}
                                         params={{ required: true }}
                                     />
                                 </Col>
@@ -371,7 +371,7 @@ const AgentsUpdateContainer = () => {
                                     <Field
                                         name={"person.middlename"}
                                         type={"input"}
-                                        label={"middlename"}
+                                        label={t("Middlename")}
                                         defaultValue={get(agent,'data.person.middlename')}
                                         params={{ required: true }}
                                     />
@@ -381,7 +381,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.gender')}
                                         name={"person.gender"}
                                         type={"select"}
-                                        label={"Gender"}
+                                        label={t("Gender")}
                                         options={genders}
                                         params={{ required: true }}
                                     />
@@ -392,7 +392,7 @@ const AgentsUpdateContainer = () => {
                                         name={"person.dateofbirth"}
                                         dateFormat={"MM/DD/YYYY"}
                                         type={"datepicker"}
-                                        label={"dateofbirth"}
+                                        label={t("dateofbirth")}
                                         params={{ required: true }}
                                     />
                                 </Col>
@@ -402,7 +402,7 @@ const AgentsUpdateContainer = () => {
                                         name={"person.citizenship"}
                                         type={"select"}
                                         options={citizenshipList}
-                                        label={"Citizenship"}
+                                        label={t("Citizenship")}
                                         params={{ required: true }}
                                     />
                                 </Col>
@@ -412,7 +412,7 @@ const AgentsUpdateContainer = () => {
                                         name={"person.typeofdocument"}
                                         type={"select"}
                                         options={documentTypeList}
-                                        label={"typeofdocument"}
+                                        label={t("typeofdocument")}
                                         params={{ required: true }}
                                     />
                                 </Col>
@@ -421,7 +421,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.passportSeries')}
                                         name={"person.passportSeries"}
                                         type={"input-mask"}
-                                        label={"Passport seria"}
+                                        label={t("Passport seria")}
                                         property={{ mask: "aa", maskChar: "_" }}
                                         params={{ required: true }}
                                     />
@@ -431,7 +431,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.passportNumber')}
                                         name={"person.passportNumber"}
                                         type={"input-mask"}
-                                        label={"Passport number"}
+                                        label={t("Passport number")}
                                         property={{ mask: "9999999", maskChar: "_" }}
                                         params={{ required: true }}
                                     />
@@ -441,7 +441,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.pin')}
                                         name={"person.pin"}
                                         type={"input-mask"}
-                                        label={"PINFL"}
+                                        label={t("PINFL")}
                                         property={{ mask: "99999999999999", maskChar: "_" }}
                                     />
                                 </Col>
@@ -450,7 +450,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.passportissuancedate')}
                                         name={"person.passportissuancedate"}
                                         dateFormat={"MM/DD/YYYY"}
-                                        type={"datepicker"}
+                                        type={t("datepicker")}
                                         label={"passportissuancedate"}
                                     />
                                 </Col>
@@ -459,7 +459,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.passportissuedby')}
                                         name={"person.passportissuedby"}
                                         type={"input"}
-                                        label={"passportissuedby"}
+                                        label={t("passportissuedby")}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -467,7 +467,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.region')}
                                         name={"person.region"}
                                         type={"select"}
-                                        label={"Region"}
+                                        label={t("Region")}
                                         options={regions}
                                         params={{ required: true }}
                                     />
@@ -477,7 +477,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.district')}
                                         name={"person.district"}
                                         type={"select"}
-                                        label={"District"}
+                                        label={t("District")}
                                         options={districts}
                                         params={{ required: true }}
                                     />
@@ -488,7 +488,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.address')}
                                         name={"person.address"}
                                         type={"input"}
-                                        label={"address"}
+                                        label={t("address")}
                                         params={{ required: true }}
                                     />
                                 </Col>
@@ -497,7 +497,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.postcode')}
                                         name={"person.postcode"}
                                         type={"input"}
-                                        label={"postcode"}
+                                        label={t("postcode")}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -511,7 +511,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.telephonenumber')}
                                         name={"person.telephonenumber"}
                                         type={"input"}
-                                        label={"telephonenumber"}
+                                        label={t("telephonenumber")}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -519,7 +519,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.emailforcontact')}
                                         name={"person.emailforcontact"}
                                         type={"input"}
-                                        label={"emailforcontact"}
+                                        label={t("emailforcontact")}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -527,7 +527,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.personalaccount')}
                                         name={"person.personalaccount"}
                                         type={"input"}
-                                        label={"personalaccount"}
+                                        label={t("personalaccount")}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -535,7 +535,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.transitaccount')}
                                         name={"person.transitaccount"}
                                         type={"input"}
-                                        label={"transitaccount"}
+                                        label={t("transitaccount")}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -546,7 +546,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.nameofbank')}
                                         name={"person.nameofbank"}
                                         type={"input"}
-                                        label={"nameofbank"}
+                                        label={t("nameofbank")}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -554,7 +554,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.person.numberofcard')}
                                         name={"person.numberofcard"}
                                         type={"input"}
-                                        label={"numberofcard"}
+                                        label={t("numberofcard")}
                                     />
                                 </Col>
                             </>
@@ -566,7 +566,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.organization.nameoforganization')}
                                         name={"organization.nameoforganization"}
                                         type={"input"}
-                                        label={"nameoforganization"}
+                                        label={t("nameoforganization")}
                                         params={{ required: true }}
                                     />
                                 </Col>
@@ -575,7 +575,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.organization.oked')}
                                         name={"organization.oked"}
                                         type={"input"}
-                                        label={"oked"}
+                                        label={t("oked")}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -583,7 +583,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.organization.mfo')}
                                         name={"organization.mfo"}
                                         type={"input"}
-                                        label={"mfo"}
+                                        label={t("mfo")}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -591,7 +591,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.organization.nameofbank')}
                                         name={"organization.nameofbank"}
                                         type={"input"}
-                                        label={"nameofbank"}
+                                        label={t("nameofbank")}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -599,7 +599,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.organization.innofbank')}
                                         name={"organization.innofbank"}
                                         type={"input"}
-                                        label={"innofbank"}
+                                        label={t("innofbank")}
                                     />
                                 </Col>
 
@@ -608,7 +608,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.organization.scheduledaccount')}
                                         name={"organization.scheduledaccount"}
                                         type={"input"}
-                                        label={"scheduledaccount"}
+                                        label={t("scheduledaccount")}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -616,7 +616,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.organization.region')}
                                         name={"organization.region"}
                                         type={"select"}
-                                        label={"Region"}
+                                        label={t("Region")}
                                         options={regions}
                                         params={{ required: true }}
                                     />
@@ -626,7 +626,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.organization.district')}
                                         name={"organization.district"}
                                         type={"select"}
-                                        label={"District"}
+                                        label={t("District")}
                                         options={districts}
                                         params={{ required: true }}
                                     />
@@ -637,7 +637,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.organization.address')}
                                         name={"organization.address"}
                                         type={"input"}
-                                        label={"address"}
+                                        label={t("address")}
                                         params={{ required: true }}
                                     />
                                 </Col>
@@ -646,7 +646,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.organization.postcode')}
                                         name={"organization.postcode"}
                                         type={"input"}
-                                        label={"postcode"}
+                                        label={t("postcode")}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -654,7 +654,7 @@ const AgentsUpdateContainer = () => {
                                         defaultValue={get(agent,'data.organization.checkingaccount')}
                                         name={"organization.checkingaccount"}
                                         type={"input"}
-                                        label={"checkingaccount"}
+                                        label={t("checkingaccount")}
                                     />
                                 </Col>
                                 <Col xs={8}>
@@ -664,7 +664,7 @@ const AgentsUpdateContainer = () => {
                                         name={"organization.employees"}
                                         type={"select"}
                                         options={employeeList}
-                                        label={"Employees"}
+                                        label={t("Employees")}
                                         params={{ required: true }}
                                     />
                                 </Col>
@@ -673,7 +673,7 @@ const AgentsUpdateContainer = () => {
                         <Col xs={4}>
                             <Field
                                 defaultValue={get(agent,'data.isUsedourpanel')}
-                                label={"isUsedourpanel"}
+                                label={t("isUsedourpanel")}
                                 type={"switch"}
                                 name={"isUsedourpanel"}
                                 params={{ required: true }}
@@ -682,7 +682,7 @@ const AgentsUpdateContainer = () => {
                         <Col xs={4}>
                             <Field
                                 defaultValue={get(agent,'data.isUserRestAPI')}
-                                label={"isUserRestAPI"}
+                                label={t("isUserRestAPI")}
                                 type={"switch"}
                                 name={"isUserRestAPI"}
                                 params={{ required: true }}
@@ -692,7 +692,7 @@ const AgentsUpdateContainer = () => {
 
                     <Row className={"mb-15"}>
                         <Col xs={12}>
-                            <Title>Тарифы</Title>
+                            <Title>{t("Тарифы")}</Title>
                         </Col>
                     </Row>
 
@@ -732,7 +732,7 @@ const AgentsUpdateContainer = () => {
                                 </Col>
                                 <Col xs={3}>
                                     <Field
-                                        label={"Разрешить заключение договоров"}
+                                        label={t("Разрешить заключение договоров")}
                                         type={"switch"}
                                         name={`tariff[${get(agent, "data.tariff", [])?.length}].allowAgreement`}
                                         defaultValue={get(findSelectedProductTarif(productId),'tariff.allowAgreement',false)}
@@ -740,7 +740,7 @@ const AgentsUpdateContainer = () => {
                                 </Col>
                                 <Col xs={3}>
                                     <Field
-                                        label={"Лимит ответственности"}
+                                        label={t("Лимит ответственности")}
                                         type={"number-format-input"}
                                         name={`tariff[${get(agent, "data.tariff", [])?.length}].limitOfAgreement`}
                                         defaultValue={get(findSelectedProductTarif(productId),'tariff.limitOfAgreement',0)}
@@ -753,7 +753,7 @@ const AgentsUpdateContainer = () => {
                                         type={"button"}
                                         className={"mb-25"}
                                     >
-                                        Применить
+                                        {t("Применить")}
                                     </Button>
                                 </Col>
                             </Row>

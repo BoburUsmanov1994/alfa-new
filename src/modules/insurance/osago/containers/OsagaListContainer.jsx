@@ -39,12 +39,12 @@ const ListContainer = () => {
     () => [
       {
         id: 1,
-        title: "ОСАГО",
+        title: t("ОСАГО"),
         path: "insurance/osago",
       },
       {
         id: 2,
-        title: "ОСАГО",
+        title: t("ОСАГО"),
         path: "insurance/osago",
       },
     ],
@@ -60,7 +60,7 @@ const ListContainer = () => {
       <Field
         name={"name"}
         type={"input"}
-        label={"Название продукта"}
+        label={t("Название продукта")}
         defaultValue={rowId ? get(data, "name") : null}
         params={{ required: true }}
       />
@@ -75,17 +75,17 @@ const ListContainer = () => {
           {
             id: 3,
             key: "seria",
-            title: "Policy seria",
+            title: t("Policy seria"),
           },
           {
             id: 4,
             key: "number",
-            title: "Policy number",
+            title: t("Policy number"),
           },
           {
             id: 5,
             key: "owner",
-            title: "Owner",
+            title: t("Owner"),
             render: (row) =>
               get(row, "owner.applicantIsOwner")
                 ? get(row, "applicant.person")
@@ -104,7 +104,7 @@ const ListContainer = () => {
           {
             id: 55,
             key: "applicant",
-            title: "Applicant",
+            title: t("Applicant"),
             render: (row) =>
               get(row, "applicant.person")
                 ? `${get(row, "applicant.person.fullName.lastname")} ${get(
@@ -116,13 +116,13 @@ const ListContainer = () => {
           {
             id: 44,
             key: "vehicle",
-            title: "Vehicle",
+            title: t("Vehicle"),
             render: (row) => get(row, "vehicle.modelCustomName"),
           },
           {
             id: 6,
             key: "cost.insurancePremium",
-            title: "Insurance premium",
+            title: t("Insurance premium"),
             render: (row) => (
               <NumberFormat
                 displayType={"text"}
@@ -134,7 +134,7 @@ const ListContainer = () => {
           {
             id: 7,
             key: "cost.sumInsured",
-            title: "Insurance sum",
+            title: t("Insurance sum"),
             render: (row) => (
               <NumberFormat
                 displayType={"text"}
@@ -146,7 +146,7 @@ const ListContainer = () => {
           {
             id: 8,
             key: "cost.insurancePremiumPaidToInsurer",
-            title: "Оплачено",
+            title: t("Оплачено"),
             render: (row) =>
               get(row, "status") == "payed" ? (
                 <NumberFormat
@@ -161,7 +161,7 @@ const ListContainer = () => {
           {
             id: 9,
             key: "status",
-            title: "Status",
+            title: t("Status"),
           },
         ]}
         keyId={[KEYS.osagoList,filter]}
@@ -216,7 +216,7 @@ const ListContainer = () => {
                     />
                 </Col>
 
-                <Col xs={3}><Field type={'select'} label={'Status'} name={'status'}
+                <Col xs={3}><Field type={'select'} label={t("Status")} name={'status'}
                                    options={[{value: 'new', label: 'new'},{value: 'payed', label: 'paid'}]}
                                    defaultValue={get(filter, 'status')}
                 /></Col>
@@ -235,7 +235,7 @@ const ListContainer = () => {
                     />
                 </Col>
 
-                <Col xs={3}><Field type={'select'} label={'Филиал'} name={'branch'}
+                <Col xs={3}><Field type={'select'} label={t("Филиал")} name={'branch'}
                                    options={branches} defaultValue={get(filter, 'branch')}
                                    isDisabled={!includes([config.ROLES.admin], get(user, 'role.name'))}/></Col>
                 <Col xs={9}>

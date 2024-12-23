@@ -13,21 +13,23 @@ import StepThree from "../components/agreement-create/StepThree";
 import StepFour from "../components/agreement-create/StepFour";
 import StepFive from "../components/agreement-create/StepFive";
 import StepSix from "../components/agreement-create/StepSix";
+import { useTranslation } from "react-i18next";
 
 const AgreementCreateContainer = ({ ...rest }) => {
   const setBreadcrumbs = useStore((state) =>
     get(state, "setBreadcrumbs", () => {})
   );
+  const {t} = useTranslation()
   const breadcrumbs = useMemo(
     () => [
       {
         id: 1,
-        title: "Agreements",
+        title: t("Agreements"),
         path: "/agreements",
       },
       {
         id: 2,
-        title: "Add agreement",
+        title: t("Add agreement"),
         path: "/agreements/create",
       },
     ],
@@ -51,7 +53,7 @@ const AgreementCreateContainer = ({ ...rest }) => {
       <Section>
         <Row>
           <Col xs={12}>
-            <Title>Продажа страховых полисов</Title>
+            <Title>{t("Продажа страховых полисов")}</Title>
           </Col>
         </Row>
         <Row>

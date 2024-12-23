@@ -72,7 +72,7 @@ const CreateContainer = ({
             {isLoadingPolicy && <ContentLoader/>}
             <Row className={'mb-15'} align={'center'}>
                 <Col xs={12}>
-                    <Title>Add policy</Title>
+                    <Title>{t("Add policy")}</Title>
                 </Col>
             </Row>
             <Form getValueFromField={(value, name) => setFilter(prev => ({...prev, [name]: value}))}

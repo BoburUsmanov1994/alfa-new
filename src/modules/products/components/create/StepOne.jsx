@@ -249,7 +249,7 @@ const StepOne = ({id = null, ...props}) => {
                                                 defaultValue={get(riskItem, 'riskType')}
                                                 property={{
                                                     hideLabel: true,
-                                                    placeholder: t('Выберите группу  риска'),
+                                                    placeholder: t('Выберите группу риска'),
                                                     onChange: (val) => setRiskItem(prev => ({...prev, riskType: val}))
                                                 }}/>
                                         </Col>

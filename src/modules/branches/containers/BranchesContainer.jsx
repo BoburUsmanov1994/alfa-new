@@ -4,21 +4,22 @@ import {get, isEqual} from "lodash";
 import GridView from "../../../containers/grid-view/grid-view";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
+import { useTranslation } from 'react-i18next';
 
 const BranchesContainer = ({...rest}) => {
 
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
-
+    const {t} = useTranslation()
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Справочники',
+            title: t("Справочники"),
             path: '/handbook',
         },
         {
             id: 2,
-            title: 'Branches',
+            title: t("Branches"),
             path: '/handbook/branches',
         }
     ], [])
@@ -34,18 +35,18 @@ const BranchesContainer = ({...rest}) => {
                     {
                         id: 1,
                         key: 'branchName',
-                        title: 'Branch name '
+                        title: t("Branch name")
                     },
                     {
                         id: 2,
                         key: 'fondId',
-                        title: 'Fond id'
+                        title: t("Fond id")
                     },
                 ]}
                 keyId={KEYS.branches}
                 url={URLS.branches}
                 listUrl={`${URLS.branches}/list`}
-                title={'Branches'}
+                title={t("Branches")}
                 responseDataKey={'data.data'}
                 // viewUrl={'/branches/view'}
                 // createUrl={'/branches/create'}

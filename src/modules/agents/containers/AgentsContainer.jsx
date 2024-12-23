@@ -8,22 +8,24 @@ import {Download, RefreshCcw} from "react-feather";
 import {usePostQuery} from "../../../hooks/api";
 import {ContentLoader} from "../../../components/loader";
 import config from "../../../config";
+import { useTranslation } from 'react-i18next';
 
 const AgentsContainer = ({...rest}) => {
 
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
+    const {t} = useTranslation()
     const {mutate:generateAgentAgreement,isLoading} = usePostQuery({listKeyId:[KEYS.agents,1]})
 
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Агенты',
+            title: t("Агенты"),
             path: '/agents',
         },
         {
             id: 2,
-            title: 'Страховые агенты',
+            title: t("Страховые агенты"),
             path: '/agents/insurance-agents',
         }
     ], [])
@@ -48,38 +50,38 @@ const AgentsContainer = ({...rest}) => {
                     {
                         id: 1,
                         key: 'inn',
-                        title: 'INN'
+                        title: t("INN")
                     },
                     {
                         id: 3,
                         key: 'typeofagent.name',
-                        title: 'Agent type'
+                        title: t("Agent type")
                     },
                     {
                         id: 4,
                         key: 'organization.nameoforganization',
-                        title: 'organization name'
+                        title: t("organization name")
                     },
                     {
                         id: 5,
                         key: 'person.secondname',
-                        title: 'Lastname'
+                        title: t("Lastname")
                     },
                     {
                         id: 55,
                         key: 'person.name',
-                        title: 'Firstname'
+                        title: t("Firstname")
                     },
 
                     {
                         id: 556,
                         key: 'person.middlename',
-                        title: 'Middlename'
+                        title: t("Middlename")
                     },
                     {
                         id: 555,
                         key: 'agreementPath',
-                        title: 'Agreement file',
+                        title: t("Agreement file"),
                         render:(_tr)=>{
                             return get(_tr,'agreementPath') && <a href={`${config.FILE_URL}/${get(_tr,'agreementPath')}`} target={'_blank'}><Download /></a>
                         }
@@ -88,7 +90,7 @@ const AgentsContainer = ({...rest}) => {
                 keyId={KEYS.agents}
                 url={URLS.agents}
                 listUrl={`${URLS.agents}/list`}
-                title={'Страховые агенты'}
+                title={t("Страховые агенты")}
                 responseDataKey={'data.data'}
                 createUrl={'/agents/create'}
                 updateUrl={'/agents/update'}

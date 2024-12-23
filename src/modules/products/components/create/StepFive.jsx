@@ -13,11 +13,13 @@ import {OverlayLoader} from "../../../../components/loader";
 import {URLS} from "../../../../constants/url";
 import {getSelectOptionsListFromData} from "../../../../utils";
 import FilePreview from "../../../../components/file-preview";
+import { useTranslation } from 'react-i18next';
 
 const StepFive = ({id = null, ...props}) => {
 
     const setProduct = useSettingsStore(state => get(state, 'setProduct', () => {
     }))
+    const {t} = useTranslation()
     const resetProduct = useSettingsStore(state => get(state, 'resetProduct', () => {
     }))
     const resetRiskList = useSettingsStore(state => get(state, 'resetRiskList', []))
@@ -122,78 +124,78 @@ const StepFive = ({id = null, ...props}) => {
                     <Form formRequest={nextStep}>
                         <Row>
                             <Col xs={12}>
-                                <Title>Проверьте данные </Title>
+                                <Title>{t("Проверьте данные")} </Title>
                             </Col>
                         </Row>
                         <Row className={'mb-25'}>
                             <Col xs={6}>
                                 <Table thead={['1', '2']}>
                                     <tr>
-                                        <td>Категория</td>
+                                        <td>{t("Категория")}</td>
                                         <td>
                                             <strong>{get(findItem(groups, get(product, 'group', null)), 'label', '-')}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Под категория</td>
+                                        <td>{t("Под категория")}</td>
                                         <td>
                                             <strong>{get(findItem(subGroups, get(product, 'subGroup', null)), 'label', '-')}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Код назначения</td>
+                                        <td>{t("Код назначения")}</td>
                                         <td><strong>{get(product, 'code', '-')}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td>Работа по версии продукта (Версия продукта)</td>
+                                        <td>{t("Работа по версии продукта (Версия продукта)")}</td>
                                         <td><strong>{get(product, 'version', '-')}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td>Тип страховщика</td>
+                                        <td>{t("Тип страховщика")}</td>
                                         <td>
                                             <strong>{findItem(persons, get(product, 'personType', []), true)}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Наименование продукта</td>
+                                        <td>{t("Наименование продукта")}</td>
                                         <td><strong>{get(product, 'name', '-')}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td>Статус договора</td>
+                                        <td>{t("Статус договора")}</td>
                                         <td>
                                             <strong>{get(findItem(status, get(product, 'status', null)), 'label', '-')}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Требует разрешения</td>
+                                        <td>{t("Требует разрешения")}</td>
                                         <td><strong>{get(product, 'isRequirePermission', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Тип полиса</td>
+                                        <td>{t("Тип полиса")}</td>
                                         <td>
                                             <strong>{findItem(polices, get(product, 'policyTypes', null), true)}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Разрешить несколько агентов</td>
+                                        <td>{t("Разрешить несколько агентов")}</td>
                                         <td><strong>{get(product, 'allowMultipleAgents', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Имеет фиксированный превентивных мероприятий</td>
+                                        <td>{t("Имеет фиксированный превентивных мероприятий")}</td>
                                         <td>
                                             <strong>{get(product, 'fixedPreventiveMeasures', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Разрешить иностранную валюту</td>
+                                        <td>{t("Разрешить иностранную валюту")}</td>
                                         <td>
                                             <strong>{get(product, 'allowForeignCurrency', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Разрешение изменение франшизы</td>
+                                        <td>{t("Разрешение изменение франшизы")}</td>
                                         <td>
                                             <strong>{get(product, 'allowChangeFranchise', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
@@ -203,64 +205,64 @@ const StepFive = ({id = null, ...props}) => {
                             <Col xs={6}>
                                 <Table thead={['1', '2']}>
                                     {get(product, 'applicationForm') && <tr>
-                                        <td>Форма анкеты</td>
+                                        <td>{t("Форма анкеты")}</td>
 
                                         <td>{get(product, 'applicationForm') && <FilePreview fileId={get(product, 'applicationForm')} />}</td>
                                     </tr>}
                                     {get(product, 'contractForm') && <tr>
-                                        <td>Договор</td>
+                                        <td>{t("Договор")}</td>
                                         <td>
                                             {get(product, 'contractForm') && <FilePreview fileId={get(product, 'applicationForm')} />}
                                             </td>
                                     </tr>}
                                     {get(product, 'additionalDocuments') && <tr>
-                                        <td>Приложения</td>
+                                        <td>{t("Приложения")}</td>
                                         <td>
                                             {get(product, 'additionalDocuments') && <FilePreview fileId={get(product, 'applicationForm')} />}
                                            </td>
                                     </tr>}
                                     <tr>
-                                        <td>Имеет фиксированного страхователя</td>
+                                        <td>{t("Имеет фиксированного страхователя")}</td>
                                         <td>
                                             <strong>{get(product, 'hasFixedPolicyHolder', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Имеет выгодоприобретеля</td>
+                                        <td>{t("Имеет выгодоприобретеля")}</td>
                                         <td><strong>{get(product, 'hasBeneficary', false) ? 'Да' : 'Нет'}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td>Имеет фиксированного выгодоприобретеля</td>
+                                        <td>{t("Имеет фиксированного выгодоприобретеля")}</td>
                                         <td><strong>{get(product, 'hasFixedBeneficary', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Имеет фиксированную страховую сумму</td>
+                                        <td>{t("Имеет фиксированную страховую сумму")}</td>
                                         <td><strong>{get(product, 'hasFixedFee', false) ? 'Да' : 'Нет'}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td>Разрешить полис без оплаты</td>
+                                        <td>{t("Разрешить полис без оплаты")}</td>
                                         <td>
                                             <strong>{get(product, 'allowPolicyWithoutPayment', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Тип оплаты</td>
+                                        <td>{t("Тип оплаты")}</td>
                                         <td>
                                             <strong>{findItem(payments, get(product, 'paymentType', null), true)}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Имеет фиксированную комиссию</td>
+                                        <td>{t("Имеет фиксированную комиссию")}</td>
                                         <td><strong>{get(product, 'hasFixedFee', false) ? 'Да' : 'Нет'}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td>Имеет диапазон ставок</td>
+                                        <td>{t("Имеет диапазон ставок")}</td>
                                         <td><strong>{get(product, 'hasBettingRange', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Имеет франшизу</td>
+                                        <td>{t("Имеет франшизу")}</td>
                                         <td>
                                             <strong>{get(product, 'allowChangeFranchise', false) ? 'Да' : 'Нет'}</strong>
                                         </td>
@@ -271,10 +273,10 @@ const StepFive = ({id = null, ...props}) => {
                         <Row>
                             <Col xs={12} className={'mt-32'}>
                                 <Button className={'mr-16'} type={'button'} onClick={reset} danger outlined
-                                        back>Отменить</Button>
+                                        back>{t("Отменить")}</Button>
                                 <Button dark className={'mr-16'} type={'button'} onClick={prevStep}
-                                        outlined>Назад</Button>
-                                <Button type={'submit'} success>Подтвердить</Button>
+                                        outlined>{t("Назад")}</Button>
+                                <Button type={'submit'} success>{t("Подтвердить")}</Button>
                             </Col>
                         </Row>
                     </Form>

@@ -10,6 +10,7 @@ import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
 import {getSelectOptionsListFromData} from "../../../../utils";
+import { useTranslation } from 'react-i18next';
 
 const StepThree = ({...props}) => {
     const [show, setShow] = useState({
@@ -21,6 +22,7 @@ const StepThree = ({...props}) => {
         Isfixedfee: false,
         Isfixedpreventivemeasures: false
     })
+    const {t} = useTranslation();
     const setProduct = useSettingsStore(state => get(state, 'setProduct', () => {
     }))
     const resetProduct = useSettingsStore(state => get(state, 'resetProduct', () => {
@@ -77,14 +79,14 @@ const StepThree = ({...props}) => {
                 <Form formRequest={nextStep} getValueFromField={showField}>
                     <Row className={'mb-25'}>
                         <Col xs={4}>
-                            <Field label={'Имеет фиксированного страхователя'}
+                            <Field label={t("Имеет фиксированного страхователя")}
                                    type={'switch'}
                                    name={'hasFixedPolicyHolder'}
                                    defaultValue={get(product,'hasFixedPolicyHolder',false)}
                                    property={{hasRequiredLabel: true}}
                             />
                             {get(show, 'hasFixedPolicyHolder', false) &&
-                                <Field label={'Имеет фиксированного страхователя'}
+                                <Field label={t("Имеет фиксированного страхователя")}
                                        type={'select'}
                                        name={'fixedPolicyHolder'}
                                        property={{hideLabel: true}}
@@ -93,21 +95,21 @@ const StepThree = ({...props}) => {
                                 />}
                         </Col>
                         <Col xs={4}>
-                            <Field label={'Имеет  выгодоприобретеля'}
+                            <Field label={t("Имеет  выгодоприобретеля")}
                                    type={'switch'}
                                    name={'hasBeneficary'}
                                    defaultValue={get(product,'hasBeneficary',false)}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field label={'Имеет  фиксированного выгодоприобретеля'}
+                            <Field label={t("Имеет  фиксированного выгодоприобретеля")}
                                    type={'switch'}
                                    name={'hasFixedBeneficary'}
                                    defaultValue={get(product,'hasFixedBeneficary',false)}
 
                             />
                             {get(show, 'hasFixedBeneficary', false) &&
-                                <Field label={'Имеет фиксированного страхователя'}
+                                <Field label={t("Имеет фиксированного страхователя")}
                                        type={'select'}
                                        name={'fixedBeneficary'}
                                        property={{hideLabel: true}}
@@ -118,7 +120,7 @@ const StepThree = ({...props}) => {
                     </Row>
                     <Row className={'mb-25'}>
                         <Col xs={4}>
-                            <Field label={'Имеет фиксированную премию'}
+                            <Field label={t("Имеет фиксированную премию")}
                                    type={'switch'}
                                    name={'hasFixedPremium'}
                                    defaultValue={get(product,'hasFixedPremium',false)}
@@ -131,14 +133,14 @@ const StepThree = ({...props}) => {
                             />}
                         </Col>
                         <Col xs={4}>
-                            <Field label={'Имеет диапазон ставок'}
+                            <Field label={t("Имеет диапазон ставок")}
                                    type={'switch'}
                                    name={'hasBettingRange'}
                                    defaultValue={get(product,'hasBettingRange',false)}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field label={'Имеет фиксированную ставку'}
+                            <Field label={t("Имеет фиксированную ставку")}
                                    type={'switch'}
                                    name={'hasFixedRate'}
                                    defaultValue={get(product,'hasFixedRate',false)}
@@ -154,7 +156,7 @@ const StepThree = ({...props}) => {
 
                     <Row className={'mb-25'}>
                         <Col xs={4}>
-                            <Field label={'Имеет фиксированную страховую сумму'}
+                            <Field label={t("Имеет фиксированную страховую сумму")}
                                    type={'switch'}
                                    name={'hasFixedInsuranceSum'}
                                    defaultValue={get(product,'hasFixedInsuranceSum',false)}
@@ -167,7 +169,7 @@ const StepThree = ({...props}) => {
                             />}
                         </Col>
                         <Col xs={4}>
-                            <Field label={'Имеет фиксированную комиссию'}
+                            <Field label={t("Имеет фиксированную комиссию")}
                                    type={'switch'}
                                    name={'hasFixedFee'}
                                    defaultValue={get(product,'hasFixedFee',false)}
@@ -180,7 +182,7 @@ const StepThree = ({...props}) => {
                             />}
                         </Col>
                         <Col xs={4}>
-                            <Field label={'Имеет фиксированный превентивных мероприятий '}
+                            <Field label={t("Имеет фиксированный превентивных мероприятий")}
                                    type={'switch'}
                                    name={'hasFixedPreventiveMeasures'}
                                    defaultValue={get(product,'hasFixedPreventiveMeasures',false)}
@@ -195,21 +197,21 @@ const StepThree = ({...props}) => {
                     </Row>
                     <Row className={'mb-25'}>
                         <Col xs={4}>
-                            <Field label={'Разрешить полис без оплаты'}
+                            <Field label={t("Разрешить полис без оплаты")}
                                    type={'switch'}
                                    name={'allowPolicyWithoutPayment'}
                                    defaultValue={get(product,'allowPolicyWithoutPayment',false)}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field label={'Разрешить несколько агентов'}
+                            <Field label={t("Разрешить несколько агентов")}
                                    type={'switch'}
                                    name={'allowMultipleAgents'}
                                    defaultValue={get(product,'allowMultipleAgents',false)}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field label={'Разрешить изменение франшизы'}
+                            <Field label={t("Разрешить изменение франшизы")}
                                    type={'switch'}
                                    name={'allowChangeFranchise'}
                                    defaultValue={get(product,'allowChangeFranchise',false)}
@@ -218,14 +220,14 @@ const StepThree = ({...props}) => {
                     </Row>
                     <Row className={'mb-25'}>
                         <Col xs={4}>
-                            <Field label={'Разрешать иностранную валюту'}
+                            <Field label={t("Разрешать иностранную валюту")}
                                    type={'switch'}
                                    name={'allowForeignCurrency'}
                                    defaultValue={get(product,'allowForeignCurrency',false)}
                             />
                         </Col>
                         <Col xs={4}>
-                            <Field label={'Вид урегулирования претензии'}
+                            <Field label={t("Вид урегулирования претензии")}
                                    type={'select'}
                                    name={'claimSettlementType'}
                                    options={claimSettlements}
@@ -235,7 +237,7 @@ const StepThree = ({...props}) => {
                     </Row>
                     <Row className={'mb-25'}>
                         <Col xs={4}>
-                            <Field label={'Тип возмещения'}
+                            <Field label={t("Тип возмещения")}
                                    type={'radio-group'}
                                    name={'refundType'}
                                    options={refunds}
@@ -245,7 +247,7 @@ const StepThree = ({...props}) => {
                         <Col xs={4}>
                             <Field
                                 options={payments}
-                                label={'Тип оплаты'}
+                                label={t("Тип оплаты")}
                                 type={'checkbox'}
                                 name={'paymentType'}
                                 defaultValue={get(product,'paymentType')}
@@ -255,7 +257,7 @@ const StepThree = ({...props}) => {
                             <Field
                                 params={{required:true}}
                                 options={polices}
-                                label={'Тип полиса'}
+                                label={t("Тип полиса")}
                                 type={'checkbox'}
                                 name={'policyTypes'}
                                 property={{hasRequiredLabel:true}}
@@ -266,7 +268,7 @@ const StepThree = ({...props}) => {
                     <Row className={'mb-25'}>
                         <Col xs={4}>
                             <Field
-                                label={'Укажите минимальный срок страхования в днях'}
+                                label={t("Укажите минимальный срок страхования в днях")}
                                 type={'number-format-input'}
                                 name={'minimumInsuranceTerm'}
                                 defaultValue={get(product,'minimumInsuranceTerm',0)}
@@ -274,7 +276,7 @@ const StepThree = ({...props}) => {
                         </Col>
                         <Col xs={4}>
                             <Field
-                                label={'Укажите максимальный срок страхования в днях'}
+                                label={t("Укажите максимальный срок страхования в днях")}
                                 type={'number-format-input'}
                                 name={'maximumInsuranceTerm'}
                                 defaultValue={get(product,'maximumInsuranceTerm',0)}
@@ -284,10 +286,10 @@ const StepThree = ({...props}) => {
                     <Row>
                         <Col xs={12} className={'mt-32'}>
                             <Button className={'mr-16'} type={'button'} onClick={reset} danger outlined
-                                    back>Отменить</Button>
+                                    back>{t("Отменить")}</Button>
                             <Button dark className={'mr-16'} type={'button'} onClick={prevStep}
-                                    outlined>Назад</Button>
-                            <Button type={'submit'} success>Продолжить</Button>
+                                    outlined>{t("Назад")}</Button>
+                            <Button type={'submit'} success>{t("Продолжить")}</Button>
                         </Col>
                     </Row>
                 </Form>

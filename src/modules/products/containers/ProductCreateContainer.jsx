@@ -13,19 +13,21 @@ import StepThree from "../components/create/StepThree";
 import StepFour from "../components/create/StepFour";
 import StepFive from "../components/create/StepFive";
 import StepSix from "../components/create/StepSix";
+import { useTranslation } from 'react-i18next';
 
 const ProductCreateContainer = ({...rest}) => {
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
+    const {t} = useTranslation()
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Продукты',
+            title: t("Продукты"),
             path: '/products',
         },
         {
             id: 2,
-            title: 'Добавить продукт',
+            title: t("Добавить продукт"),
             path: '/products/create',
         }
     ], [])
@@ -50,7 +52,7 @@ const ProductCreateContainer = ({...rest}) => {
             <Section>
                 <Row>
                     <Col xs={12}>
-                        <Title>Добавить продукт</Title>
+                        <Title>{t("Добавить продукт")}</Title>
                     </Col>
                 </Row>
                 <Row>

@@ -65,7 +65,7 @@ const EndorsementCreateContainer = ({
             {isLoadingEndorsement && <ContentLoader/>}
             <Row className={'mb-15'} align={'center'}>
                 <Col xs={12}>
-                    <Title>Add endorsement</Title>
+                    <Title>{t("Add endorsement")}</Title>
                 </Col>
             </Row>
             <Form formRequest={({data}) => {

@@ -5,22 +5,23 @@ import GridView from "../../../containers/grid-view/grid-view";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import Field from "../../../containers/form/field";
+import { useTranslation } from 'react-i18next';
 
 const AgentStatusContainer = ({...rest}) => {
 
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
 
-
+    const {t} = useTranslation()
     const breadcrumbs = useMemo(() => [
         {
             id: 1,
-            title: 'Агенты',
+            title: t("Агенты"),
             path: '/agents',
         },
         {
             id: 2,
-            title: 'Agent status',
+            title: t("Agent status"),
             path: '/agents/status',
         }
     ], [])
@@ -48,7 +49,7 @@ const AgentStatusContainer = ({...rest}) => {
                 keyId={KEYS.accountstatus}
                 url={URLS.accountstatus}
                 listUrl={`${URLS.accountstatus}/list`}
-                title={'Agent status'}
+                title={t("Agent status")}
                 responseDataKey={'data.data'}
 
             />

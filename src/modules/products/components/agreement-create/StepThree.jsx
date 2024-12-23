@@ -83,11 +83,10 @@ const StepThree = ({...props}) => {
                       formRequest={nextStep}>
                     <Row className={'mb-15'}>
                         <Col xs={12}>
-                            <Title>Комиссия</Title>
+                            <Title>{t("Комиссия")}</Title>
                         </Col>
                         <Col xs={12} className={' mb-15 mt-15'}>
-                            <Button onClick={() => setOpenCommissionModal(true)} type={'button'}>Выбрать
-                                агентов</Button>
+                            <Button onClick={() => setOpenCommissionModal(true)} type={'button'}>{t("Выбрать агентов")}</Button>
                         </Col>
                         <Col xs={12} className={'horizontal-scroll'}>
                             <hr/>
@@ -158,7 +157,7 @@ const StepThree = ({...props}) => {
                     </Row>
                     <Row className={'mb-15'}>
                         <Col xs={12}>
-                            <Title>РПМ</Title>
+                            <Title>{t("РПМ")}</Title>
                         </Col>
                     </Row>
                     <Row>
@@ -166,14 +165,14 @@ const StepThree = ({...props}) => {
                             <Field
                                 name={`rpm.perDeductionsRPM`}
                                 type={'input'}
-                                label={'Процент отчислений в РПМ'}
+                                label={t("Процент отчислений в РПМ")}
                                 params={{
                                     required:true,
                                     valueAsNumber: true
                                 }}
                                 property={{
                                     type:'number',
-                                    placeholder: 'ввод значения',
+                                    placeholder: t("ввод значения"),
                                     max:get(head(get(commissionList,'data.data',[])),'rpm.maximumPercent',100) || 100,
                                     min:get(head(get(commissionList,'data.data',[])),'rpm.minimumPercent',0) || 0
                                 }}
@@ -184,11 +183,11 @@ const StepThree = ({...props}) => {
                                 disabled
                                 name={`rpm.amountDeductionsRPM`}
                                 type={'number-format-input'}
-                                label={'Сумма отчислений в РПМ'}
+                                label={t("Сумма отчислений в РПМ")}
                                 defaultValue={get(fields, 'rpm.perDeductionsRPM') * get(agreement, 'totalInsurancePremium') / 100}
                                 property={{
                                     disabled: true,
-                                    placeholder: 'ввод значения',
+                                    placeholder: t("ввод значения"),
                                 }}
                             />
                         </Col>
@@ -197,14 +196,14 @@ const StepThree = ({...props}) => {
                     <Row>
                         <Col xs={12} className={'mt-32'}>
                             <Button className={'mr-16'} type={'button'} onClick={reset} danger outlined
-                                    back>Отменить</Button>
+                                    back>{t("Отменить")}</Button>
                             <Button dark className={'mr-16'} type={'button'} onClick={prevStep}
-                                    outlined>Назад</Button>
-                            <Button type={'submit'} success>Продолжить</Button>
+                                    outlined>{t("Назад")}</Button>
+                            <Button type={'submit'} success>{t("Продолжить")}</Button>
                         </Col>
                     </Row>
                 </Form>
-                <Modal title={'Добавить комиссия'} visible={openCommissionModal}
+                <Modal title={t("Добавить комиссия")} visible={openCommissionModal}
                        hide={setOpenCommissionModal}>
 
                     <Form formRequest={({data}) => {

@@ -5,7 +5,7 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore} from "../../../../store";
-import {get, includes, find, isEqual, setWith} from "lodash"
+import {get, includes, find, isEqual, isNil, setWith} from "lodash"
 import Title from "../../../../components/ui/title";
 import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
@@ -18,6 +18,7 @@ import 'react-quill/dist/quill.snow.css'
 const StepFour = ({id = null, ...props}) => {
 
     const [fields, setFields] = useState({riskOptions: []})
+    const {t} = useTranslation()
     const [otherParams, setOtherParams] = useState({})
     const [tarif, setTarif] = useState({})
 
@@ -94,21 +95,21 @@ const StepFour = ({id = null, ...props}) => {
                 <Form formRequest={nextStep} getValueFromField={setFieldValue}>
                     <Row className={'mb-15'}>
                         <Col xs={12}>
-                            <Title>Тарифы</Title>
+                            <Title>{t("Тарифы")}</Title>
                         </Col>
                     </Row>
                     <Row className={'mb-25'}>
                         <Col xs={12}>
                             <Row align={'flex-end'}>
                                 <Col xs={3}>
-                                    <Field label={'Разрешить заключение договоров'}
+                                    <Field label={t("Разрешить заключение договоров")}
                                            type={'switch'}
                                            name={'tariff.allowAgreement'}
                                            defaultValue={get(product, 'tariff.allowAgreement', false)}
                                     />
                                 </Col>
                                 <Col xs={3}>
-                                    <Field label={'Лимит ответственности'}
+                                    <Field label={t("Лимит ответственности")}
                                            type={'number-format-input'}
                                            name={'tariff.limitOfAgreement'}
                                            defaultValue={get(product, 'tariff.limitOfAgreement', 0)}
@@ -160,7 +161,7 @@ const StepFour = ({id = null, ...props}) => {
                         </Col>}
                     </Row>
                     <Row className={'mb-25'}>
-                        <Col xs={12}><Title>Франшиза</Title></Col>
+                        <Col xs={12}><Title>{t("Франшиза")}</Title></Col>
                     </Row>
                     <Row className={'mb-25'}>
                         {get(product, 'risk', []).length > 0 && <Col xs={12} className={'horizontal-scroll'}>
@@ -265,10 +266,10 @@ const StepFour = ({id = null, ...props}) => {
                     <Row>
                         <Col xs={12} className={'mt-32'}>
                             <Button className={'mr-16'} type={'button'} onClick={reset} danger outlined
-                                    back>Отменить</Button>
+                                    back>{t("Отменить")}</Button>
                             <Button dark className={'mr-16'} type={'button'} onClick={prevStep}
-                                    outlined>Назад</Button>
-                            <Button type={'submit'} success>Продолжить</Button>
+                                    outlined>{t("Назад")}</Button>
+                            <Button type={'submit'} success>{t("Продолжить")}</Button>
                         </Col>
                     </Row>
                 </Form>
