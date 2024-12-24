@@ -672,6 +672,14 @@ const AgentsUpdateContainer = () => {
                         )}
                         <Col xs={4}>
                             <Field
+                                label={"UUID"}
+                                type={"input"}
+                                name={t("uuid")}
+                                defaultValue={get(agent,'data.uuid')}
+                            />
+                        </Col>
+                        <Col xs={4}>
+                            <Field
                                 defaultValue={get(agent,'data.isUsedourpanel')}
                                 label={t("isUsedourpanel")}
                                 type={"switch"}

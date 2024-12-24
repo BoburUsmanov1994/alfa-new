@@ -24,7 +24,6 @@ const i18config = i18n
     },
     backend: {
       customHeaders: {
-        // ...( get(JSON.parse(storage.get('settings')), 'state.token') && {auth: get(JSON.parse(storage.get('settings')), 'state.token')})
         Authorization: `Bearer ${get(
           JSON.parse(storage.get("settings")),
           "state.token"

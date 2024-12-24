@@ -618,7 +618,7 @@ const AgentsCreateContainer = () => {
                   <Field
                     name={"organization.address"}
                     type={"input"}
-                    label={t("address")} 
+                    label={t("address")}
                     params={{ required: true }}
                   />
                 </Col>
@@ -648,6 +648,13 @@ const AgentsCreateContainer = () => {
                 </Col>
               </>
             )}
+            <Col xs={4}>
+              <Field
+                  label={"UUID"}
+                  type={"input"}
+                  name={t("uuid")}
+              />
+            </Col>
             <Col xs={4}>
               <Field
                 label={"isUsedourpanel"}
