@@ -1201,7 +1201,7 @@ const StepTwo = ({id = null, ...props}) => {
                                             params={{required: true, valueAsNumber: true}}
                                             property={{type: 'number'}}
                                             label={'Количество мест сидения'}
-                                            defaultValue={get(vehicle, 'seats')}
+                                            defaultValue={parseInt(get(vehicle, 'seats',0))}
                                             type={'input'}
                                             name={'objectOfInsurance.details.seatNumber'}/>
                                     </Col>

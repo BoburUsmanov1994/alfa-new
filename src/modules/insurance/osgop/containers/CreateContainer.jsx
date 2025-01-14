@@ -1366,7 +1366,7 @@ const CreateContainer = () => {
                         <Col xs={4} className={'mt-15'}>
                             <Field
                                 params={{valueAsNumber: true}}
-                                defaultValue={get(vehicle, 'seats')} label={'Количество мест сидения'}
+                                defaultValue={parseInt(get(vehicle, 'seats',0))} label={'Количество мест сидения'}
                                 property={{type: 'number', max: 1000}}
                                 type={'input'}
                                 name={'vehicle.objects[0].vehicle.numberOfSeats'}/>
