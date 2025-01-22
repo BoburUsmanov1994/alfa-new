@@ -191,6 +191,7 @@ const AgreementsContainer = () => {
                 viewIsTab
                 createUrl={'/agreements/create'}
                 updateUrl={'/agreements/edit'}
+                hideDeleteBtn={!includes([config.ROLES.admin],get(user,'role.name'))}
                 isHideColumn
                 checkStatus
                 extraActions={(_tr)=>includes([config.ROLES.admin],get(user,'role.name')) && <MessageCircle onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}
