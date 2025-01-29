@@ -24,6 +24,7 @@ import FilePreview from "../../../components/file-preview";
 import Flex from "../../../components/flex";
 import config from "../../../config";
 import GridView from "../../../containers/grid-view";
+import Pagination from "../../../components/pagination";
 
 const AgentViewContainer = () => {
     const {t} = useTranslation();
@@ -32,6 +33,7 @@ const AgentViewContainer = () => {
     const [selectedPolice, setSelectedPolice] = useState(null);
     const [transactionId, setTransactionId] = useState(null);
     const [showTransactionId, setShowTransactionId] = useState(null);
+    const [page,setPage] = useState(1)
     let {data, isLoading} = useGetOneQuery({id, key: KEYS.agreements, url: `${URLS.agreements}/show`})
     let {data: policyData, isLoading: policyIsLoading} = useGetAllQuery({
         id, key: KEYS.policyFilter, url: URLS.policyFilter, params: {
@@ -61,8 +63,9 @@ const AgentViewContainer = () => {
     let {data: transactions, isLoading: _isLoading} = useGetAllQuery({
         key: KEYS.transactions, url: `${URLS.transactions}/list`, enabled: !!(get(user, 'branch._id')), params: {
             params: {
+                page,
                 branch: get(user, 'branch._id'),
-                limit: 100
+                limit: 50
             }
         }
     })
@@ -362,7 +365,7 @@ const AgentViewContainer = () => {
                     </Col>
                 </Row>
             </Section>
-            <Modal title={'Распределение к полису'} visible={!isNil(selectedPolice)}
+            <Modal  title={'Распределение к полису'} visible={!isNil(selectedPolice)}
                    hide={() => setSelectedPolice(null)}>
                 {
                     isLoadingAttach && <ContentLoader/>
@@ -379,7 +382,7 @@ const AgentViewContainer = () => {
                                     setTransactionId(null)
                                 }
                             }}/></td>
-                            <td>{i + 1}</td>
+                            <td>{(page-1)*50+(i + 1)}</td>
                             <td>{get(item, 'payment_order_date')}</td>
                             <td>{get(item, 'sender_name')}</td>
                             <td><NumberFormat displayType={'text'} thousandSeparator={" "}
@@ -406,6 +409,7 @@ const AgentViewContainer = () => {
                         </Col>
                     </Row>
                 </Form>}
+                <Pagination limit={50} page={page} setPage={setPage} totalItems={get(transactions, 'data.count', 0)} />
             </Modal>
             <Modal title={t("Transaction logs")} visible={!isNil(showTransactionId)}
                    hide={() => setShowTransactionId(null)}>
