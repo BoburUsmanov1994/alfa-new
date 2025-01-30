@@ -216,7 +216,7 @@ const ListContainer = () => {
         dataKey={"application_number"}
         params={{...filter}}
         deleteUrl={URLS.osagoDelete}
-        extraActions={(_tr)=>includes([config.ROLES.admin],get(user,'role.name')) && <DollarSign onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}
+        extraActions={(_tr)=>includes(['new', 'partialPaid','sent'],get(_tr,'attachStatus')) && <DollarSign onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}
         extraFilters={<Form formRequest={({data: {group, subGroup, ...rest} = {}}) => {
             setFilter(rest);
         }}

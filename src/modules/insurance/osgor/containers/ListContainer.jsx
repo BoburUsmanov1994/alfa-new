@@ -177,7 +177,7 @@ const ListContainer = ({ ...rest }) => {
           },
         ]}
         keyId={KEYS.osgorList}
-        extraActions={(_tr)=>includes([config.ROLES.admin],get(user,'role.name')) && <DollarSign onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}
+        extraActions={(_tr)=>includes(['new', 'partialPaid','sent'],get(_tr,'attachStatus')) && <DollarSign onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}
         url={URLS.osgorList}
         listUrl={URLS.osgorList}
         title={t("Osgor agreements list")}
