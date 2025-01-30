@@ -1,5 +1,5 @@
-import { get } from "lodash";
-import React, { useEffect, useMemo } from "react";
+import {get, includes, isEqual, isNil} from "lodash";
+import React, {useEffect, useMemo, useState} from "react";
 import { useTranslation } from "react-i18next";
 import NumberFormat from "react-number-format";
 import { KEYS } from "../../../../constants/key";
@@ -7,13 +7,31 @@ import { URLS } from "../../../../constants/url";
 import Field from "../../../../containers/form/field";
 import GridView from "../../../../containers/grid-view/grid-view";
 import { useStore } from "../../../../store";
+import {ContentLoader} from "../../../../components/loader";
+import Table from "../../../../components/table";
+import Checkbox from "rc-checkbox";
+import Form from "../../../../containers/form/form";
+import Button from "../../../../components/ui/button";
+import {Col, Row} from "react-grid-system";
+import Pagination from "../../../../components/pagination";
+import Modal from "../../../../components/modal";
+import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
+import config from "../../../../config";
+import {DollarSign} from "react-feather";
 
 const ListContainer = ({ ...rest }) => {
   const { t } = useTranslation();
+    const user = useStore(state => get(state, 'user', null))
+    const [tr, setTr] = useState(null);
+    const [page, setPage] = useState(1);
+    const [transactionId, setTransactionId] = useState(null);
 
   const setBreadcrumbs = useStore((state) =>
     get(state, "setBreadcrumbs", () => {})
   );
+    const [filter, setFilter] = useState({
+        branch: get(user, 'branch._id'),
+    });
   const breadcrumbs = useMemo(
     () => [
       {
@@ -29,6 +47,36 @@ const ListContainer = ({ ...rest }) => {
     ],
     []
   );
+    let {data: transactions, isLoading: _isLoading} = useGetAllQuery({
+        key: KEYS.transactions, url: `${URLS.transactions}/list`, enabled: !!(get(user, 'branch._id')), params: {
+            params: {
+                page,
+                branch: get(user, 'branch._id'),
+                limit: 50
+            }
+        }
+    })
+    const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: [KEYS.osgorList,filter]})
+
+    const attach = ({data}) => {
+        const {attachmentSum,attach} = data;
+        attachRequest({
+            url: `${URLS.osgorTransactionAttach}?osgor_formId=${get(tr,'osgor_formId')}`,
+            attributes: {
+                attach,
+                transaction: transactionId,
+                attachmentSum,
+            }
+        }, {
+            onSuccess: () => {
+                setTransactionId(null)
+                setTr(null)
+            },
+            onError: () => {
+
+            }
+        })
+    }
 
   useEffect(() => {
     setBreadcrumbs(breadcrumbs);
@@ -129,6 +177,7 @@ const ListContainer = ({ ...rest }) => {
           },
         ]}
         keyId={KEYS.osgorList}
+        extraActions={(_tr)=>includes([config.ROLES.admin],get(user,'role.name')) && <DollarSign onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}
         url={URLS.osgorList}
         listUrl={URLS.osgorList}
         title={t("Osgor agreements list")}
@@ -141,6 +190,64 @@ const ListContainer = ({ ...rest }) => {
         deleteUrl={URLS.osgorDelete}
         deleteQueryParam={"osgor_formId"}
       />
+        <Modal  title={'Распределение к полису'} visible={!isNil(tr)}
+                hide={() => setTr(null)}>
+            {
+                isLoadingAttach && <ContentLoader/>
+            }
+            {
+                <Table bordered hideThead={false}
+                       thead={['', '№', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления','Детали платежа', 'Available sum']}>{get(transactions, 'data.data', []).map((item, i) =>
+                    <tr key={get(item, '_id')}>
+                        <td><Checkbox disabled={!get(item, 'available_sum', 0)}
+                                      checked={isEqual(transactionId, get(item, '_id'))} onChange={(e) => {
+                            if (e.target?.checked) {
+                                setTransactionId(get(item, '_id'))
+                            } else {
+                                setTransactionId(null)
+                            }
+                        }}/></td>
+                        <td>{(page-1)*50+(i + 1)}</td>
+                        <td>{get(item, 'payment_order_date')}</td>
+                        <td>{get(item, 'sender_name')}</td>
+                        <td><NumberFormat displayType={'text'} thousandSeparator={" "}
+                                          value={get(item, 'payment_amount', 0)}/></td>
+
+                        <td>{get(item, 'payment_details')}</td>
+                        <td><NumberFormat displayType={'text'} thousandSeparator={" "}
+                                          value={get(item, 'available_sum', 0)}/></td>
+                    </tr>)}</Table>}
+            {transactionId && <Form formRequest={attach} footer={<Button type={'submit'}>{t("Send")}</Button>}>
+                <Row className={'mt-15'}>
+                    <Col xs={6}>
+                        <Field defaultValue={get(tr, 'policies[0].insurancePremium', 0)}
+                               label={t("Сумма оплаты по полису:")} property={{disabled: true}}
+                               type={'number-format-input'} name={'sumInsurancePremium'}/>
+                    </Col>
+                    <Col xs={6}>
+                        <Field defaultValue={get(tr, 'attachedSum', 0)} property={{disabled: true}}
+                               type={'number-format-input'}
+                               name={'attachedSum'} label={t("Сумма прикреплённых средств:")}/>
+                    </Col>
+                    <Col xs={6}>
+                        <Field type={'number-format-input'} name={'attachmentSum'} label={t("Сумма к прикреплению:")}/>
+                    </Col>
+                    <Col xs={6}>
+                        <Field defaultValue={true} type={'switch'} name={'attach'} label={t("Attach or detach to policy")} options = {[
+                            {
+                                value: false,
+                                label: t('Detach')
+                            },
+                            {
+                                value: true,
+                                label: t('Attach')
+                            },
+                        ]} />
+                    </Col>
+                </Row>
+            </Form>}
+            <Pagination limit={50} page={page} setPage={setPage} totalItems={get(transactions, 'data.count', 0)} />
+        </Modal>
     </>
   );
 };
