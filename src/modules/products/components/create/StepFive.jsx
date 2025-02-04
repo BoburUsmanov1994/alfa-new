@@ -76,7 +76,7 @@ const StepFive = ({id = null, ...props}) => {
 
     const nextStep = () => {
         if (id) {
-            updateProduct({url: `${URLS.products}/${id}`, attributes: product}, {
+            updateProduct({url: `${URLS.product}/${id}`, attributes: product}, {
                 onSuccess: () => {
                     resetRiskList();
                     resetProduct();
