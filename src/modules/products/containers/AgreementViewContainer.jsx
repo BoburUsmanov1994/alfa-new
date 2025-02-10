@@ -13,7 +13,7 @@ import {useTranslation} from "react-i18next";
 import {useNavigate, useParams} from "react-router-dom";
 import dayjs from "dayjs";
 import Button from "../../../components/ui/button";
-import {DollarSign, Download, Eye, Send, Trash2} from "react-feather";
+import {DollarSign, Download, Eye, Filter, Send, Trash, Trash2} from "react-feather";
 import Swal from "sweetalert2";
 import NumberFormat from "react-number-format";
 import Form from "../../../containers/form/form";
@@ -34,6 +34,7 @@ const AgentViewContainer = () => {
     const [transactionId, setTransactionId] = useState(null);
     const [showTransactionId, setShowTransactionId] = useState(null);
     const [page,setPage] = useState(1)
+    const [filter,setFilter] = useState({})
     let {data, isLoading} = useGetOneQuery({id, key: KEYS.agreements, url: `${URLS.agreements}/show`})
     let {data: policyData, isLoading: policyIsLoading} = useGetAllQuery({
         id, key: KEYS.policyFilter, url: URLS.policyFilter, params: {
@@ -61,11 +62,12 @@ const AgentViewContainer = () => {
 
     const user = useStore(state => get(state, 'user'))
     let {data: transactions, isLoading: _isLoading} = useGetAllQuery({
-        key: KEYS.transactions, url: `${URLS.transactions}/list`, enabled: !!(get(user, 'branch._id')), params: {
+        key: [KEYS.transactions,filter], url: `${URLS.transactions}/list`, enabled: !!(get(user, 'branch._id')), params: {
             params: {
                 page,
                 branch: get(user, 'branch._id'),
-                limit: 50
+                limit: 50,
+                ...filter
             }
         }
     })
@@ -367,6 +369,31 @@ const AgentViewContainer = () => {
             </Section>
             <Modal  title={'Распределение к полису'} visible={!isNil(selectedPolice)}
                    hide={() => setSelectedPolice(null)}>
+                <div style={{padding:'15px 0'}}>
+                    <Form formRequest={({data}) => setFilter({...data})}>
+                        <Row align={'center'} gutterWidth={16}>
+                            <Col xs={3}>
+                                <Field  defaultValue={get(filter, 'is1C')} type={'switch'}
+                                       name={'is1C'}
+                                       label={t("is1C ?")}
+                                />
+                            </Col>
+                            <Col xs={3} >
+                                <div>
+                                    <Button xs htmlType={'submit'}><Flex justify={'center'}><Filter size={14}/><span
+                                        style={{marginLeft: '5px'}}>{t("Применить")}</span></Flex></Button>
+                                    {/*<Button className={'mt-15'} xs onClick={() => {*/}
+                                    {/*    setFilter({})*/}
+                                    {/*    navigate(0)*/}
+                                    {/*}} danger type={'reset'}><Flex justify={'center'}><Trash*/}
+                                    {/*    size={14}/><span*/}
+                                    {/*    style={{marginLeft: '5px'}}>{t("Очистить")}</span></Flex></Button>*/}
+
+                                </div>
+                            </Col>
+                        </Row>
+                    </Form>
+                </div>
                 {
                     isLoadingAttach && <ContentLoader/>
                 }
