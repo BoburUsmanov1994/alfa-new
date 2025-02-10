@@ -270,6 +270,10 @@ const DistributionContainer = () => {
                                 />
                             </Col>
                             <Col xs={1.25}>
+                                <Field className={'mb-10'} sm defaultValue={get(filter, 'is1C')} type={'switch'}
+                                       name={'is1C'}
+                                       label={t("is1C ?")}
+                                />
                                 <Field
                                     className={'mb-10'}
                                     label={t("Created from")}
@@ -282,6 +286,7 @@ const DistributionContainer = () => {
                                        name={'createdAtTo'}
                                        label={t("Created to")}
                                 />
+
                             </Col>
                             <Col xs={1}>
                                 <div>
@@ -309,7 +314,7 @@ const DistributionContainer = () => {
                             } else {
                                 setIdList([])
                             }
-                        }}/>, '№', 'Статус прикрепления', 'Филиал', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления', 'Снято на договор', 'Available sum', 'Детали платежа', 'ИНН отправителя', 'ИНН банка отправителя', 'МФО отправителя', 'Р/С отправителя', 'ИНН банка получателя', 'МФО банка получателя', 'Р/С получателя', 'Дата ввода','Action']}>{get(transactions, 'data.data', []).map((item, i) =>
+                        }}/>, '№', 'Статус прикрепления', 'Филиал', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления', 'Снято на договор', 'Available sum', 'Детали платежа', 'ИНН отправителя', 'ИНН банка отправителя', 'МФО отправителя', 'Р/С отправителя', 'ИНН банка получателя', 'МФО банка получателя', 'Р/С получателя', 'Дата ввода','is1C?','Action']}>{get(transactions, 'data.data', []).map((item, i) =>
                             <tr key={get(item, '_id')}>
                                 <td><Checkbox checked={includes(idList, get(item, '_id'))} onChange={(e) => {
                                     if (e.target?.checked) {
@@ -338,6 +343,7 @@ const DistributionContainer = () => {
                                 <td>{get(item, 'recipient_bank_code')}</td>
                                 <td>{get(item, 'recipient_bank_account')}</td>
                                 <td>{dayjs(get(item, 'createdAt')).format("DD.MM.YYYY")}</td>
+                                <td>{get(item, 'is1C') ? t('Да') : t('Нет')}</td>
                                 <td>{includes([config.ROLES.admin],get(user,'role.name')) && <Trash2 onClick={() => remove(get(item, '_id', null))}
                                         className={'mx-auto cursor-pointer '} color={'#dc2626'}/>}</td>
                             </tr>)}</Table>}

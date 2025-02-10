@@ -13,10 +13,10 @@ const Styled = styled.div`
 
   span {
     font-family: 'Gilroy-Medium', sans-serif;
+    font-size:   ${({sm}) => sm ? '12px': '16px'};
   }
-
   label {
-    margin-bottom: 15px;
+    margin-bottom:     ${({sm}) => sm ? '5x': '15px'};
   }
 `;
 const Switcher = ({
@@ -43,6 +43,7 @@ const Switcher = ({
                               label: 'Да'
                           },
                       ],
+                      sm = false,
                       ...rest
                   }) => {
     const [checked, setChecked] = useState(false)
@@ -78,9 +79,9 @@ const Switcher = ({
     }, [watch(name)]);
 
     return (
-        <Styled {...rest}>
+        <Styled {...rest} sm={sm}>
             <div className="form-group">
-                {!get(property, 'hideLabel', false) && <Label
+                {!get(property, 'hideLabel', false) && <Label sm={sm}
                     className={classNames({required: get(property, 'hasRequiredLabel', get(params, 'required'))})}>{label ?? name}</Label>}
                 <Flex>
                     <span>{get(head(options), 'label', '-')}</span>
