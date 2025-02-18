@@ -371,23 +371,70 @@ const AgentViewContainer = () => {
                    hide={() => setSelectedPolice(null)}>
                 <div style={{padding:'15px 0'}}>
                     <Form formRequest={({data}) => setFilter({...data})}>
-                        <Row align={'center'} gutterWidth={16}>
-                            <Col xs={3}>
-                                <Field  defaultValue={get(filter, 'is1C')} type={'switch'}
-                                       name={'is1C'}
-                                       label={t("is1C ?")}
+                        <Row align={'end'} gutterWidth={16}>
+                            <Col xs={2}>
+                                <Field sm label={t('Дата п/п от')} type={'datepicker'}
+                                       name={'fromDate'}
+                                       defaultValue={get(filter, 'fromDate')}
+
+                                />
+                                <Field sm label={t('Дата п/п до')} type={'datepicker'}
+                                       name={'toDate'}
+                                       defaultValue={get(filter, 'toDate')}
+
+                                />
+
+                            </Col>
+                            <Col xs={2}>
+                                <Field sm label={t('Сумма поступления от')} type={'number-format-input-filter'}
+                                       name={'payment_amount_from'}
+                                       defaultValue={get(filter, 'payment_amount_from', null)}
+                                />
+                                <Field sm label={t('Сумма поступления до')} type={'number-format-input-filter'}
+                                       name={'payment_amount_to'}
+                                       defaultValue={get(filter, 'payment_amount_to', null)}
                                 />
                             </Col>
-                            <Col xs={3} >
-                                <div>
+                            <Col xs={2}>
+                                <Field sm label={t('Прикреплено от')} type={'number-format-input-filter'}
+                                       name={'attached_sum_from'}
+                                       defaultValue={get(filter, 'attached_sum_from', null)}
+                                />
+                                <Field sm label={t('Прикреплено до')} type={'number-format-input-filter'}
+                                       name={'attached_sum_to'}
+                                       defaultValue={get(filter, 'attached_sum_to', null)}
+                                />
+                            </Col>
+                            <Col xs={2}>
+                                <Field sm label={t('Доступный остаток от')} type={'number-format-input-filter'}
+                                       name={'available_sum_from'}
+                                       defaultValue={get(filter, 'available_sum_from', null)}
+                                />
+                                <Field sm label={t('Доступный остаток до')} type={'number-format-input-filter'}
+                                       name={'available_sum_to'}
+                                       defaultValue={get(filter, 'available_sum_to', null)}
+                                />
+                            </Col>
+                            <Col xs={2}>
+
+                                <Field  defaultValue={get(filter, 'is1C')} type={'switch'}
+                                        name={'is1C'}
+                                        label={t("is1C ?")}
+                                />
+                                <Field sm  defaultValue={get(filter, 'payment_details')} type={'input'}
+                                       name={'payment_details'}
+                                       label={t("Payment details ")}
+                                />
+                            </Col>
+                            <Col xs={2} >
+                                <div style={{marginBottom:'25px'}}>
                                     <Button xs htmlType={'submit'}><Flex justify={'center'}><Filter size={14}/><span
                                         style={{marginLeft: '5px'}}>{t("Применить")}</span></Flex></Button>
-                                    {/*<Button className={'mt-15'} xs onClick={() => {*/}
-                                    {/*    setFilter({})*/}
-                                    {/*    navigate(0)*/}
-                                    {/*}} danger type={'reset'}><Flex justify={'center'}><Trash*/}
-                                    {/*    size={14}/><span*/}
-                                    {/*    style={{marginLeft: '5px'}}>{t("Очистить")}</span></Flex></Button>*/}
+                                    <Button className={'mt-15'} xs onClick={() => {
+                                        setFilter({})
+                                    }} danger type={'reset'}><Flex justify={'center'}><Trash
+                                        size={14}/><span
+                                        style={{marginLeft: '5px'}}>{t("Очистить")}</span></Flex></Button>
 
                                 </div>
                             </Col>
@@ -399,7 +446,7 @@ const AgentViewContainer = () => {
                 }
                 {
                     <Table bordered hideThead={false}
-                           thead={['', '№', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления','Детали платежа', 'Available sum']}>{get(transactions, 'data.data', []).map((item, i) =>
+                           thead={['', '№', 'Дата п/п', 'Наименоменование отправителя', 'Сумма поступления','Детали платежа', 'Прикреплено', 'Доступный остаток']}>{get(transactions, 'data.data', []).map((item, i) =>
                         <tr key={get(item, '_id')}>
                             <td><Checkbox disabled={!get(item, 'available_sum', 0)}
                                           checked={isEqual(transactionId, get(item, '_id'))} onChange={(e) => {
@@ -417,11 +464,14 @@ const AgentViewContainer = () => {
 
                             <td>{get(item, 'payment_details')}</td>
                             <td><NumberFormat displayType={'text'} thousandSeparator={" "}
+                                              value={get(item, 'attached_sum', 0)}/></td>
+                            <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                               value={get(item, 'available_sum', 0)}/></td>
                         </tr>)}</Table>}
                 {transactionId && <Form formRequest={attach} footer={<Button type={'submit'}>{t("Прикрепить")}</Button>}>
                     <Row className={'mt-15'}>
                         <Col xs={6}>
+
                             <Field defaultValue={get(selectedPolice, 'insurancePremium', 0)}
                                    label={t("Сумма оплаты по полису:")} property={{disabled: true}}
                                    type={'number-format-input'} name={'sumInsurancePremium'}/>
