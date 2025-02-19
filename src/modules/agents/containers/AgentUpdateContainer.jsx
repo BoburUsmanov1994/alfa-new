@@ -665,7 +665,7 @@ const AgentsUpdateContainer = () => {
                                         type={"select"}
                                         options={employeeList}
                                         label={t("Employees")}
-                                        params={{ required: true }}
+                                        // params={{ required: true }}
                                     />
                                 </Col>
                             </>
