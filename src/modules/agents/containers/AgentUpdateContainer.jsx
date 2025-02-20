@@ -413,7 +413,6 @@ const AgentsUpdateContainer = () => {
                                         type={"select"}
                                         options={documentTypeList}
                                         label={t("typeofdocument")}
-                                        params={{ required: true }}
                                     />
                                 </Col>
                                 <Col xs={4}>
