@@ -1198,8 +1198,8 @@ const StepTwo = ({id = null, ...props}) => {
                                     </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
-                                            params={{required: true, valueAsNumber: true}}
-                                            property={{type: 'number'}}
+                                            params={{required: true, valueAsNumber: true, validate: (value) => Number.isInteger(value) || "Only integers allowed",}}
+                                            property={{type: 'number',step:1}}
                                             label={'Количество мест сидения'}
                                             defaultValue={parseInt(get(vehicle, 'seats',0))}
                                             type={'input'}

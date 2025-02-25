@@ -68,7 +68,7 @@ const Input = ({
                     defaultValue={defaultValue}
                     min={get(property, 'min', 0)}
                     max={get(property, 'max', 100)}
-                    step={0.01}
+                    step={get(property, 'step',0.01)}
                 /> : <input
                     className={classNames('form-input', {error: get(errors, `${name}`, false)})}
                     name={name}
