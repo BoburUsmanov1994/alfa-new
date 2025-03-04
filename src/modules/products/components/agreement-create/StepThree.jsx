@@ -161,6 +161,7 @@ const StepThree = ({...props}) => {
                     <Row>
                         <Col xs={3}>
                             <Field
+                                key={agentId}
                                 name={`rpm.perDeductionsRPM`}
                                 type={'input'}
                                 label={t("Процент отчислений в РПМ")}
