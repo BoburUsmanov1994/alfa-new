@@ -169,12 +169,12 @@ const StepThree = ({...props}) => {
                                     valueAsNumber: true
                                 }}
                                 defaultValue={get(head(get(commissionList,'data.data',[])),'rpm.maximumPercent',0)}
-                                property={{
+                                property={agentId ?{
                                     type:'number',
                                     placeholder: t("ввод значения"),
                                     max:get(head(get(commissionList,'data.data',[])),'rpm.maximumPercent',100),
                                     min:get(head(get(commissionList,'data.data',[])),'rpm.minimumPercent',0)
-                                }}
+                                }:{type:'number'}}
                             />
                         </Col>
                         <Col xs={3}>
