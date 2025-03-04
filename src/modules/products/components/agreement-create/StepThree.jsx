@@ -60,7 +60,7 @@ const StepThree = ({...props}) => {
         resetAgreement();
         props.firstStep();
     }
-    const {data: commissionList, isLoading: isLoadingCommissionList} = useGetAllQuery({
+    const {data: commissionList} = useGetAllQuery({
         key: KEYS.agentCommission, url: `${URLS.agentCommission}/list`,
         params: {
             params: {
@@ -70,8 +70,6 @@ const StepThree = ({...props}) => {
             }
         }
     })
-    console.log('agreement', agreement)
-    console.log('commissionList', commissionList)
 
     return (
         <Row>
@@ -170,11 +168,12 @@ const StepThree = ({...props}) => {
                                     required:true,
                                     valueAsNumber: true
                                 }}
+                                defaultValue={get(head(get(commissionList,'data.data',[])),'rpm.maximumPercent',0)}
                                 property={{
                                     type:'number',
                                     placeholder: t("ввод значения"),
-                                    max:get(head(get(commissionList,'data.data',[])),'rpm.maximumPercent',100) || 100,
-                                    min:get(head(get(commissionList,'data.data',[])),'rpm.minimumPercent',0) || 0
+                                    max:get(head(get(commissionList,'data.data',[])),'rpm.maximumPercent',100),
+                                    min:get(head(get(commissionList,'data.data',[])),'rpm.minimumPercent',0)
                                 }}
                             />
                         </Col>
@@ -206,7 +205,7 @@ const StepThree = ({...props}) => {
                 <Modal title={t("Добавить комиссия")} visible={openCommissionModal}
                        hide={setOpenCommissionModal}>
 
-                    <Form formRequest={({data}) => {
+                    <Form    formRequest={({data}) => {
                         addCommissions({...data, id: commissions.length});
                         setOpenCommissionModal(false)
                     }}
@@ -224,13 +223,15 @@ const StepThree = ({...props}) => {
                             </Col>
 
                             <Col xs={4}>
-                                <Field type={'number-format-input'}
+                                <Field key={agentId} type={'input'}
                                        name={`percentageRemuneration`}
-                                       params={{
-                                           max: {value: get(head(get(commissionList,'data.data',[])),'commission.maximumPercent',100), message: t(" max value should be ") + get(head(get(commissionList,'data.data',[])),'commission.maximumPercent',100)},
-                                           min: {value: get(head(get(commissionList,'data.data',[])),'commission.minimumPercent',0), message: t(" min value should be ") + get(head(get(commissionList,'data.data',[])),'commission.minimumPercent',0)},
-                                       }}
-                                       property={{suffix: '%'}}
+                                       defaultValue={get(head(get(commissionList,'data.data',[])),'commission.maximumPercent',0)}
+                                       property={agentId ?{
+                                           type:'number',
+                                           max:get(head(get(commissionList,'data.data',[])),'commission.maximumPercent',100),
+                                           min:get(head(get(commissionList,'data.data',[])),'commission.minimumPercent',0)
+                                       }:{type: 'number'}}
+
                                 />
                             </Col>
                             <Col xs={4}>
