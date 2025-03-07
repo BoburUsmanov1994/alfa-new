@@ -56,6 +56,8 @@ const StepTwo = ({id = null, ...props}) => {
     const [premium, setPremium] = useState({})
     const [insuranceSum, setInsuranceSum] = useState({})
     const [comment, setComment] = useState('');
+    const [hasForeignCurrency, setHasForeignCurrency] = useState(false);
+    const [exchangeRate, setExchangeRate] = useState(0);
     const setAgreement = useSettingsStore(state => get(state, 'setAgreement', () => {
     }))
     const addObjects = useSettingsStore(state => get(state, 'addObjects', () => {
@@ -84,12 +86,21 @@ const StepTwo = ({id = null, ...props}) => {
                 insurancerate,
                 suminsured,
                 startofinsurance,
+                exchangeRate,
+                currencyId,
+                totalForeignInsuranceSum,
+                totalForeignInsurancePremium,
+                hasForeignCurrency,
                 ...rest
             } = data;
             setAgreement({
                 ...rest,
                 objectOfInsurance: objects.map(_item => get(_item, 'objectOfInsurance')),
-                comment
+                comment,
+                exchangeRate:hasForeignCurrency ? exchangeRate : undefined,
+                currencyId:hasForeignCurrency ? currencyId : undefined,
+                totalForeignInsuranceSum:hasForeignCurrency ? totalForeignInsuranceSum : undefined,
+                totalForeignInsurancePremium:hasForeignCurrency ? totalForeignInsurancePremium : undefined,
             });
             props.nextStep();
         } else {
@@ -184,6 +195,9 @@ const StepTwo = ({id = null, ...props}) => {
 
     let {data: payments} = useGetAllQuery({key: KEYS.paymentcurrency, url: `${URLS.paymentCurrency}/list`})
     payments = getSelectOptionsListFromData(get(payments, `data.data`, []), '_id', 'name')
+
+    let {data: currencyList} = useGetAllQuery({key: KEYS.currencyList, url: `${URLS.currencyList}`})
+    currencyList = getSelectOptionsListFromData(get(currencyList, `data.data`, []), '_id', 'name')
 
 
     let {data: risks} = useGetAllQuery({key: KEYS.risk, url: `${URLS.risk}/list`})
@@ -470,6 +484,55 @@ const StepTwo = ({id = null, ...props}) => {
                                         }}
                                     />
                                 </Col>
+                                <Col xs={2}>
+                                    <Field
+                                        property={{onChange:(val)=>setHasForeignCurrency(val)}}
+                                        label={t('Валюта договор')}
+                                        type={'switch'}
+                                        name={`hasForeignCurrency`}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        label={t('Валюта')}
+                                        name={`currencyId`}
+                                        type={'select'}
+                                        options={currencyList}
+                                        isDisabled={!hasForeignCurrency}
+                                    />
+                                </Col>
+                                <Col xs={3}>
+                                    <Field
+                                        label={t('Обменный курс')}
+                                        name={`exchangeRate`}
+                                        type={'number-format-input'}
+                                        property={{disabled:!hasForeignCurrency,onChange:(val)=>setExchangeRate(val)}}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        label={t('Общая сумма зарубежного страхования')}
+                                        name={`totalForeignInsuranceSum`}
+                                        type={'number-format-input'}
+                                        defaultValue={round(sum(values(insuranceSum))*exchangeRate, 2)}
+                                        property={{disabled:true}}
+                                    />
+                                </Col>
+                                <Col xs={4}>
+                                    <Field
+                                        label={t('Общая сумма иностранной страховой премии')}
+                                        name={`totalForeignInsurancePremium`}
+                                        type={'number-format-input'}
+                                        defaultValue={round(sum(values(premium))*exchangeRate, 2)}
+                                        property={{disabled:true}}
+                                    />
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col xs={12}>
+                            <Row>
+
+
                             </Row>
                         </Col>
                     </Row>

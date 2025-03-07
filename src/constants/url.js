@@ -209,4 +209,5 @@ export const URLS = {
     agreementWeeklyReport: 'api/agreement/weekly/report',
     specificList: 'api/branch/specific/list',
     unattachPolicy: 'api/transaction/unattach-all',
+    currencyList: 'api/references/currency/list',
 }

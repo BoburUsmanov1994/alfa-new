@@ -197,4 +197,5 @@ export const KEYS = {
     agreementWeeklyReport: 'agreementWeeklyReport',
     specificList: 'specificList',
     unattachPolicy: 'unattachPolicy',
+    currencyList: 'currencyList',
 }

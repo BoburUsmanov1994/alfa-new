@@ -162,6 +162,18 @@ const StepOne = ({id = null, ...props}) => {
                             />
                         </Col>
                         <Col xs={3}>
+                            <Field label={t('Наименование продукта (UZ)')} type={'input'} name={'nameUz'}
+                                   property={{placeholder: t('Введите значение')}}
+                                   defaultValue={get(product, 'nameUz')}
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Наименование продукта (EN)')} type={'input'} name={'nameEng'}
+                                   property={{placeholder: t('Введите значение')}}
+                                   defaultValue={get(product, 'nameEng')}
+                            />
+                        </Col>
+                        <Col xs={3}>
                             <Field label={t('Код назначения')}
                                    type={'input'}
                                    name={'code'}
@@ -170,9 +182,7 @@ const StepOne = ({id = null, ...props}) => {
                                    defaultValue={get(product, 'code', '')}
                             />
                         </Col>
-                    </Row>
-                    <Row>
-                        <Col xs={3}>
+                        <Col xs={6}>
                             <Field
                                 label={t('Работа по версии продукта (Версия продукта)')}
                                 type={'input'}
@@ -181,6 +191,9 @@ const StepOne = ({id = null, ...props}) => {
                                 defaultValue={get(product, 'version', '')}
                             />
                         </Col>
+                    </Row>
+                    <Row>
+
                         <Col xs={3}>
                             <Field
                                 options={insurances}
