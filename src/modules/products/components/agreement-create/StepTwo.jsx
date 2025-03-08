@@ -514,7 +514,7 @@ const StepTwo = ({id = null, ...props}) => {
                                         label={t('Общая сумма зарубежного страхования')}
                                         name={`totalForeignInsuranceSum`}
                                         type={'number-format-input'}
-                                        defaultValue={round(sum(values(insuranceSum))*exchangeRate, 2)}
+                                        defaultValue={round(sum(values(insuranceSum))/exchangeRate, 2)}
                                         property={{disabled:true}}
                                     />
                                 </Col>
@@ -523,7 +523,7 @@ const StepTwo = ({id = null, ...props}) => {
                                         label={t('Общая сумма иностранной страховой премии')}
                                         name={`totalForeignInsurancePremium`}
                                         type={'number-format-input'}
-                                        defaultValue={round(sum(values(premium))*exchangeRate, 2)}
+                                        defaultValue={round(sum(values(premium))/exchangeRate, 2)}
                                         property={{disabled:true}}
                                     />
                                 </Col>
