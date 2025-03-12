@@ -305,7 +305,10 @@ const AgentViewContainer = () => {
                                         <td>{get(data, "data.copyOfDocuments") && <FilePreview fileId={get(data, "data.copyOfDocuments")} />}</td>
                                         <td>{get(data, "data.copyOfAgreement") && <FilePreview fileId={get(data, "data.copyOfAgreement")} />}</td>
                                         <td>{get(data, "data.documents._id") && <FilePreview fileId={get(data, "data.documents._id")} />}</td>
-                                        <td>{get(item,'url') && <a target={"_blank"} href={get(item,'url','#')}><Download /></a>}</td>
+                                        <td>{get(item,'url') && <a target={"_blank"} title={'UZ'} href={get(item,'url','#')}><Download /></a>}
+                                            {get(item,'url_ru') && <a style={{marginLeft:'8px'}} target={"_blank"} title={'RU'} href={get(item,'url_ru','#')}><Download /></a>}
+                                            {get(item,'url_en') && <a style={{marginLeft:'8px'}} target={"_blank"} title={'EN'} href={get(item,'url_en','#')}><Download /></a>}
+                                        </td>
                                         <td>{get(item, "fondStatus")}</td>
 
 
