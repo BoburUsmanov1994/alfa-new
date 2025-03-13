@@ -122,7 +122,8 @@ const ViewContainer = ({contract_id = null}) => {
         key: KEYS.transactions, url: `${URLS.transactions}/list`, params: {
             params: {
                 branch: get(user, 'branch._id'),
-                limit: 100
+                limit: 100,
+                isAvailable:true
             }
         }
     })

@@ -67,6 +67,7 @@ const AgentViewContainer = () => {
                 page,
                 branch: get(user, 'branch._id'),
                 limit: 50,
+                isAvailable:true,
                 ...filter
             }
         }
@@ -280,7 +281,7 @@ const AgentViewContainer = () => {
                             {get(policyData, "data.data", []).length > 0 && <Col xs={12}  className={'horizontal-scroll'}>
                                 <hr/>
                                 <Table hideThead={false}
-                                       thead={['Номер полиса', 'Страхователь', 'Номер бланка полиса', 'Дата выдачи полиса', 'Дата начала периода по полису','Дата окончания периода по полису','Страховая сумма','Страховая премия', 'Прикреплено', 'Скачать анкету-заявление','Скачать договор','Скачать другие документы','Скачать сгенерированный полис','Status', 'Action']}>
+                                       thead={['Номер полиса', 'Страхователь', 'Номер бланка полиса', 'Дата выдачи полиса', 'Дата начала периода по полису','Дата окончания периода по полису','Страховая сумма','Страховая премия','Страховой агент', 'Прикреплено', 'Скачать анкету-заявление','Скачать договор','Скачать другие документы','Скачать сгенерированный полис','Status', 'Action']}>
                                     {get(policyData, "data.data", []).map((item, i) => <tr key={i + 1}>
                                         <td>
                                             {get(item, 'number', '-')}
@@ -300,6 +301,9 @@ const AgentViewContainer = () => {
                                                           value={get(item, "insuranceSum")}/></td>
                                         <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                                           value={get(item, "insurancePremium")}/></td>
+                                        <td>
+                                            {get(item, "agent.organization") ? get(item, "agent.organization.name",'-') : `${get(item, "agent.person.secondname",'-')} ${get(item, "agent.person.name",'-')} `}
+                                        </td>
                                         <td><NumberFormat displayType={'text'} thousandSeparator={" "}
                                                           value={get(item, "attachedSum")}/></td>
                                         <td>{get(data, "data.copyOfDocuments") && <FilePreview fileId={get(data, "data.copyOfDocuments")} />}</td>
@@ -533,7 +537,8 @@ const AgentViewContainer = () => {
                     url={URLS.transactionLogs}
                     listUrl={`${URLS.transactionLogs}/list`}
                     params={{
-                        policy:showTransactionId
+                        policy:showTransactionId,
+                        isAvailable:true
                     }}
                     title={''}
                     responseDataKey={'data.data'}

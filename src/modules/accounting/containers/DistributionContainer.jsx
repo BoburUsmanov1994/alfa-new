@@ -43,6 +43,7 @@ const DistributionContainer = () => {
             params: {
                 limit: 50,
                 page,
+                isAvailable:true,
                 ...filter
             }
         },

@@ -37,7 +37,8 @@ const PolicyDistributionContainer = ({
         key: KEYS.transactions, url: `${URLS.transactions}/list`, enabled: !!(get(user, 'branch._id')), params: {
             params: {
                 branch: get(user, 'branch._id'),
-                limit: 100
+                limit: 100,
+                isAvailable:true
             }
         }
     })

@@ -49,7 +49,8 @@ const ListContainer = () => {
             params: {
                 page,
                 branch: get(user, 'branch._id'),
-                limit: 50
+                limit: 50,
+                isAvailable:true
             }
         }
     })
