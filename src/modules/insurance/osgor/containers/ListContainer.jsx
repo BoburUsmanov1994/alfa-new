@@ -17,7 +17,7 @@ import Pagination from "../../../../components/pagination";
 import Modal from "../../../../components/modal";
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
 import config from "../../../../config";
-import {DollarSign} from "react-feather";
+import {DollarSign, Download} from "react-feather";
 
 const ListContainer = ({ ...rest }) => {
   const { t } = useTranslation();
@@ -176,6 +176,16 @@ const ListContainer = ({ ...rest }) => {
             key: "status",
             title: "Status",
           },
+            {
+                id: 10,
+                key: "url",
+                title: "Скачать",
+                render: (row) =><a target={"_blank"}
+                                   href={`${get(row,'url','#')}`}><Download
+                    className={'cursor-pointer mr-8'}
+                    color={'#13D6D1'}/></a>
+
+            },
         ]}
         keyId={KEYS.osgorList}
         extraActions={(_tr)=>includes(['new', 'partialPaid','sent'],get(_tr,'attachStatus')) && <DollarSign onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}

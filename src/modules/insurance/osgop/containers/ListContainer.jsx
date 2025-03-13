@@ -8,7 +8,7 @@ import Field from "../../../../containers/form/field";
 import { useTranslation } from "react-i18next";
 import NumberFormat from "react-number-format";
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
-import {DollarSign} from "react-feather";
+import {DollarSign, Download} from "react-feather";
 import config from "../../../../config";
 import Modal from "../../../../components/modal";
 import {ContentLoader} from "../../../../components/loader";
@@ -180,6 +180,16 @@ const ListContainer = () => {
             key: "status",
             title: "Status",
           },
+            {
+                id: 10,
+                key: "url",
+                title: "Скачать",
+                render: (row) =><a target={"_blank"}
+                                   href={`${get(row,'url','#')}`}><Download
+                    className={'cursor-pointer mr-8'}
+                    color={'#13D6D1'}/></a>
+
+            },
         ]}
         keyId={KEYS.osgopList}
         url={URLS.osgopList}
