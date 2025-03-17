@@ -210,4 +210,10 @@ export const URLS = {
     specificList: 'api/branch/specific/list',
     unattachPolicy: 'api/transaction/unattach-all',
     currencyList: 'api/references/currency/list',
+    eimzoChallenge: 'api/eimzo/challenge',
+    eimzoPkcs7: 'api/eimzo/timestamp/pkcs7',
+    agreementGtkDetails: 'api/agreement/gtk/details',
+    agreementGtkSend: 'api/agreement/gtk/send',
+    policyUseType: 'api/references/gtk-policy-use-type',
+    policyIntentType: 'api/references/gtk-policy-intent-type',
 }

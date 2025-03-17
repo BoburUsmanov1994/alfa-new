@@ -198,4 +198,10 @@ export const KEYS = {
     specificList: 'specificList',
     unattachPolicy: 'unattachPolicy',
     currencyList: 'currencyList',
+    eimzoChallenge:'eimzoChallenge',
+    eimzoPkcs7:'eimzoPkcs7',
+    agreementGtkDetails:'agreementGtkDetails',
+    agreementGtkSend:'agreementGtkSend',
+    policyUseType:'policyUseType',
+    policyIntentType:'policyIntentType',
 }

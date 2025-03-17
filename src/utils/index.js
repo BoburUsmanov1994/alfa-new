@@ -11,6 +11,12 @@ const addDetectClick = ({setOpen, classNames = []}) => {
 const removeDetectClick = () => {
     window.removeEventListener('click', addDetectClick, false);
 }
+export const checkBeforeCurrentTime = (time) => {
+    const now = new Date();
+    const validTo = new Date(time);
+    return validTo < now;
+};
+
 
 const hasAccess = (roles = [], can = '') => {
     let access = false;

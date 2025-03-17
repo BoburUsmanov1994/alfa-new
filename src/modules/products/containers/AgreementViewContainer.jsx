@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {Row, Col} from "react-grid-system";
 import Section from "../../../components/section";
 import Title from "../../../components/ui/title";
-import {get, includes, isEqual, isNil} from "lodash";
+import {get, includes, isEmpty, isEqual, isNil} from "lodash";
 import {useDeleteQuery, useGetAllQuery, useGetOneQuery, usePostQuery, usePutQuery} from "../../../hooks/api";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
@@ -13,7 +13,7 @@ import {useTranslation} from "react-i18next";
 import {useNavigate, useParams} from "react-router-dom";
 import dayjs from "dayjs";
 import Button from "../../../components/ui/button";
-import {DollarSign, Download, Eye, Filter, Send, Trash, Trash2} from "react-feather";
+import {DollarSign, Download, Eye, Filter, Send, Trash, Trash2, User} from "react-feather";
 import Swal from "sweetalert2";
 import NumberFormat from "react-number-format";
 import Form from "../../../containers/form/form";
@@ -25,6 +25,9 @@ import Flex from "../../../components/flex";
 import config from "../../../config";
 import GridView from "../../../containers/grid-view";
 import Pagination from "../../../components/pagination";
+import useEimzo from "../../../hooks/eimzo/useEimzo";
+import {checkBeforeCurrentTime} from "../../../utils";
+import {toast} from "react-toastify";
 
 const AgentViewContainer = () => {
     const {t} = useTranslation();
@@ -33,8 +36,10 @@ const AgentViewContainer = () => {
     const [selectedPolice, setSelectedPolice] = useState(null);
     const [transactionId, setTransactionId] = useState(null);
     const [showTransactionId, setShowTransactionId] = useState(null);
+    const [policyId, setPolicyId] = useState(null);
     const [page,setPage] = useState(1)
     const [filter,setFilter] = useState({})
+    const { loading, setLoading = () => {}, keys, error, sign, initEIMZO } = useEimzo();
     let {data, isLoading} = useGetOneQuery({id, key: KEYS.agreements, url: `${URLS.agreements}/show`})
     let {data: policyData, isLoading: policyIsLoading} = useGetAllQuery({
         id, key: KEYS.policyFilter, url: URLS.policyFilter, params: {
@@ -42,6 +47,15 @@ const AgentViewContainer = () => {
                 agreementId: id
             }
         }
+    })
+    let {data: gtkDetails} = useGetAllQuery({
+         key: [KEYS.agreementGtkDetails,id,policyId], url: URLS.agreementGtkDetails, params: {
+            params: {
+                agreementId: id,
+                policyId
+            }
+        },
+        enabled:!!(policyId)
     })
     let {data: endorsementData, isLoading: endorsementIsLoading} = useGetAllQuery({
         id,
@@ -74,6 +88,8 @@ const AgentViewContainer = () => {
     })
     const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: [KEYS.transactions,KEYS.policyFilter]})
     const {mutate: unAttachRequest, isLoading: isLoadingUnAttach} = usePostQuery({listKeyId: [KEYS.transactions,KEYS.policyFilter]})
+    const {mutate: createPkcs7} = usePostQuery({listKeyId: [KEYS.eimzoPkcs7,policyId],hideSuccessToast:true})
+    const {mutate: signPkcs7,isLoading:isLoadingSign} = usePostQuery({listKeyId: [KEYS.policyFilter,id],hideSuccessToast:true})
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const breadcrumbs = useMemo(() => [
@@ -175,6 +191,40 @@ const AgentViewContainer = () => {
             url: `${URLS.endorsements}/${_id}`,
             attributes: {
                 allow: _isAllowed
+            }
+        })
+    }
+    const signWithEimzo = (_key) => {
+        sign(_key, JSON.stringify(get(gtkDetails,'data','Test')), (data, error) => {
+            if (!error) {
+                const {pkcs7_64 = null} = data;
+
+                createPkcs7({
+                    url: URLS.eimzoPkcs7,
+                            attributes: {
+                                pkcs7Data: pkcs7_64
+                            },
+                },{
+                    onSuccess:(res)=>{
+                        signPkcs7({
+                            url: URLS.agreementGtkSend,
+                            attributes: {
+                                agreementId: id,
+                                policyId,
+                                signature:get(res,'data.pkcs7b64')
+                            },
+                        },{
+                            onSuccess:(val)=>{
+                                if(isEqual(get(val,'data.resultcode'),0)){
+                                    toast.success(t('Successfully signed'))
+                                }else{
+                                    toast.error(get(val,'data.resultnote','ERROR'))
+                                }
+                                setPolicyId(null)
+                            }
+                        })
+                    }
+                })
             }
         })
     }
@@ -333,6 +383,7 @@ const AgentViewContainer = () => {
                                                     className={'ml-15 cursor-pointer flex-none min-none'} color={'#dc2626'}/>}
                                                 {includes([config.ROLES.admin],get(user,'role.name')) && includes(['paid', 'partialPaid'], get(item, "fondStatus")) && <Button onClick={()=>unAttach(get(item, '_id'))} sm inline danger>Открепить деньги</Button>}
                                                 {includes([config.ROLES.admin],get(user,'role.name')) && <Button className={'ml-15'} onClick={()=>navigate(`/policy/termination/${id}/${get(item, '_id')}`)} sm inline danger>Расторжение</Button>}
+                                                {includes(['sent'], get(item, "fondStatus")) && !includes(['sent'], get(item, "gtkStatus")) && <Button  className={'ml-15'} onClick={()=>setPolicyId(get(item, '_id'))} sm  yellow>Отпраква ГТК</Button>}
                                             </Flex>
                                         </td>
                                     </tr>)}
@@ -545,6 +596,32 @@ const AgentViewContainer = () => {
                     hideCreateBtn
                     hideDeleteBtn
                 />}
+            </Modal>
+            <Modal title={t("Выберите ключ")} visible={!isNil(policyId)}
+                   hide={() => setPolicyId(null)}>
+                {isLoadingSign && <OverlayLoader />}
+                {error && isEqual(error, "NOT_INSTALLED") ? <div style={{padding:'15px'}}>
+                        {t("Установите модуль E-IMZO от имени Администратора.")}
+                </div> : isEmpty(keys) ? <div style={{padding:'15px'}}>
+                        {t("Ключ(и) E-IMZO не найден(ы)")}
+                    </div> :
+                    keys.map((key) => {
+                    const validFrom = dayjs(get(key, "validFrom")).unix();
+                    const validTo = dayjs(get(key, "validTo")).unix();
+                    const isValid = validTo - validFrom > 0;
+                    return (
+                        <div onClick={()=>checkBeforeCurrentTime(get(key, "validTo")) ? ()=>{} : signWithEimzo(key)} style={{padding:'12px',boxShadow:'0px 5px 49px rgba(0, 0, 0, 0.06)',marginTop:'12px',cursor:checkBeforeCurrentTime(get(key, "validTo")) ? 'not-allowed' :'pointer'}}>
+                           <h4 style={{color:'#222',display:'flex',alignItems:'center'}}> <User style={{marginRight:'5px'}} />   {get(key, "CN", "")}</h4>
+                            <div style={{marginTop:'5px'}}>
+                                {t("ПИНФЛ")} : {get(key, "PINFL")}
+                            </div>
+                            <div style={{marginTop:'5px',color:checkBeforeCurrentTime(get(key, "validTo")) ? 'red' : 'rgb(112, 112, 112)'}}>
+                                {t("PERIOD")} : {dayjs(get(key, "validFrom")).format("DD-MM-YYYY")} / {dayjs(get(key, "validTo")).format("DD-MM-YYYY")} {checkBeforeCurrentTime(get(key, "validTo")) && t("Expired")}
+                            </div>
+                        </div>
+                    )
+                })}
+
             </Modal>
         </>
     )

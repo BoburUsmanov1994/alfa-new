@@ -276,6 +276,16 @@ const StepTwo = ({id = null, ...props}) => {
         key: KEYS.measurementType, url: `${URLS.measurementType}/list`
     })
     const measurementTypeList = getSelectOptionsListFromData(get(measurementType, `data.data`, []), '_id', 'name')
+
+    const {data: policyUseType} = useGetAllQuery({
+        key: KEYS.policyUseType, url: `${URLS.policyUseType}`
+    })
+    const policyUseTypeList = getSelectOptionsListFromData(get(policyUseType, `data`, []), 'id', 'name')
+
+    const {data: policyIntentType} = useGetAllQuery({
+        key: KEYS.policyIntentType, url: `${URLS.policyIntentType}`
+    })
+    const policyIntentTypeList = getSelectOptionsListFromData(get(policyIntentType, `data`, []), 'id', 'name')
     const setFieldValue = (value, name = "") => {
 
         _setFields(prev => ({...prev, [name]: value}))
@@ -1533,6 +1543,49 @@ const StepTwo = ({id = null, ...props}) => {
                                             type={'number-format-input'}
                                             name={'objectOfInsurance.details.insuredValue'}/>
                                     </Col>
+                                </>}
+                            {
+                                isEqual(get(_modalFields, 'objectOfInsurance.type'), "GTKOBJECT") && <>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={t('Polis turi')}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.policyType'}/>
+                                    </Col>
+                                    <Col xs={4}>
+                                        <Field
+                                            options={policyUseTypeList}
+                                            params={{required: true}}
+                                            type={'select'}
+                                            name={`objectOfInsurance.details.policyMultiUse`}
+                                            label={t('Policy use type')}
+                                        />
+                                    </Col>
+                                    <Col xs={4} >
+                                        <Field
+                                            params={{required: true}}
+                                            label={t('Polisni qo\'llash maqsadi')}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.policyIntent'}/>
+                                    </Col>
+                                    <Col xs={4}>
+                                        <Field
+                                            options={policyIntentTypeList}
+                                            params={{required: true}}
+                                            type={'select'}
+                                            name={`objectOfInsurance.details.policyIntentType`}
+                                            label={t('Policy intent type')}
+                                        />
+                                    </Col>
+                                    <Col xs={4} >
+                                        <Field
+                                            params={{required: true}}
+                                            label={t('Hududiy bojxona boshqarmasi kodi')}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.policyUgtk'}/>
+                                    </Col>
+
                                 </>}
 
                             {
