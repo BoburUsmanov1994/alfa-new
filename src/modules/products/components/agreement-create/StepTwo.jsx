@@ -1585,7 +1585,78 @@ const StepTwo = ({id = null, ...props}) => {
                                             type={'input'}
                                             name={'objectOfInsurance.details.policyUgtk'}/>
                                     </Col>
-
+                                    <Col xs={4}>
+                                        <Field
+                                            options={get(agreement,'pledgersSelect',[])}
+                                            type={'select'}
+                                            name={`objectOfInsurance.details.owner`}
+                                            label={t('Owner')}
+                                        />
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={residentTypeList}
+                                            label={'Resident type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.ownerResidency'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={otherObjectTypeList}
+                                            label={'Object type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.objectType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Наименование объекта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.objectName'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Описание объекта'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.objectDescription'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            options={measurementTypeList}
+                                            label={'Measurement type'}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.measurementType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Объем страхования'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.insuranceVolume'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            label={'Почтовый индекс'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.postcode'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true}}
+                                            label={'Адрес имущества'}
+                                            type={'input'}
+                                            name={'objectOfInsurance.details.address'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{required: true, valueAsNumber: true}}
+                                            label={'Страховая стоимость'}
+                                            type={'number-format-input'}
+                                            name={'objectOfInsurance.details.insuredValue'}/>
+                                    </Col>
                                 </>}
 
                             {
