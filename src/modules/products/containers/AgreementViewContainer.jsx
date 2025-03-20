@@ -206,23 +206,23 @@ const AgentViewContainer = () => {
                             },
                 },{
                     onSuccess:(res)=>{
-                        signPkcs7({
-                            url: URLS.agreementGtkSend,
-                            attributes: {
-                                agreementId: id,
-                                policyId,
-                                signature:get(res,'data.pkcs7b64')
-                            },
-                        },{
-                            onSuccess:(val)=>{
-                                if(isEqual(get(val,'data.resultcode'),0)){
-                                    toast.success(t('Successfully signed'))
-                                }else{
-                                    toast.error(get(val,'data.resultnote','ERROR'))
-                                }
-                                setPolicyId(null)
-                            }
-                        })
+                        // signPkcs7({
+                        //     url: URLS.agreementGtkSend,
+                        //     attributes: {
+                        //         agreementId: id,
+                        //         policyId,
+                        //         signature:get(res,'data.pkcs7b64')
+                        //     },
+                        // },{
+                        //     onSuccess:(val)=>{
+                        //         if(isEqual(get(val,'data.resultcode'),0)){
+                        //             toast.success(t('Successfully signed'))
+                        //         }else{
+                        //             toast.error(get(val,'data.resultnote','ERROR'))
+                        //         }
+                        //         setPolicyId(null)
+                        //     }
+                        // })
                     }
                 })
             }

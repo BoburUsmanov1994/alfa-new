@@ -24,9 +24,8 @@ const useEimzo = (enabled = true) => {
 
         if(key){
         try {
-            let res = await ReactEIMZO.createNewPkcs7(key, content);
+            let res = await ReactEIMZO.signPkcs7(key, content);
             setLoading(true);
-
             setSigned(res)
             setEsign(key)
             handleSigned(res,null);

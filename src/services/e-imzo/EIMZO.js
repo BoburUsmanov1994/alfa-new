@@ -117,7 +117,7 @@ export default class EIMZO {
 
     async signPkcs7(cert, content) {
         const loadKeyResult = await this.loadKey(cert);
-
+        console.log('ENCODED_JSON',window.Base64.encode(content))
         return new Promise((resolve, reject) => {
             CAPIWS.callFunction(
                 {
@@ -165,12 +165,13 @@ export default class EIMZO {
             sessionStorage.setItem(`${cert.serialNumber}_time`, now.toString());
         }
         return new Promise((resolve, reject) => {
+            console.log('ENCODED_JSON',window.Base64.encode(content))
 
             CAPIWS.callFunction(
                 {
                     name: 'create_pkcs7',
                     plugin: 'pkcs7',
-                    arguments: [window.Base64.encode(content), sessiosResultId, 'no']
+                    arguments: [window.Base64.encode(content), sessiosResultId, 'yes']
                 },
                 (event, data) => {
                     if (data.success) {
