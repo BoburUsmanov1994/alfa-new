@@ -211,6 +211,7 @@ export const URLS = {
     smrPortfelReport: 'api/smr/full/report',
     osgorPortfelReport: 'api/osgor/full/report',
     osgopPortfelReport: 'api/osgop/full/report',
+    osgagoPortfelReport: 'api/osago/full/report',
     specificList: 'api/branch/specific/list',
     unattachPolicy: 'api/transaction/unattach-all',
     currencyList: 'api/references/currency/list',

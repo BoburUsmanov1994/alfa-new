@@ -208,4 +208,5 @@ export const KEYS = {
     smrPortfelReport:'smrPortfelReport',
     osgorPortfelReport:'osgorPortfelReport',
     osgopPortfelReport:'osgopPortfelReport',
+    osgagoPortfelReport:'osgagoPortfelReport',
 }

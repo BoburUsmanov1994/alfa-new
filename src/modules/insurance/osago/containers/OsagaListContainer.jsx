@@ -10,10 +10,10 @@ import NumberFormat from "react-number-format";
 import Form from "../../../../containers/form/form";
 import {useNavigate} from "react-router-dom";
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
-import {getSelectOptionsListFromData} from "../../../../utils";
+import {getSelectOptionsListFromData, saveFile} from "../../../../utils";
 import {Col, Row} from "react-grid-system";
 import Button from "../../../../components/ui/button";
-import {DollarSign, Filter, Trash} from "react-feather";
+import {DollarSign, FileText, Filter, Trash} from "react-feather";
 import Flex from "../../../../components/flex";
 import config from "../../../../config";
 import {ContentLoader} from "../../../../components/loader";
@@ -28,6 +28,7 @@ const ListContainer = () => {
     const [tr, setTr] = useState(null);
     const [page, setPage] = useState(1);
     const [transactionId, setTransactionId] = useState(null);
+    const [branch, setBranch] = useState(null);
   const setBreadcrumbs = useStore((state) =>
     get(state, "setBreadcrumbs", () => {})
   );
@@ -90,7 +91,22 @@ const ListContainer = () => {
     ],
     []
   );
-
+    let {refetch:osgagoReport} = useGetAllQuery({
+        key: KEYS.osgagoPortfelReport,
+        url: URLS.osgagoPortfelReport,
+        params: {
+            params: {
+                branch: includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
+            },
+            responseType: 'blob'
+        },
+        enabled: false,
+        cb: {
+            success: (res) => {
+                saveFile(res)
+            }
+        }
+    })
   useEffect(() => {
     setBreadcrumbs(breadcrumbs);
   }, []);
@@ -276,7 +292,7 @@ const ListContainer = () => {
                     />
                 </Col>
 
-                <Col xs={3}><Field type={'select'} label={t("Филиал")} name={'branch'}
+                <Col xs={3}><Field  property={{onChange: (val) => setBranch(val)}} type={'select'} label={t("Филиал")} name={'branch'}
                                    options={branches} defaultValue={get(filter, 'branch')}
                                    isDisabled={!includes([config.ROLES.admin], get(user, 'role.name'))}/></Col>
                 <Col xs={9}>
@@ -288,6 +304,11 @@ const ListContainer = () => {
                         }} className={'ml-15'} danger type={'button'}><Flex justify={'center'}><Trash
                             size={18}/><span
                             style={{marginLeft: '5px'}}>{t("ОЧИСТИТЬ")}</span></Flex></Button>
+                        <Button  className={'ml-15'} onClick={() => {
+                            osgagoReport()
+                        }} green type={'button'}><Flex justify={'center'}><FileText
+                            size={18}/><span
+                            style={{marginLeft: '5px'}}>{t("Portfel report")}</span></Flex></Button>
                     </div>
                 </Col>
             </Row>}
