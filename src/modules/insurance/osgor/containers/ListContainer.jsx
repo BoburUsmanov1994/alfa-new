@@ -17,14 +17,19 @@ import Pagination from "../../../../components/pagination";
 import Modal from "../../../../components/modal";
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
 import config from "../../../../config";
-import {DollarSign, Download} from "react-feather";
+import {DollarSign, Download, FileText, Filter, Trash} from "react-feather";
+import Flex from "../../../../components/flex";
+import {getSelectOptionsListFromData, saveFile} from "../../../../utils";
+import {useNavigate} from "react-router-dom";
 
-const ListContainer = ({ ...rest }) => {
+const ListContainer = () => {
   const { t } = useTranslation();
+    const navigate = useNavigate();
     const user = useStore(state => get(state, 'user', null))
     const [tr, setTr] = useState(null);
     const [page, setPage] = useState(1);
     const [transactionId, setTransactionId] = useState(null);
+    const [branch, setBranch] = useState(null);
 
   const setBreadcrumbs = useStore((state) =>
     get(state, "setBreadcrumbs", () => {})
@@ -57,7 +62,32 @@ const ListContainer = ({ ...rest }) => {
             }
         }
     })
+    let {data: branches} = useGetAllQuery({
+        key: KEYS.branches, url: `${URLS.branches}/list`, params: {
+            params: {
+                limit: 100
+            }
+        }
+    })
+    branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
     const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: [KEYS.osgorList,filter]})
+
+    let {refetch:osgorReport} = useGetAllQuery({
+        key: KEYS.osgorPortfelReport,
+        url: URLS.osgorPortfelReport,
+        params: {
+            params: {
+                branch: includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
+            },
+            responseType: 'blob'
+        },
+        enabled: false,
+        cb: {
+            success: (res) => {
+                saveFile(res)
+            }
+        }
+    })
 
     const attach = ({data}) => {
         const {attachmentSum,attach} = data;
@@ -101,14 +131,9 @@ const ListContainer = ({ ...rest }) => {
         ModalBody={ModalBody}
         tableHeaderData={[
           {
-            id: 1,
-            key: "seria",
-            title: "Agreement seria",
-          },
-          {
             id: 2,
             key: "number",
-            title: "Agreement number",
+            title: "Номер соглашения",
           },
           {
             id: 3,
@@ -120,10 +145,15 @@ const ListContainer = ({ ...rest }) => {
             key: "policies[0].number",
             title: "Policy number",
           },
+            {
+                id: 41,
+                key: "insurant.organization.inn",
+                title: "ИНН",
+            },
           {
             id: 5,
             key: "insurant",
-            title: "Client",
+            title: "Страхователь",
             render: (row) =>
               get(row, "insurant.person")
                 ? `${get(row, "insurant.person.fullName.lastname")} ${get(
@@ -132,18 +162,7 @@ const ListContainer = ({ ...rest }) => {
                   )}  ${get(row, "insurant.person.fullName.middlename")}`
                 : get(row, "insurant.organization.name"),
           },
-          {
-            id: 6,
-            key: "policies[0].insurancePremium",
-            title: "Insurance premium",
-            render: (row) => (
-              <NumberFormat
-                displayType={"text"}
-                thousandSeparator={" "}
-                value={get(row, "policies[0].insurancePremium")}
-              />
-            ),
-          },
+
           {
             id: 7,
             key: "policies[0].insuranceSum",
@@ -156,6 +175,33 @@ const ListContainer = ({ ...rest }) => {
               />
             ),
           },
+            {
+                id: 6,
+                key: "policies[0].insurancePremium",
+                title: "Insurance premium",
+                render: (row) => (
+                    <NumberFormat
+                        displayType={"text"}
+                        thousandSeparator={" "}
+                        value={get(row, "policies[0].insurancePremium")}
+                    />
+                ),
+            },
+            {
+                id: 91,
+                key: "contractStartDate",
+                title: "Дата начало периода страхования",
+            },
+            {
+                id: 92,
+                key: "contractEndDate",
+                title: "Дата начало периода страхования",
+            },
+            {
+                id: 93,
+                key: "policies[0].issueDate",
+                title: "Дата выдачи полиса",
+            },
           {
             id: 8,
             key: "policies[0].insurancePremium",
@@ -187,7 +233,7 @@ const ListContainer = ({ ...rest }) => {
 
             },
         ]}
-        keyId={KEYS.osgorList}
+        keyId={[KEYS.osgorList,filter]}
         extraActions={(_tr)=>includes(['new', 'partialPaid','sent'],get(_tr,'attachStatus')) && <DollarSign onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}
         url={URLS.osgorList}
         listUrl={URLS.osgorList}
@@ -200,6 +246,67 @@ const ListContainer = ({ ...rest }) => {
         dataKey={"osgor_formId"}
         deleteUrl={URLS.osgorDelete}
         deleteQueryParam={"osgor_formId"}
+        params={{
+            ...filter
+        }}
+        extraFilters={<Form formRequest={({data: {group, subGroup, ...rest} = {}}) => {
+            setFilter(rest);
+        }}
+                            mainClassName={'mt-15'}>
+
+            {() => <Row align={'flex-end'}>
+                <Col xs={3}>
+                    <Field label={t('Номер договора')} type={'input'}
+                           name={'number'}
+                           defaultValue={get(filter, 'number')}
+
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Страхователь')} type={'input'}
+                           name={'insurant'}
+                           defaultValue={get(filter, 'insurant')}
+
+                    />
+                </Col>
+
+                <Col xs={3}><Field type={'select'} label={'Status'} name={'status'}
+                                   options={[{value: 'new', label: 'new'}, {
+                                       value: 'partialPaid',
+                                       label: 'partialPaid'
+                                   }, {value: 'paid', label: 'paid'}, {value: 'sent', label: 'sent'}]}
+                                   defaultValue={get(filter, 'status')}
+                /></Col>
+                <Col xs={3}>
+                    <Field label={t('Дата выдачи полиса')} type={'datepicker'}
+                           name={'issueDate'}
+                           defaultValue={get(filter, 'issueDate')}
+
+                    />
+                </Col>
+
+                <Col xs={3}><Field property={{onChange: (val) => setBranch(val)}} type={'select'} label={'Филиал'} name={'branch'}
+                                   options={branches} defaultValue={get(filter, 'branch')}
+                                   isDisabled={!includes([config.ROLES.admin], get(user, 'role.name'))}/></Col>
+                <Col xs={9}>
+                    <div className="mb-25">
+
+                        <Button htmlType={'submit'}><Flex justify={'center'}><Filter size={18}/><span
+                            style={{marginLeft: '5px'}}>{t("ПРИМЕНИТЬ")}</span></Flex></Button>
+                        <Button onClick={() => {
+                            navigate(0)
+                        }} className={'ml-15'} danger type={'button'}><Flex justify={'center'}><Trash
+                            size={18}/><span
+                            style={{marginLeft: '5px'}}>{t("ОЧИСТИТЬ")}</span></Flex></Button>
+                        <Button  className={'ml-15'} onClick={() => {
+                            osgorReport()
+                        }} green type={'button'}><Flex justify={'center'}><FileText
+                            size={18}/><span
+                            style={{marginLeft: '5px'}}>{t("Portfel report")}</span></Flex></Button>
+                    </div>
+                </Col>
+            </Row>}
+        </Form>}
       />
         <Modal  title={'Распределение к полису'} visible={!isNil(tr)}
                 hide={() => setTr(null)}>

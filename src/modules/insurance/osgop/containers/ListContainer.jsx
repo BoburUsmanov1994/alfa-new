@@ -8,7 +8,7 @@ import Field from "../../../../containers/form/field";
 import { useTranslation } from "react-i18next";
 import NumberFormat from "react-number-format";
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
-import {DollarSign, Download} from "react-feather";
+import {DollarSign, Download, FileText, Filter, Trash} from "react-feather";
 import config from "../../../../config";
 import Modal from "../../../../components/modal";
 import {ContentLoader} from "../../../../components/loader";
@@ -18,15 +18,20 @@ import {Col, Row} from "react-grid-system";
 import Button from "../../../../components/ui/button";
 import Form from "../../../../containers/form/form";
 import Pagination from "../../../../components/pagination";
+import {Flex} from "@chakra-ui/react";
+import {getSelectOptionsListFromData, saveFile} from "../../../../utils";
+import {useNavigate} from "react-router-dom";
 
 const ListContainer = () => {
   const { t } = useTranslation();
+    const navigate = useNavigate();
     const user = useStore(state => get(state, 'user', null))
     const [filter, setFilter] = useState({
         branch: get(user, 'branch._id'),
     });
     const [tr, setTr] = useState(null);
     const [page, setPage] = useState(1);
+    const [branch, setBranch] = useState(null);
     const [transactionId, setTransactionId] = useState(null);
 
   const setBreadcrumbs = useStore((state) =>
@@ -57,7 +62,14 @@ const ListContainer = () => {
             }
         }
     })
-
+    let {data: branches} = useGetAllQuery({
+        key: KEYS.branches, url: `${URLS.branches}/list`, params: {
+            params: {
+                limit: 100
+            }
+        }
+    })
+    branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
     const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: [KEYS.osgopList,filter]})
 
     const attach = ({data}) => {
@@ -79,7 +91,22 @@ const ListContainer = () => {
             }
         })
     }
-
+    let {refetch:osgopReport} = useGetAllQuery({
+        key: KEYS.osgopPortfelReport,
+        url: URLS.osgopPortfelReport,
+        params: {
+            params: {
+                branch: includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
+            },
+            responseType: 'blob'
+        },
+        enabled: false,
+        cb: {
+            success: (res) => {
+                saveFile(res)
+            }
+        }
+    })
   useEffect(() => {
     setBreadcrumbs(breadcrumbs);
   }, []);
@@ -104,18 +131,42 @@ const ListContainer = () => {
         tableHeaderData={[
           {
             id: 3,
-            key: "seria",
-            title: "Policy seria",
+            key: "number",
+            title: "Номер соглашения",
           },
+            {
+                id: 31,
+                key: "policies[0].seria",
+                title: "Policy seria",
+            },
           {
             id: 4,
-            key: "number",
+            key: "policies[0].number",
             title: "Policy number",
           },
+            {
+                id: 41,
+                key: "policies[0].number",
+                title: "ИНН/ ПИНФЛ",
+                render: (row) =>
+                    get(row, "insurant.person.passportData.pinfl", get(row, "insurant.organization.inn","-"))
+            },
+            {
+                id: 55,
+                key: "insurant",
+                title: "Страхователь",
+                render: (row) =>
+                    get(row, "insurant.person")
+                        ? `${get(row, "insurant.person.fullName.lastname")} ${get(
+                            row,
+                            "insurant.person.fullName.firstname"
+                        )}  ${get(row, "insurant.person.fullName.middlename")}`
+                        : get(row, "insurant.organization.name"),
+            },
           {
             id: 5,
             key: "owner",
-            title: "Owner",
+            title: "Собственник",
             render: (row) =>
               get(row, "owner.person")
                 ? `${get(row, "owner.person.fullName.lastname")} ${get(
@@ -124,30 +175,12 @@ const ListContainer = () => {
                   )}  ${get(row, "owner.person.fullName.middlename")}`
                 : get(row, "owner.organization.name"),
           },
-          {
-            id: 55,
-            key: "insurant",
-            title: "Isnurant",
-            render: (row) =>
-              get(row, "insurant.person")
-                ? `${get(row, "insurant.person.fullName.lastname")} ${get(
-                    row,
-                    "insurant.person.fullName.firstname"
-                  )}  ${get(row, "insurant.person.fullName.middlename")}`
-                : get(row, "insurant.organization.name"),
-          },
-          {
-            id: 6,
-            key: "premium",
-            title: "Insurance premium",
-            render: (row) => (
-              <NumberFormat
-                displayType={"text"}
-                thousandSeparator={" "}
-                value={get(row, "premium")}
-              />
-            ),
-          },
+            {
+                id: 51,
+                key: "policies[0].objects[0].vehicle.govNumber",
+                title: "Гос.номер ТС",
+            },
+
           {
             id: 7,
             key: "sum",
@@ -160,6 +193,33 @@ const ListContainer = () => {
               />
             ),
           },
+            {
+                id: 6,
+                key: "premium",
+                title: "Insurance premium",
+                render: (row) => (
+                    <NumberFormat
+                        displayType={"text"}
+                        thousandSeparator={" "}
+                        value={get(row, "premium")}
+                    />
+                ),
+            },
+            {
+                id: 91,
+                key: "contractStartDate",
+                title: "Дата начало периода страхования",
+            },
+            {
+                id: 92,
+                key: "contractEndDate",
+                title: "Дата начало периода страхования",
+            },
+            // {
+            //     id: 93,
+            //     key: "sentDate",
+            //     title: "Дата выдачи полиса",
+            // },
           {
             id: 8,
             key: "premium",
@@ -191,7 +251,7 @@ const ListContainer = () => {
 
             },
         ]}
-        keyId={KEYS.osgopList}
+        keyId={[KEYS.osgopList,filter]}
         url={URLS.osgopList}
         listUrl={`${URLS.osgopList}`}
         title={t("Osgop agreements list")}
@@ -204,6 +264,72 @@ const ListContainer = () => {
         deleteUrl={URLS.osgopDelete}
         deleteParam={"osgop_formId"}
         deleteQueryParam={"osgop_formId"}
+        params={{...filter}}
+        extraFilters={<Form formRequest={({data: {group, subGroup, ...rest} = {}}) => {
+            setFilter(rest);
+        }}
+                            mainClassName={'mt-15'}>
+
+            {() => <Row align={'flex-end'}>
+                <Col xs={3}>
+                    <Field label={t('Номер договора')} type={'input'}
+                           name={'number'}
+                           defaultValue={get(filter, 'number')}
+
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Страхователь')} type={'input'}
+                           name={'insurant'}
+                           defaultValue={get(filter, 'insurant')}
+
+                    />
+                </Col>
+
+                <Col xs={3}><Field type={'select'} label={'Status'} name={'status'}
+                                   options={[{value: 'new', label: 'new'}, {
+                                       value: 'partialPaid',
+                                       label: 'partialPaid'
+                                   }, {value: 'paid', label: 'paid'}, {value: 'sent', label: 'sent'}]}
+                                   defaultValue={get(filter, 'status')}
+                /></Col>
+                <Col xs={3}>
+                    <Field label={t('Дата начало периода')} type={'datepicker'}
+                           name={'contractStartDate'}
+                           defaultValue={get(filter, 'contractStartDate')}
+
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Дата окончания периода')} type={'datepicker'}
+                           name={'contractEndDate'}
+                           defaultValue={get(filter, 'contractEndDate')}
+
+                    />
+                </Col>
+
+                <Col xs={3}><Field property={{onChange: (val) => setBranch(val)}} type={'select'} label={'Филиал'} name={'branch'}
+                                   options={branches} defaultValue={get(filter, 'branch')}
+                                   isDisabled={!includes([config.ROLES.admin], get(user, 'role.name'))}/></Col>
+                <Col xs={6}>
+                    <div className="mb-25">
+
+                        <Button htmlType={'submit'}><Flex justify={'center'}><Filter size={18}/><span
+                            style={{marginLeft: '5px'}}>{t("ПРИМЕНИТЬ")}</span></Flex></Button>
+                        <Button onClick={() => {
+                            navigate(0)
+                        }} className={'ml-15'} danger type={'button'}><Flex justify={'center'}><Trash
+                            size={18}/><span
+                            style={{marginLeft: '5px'}}>{t("ОЧИСТИТЬ")}</span></Flex></Button>
+                        <Button  className={'ml-15'} onClick={() => {
+                            osgopReport()
+                        }} green type={'button'}><Flex justify={'center'}><FileText
+                            size={18}/><span
+                            style={{marginLeft: '5px'}}>{t("Portfel report")}</span></Flex></Button>
+                    </div>
+                </Col>
+            </Row>}
+        </Form>}
       />
         <Modal  title={'Распределение к полису'} visible={!isNil(tr)}
                 hide={() => setTr(null)}>

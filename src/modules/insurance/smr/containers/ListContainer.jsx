@@ -13,9 +13,9 @@ import {Col, Row} from "react-grid-system";
 import config from "../../../../config";
 import Button from "../../../../components/ui/button";
 import Flex from "../../../../components/flex";
-import {DollarSign, Filter, Trash} from "react-feather";
+import {DollarSign, FileText, Filter, Trash} from "react-feather";
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
-import {getSelectOptionsListFromData} from "../../../../utils";
+import {getSelectOptionsListFromData, saveFile} from "../../../../utils";
 import {useNavigate} from "react-router-dom";
 import Pagination from "../../../../components/pagination";
 import Table from "../../../../components/table";
@@ -31,6 +31,7 @@ const ListContainer = () => {
         branch: get(user, 'branch._id'),
     });
     const [tr, setTr] = useState(null);
+    const [branch, setBranch] = useState(null);
     const [page, setPage] = useState(1);
     const [transactionId, setTransactionId] = useState(null);
 
@@ -94,6 +95,22 @@ const ListContainer = () => {
         ],
         []
     );
+    let {refetch:smrReport} = useGetAllQuery({
+        key: KEYS.smrPortfelReport,
+        url: URLS.smrPortfelReport,
+        params: {
+            params: {
+                branch: includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
+            },
+            responseType: 'blob'
+        },
+        enabled: false,
+        cb: {
+            success: (res) => {
+                saveFile(res)
+            }
+        }
+    })
 
     useEffect(() => {
         setBreadcrumbs(breadcrumbs);
@@ -221,11 +238,12 @@ const ListContainer = () => {
                             />
                         </Col>
 
-                        <Col xs={3}><Field type={'select'} label={'Филиал'} name={'branch'}
+                        <Col xs={3}><Field property={{onChange: (val) => setBranch(val)}} type={'select'} label={'Филиал'} name={'branch'}
                                            options={branches} defaultValue={get(filter, 'branch')}
                                            isDisabled={!includes([config.ROLES.admin], get(user, 'role.name'))}/></Col>
                         <Col xs={9}>
                             <div className="mb-25">
+
                                 <Button htmlType={'submit'}><Flex justify={'center'}><Filter size={18}/><span
                                     style={{marginLeft: '5px'}}>{t("ПРИМЕНИТЬ")}</span></Flex></Button>
                                 <Button onClick={() => {
@@ -233,6 +251,11 @@ const ListContainer = () => {
                                 }} className={'ml-15'} danger type={'button'}><Flex justify={'center'}><Trash
                                     size={18}/><span
                                     style={{marginLeft: '5px'}}>{t("ОЧИСТИТЬ")}</span></Flex></Button>
+                                <Button  className={'ml-15'} onClick={() => {
+                                    smrReport()
+                                }} green type={'button'}><Flex justify={'center'}><FileText
+                                    size={18}/><span
+                                    style={{marginLeft: '5px'}}>{t("Portfel report")}</span></Flex></Button>
                             </div>
                         </Col>
                     </Row>}

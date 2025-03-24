@@ -232,7 +232,7 @@ const GridView = ({
                     </Col>
                 </Row>
             </Panel>}
-            <Section>Дата ввода
+            <Section>
                 <Row>
                     <Col xs={12}>
                         {extraFilters}

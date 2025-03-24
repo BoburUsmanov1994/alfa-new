@@ -204,4 +204,8 @@ export const KEYS = {
     agreementGtkSend:'agreementGtkSend',
     policyUseType:'policyUseType',
     policyIntentType:'policyIntentType',
+    agreementPortfelReport:'agreementPortfelReport',
+    smrPortfelReport:'smrPortfelReport',
+    osgorPortfelReport:'osgorPortfelReport',
+    osgopPortfelReport:'osgopPortfelReport',
 }

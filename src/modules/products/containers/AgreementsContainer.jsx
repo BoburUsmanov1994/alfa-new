@@ -102,7 +102,22 @@ const AgreementsContainer = () => {
             }
         }
     })
-
+    let {refetch:portfelReportRefetch} = useGetAllQuery({
+        key: KEYS.agreementPortfelReport,
+        url: URLS.agreementPortfelReport,
+        params: {
+            params: {
+                branch: includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
+            },
+            responseType: 'blob'
+        },
+        enabled: false,
+        cb: {
+            success: (res) => {
+                saveFile(res)
+            }
+        }
+    })
     const {mutate:annualRequest,isLoading:isLoadingAnnual} = usePostQuery({listKeyId:[KEYS.agreements, filter]})
 
     useEffect(() => {
@@ -344,6 +359,11 @@ const AgreementsContainer = () => {
                                 }} className={'mt-15 mb-15'} yellow type={'button'}><Flex justify={'center'}><FileText
                                     size={14}/><span
                                     style={{marginLeft: '5px'}}>{t("Отчет")}</span></Flex></Button>
+                                <Button xs onClick={() => {
+                                    portfelReportRefetch()
+                                }} className={'mb-15'} green type={'button'}><Flex justify={'center'}><FileText
+                                    size={14}/><span
+                                    style={{marginLeft: '5px'}}>{t("Portfel report")}</span></Flex></Button>
                             </div>
                         </Col>
                     </Row>}
