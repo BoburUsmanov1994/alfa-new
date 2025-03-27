@@ -301,6 +301,11 @@ export const menuData = (role) => [
         title: t("СМР Распределение"),
         path: "/insurance/smr/distribute",
       },
+      includes([config.ROLES.admin], role) && {
+        id: 6,
+        title: t("Страхования кредитов НБУ"),
+        path: "/insurance/nbu-credits",
+      },
     ],
   },
 

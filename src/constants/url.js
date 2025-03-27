@@ -221,4 +221,5 @@ export const URLS = {
     agreementGtkSend: 'api/agreement/gtk/send',
     policyUseType: 'api/references/gtk-policy-use-type',
     policyIntentType: 'api/references/gtk-policy-intent-type',
+    nbuIntegrations: 'api/nbu-integration/list',
 }

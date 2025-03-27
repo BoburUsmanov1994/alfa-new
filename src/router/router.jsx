@@ -56,6 +56,7 @@ import AgentsReportControlPage from "../modules/agents/pages/AgentsReportControl
 import BranchBankPage from "../modules/handbook/pages/BranchBankPage";
 import AgreementUpdatePage from "../modules/products/pages/AgreementUpdatePage";
 import PolicyTerminationPage from "../modules/policy/pages/PolicyTerminationPage";
+import NbuPage from "../modules/insurance/smr/pages/NbuPage";
 //lazy load
 const TypeObjectPage = lazy(() => import("../modules/handbook/pages/TypeObjectPage"));
 const ObjectPage = lazy(() => import("../modules/handbook/pages/ObjectPage"));
@@ -295,6 +296,7 @@ const Router = ({...rest}) => {
                                 <Route path={"smr/view/:contract_id"} element={<SmrViewPage/>}/>
                                 <Route path={"smr/update/:contract_id"} element={<SmrUpdatePage/>}/>
                                 <Route path={"smr/distribute"} element={<SmrDistributePage/>}/>
+                                <Route path={"nbu-credits"} element={<NbuPage/>}/>
                             </Route>
                             <Route path={"endorsement"}>
                                 <Route path={"create/:product_id"} element={<EndorsementCreatePage/>}/>
