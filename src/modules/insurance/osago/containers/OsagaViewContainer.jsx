@@ -216,13 +216,13 @@ const ViewContainer = ({ application_number = null }) => {
     usePostQuery({ listKeyId: KEYS.view });
 
   const { mutate: deleteRequest, isLoading: deleteLoading } = useDeleteQuery({
-    listKeyId: KEYS.delete,
+    listKeyId: KEYS.osagoDelete,
   });
 
   const send = () => {
     sendFond(
       {
-        url: `${URLS.send}?application_number=${application_number}`,
+        url: `${URLS.osagoSend}?application_number=${application_number}`,
         attributes: {},
       },
       {
@@ -274,10 +274,10 @@ const ViewContainer = ({ application_number = null }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteRequest(
-          { url: `${URLS.delete}?application_number=${application_number}` },
+          { url: `${URLS.osagoDelete}?application_number=${application_number}` },
           {
             onSuccess: () => {
-              navigate("/osaga");
+              navigate("/insurance/osago");
             },
           }
         );

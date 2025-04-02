@@ -159,7 +159,10 @@ const DistributionContainer = () => {
                     </Flex>
                 </Col>
                 <Col xs={12} className={'mt-30'}>
-                    <Form formRequest={({data}) => setFilter({...data})}>
+                    <Form formRequest={({data}) => {
+                        setPage(1)
+                        setFilter({...data})
+                    }}>
                         <Row align={'end'} gutterWidth={16}>
                             <Col xs={1.25}>
                                 <Field

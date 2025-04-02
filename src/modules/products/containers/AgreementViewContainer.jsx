@@ -428,7 +428,10 @@ const AgentViewContainer = () => {
             <Modal  title={'Распределение к полису'} visible={!isNil(selectedPolice)}
                    hide={() => setSelectedPolice(null)}>
                 <div style={{padding:'15px 0'}}>
-                    <Form formRequest={({data}) => setFilter({...data})}>
+                    <Form formRequest={({data}) => {
+                        setPage(1)
+                        setFilter({...data})
+                    }}>
                         <Row align={'end'} gutterWidth={16}>
                             <Col xs={2}>
                                 <Field sm label={t('Дата п/п от')} type={'datepicker'}
