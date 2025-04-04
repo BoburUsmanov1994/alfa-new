@@ -222,4 +222,5 @@ export const URLS = {
     policyUseType: 'api/references/gtk-policy-use-type',
     policyIntentType: 'api/references/gtk-policy-intent-type',
     nbuIntegrations: 'api/nbu-integration/list',
+    nbuPortfelReport: 'api/nbu-integration/report',
 }

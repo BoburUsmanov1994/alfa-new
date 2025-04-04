@@ -210,4 +210,5 @@ export const KEYS = {
     osgopPortfelReport:'osgopPortfelReport',
     osgagoPortfelReport:'osgagoPortfelReport',
     nbuIntegrations:'nbuIntegrations',
+    nbuPortfelReport:'nbuPortfelReport',
 }

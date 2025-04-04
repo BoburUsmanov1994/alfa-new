@@ -525,7 +525,7 @@ const StepTwo = ({id = null, ...props}) => {
                                         name={`totalForeignInsuranceSum`}
                                         type={'number-format-input'}
                                         defaultValue={round(sum(values(insuranceSum))/exchangeRate, 2)}
-                                        property={{disabled:true}}
+                                        property={{disabled:!hasForeignCurrency}}
                                     />
                                 </Col>
                                 <Col xs={4}>
@@ -534,7 +534,7 @@ const StepTwo = ({id = null, ...props}) => {
                                         name={`totalForeignInsurancePremium`}
                                         type={'number-format-input'}
                                         defaultValue={round(sum(values(premium))/exchangeRate, 2)}
-                                        property={{disabled:true}}
+                                        property={{disabled:!hasForeignCurrency}}
                                     />
                                 </Col>
                             </Row>
