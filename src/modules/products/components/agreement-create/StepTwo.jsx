@@ -1299,6 +1299,13 @@ const StepTwo = ({id = null, ...props}) => {
                                             type={'number-format-input'}
                                             name={'objectOfInsurance.details.insuredValue'}/>
                                     </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{valueAsNumber: true}}
+                                            label={'Страховая стоимость в валюте'}
+                                            type={'number-format-input'}
+                                            name={'objectOfInsurance.details.insuredForeignValue'}/>
+                                    </Col>
 
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
@@ -1387,6 +1394,13 @@ const StepTwo = ({id = null, ...props}) => {
                                             label={'Страховая стоимость'}
                                             type={'number-format-input'}
                                             name={'objectOfInsurance.details.insuredValue'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{valueAsNumber: true}}
+                                            label={'Страховая стоимость в валюте'}
+                                            type={'number-format-input'}
+                                            name={'objectOfInsurance.details.insuredForeignValue'}/>
                                     </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field
@@ -1542,6 +1556,13 @@ const StepTwo = ({id = null, ...props}) => {
                                             label={'Страховая стоимость'}
                                             type={'number-format-input'}
                                             name={'objectOfInsurance.details.insuredValue'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{valueAsNumber: true}}
+                                            label={'Страховая стоимость в валюте'}
+                                            type={'number-format-input'}
+                                            name={'objectOfInsurance.details.insuredForeignValue'}/>
                                     </Col>
                                 </>}
                             {
@@ -1733,12 +1754,27 @@ const StepTwo = ({id = null, ...props}) => {
                                             type={'number-format-input'}
                                             name={'objectOfInsurance.details.insuredValue'}/>
                                     </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            params={{valueAsNumber: true}}
+                                            label={'Страховая стоимость в валюте'}
+                                            type={'number-format-input'}
+                                            name={'objectOfInsurance.details.insuredForeignValue'}/>
+                                    </Col>
                                 </>}
                             <Col xs={4}>
                                 <Field
                                     type={'number-format-input'}
                                     name={`objectOfInsurance.insuranceSum`}
                                     label={t('Страховая сумма')}
+                                    params={{valueAsNumber: true}}
+                                />
+                            </Col>
+                            <Col xs={4}>
+                                <Field
+                                    type={'number-format-input'}
+                                    name={`objectOfInsurance.insuranceForeignSum`}
+                                    label={t('Страховая сумма в валюте')}
                                     params={{valueAsNumber: true}}
                                 />
                             </Col>
