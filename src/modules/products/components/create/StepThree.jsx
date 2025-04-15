@@ -20,7 +20,8 @@ const StepThree = ({...props}) => {
         Isfixedrate: false,
         Isfixedsuminsured: false,
         Isfixedfee: false,
-        Isfixedpreventivemeasures: false
+        Isfixedpreventivemeasures: false,
+        Isfixedagent:false
     })
     const {t} = useTranslation();
     const setProduct = useSettingsStore(state => get(state, 'setProduct', () => {
@@ -49,8 +50,6 @@ const StepThree = ({...props}) => {
     let {data: clients} = useGetAllQuery({key: KEYS.agents, url: `${URLS.clients}/list`})
     clients = getSelectOptionsListFromData(get(clients, `data.data`, []), '_id', ['person.fullName.lastname','person.fullName.firstname','organization.name'])
 
-    let {data: policyformats} = useGetAllQuery({key: KEYS.policyformats, url: `${URLS.policyFormat}/list`})
-    policyformats = getSelectOptionsListFromData(get(policyformats, `data.data`, []), '_id', 'name')
 
     let {data: refunds} = useGetAllQuery({key: KEYS.typeofrefund, url: `${URLS.typeofrefund}/list`})
     refunds = getSelectOptionsListFromData(get(refunds, `data.data`, []), '_id', 'name')
@@ -63,10 +62,23 @@ const StepThree = ({...props}) => {
 
     let {data: polices} = useGetAllQuery({key: KEYS.typeofpolice, url: `${URLS.policyType}/list`})
     polices = getSelectOptionsListFromData(get(polices, `data.data`, []), '_id', 'name')
-
+    const { data: agents } = useGetAllQuery({
+        key: [KEYS.agents],
+        url: `${URLS.agents}/list`,
+        params: {
+            params: {
+                branch: null,
+            },
+        },
+    });
+    const agentsList = getSelectOptionsListFromData(
+        get(agents, `data.data`, []),
+        "_id",
+        ["organization.nameoforganization", "person.secondname", "person.name"]
+    );
 
     const showField = (value, name) => {
-        if (includes(['hasFixedPolicyHolder', 'hasFixedBeneficary', 'hasFixedPremium', 'hasFixedRate', 'hasFixedInsuranceSum', 'hasFixedFee', 'hasFixedPreventiveMeasures'], name)) {
+        if (includes(['hasFixedPolicyHolder', 'hasFixedBeneficary', 'hasFixedPremium', 'hasFixedRate', 'hasFixedInsuranceSum', 'hasFixedFee', 'hasFixedPreventiveMeasures','hasFixedAgent'], name)) {
             setShow(prev => ({...prev, [name]: value}))
         }
     }
@@ -234,7 +246,23 @@ const StepThree = ({...props}) => {
                                    defaultValue={get(product,'claimSettlementType')}
                             />
                         </Col>
+                        <Col xs={4}>
+                            <Field label={t("Имеет фиксированный агент")}
+                                   type={'switch'}
+                                   name={'hasFixedAgent'}
+                                   defaultValue={get(product,'hasFixedAgent',false)}
+                            />
+                            {get(show, 'hasFixedAgent', false) &&
+                                <Field label={t("Фиксированный агент")}
+                                       type={'select'}
+                                       name={'fixedAgent'}
+                                       property={{hideLabel: true}}
+                                       options={agentsList}
+                                       defaultValue={get(product,'fixedAgent')}
+                                />}
+                        </Col>
                     </Row>
+
                     <Row className={'mb-25'}>
                         <Col xs={4}>
                             <Field label={t("Тип возмещения")}

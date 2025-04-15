@@ -5,7 +5,7 @@ import Field from "../../../../containers/form/field";
 import Form from "../../../../containers/form/form";
 import Button from "../../../../components/ui/button";
 import {useSettingsStore, useStore} from "../../../../store";
-import {get, head, includes} from "lodash"
+import {get, head} from "lodash"
 import {useGetAllQuery} from "../../../../hooks/api";
 import {KEYS} from "../../../../constants/key";
 import {URLS} from "../../../../constants/url";
@@ -214,6 +214,8 @@ const StepThree = ({...props}) => {
                         <Row className={'mt-15'}>
                             <Col xs={4}>
                                 <Field
+                                    defaultValue={get(agreement, 'product.fixedAgent._id')}
+                                    disabled={get(agreement, 'product.hasFixedAgent')}
                                     options={agents}
                                     type={'select'}
                                     name={`agent`}
