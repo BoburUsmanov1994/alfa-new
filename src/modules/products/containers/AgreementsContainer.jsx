@@ -108,6 +108,7 @@ const AgreementsContainer = () => {
         params: {
             params: {
                 branch: includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
+                ...filter
             },
             responseType: 'blob'
         },
