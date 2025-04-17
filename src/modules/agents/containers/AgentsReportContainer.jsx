@@ -50,7 +50,7 @@ const AgentsReportContainer = () => {
         url: `${URLS.agents}/list`
     })
     agents = getSelectOptionsListFromData(get(agents, `data.data`, []), '_id', ['organization.nameoforganization', 'person.secondname', 'person.name'])
-    const {data: policyByAgentList, isLoading: isLoadingPolicyByAgentList} = useGetAllQuery({
+    const {data: policyByAgentList} = useGetAllQuery({
         key: KEYS.policyByAgent, url: `${URLS.policyByAgent}`,
         params: {
             params: {
@@ -60,6 +60,7 @@ const AgentsReportContainer = () => {
                 limit: 1000
             }
         },
+        enabled:!!(get(params, 'startDate') && get(params, 'endDate'))
 
     })
 
@@ -138,7 +139,7 @@ const AgentsReportContainer = () => {
                                 />
                             </Col>
                             <Col xs={3}>
-                                <Field type={'datepicker'} name={'endDate'} label={t("End date")}
+                                <Field defaultValue={dayjs()} type={'datepicker'} name={'endDate'} label={t("End date")}
                                 />
                             </Col>
                         </Row>

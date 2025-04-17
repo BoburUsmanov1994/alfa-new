@@ -186,6 +186,11 @@ const AgreementsContainer = () => {
                         hasNumberFormat: true
                     },
                     {
+                        id: 99,
+                        key: 'policy[0].number',
+                        title: t("Номер полиса")
+                    },
+                    {
                         id: 10,
                         key: 'status',
                         title: t("Status"),
