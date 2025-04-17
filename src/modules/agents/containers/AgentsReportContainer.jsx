@@ -18,12 +18,14 @@ import Button from "../../../components/ui/button";
 import Checkbox from "rc-checkbox";
 import NumberFormat from "react-number-format";
 import {ContentLoader} from "../../../components/loader";
+import Pagination from "../../../components/pagination";
 
 const AgentsReportContainer = () => {
     const {t} = useTranslation()
     const [params, setParams] = useState({});
     const [idList, setIdList] = useState([]);
     const [actId, setActId] = useState(null);
+    const [page, setPage] = useState(1);
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const user = useStore(state => get(state, 'user'))
@@ -57,7 +59,8 @@ const AgentsReportContainer = () => {
                 agent: get(params, 'agent'),
                 startDate: get(params, 'startDate'),
                 endDate: get(params, 'endDate'),
-                limit: 1000
+                limit: 50,
+                page
             }
         },
         enabled:!!(get(params, 'startDate') && get(params, 'endDate'))
@@ -233,6 +236,7 @@ const AgentsReportContainer = () => {
                                     </tr>)}
                                 </Table>
                             </div>
+                            <Pagination limit={50} page={page} setPage={setPage} totalItems={get(policyByAgentList, 'data.count', 0)} />
                             <Row className={'mt-30'}>
                                 <Col xs={3}>
                                     <Field
