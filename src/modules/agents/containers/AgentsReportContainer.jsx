@@ -26,6 +26,8 @@ const AgentsReportContainer = () => {
     const [idList, setIdList] = useState([]);
     const [actId, setActId] = useState(null);
     const [page, setPage] = useState(1);
+    const [startDate, setStartDate] = useState(dayjs().subtract(1, 'year'));
+    const [endDate, setEndDate] = useState(dayjs());
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
     }))
     const user = useStore(state => get(state, 'user'))
@@ -137,12 +139,12 @@ const AgentsReportContainer = () => {
                                        defaultValue={get(user, 'agent._id')}/>
                             </Col>
                             <Col xs={3}>
-                                <Field defaultValue={dayjs().subtract(1, 'year')} type={'datepicker'}
+                                <Field property={{onChange:(_date)=>setStartDate(_date)}} defaultValue={startDate} type={'datepicker'}
                                        name={'startDate'} label={t("Start date")}
                                 />
                             </Col>
                             <Col xs={3}>
-                                <Field defaultValue={dayjs()} type={'datepicker'} name={'endDate'} label={t("End date")}
+                                <Field property={{onChange:(_date)=>setEndDate(_date)}} defaultValue={endDate} type={'datepicker'} name={'endDate'} label={t("End date")}
                                 />
                             </Col>
                         </Row>
