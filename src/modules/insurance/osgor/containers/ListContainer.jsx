@@ -190,12 +190,12 @@ const ListContainer = () => {
             {
                 id: 91,
                 key: "contractStartDate",
-                title: "Дата начало периода страхования",
+                title: "Дата начало периода полиса",
             },
             {
                 id: 92,
                 key: "contractEndDate",
-                title: "Дата начало периода страхования",
+                title: "Дата окончания периода полиса",
             },
             {
                 id: 93,
@@ -263,20 +263,61 @@ const ListContainer = () => {
                     />
                 </Col>
                 <Col xs={3}>
+                    <Field label={t('Policy seria')} type={'input'}
+                           name={'seriaPolicy'}
+                           defaultValue={get(filter, 'seriaPolicy')}
+
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Policy number')} type={'input'}
+                           name={'numberPolicy'}
+                           defaultValue={get(filter, 'numberPolicy')}
+
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('ИНН')} type={'input'}
+                           name={'inn'}
+                           defaultValue={get(filter, 'inn')}
+
+                    />
+                </Col>
+                <Col xs={3}>
                     <Field label={t('Страхователь')} type={'input'}
                            name={'insurant'}
                            defaultValue={get(filter, 'insurant')}
 
                     />
                 </Col>
+                <Col xs={3}>
+                    <Field label={t('Insurance sum')} type={'number-format-input-filter'}
+                           name={'insuranceSum'}
+                           defaultValue={get(filter, 'insuranceSum')}
 
-                <Col xs={3}><Field type={'select'} label={'Status'} name={'status'}
-                                   options={[{value: 'new', label: 'new'}, {
-                                       value: 'partialPaid',
-                                       label: 'partialPaid'
-                                   }, {value: 'paid', label: 'paid'}, {value: 'sent', label: 'sent'}]}
-                                   defaultValue={get(filter, 'status')}
-                /></Col>
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Insurance premium')} type={'number-format-input-filter'}
+                           name={'insurancePremium'}
+                           defaultValue={get(filter, 'insurancePremium')}
+
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Дата начало периода полиса')} type={'datepicker'}
+                           name={'startDate'}
+                           defaultValue={get(filter, 'startDate')}
+
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Дата окончания периода полиса')} type={'datepicker'}
+                           name={'endDate'}
+                           defaultValue={get(filter, 'endDate')}
+
+                    />
+                </Col>
                 <Col xs={3}>
                     <Field label={t('Дата выдачи полиса')} type={'datepicker'}
                            name={'issueDate'}
@@ -284,6 +325,14 @@ const ListContainer = () => {
 
                     />
                 </Col>
+                <Col xs={3}><Field type={'select'} label={'Status'} name={'status'}
+                                   options={[{value: 'new', label: 'new'}, {
+                                       value: 'partialPaid',
+                                       label: 'partialPaid'
+                                   }, {value: 'paid', label: 'paid'}, {value: 'sent', label: 'sent'}]}
+                                   defaultValue={get(filter, 'status')}
+                /></Col>
+
 
                 <Col xs={3}><Field property={{onChange: (val) => setBranch(val)}} type={'select'} label={'Филиал'} name={'branch'}
                                    options={branches} defaultValue={get(filter, 'branch')}
