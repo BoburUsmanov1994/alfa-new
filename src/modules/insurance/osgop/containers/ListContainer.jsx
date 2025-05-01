@@ -29,6 +29,9 @@ const ListContainer = () => {
     const [filter, setFilter] = useState({
         branch: get(user, 'branch._id'),
     });
+    const [filterModal, setFilterModal] = useState({
+
+    });
     const [tr, setTr] = useState(null);
     const [page, setPage] = useState(1);
     const [branch, setBranch] = useState(null);
@@ -58,7 +61,8 @@ const ListContainer = () => {
                 page,
                 branch: get(user, 'branch._id'),
                 limit: 50,
-                isAvailable:true
+                isAvailable:true,
+                ...filterModal
             }
         }
     })
@@ -387,6 +391,81 @@ const ListContainer = () => {
       />
         <Modal  title={'Распределение к полису'} visible={!isNil(tr)}
                 hide={() => setTr(null)}>
+            <div style={{padding:'15px 0'}}>
+                <Form formRequest={({data}) => {
+                    setPage(1)
+                    setFilterModal({...data})
+                }}>
+                    <Row align={'end'} gutterWidth={16}>
+                        <Col xs={2}>
+                            <Field sm label={t('Дата п/п от')} type={'datepicker'}
+                                   name={'fromDate'}
+                                   defaultValue={get(filter, 'fromDate')}
+
+                            />
+                            <Field sm label={t('Дата п/п до')} type={'datepicker'}
+                                   name={'toDate'}
+                                   defaultValue={get(filter, 'toDate')}
+
+                            />
+
+                        </Col>
+                        <Col xs={2}>
+                            <Field sm label={t('Сумма поступления от')} type={'number-format-input-filter'}
+                                   name={'payment_amount_from'}
+                                   defaultValue={get(filter, 'payment_amount_from', null)}
+                            />
+                            <Field sm label={t('Сумма поступления до')} type={'number-format-input-filter'}
+                                   name={'payment_amount_to'}
+                                   defaultValue={get(filter, 'payment_amount_to', null)}
+                            />
+                        </Col>
+                        <Col xs={2}>
+                            <Field sm label={t('Прикреплено от')} type={'number-format-input-filter'}
+                                   name={'attached_sum_from'}
+                                   defaultValue={get(filter, 'attached_sum_from', null)}
+                            />
+                            <Field sm label={t('Прикреплено до')} type={'number-format-input-filter'}
+                                   name={'attached_sum_to'}
+                                   defaultValue={get(filter, 'attached_sum_to', null)}
+                            />
+                        </Col>
+                        <Col xs={2}>
+                            <Field sm label={t('Доступный остаток от')} type={'number-format-input-filter'}
+                                   name={'available_sum_from'}
+                                   defaultValue={get(filter, 'available_sum_from', null)}
+                            />
+                            <Field sm label={t('Доступный остаток до')} type={'number-format-input-filter'}
+                                   name={'available_sum_to'}
+                                   defaultValue={get(filter, 'available_sum_to', null)}
+                            />
+                        </Col>
+                        <Col xs={2}>
+
+                            <Field  defaultValue={get(filter, 'is1C')} type={'switch'}
+                                    name={'is1C'}
+                                    label={t("is1C ?")}
+                            />
+                            <Field sm  defaultValue={get(filter, 'payment_details')} type={'input'}
+                                   name={'payment_details'}
+                                   label={t("Payment details ")}
+                            />
+                        </Col>
+                        <Col xs={2} >
+                            <div style={{marginBottom:'25px'}}>
+                                <Button xs htmlType={'submit'}><Flex justify={'center'}><Filter size={14}/><span
+                                    style={{marginLeft: '5px'}}>{t("Применить")}</span></Flex></Button>
+                                <Button className={'mt-15'} xs onClick={() => {
+                                    setFilterModal({})
+                                }} danger type={'reset'}><Flex justify={'center'}><Trash
+                                    size={14}/><span
+                                    style={{marginLeft: '5px'}}>{t("Очистить")}</span></Flex></Button>
+
+                            </div>
+                        </Col>
+                    </Row>
+                </Form>
+            </div>
             {
                 isLoadingAttach && <ContentLoader/>
             }

@@ -13,7 +13,7 @@ import i18next from "i18next";
 import {useTranslation} from "react-i18next";
 import config from "../../../config";
 
-const LoginContainer = ({...rest}) => {
+const LoginContainer = () => {
     const {t} = useTranslation()
     const {mutate,isLoading} = usePostQuery({url:URLS.login,hideSuccessToast:true})
 
@@ -27,9 +27,10 @@ const LoginContainer = ({...rest}) => {
                 setToken(get(data, 'access_token', null))
                 if(includes([config.ROLES.osgop,config.ROLES.osgor],get(data,'role'))){
                     navigate(`/insurance/${get(data,'role')}`);
-                }else {
-                    navigate("/products/all");
                 }
+
+                navigate("/products/all");
+
                 i18next.reloadResources()
                 Swal.fire({
                     position: 'center',
