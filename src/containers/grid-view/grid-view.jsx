@@ -87,6 +87,7 @@ const GridView = ({
                       deleteQueryParam = null,
                       viewIsTab=false,
                       checkStatus=null,
+    getPagination = () => {},
                   }) => {
     const navigate = useNavigate()
     const {t} = useTranslation()
@@ -111,6 +112,11 @@ const GridView = ({
             setColumns(tableHeaderData)
         }
     }, [tableHeaderData])
+    useEffect(() => {
+        if (page && limit) {
+            getPagination({page,limit})
+        }
+    }, [page,limit])
 
     const create = ({data}) => {
         if (isFormData) {

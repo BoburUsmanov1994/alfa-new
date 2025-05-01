@@ -25,6 +25,7 @@ const AgreementsContainer = () => {
     const [createdAtFrom, setCreatedAtFrom] = useState(null);
     const [createdAtTo, setCreatedAtTo] = useState(null);
     const [branch, setBranch] = useState(null);
+    const [pagination, setPagination] = useState({page:1,limit:15});
     const [tr, setTr] = useState(null);
     const [filter, setFilter] = useState({
         branch: get(user, 'branch._id'),
@@ -108,6 +109,8 @@ const AgreementsContainer = () => {
         params: {
             params: {
                 branch: includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
+                page:get(pagination,'page',1),
+                limit:get(pagination,'limit',15),
                 ...filter
             },
             responseType: 'blob'
@@ -132,6 +135,7 @@ const AgreementsContainer = () => {
     return (
         <>
             <GridView
+                getPagination={(val)=>setPagination(val)}
                 tableHeaderData={[
                     {
                         id: 1,
