@@ -21,6 +21,7 @@ import Pagination from "../../../../components/pagination";
 import {Flex} from "@chakra-ui/react";
 import {getSelectOptionsListFromData, saveFile} from "../../../../utils";
 import {useNavigate} from "react-router-dom";
+import dayjs from "dayjs";
 
 const ListContainer = () => {
   const { t } = useTranslation();
@@ -221,8 +222,9 @@ const ListContainer = () => {
             },
             {
                 id: 93,
-                key: "policies[0].issueDate",
-                title: "Дата вқдачи полис",
+                key: "sentDate",
+                title: "Дата выдачи полиса",
+                render: (row)=>get(row,'sentDate') ? dayjs(get(row,'sentDate')).format('YYYY-MM-DD') : '-'
             },
             // {
             //     id: 93,
