@@ -100,6 +100,7 @@ const ListContainer = () => {
         params: {
             params: {
                 branch: includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
+                ...filter
             },
             responseType: 'blob'
         },
@@ -244,7 +245,7 @@ const ListContainer = () => {
 
             {() => <Row align={'flex-end'}>
                 <Col xs={3}>
-                    <Field label={t('Страховая премия')} type={'number-format-input'}
+                    <Field label={t('Страховая премия')} type={'number-format-input-filter'}
                            name={'insurancePremium'}
                            defaultValue={get(filter, 'insurancePremium', null)}
                     />

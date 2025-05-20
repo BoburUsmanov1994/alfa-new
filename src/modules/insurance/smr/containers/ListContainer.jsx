@@ -104,6 +104,7 @@ const ListContainer = () => {
         params: {
             params: {
                 branch: includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
+                ...filter
             },
             responseType: 'blob'
         },
@@ -225,7 +226,34 @@ const ListContainer = () => {
 
                             />
                         </Col>
+                        <Col xs={3}>
+                            <Field label={t('Policy seria')} type={'input'}
+                                   name={'seriaPolicy'}
+                                   defaultValue={get(filter, 'seriaPolicy')}
 
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Policy number')} type={'input'}
+                                   name={'numberPolicy'}
+                                   defaultValue={get(filter, 'numberPolicy')}
+
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Insurance sum')} type={'number-format-input-filter'}
+                                   name={'insuranceSum'}
+                                   defaultValue={get(filter, 'insuranceSum')}
+
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('Insurance premium')} type={'number-format-input-filter'}
+                                   name={'insurancePremium'}
+                                   defaultValue={get(filter, 'insurancePremium')}
+
+                            />
+                        </Col>
                         <Col xs={3}><Field type={'select'} label={'Status'} name={'status'}
                                            options={[{value: 'new', label: 'new'}, {
                                                value: 'partialPaid',
