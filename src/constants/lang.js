@@ -2,7 +2,7 @@ export const langData = [
   {
     id: 1,
     code: "uz",
-    title: "UZ",
+    title: "Uz",
   },
   {
     id: 2,
@@ -12,11 +12,11 @@ export const langData = [
   {
     id: 3,
     code: "ru",
-    title: "RU",
+    title: "Ru",
   },
   {
     id: 4,
     code: "en",
-    title: "EN",
+    title: "En",
   },
 ];
