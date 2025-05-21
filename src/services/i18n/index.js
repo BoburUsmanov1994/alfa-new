@@ -5,6 +5,7 @@ import I18NextHttpBackend from "i18next-http-backend";
 import config from "../../config";
 import storage from "../storage";
 import { get } from "lodash";
+import { resource } from "../locales";
 
 const i18config = i18n
   .use(initReactI18next)
@@ -14,6 +15,7 @@ const i18config = i18n
     lng: storage.get("lang") || config.DEFAULT_APP_LANG,
     fallbackLng: storage.get("lang") || config.DEFAULT_APP_LANG,
     saveMissing: false,
+    resources: resource,
     detection: {
       order: ["localStorage"],
       lookupLocalStorage: "lang",
