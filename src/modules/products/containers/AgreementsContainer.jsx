@@ -16,6 +16,7 @@ import {FileText, Filter, MessageCircle, Trash} from "react-feather";
 import Flex from "../../../components/flex";
 import config from "../../../config";
 import Modal from "../../../components/modal";
+import {useNavigate} from "react-router-dom";
 
 const AgreementsContainer = () => {
     const {t} = useTranslation()
@@ -27,6 +28,7 @@ const AgreementsContainer = () => {
     const [branch, setBranch] = useState(null);
     const [pagination, setPagination] = useState({page:1,limit:15});
     const [tr, setTr] = useState(null);
+    const navigate = useNavigate();
     const [filter, setFilter] = useState({
         branch: get(user, 'branch._id'),
     });
@@ -360,12 +362,12 @@ const AgreementsContainer = () => {
                                 <Button xs htmlType={'submit'}><Flex justify={'center'}><Filter size={14}/><span
                                     style={{marginLeft: '5px'}}>{t("Применить")}</span></Flex></Button>
                                 <Button className={'mt-15'} xs onClick={() => {
-                                    setFilter({})
+                                    navigate(0)
                                 }}  danger type={'reset'}><Flex justify={'center'}><Trash
                                     size={14}/><span
                                     style={{marginLeft: '5px'}}>{t("Очистить")}</span></Flex></Button>
                                 <Button xs onClick={() => {
-                                    refetch()
+                                   refetch()
                                 }} className={'mt-15 mb-15'} yellow type={'button'}><Flex justify={'center'}><FileText
                                     size={14}/><span
                                     style={{marginLeft: '5px'}}>{t("Отчет")}</span></Flex></Button>
