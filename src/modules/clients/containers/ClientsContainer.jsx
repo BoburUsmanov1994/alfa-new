@@ -13,6 +13,8 @@ import {Col, Row} from "react-grid-system";
 import Flex from "../../../components/flex";
 import Button from "../../../components/ui/button";
 import {Filter, Trash} from "react-feather";
+import {useGetAllQuery} from "../../../hooks/api";
+import {getSelectOptionsListFromData} from "../../../utils";
 
 
 const ClientsContainer = () => {
@@ -33,6 +35,14 @@ const ClientsContainer = () => {
             path: '/clients/person-type',
         }
     ], [])
+    let {data: branches} = useGetAllQuery({
+        key: KEYS.branches, url: `${URLS.branches}/list`, params: {
+            params: {
+                limit: 100
+            }
+        }
+    })
+    branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
 
     useEffect(() => {
         setBreadcrumbs(breadcrumbs)
@@ -83,6 +93,11 @@ const ClientsContainer = () => {
                         key: 'person.phone',
                         title: 'Phone number'
                     },
+                    {
+                        id: 8,
+                        key: 'branch.branchName',
+                        title: 'Branch'
+                    },
 
                 ]}
                 keyId={[KEYS.clients,filter]}
@@ -91,9 +106,9 @@ const ClientsContainer = () => {
                 title={t('Clients')}
                 responseDataKey={'data.data'}
                 params={{
-                    ...filter,
                     type: PERSON_TYPE.person,
-                    branch: !includes([config.ROLES.admin], get(user, 'role.name')) ? get(user, 'branch._id') : undefined
+                    branch: !includes([config.ROLES.admin], get(user, 'role.name')) ? get(user, 'branch._id') : undefined,
+                    ...filter,
                 }}
                 createUrl={'/clients/physical/create'}
                 updateUrl={'/clients/physical/update'}
@@ -169,6 +184,17 @@ const ClientsContainer = () => {
                                    defaultValue={get(filter, 'phone')}
 
                             />
+                        </Col>
+                        <Col xs={2}><Field sm  type={'select'} label={'Филиал'} name={'branch'}
+                                           options={branches || []} defaultValue={get(filter, 'branch')}
+                                           isDisabled={!includes([config.ROLES.admin], get(user, 'role.name'))}/></Col>
+                        <Col  xs={2} >
+                            <Flex justify={'center'}>
+                                <Field sm
+                                    label={'Is NBU'}
+                                    type={'switch'}
+                                    name={'isNbu'}/>
+                            </Flex>
                         </Col>
 
                         <Col xs={2}>

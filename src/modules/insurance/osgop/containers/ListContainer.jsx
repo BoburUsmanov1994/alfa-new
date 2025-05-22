@@ -360,6 +360,13 @@ const ListContainer = () => {
 
                     />
                 </Col>
+                <Col xs={3}>
+                    <Field label={t('Дата выдачи полиса')} type={'datepicker'}
+                           name={'sentDate'}
+                           defaultValue={get(filter, 'sentDate')}
+
+                    />
+                </Col>
                 <Col xs={3}><Field type={'select'} label={'Status'} name={'status'}
                                    options={[{value: 'new', label: 'new'}, {
                                        value: 'partialPaid',

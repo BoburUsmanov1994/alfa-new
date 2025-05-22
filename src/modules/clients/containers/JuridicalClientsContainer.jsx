@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {useStore} from "../../../store";
-import {get, includes} from "lodash";
+import {get, includes, isNil} from "lodash";
 import GridView from "../../../containers/grid-view/grid-view";
 import {URLS} from "../../../constants/url";
 import Field from "../../../containers/form/field";
@@ -13,6 +13,8 @@ import Button from "../../../components/ui/button";
 import Flex from "../../../components/flex";
 import { Filter, Trash} from "react-feather";
 import {KEYS} from "../../../constants/key";
+import {useGetAllQuery} from "../../../hooks/api";
+import {getSelectOptionsListFromData} from "../../../utils";
 
 const JuridicalClientsContainer = () => {
     const user = useStore(state => get(state, 'user'))
@@ -32,6 +34,14 @@ const JuridicalClientsContainer = () => {
             path: '/clients/person-type',
         }
     ], [])
+    let {data: branches} = useGetAllQuery({
+        key: KEYS.branches, url: `${URLS.branches}/list`, params: {
+            params: {
+                limit: 100
+            }
+        }
+    })
+    branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
 
     useEffect(() => {
         setBreadcrumbs(breadcrumbs)
@@ -66,12 +76,17 @@ const JuridicalClientsContainer = () => {
                         key: 'organization.address',
                         title: 'Address'
                     },
+                    {
+                        id: 8,
+                        key: 'branch.branchName',
+                        title: 'Branch'
+                    },
 
                 ]}
                 params={{...filter,
                     type:PERSON_TYPE.organization,branch: !includes([config.ROLES.admin],get(user,'role.name')) ? get(user, 'branch._id') : undefined
                 }}
-                keyId={[KEYS.clients, filter]}
+                keyId={[KEYS.clients, filter,PERSON_TYPE]}
                 url={URLS.clients}
                 listUrl={`${URLS.clients}/list`}
                 title={t('Clients')}
@@ -124,6 +139,18 @@ const JuridicalClientsContainer = () => {
 
                             />
                         </Col>
+                        <Col  xs={2.4} >
+                          <Flex justify={'center'}>
+                              <Field
+                                  sm
+                                  label={'Is NBU'}
+                                  type={'switch'}
+                                  name={'isNbu'}/>
+                          </Flex>
+                        </Col>
+                        <Col xs={2.4}><Field sm  type={'select'} label={'Филиал'} name={'branch'}
+                                           options={branches || []} defaultValue={get(filter, 'branch')}
+                                           isDisabled={!includes([config.ROLES.admin], get(user, 'role.name'))}/></Col>
 
                         <Col xs={2.4}>
                             <Flex>
