@@ -211,4 +211,5 @@ export const KEYS = {
     osgagoPortfelReport:'osgagoPortfelReport',
     nbuIntegrations:'nbuIntegrations',
     nbuPortfelReport:'nbuPortfelReport',
+    engineType:'engineType',
 }

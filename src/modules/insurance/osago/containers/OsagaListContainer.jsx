@@ -21,6 +21,7 @@ import Table from "../../../../components/table";
 import Modal from "../../../../components/modal";
 import Checkbox from "rc-checkbox";
 import Pagination from "../../../../components/pagination";
+import Swal from "sweetalert2";
 
 const ListContainer = () => {
   const { t } = useTranslation();
@@ -59,6 +60,7 @@ const ListContainer = () => {
         }
     })
     const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: [KEYS.osagoList,filter]})
+    const {mutate: unAttachRequest} = usePostQuery({listKeyId: [KEYS.osagoList,filter]})
 
     const attach = ({data}) => {
         const {attachmentSum,attach} = data;
@@ -111,6 +113,29 @@ const ListContainer = () => {
             }
         }
     })
+
+    const unAttach = (_id) => {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            backdrop: 'rgba(0,0,0,0.9)',
+            background: 'none',
+            title: t('Are you sure?'),
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#13D6D1',
+            confirmButtonText: t('Unattach'),
+            cancelButtonText: t('Cancel'),
+            customClass: {
+                title: 'title-color',
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                unAttachRequest({url: `${URLS.osagoUnAttachAll}?application_number=${_id}`})
+            }
+        });
+    }
   useEffect(() => {
     setBreadcrumbs(breadcrumbs);
   }, []);
@@ -223,6 +248,13 @@ const ListContainer = () => {
             key: "status",
             title: t("Status"),
           },
+            {
+                id: 11,
+                key: "application_number",
+                title: "Открепить деньги",
+                render: (row) =><Button onClick={()=>unAttach(get(row, 'application_number'))} sm inline danger>Открепить</Button>
+
+            },
         ]}
         keyId={[KEYS.osagoList,filter]}
         url={URLS.osagoList}

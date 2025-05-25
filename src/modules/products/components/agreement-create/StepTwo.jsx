@@ -252,6 +252,11 @@ const StepTwo = ({id = null, ...props}) => {
     })
     const vehicleTypeList = getSelectOptionsListFromData(get(vehicleType, `data.data`, []), '_id', 'name')
 
+    const {data: engineType} = useGetAllQuery({
+        key: KEYS.engineType, url: `${URLS.engineType}/list`
+    })
+    const engineTypeList = getSelectOptionsListFromData(get(engineType, `data.data`, []), '_id', 'name')
+
     const {data: propertyRightType} = useGetAllQuery({
         key: KEYS.propertyRightType, url: `${URLS.propertyRightType}/list`
     })
@@ -1236,6 +1241,15 @@ const StepTwo = ({id = null, ...props}) => {
                                             defaultValue={get(vehicle, 'vehicleTypeId')}
                                             type={'select'}
                                             name={'objectOfInsurance.details.carType'}/>
+                                    </Col>
+                                    <Col xs={4} className={'mb-25'}>
+                                        <Field
+                                            options={engineTypeList}
+                                            params={{required: true}}
+                                            label={'Тип двигателя'}
+                                            defaultValue={get(vehicle, 'engineType')}
+                                            type={'select'}
+                                            name={'objectOfInsurance.details.engineType'}/>
                                     </Col>
                                     <Col xs={4} className={'mb-25'}>
                                         <Field

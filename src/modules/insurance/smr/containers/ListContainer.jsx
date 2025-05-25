@@ -22,6 +22,7 @@ import Table from "../../../../components/table";
 import {ContentLoader} from "../../../../components/loader";
 import Modal from "../../../../components/modal";
 import Checkbox from "rc-checkbox";
+import Swal from "sweetalert2";
 
 const ListContainer = () => {
     const {t} = useTranslation()
@@ -59,6 +60,7 @@ const ListContainer = () => {
         }
     })
     const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: [KEYS.smrList,filter]})
+    const {mutate: unAttachRequest} = usePostQuery({listKeyId: [KEYS.smrList,filter]})
 
     const attach = ({data}) => {
         const {attachmentSum,attach} = data;
@@ -115,6 +117,30 @@ const ListContainer = () => {
             }
         }
     })
+
+    const unAttach = (_id) => {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            backdrop: 'rgba(0,0,0,0.9)',
+            background: 'none',
+            title: t('Are you sure?'),
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#13D6D1',
+            confirmButtonText: t('Unattach'),
+            cancelButtonText: t('Cancel'),
+            customClass: {
+                title: 'title-color',
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                unAttachRequest({url: `${URLS.smrUnAttachAll}?contract_id=${_id}`})
+            }
+        });
+    }
+
 
     useEffect(() => {
         setBreadcrumbs(breadcrumbs);
@@ -190,6 +216,13 @@ const ListContainer = () => {
                         id: 9,
                         key: 'status',
                         title: 'Status',
+                    },
+                    {
+                        id: 11,
+                        key: "contract_id",
+                        title: "Открепить деньги",
+                        render: (row) =><Button onClick={()=>unAttach(get(row, 'contract_id'))} sm inline danger>Открепить</Button>
+
                     },
                 ]}
                 keyId={[KEYS.smrList, filter]}

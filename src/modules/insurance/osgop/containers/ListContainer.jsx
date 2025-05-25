@@ -22,6 +22,7 @@ import {Flex} from "@chakra-ui/react";
 import {getSelectOptionsListFromData, saveFile} from "../../../../utils";
 import {useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
+import Swal from "sweetalert2";
 
 const ListContainer = () => {
   const { t } = useTranslation();
@@ -76,6 +77,7 @@ const ListContainer = () => {
     })
     branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
     const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: [KEYS.osgopList,filter]})
+    const {mutate: unAttachRequest} = usePostQuery({listKeyId: [KEYS.osgopList,filter]})
 
     const attach = ({data}) => {
         const {attachmentSum,attach} = data;
@@ -116,6 +118,29 @@ const ListContainer = () => {
   useEffect(() => {
     setBreadcrumbs(breadcrumbs);
   }, []);
+
+    const unAttach = (_id) => {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            backdrop: 'rgba(0,0,0,0.9)',
+            background: 'none',
+            title: t('Are you sure?'),
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#13D6D1',
+            confirmButtonText: t('Unattach'),
+            cancelButtonText: t('Cancel'),
+            customClass: {
+                title: 'title-color',
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                unAttachRequest({url: `${URLS.osgopUnAttachAll}?osgop_formId=${_id}`})
+            }
+        });
+    }
 
   const ModalBody = ({ data, rowId = null }) => (
     <>
@@ -260,6 +285,13 @@ const ListContainer = () => {
                                    href={`${get(row,'url','#')}`}><Download
                     className={'cursor-pointer mr-8'}
                     color={'#13D6D1'}/></a>
+
+            },
+            {
+                id: 11,
+                key: "osgop_formId",
+                title: "Открепить деньги",
+                render: (row) =><Button onClick={()=>unAttach(get(row, 'osgop_formId'))} sm inline danger>Открепить</Button>
 
             },
         ]}

@@ -103,6 +103,7 @@ export const URLS = {
     areaTypes: 'api/references/area-types',
     okeds: 'api/references/okeds',
     vehicleType: 'api/references/vehicle-type',
+    engineType: 'api/references/engine-type',
     propertyType: 'api/references/property-type',
     propertyRightType: 'api/references/property-right-type',
     agriculturalType: 'api/references/agricultural-type',
@@ -223,4 +224,8 @@ export const URLS = {
     policyIntentType: 'api/references/gtk-policy-intent-type',
     nbuIntegrations: 'api/nbu-integration/list',
     nbuPortfelReport: 'api/nbu-integration/report',
+    osgopUnAttachAll: 'api/osgop/unattach-all',
+    osgorUnAttachAll: 'api/osgor/unattach-all',
+    osagoUnAttachAll: 'api/osago/unattach-all',
+    smrUnAttachAll: 'api/smr/unattach-all',
 }

@@ -160,6 +160,13 @@ const CreateContainer = ({
                                        name={'insurancePremium'}
                                 />
                             </Col>
+                            <Col xs={4}>
+                                <Field  defaultValue={'ru'}
+                                        options={[{label:'Ru',value:'ru'},{label:'Uz',value:'uz'},{label: 'En',value: 'en'}]}
+                                        label={t('Язык полиса')} type={'select'}
+                                        name={'lang'}
+                                />
+                            </Col>
                         </Row>
                     </Col>
                 </Row>
