@@ -29,7 +29,7 @@ const ProductGroupsContainer = ({...rest}) => {
     }, [])
 
     const ModalBody = ({data,rowId = null}) =>  <>
-        <Field  name={'name'} type={'input'} label={'Название'} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
+        <Field  name={'name'} type={'input'} label={t("Название")} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
     </>
     return (
         <>
@@ -39,7 +39,7 @@ const ProductGroupsContainer = ({...rest}) => {
                     {
                         id: 2,
                         key: 'name',
-                        title: t("Название продукта")
+                        title: t("Product name")
                     },
                 ]}
                 keyId={KEYS.groupsofproducts}

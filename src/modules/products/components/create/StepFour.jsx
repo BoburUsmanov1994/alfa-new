@@ -142,7 +142,7 @@ const StepFour = ({id = null, ...props}) => {
                                             <Field
                                                 name={`tariff.tariffPerClass[${i}].min`}
                                                 type={'number-format-input'}
-                                                property={{hideLabel: true, placeholder: 'Мин', suffix: ' %'}}
+                                                property={{hideLabel: true, placeholder: t("Мин"), suffix: ' %'}}
                                                 defaultValue={get(product, `tariff.tariffPerClass[${i}].min`, 0)}
                                             />
                                         </Flex>
@@ -152,7 +152,7 @@ const StepFour = ({id = null, ...props}) => {
                                             <Field
                                                 name={`tariff.tariffPerClass[${i}].max`}
                                                 type={'number-format-input'}
-                                                property={{hideLabel: true, placeholder: 'Макс', suffix: ' %'}}
+                                                property={{hideLabel: true, placeholder: t("Макс"), suffix: ' %'}}
                                                 defaultValue={get(product, `tariff.tariffPerClass[${i}].max`, 0)}
                                             />
                                         </Flex>
@@ -209,7 +209,7 @@ const StepFour = ({id = null, ...props}) => {
                                                 type={'number-format-input'}
                                                 property={{
                                                     hideLabel: true,
-                                                    placeholder: 'ввод значения',
+                                                    placeholder: t("ввод значения"),
                                                     disabled: !!!(get(fields, `franchise[${i}].isFixed`))
                                                 }}
                                                 defaultValue={get(product, `franchise[${i}].fixedValue`, 0)}
@@ -251,7 +251,7 @@ const StepFour = ({id = null, ...props}) => {
                                                 type={'input'}
                                                 property={{
                                                     hideLabel: true,
-                                                    placeholder: 'Введите значение',
+                                                    placeholder: t("Введите значение"),
                                                     disabled: !(get(otherParams, `franchise[${i}].hasFranchise`) && !get(otherParams, `franchise[${i}].isFixed`))
                                                 }}
                                                 defaultValue={get(product, `franchise[${i}].franchise`, '')}

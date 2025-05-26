@@ -32,8 +32,6 @@ const ProductSubGroupContainer = ({...rest}) => {
         setBreadcrumbs(breadcrumbs)
     }, [])
 
-    console.log(t)
-
     const ModalBody = ({data,rowId = null}) =>  <>
         <Field  name={'name'} type={'input'} label={t("Название подгруппы продуктов")} defaultValue={rowId ? get(data,'name'):null} params={{required: true}} />
         <Field  name={'group'} type={'select'} label={t("Название продукта")} options={typesOptions} defaultValue={rowId ? get(data,'group'):null} params={{required: true}} />

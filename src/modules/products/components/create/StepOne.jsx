@@ -148,7 +148,7 @@ const StepOne = ({id = null, ...props}) => {
                             />
                         </Col>
                         <Col xs={3}>
-                            <Field label={t('Выберите подкатегорию ')} options={subGroups} type={'select'}
+                            <Field label={t('Выберите подкатегорию')} options={subGroups} type={'select'}
                                    name={'subGroup'} params={{required: true}}
                                    property={{hasRequiredLabel: true}}
                                    defaultValue={id ? get(product, 'subGroup._id'):get(product, 'subGroup')}
@@ -346,7 +346,7 @@ const StepOne = ({id = null, ...props}) => {
 
                     </Row>
                     <Row className={'mb-25'}>
-                        <Col xs={12}><Title>Комментарий о риске</Title></Col>
+                        <Col xs={12}><Title>{t("Комментарий о риске")}</Title></Col>
                     </Row>
                     <Row className={'mb-25'}>
                         <Col xs={12}>
