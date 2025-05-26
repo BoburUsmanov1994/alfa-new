@@ -255,7 +255,7 @@ const StepTwo = ({id = null, ...props}) => {
     const {data: engineType} = useGetAllQuery({
         key: KEYS.engineType, url: `${URLS.engineType}/list`
     })
-    const engineTypeList = getSelectOptionsListFromData(get(engineType, `data.data`, []), '_id', 'name')
+    const engineTypeList = getSelectOptionsListFromData(get(engineType, `data.data`, []), 'id', 'name')
 
     const {data: propertyRightType} = useGetAllQuery({
         key: KEYS.propertyRightType, url: `${URLS.propertyRightType}/list`
