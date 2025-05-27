@@ -15,9 +15,11 @@ import Flex from "../../../components/flex";
 import dayjs from "dayjs";
 import {PERSON_TYPE} from "../../../constants";
 import {getSelectOptionsListFromData} from "../../../utils";
+import { useTranslation } from 'react-i18next';
 
 const ClientCreateContainer = ({...rest}) => {
     const navigate = useNavigate();
+    const {t} = useTranslation()
     const [person, setPerson] = useState(null)
     const [passportSeries, setPassportSeries] = useState(null)
     const [passportNumber, setPassportNumber] = useState(null)
@@ -96,11 +98,11 @@ const ClientCreateContainer = ({...rest}) => {
             <Section>
                 <Row className={'mb-25'}>
                     <Col xs={12}>
-                        <Title>Client create</Title>
+                        <Title>{t("Client create")}</Title>
                     </Col>
                 </Row>
                 <Form
-                    footer={<Button>Save</Button>} formRequest={(values) => create(values)}>
+                    footer={<Button>{t("Save")}</Button>} formRequest={(values) => create(values)}>
                     <Row gutterWidth={60} className={'mt-15'}>
                         <Col xs={12}>
                             <Row>
@@ -108,7 +110,7 @@ const ClientCreateContainer = ({...rest}) => {
                                     <Flex>
                                         <Button
                                             className={'mr-16'}
-                                            type={'button'}>Физ. лицо</Button>
+                                            type={'button'}>{t("Физ. лицо")}</Button>
                                     </Flex>
                                 </Col>
                                 <Col xs={9} className={'text-right'}>
@@ -140,13 +142,12 @@ const ClientCreateContainer = ({...rest}) => {
                                                property={{
                                                    hideErrorMsg: true,
                                                    hideLabel: true,
-                                                   placeholder: 'Дата рождения',
+                                                   placeholder: t("Дата рождения"),
                                                    onChange: (e) => setBirthDate(e)
                                                }}
                                                name={'person.birthDate'} type={'datepicker'}/>
                                         <Button onClick={() => getInfo()} className={'ml-15'}
-                                                type={'button'}>Получить
-                                            данные</Button>
+                                                type={'button'}>{t("Получить данные")}</Button>
                                     </Flex>
 
                                 </Col>
@@ -159,33 +160,33 @@ const ClientCreateContainer = ({...rest}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field params={{required: true}}
                                    defaultValue={get(person, 'firstNameLatin')}
-                                   label={'Firstname'}
+                                   label={t("Firstname")}
                                    type={'input'}
                                    name={'person.fullName.firstname'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field params={{required: true}} defaultValue={get(person, 'lastNameLatin')}
-                                   label={'Lastname'} type={'input'}
+                                   label={t("Lastname")} type={'input'}
                                    name={'person.fullName.lastname'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field params={{required: true}}
                                    defaultValue={get(person, 'middleNameLatin')}
-                                   label={'Middlename'}
+                                   label={t("Middlename")}
                                    type={'input'}
                                    name={'person.fullName.middlename'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field params={{required: true}}
                                    defaultValue={get(head(get(person, 'documents', [])), 'datebegin')}
-                                   label={'Дата выдачи паспорта'}
+                                   label={t("Дата выдачи паспорта")}
                                    type={'datepicker'}
                                    name={'person.passportData.startDate'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field params={{required: true}}
                                    defaultValue={get(head(get(person, 'documents', [])), 'docgiveplace')}
-                                   label={'Кем выдан'}
+                                   label={t("Кем выдан")}
                                    type={'input'}
                                    name={'person.passportData.issuedBy'}/>
                         </Col>
@@ -195,13 +196,13 @@ const ClientCreateContainer = ({...rest}) => {
                                 params={{required: true}}
                                 defaultValue={get(person, 'gender')}
                                 options={genderList}
-                                label={'Gender'}
+                                label={t("Gender")}
                                 type={'select'}
                                 name={'person.gender'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
-                            <Field defaultValue={get(person, 'pinfl')} label={'ПИНФЛ'} type={'input-mask'} property={{
-                                placeholder: 'ПИНФЛ',
+                            <Field defaultValue={get(person, 'pinfl')} label={t("ПИНФЛ")} type={'input-mask'} property={{
+                                placeholder: t("ПИНФЛ"),
                                 mask: '99999999999999',
                                 maskChar: '_'
                             }}
@@ -213,11 +214,11 @@ const ClientCreateContainer = ({...rest}) => {
                                     required: true,
                                     pattern: {
                                         value: /^998[0-9]{9}$/,
-                                        message: 'Invalid format'
+                                        message: t("Invalid format")
                                     }
                                 }}
                                 defaultValue={get(person, 'phone')}
-                                label={'Phone'}
+                                label={t("Phone")}
                                 type={'input'}
                                 property={{placeholder: '998XXXXXXXXX'}}
                                 name={'person.phone'}/>
@@ -225,7 +226,7 @@ const ClientCreateContainer = ({...rest}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 defaultValue={get(person, 'email')}
-                                label={'Email'}
+                                label={t("Email")}
                                 type={'input'}
                                 name={'person.email'}/>
                         </Col>
@@ -234,14 +235,14 @@ const ClientCreateContainer = ({...rest}) => {
                                 params={{required: true}}
                                 options={residentTypeList}
                                 defaultValue={get(person, 'residentType')}
-                                label={'Resident type'}
+                                label={t("Resident type")}
                                 type={'select'}
                                 name={'person.residentType'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 defaultValue={get(person, 'birthCountry', '210')}
-                                label={'Country'}
+                                label={t("Country")}
                                 type={'select'}
                                 options={countryList}
                                 name={'person.country'}/>
@@ -251,7 +252,7 @@ const ClientCreateContainer = ({...rest}) => {
                                 params={{required: true}}
                                 options={regionList}
                                 defaultValue={get(person, 'regionId')}
-                                label={'Region'}
+                                label={t("Region")}
                                 type={'select'}
                                 property={{
                                     onChange: (val) => setRegionId(val)
@@ -263,7 +264,7 @@ const ClientCreateContainer = ({...rest}) => {
                                 params={{required: true}}
                                 options={districtList}
                                 defaultValue={get(person, 'districtId')}
-                                label={'District'}
+                                label={t("District")}
                                 type={'select'}
                                 name={'person.district'}/>
                         </Col>
@@ -272,20 +273,20 @@ const ClientCreateContainer = ({...rest}) => {
                                 noMaxWidth
                                 params={{required: true}}
                                 defaultValue={get(person, 'address')}
-                                label={'Address'}
+                                label={t("Address")}
                                 type={'input'}
                                 name={'person.address'}/>
                         </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field
-                                label={'isUseOurPanel?'}
+                                label={t("isUseOurPanel?")}
                                 type={'switch'}
                                 name={'isUseOurPanel'}
                             />
                         </Col>
                         <Col xs={4} className={'mb-25'}>
                             <Field
-                                label={'isUseRestAPI?'}
+                                label={t("isUseRestAPI?")}
                                 type={'switch'}
                                 name={'isUseRestAPI'}
                             />

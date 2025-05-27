@@ -13,6 +13,7 @@ import { KEYS } from "../../../../constants/key";
 import styled from "styled-components";
 import { Download, Trash2 } from "react-feather";
 import { getSelectOptionsListFromData } from "../../../../utils";
+import { useTranslation } from "react-i18next";
 
 const Styled = styled.div`
   .doc-files {
@@ -39,6 +40,7 @@ const Styled = styled.div`
   }
 `;
 const StepTwo = ({ ...props }) => {
+  const {t} = useTranslation()
   const [show, setShow] = useState({
     isapplicationform: false,
     iscontractform: false,
@@ -118,7 +120,7 @@ const StepTwo = ({ ...props }) => {
               <Col xs={4}>
                 <Flex align={"flex-end"}>
                   <Field
-                    label={"Имеет форму анкеты заявления"}
+                    label={t("Имеет форму анкеты заявления")}
                     type={"switch"}
                     name={"hasApplicationForm"}
                     defaultValue={get(product, "hasApplicationForm", false)}
@@ -131,7 +133,7 @@ const StepTwo = ({ ...props }) => {
               <Col xs={4}>
                 <Flex align={"flex-end"}>
                   <Field
-                    label={"Имеет конракт"}
+                    label={t("Имеет конракт")}
                     type={"switch"}
                     name={"hasContractForm"}
                     defaultValue={get(product, "hasContractForm", false)}
@@ -144,7 +146,7 @@ const StepTwo = ({ ...props }) => {
               <Col xs={4}>
                 <Flex align={"flex-end"}>
                   <Field
-                    label={"Имеет приложение"}
+                    label={t("Имеет приложение")}
                     type={"switch"}
                     name={"hasAdditionalDocuments"}
                     defaultValue={get(product, "hasAdditionalDocuments", false)}
@@ -164,7 +166,7 @@ const StepTwo = ({ ...props }) => {
                   danger
                   outlined
                   back>
-                  Отменить
+                  {t("Отменить")}
                 </Button>
                 <Button
                   dark
@@ -172,10 +174,10 @@ const StepTwo = ({ ...props }) => {
                   type={"button"}
                   onClick={prevStep}
                   outlined>
-                  Назад
+                  {t("Назад")}
                 </Button>
                 <Button type={"submit"} success>
-                  Продолжить
+                  {t("Продолжить")}
                 </Button>
               </Col>
             </Row>
