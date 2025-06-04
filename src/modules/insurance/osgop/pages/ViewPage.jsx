@@ -28,7 +28,7 @@ const ViewPage = ({...rest}) => {
     const {osgop_formId  = null} = useParams();
     return (
         <Styled {...rest}>
-            <ViewContainer application_numberosgop_formId ={osgop_formId }/>
+            <ViewContainer osgop_formId ={osgop_formId }/>
         </Styled>
     );
 };

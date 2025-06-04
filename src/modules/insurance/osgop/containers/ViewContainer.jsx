@@ -52,6 +52,7 @@ const ViewContainer = ({osgop_formId = null}) => {
         },
         enabled: !!(osgop_formId)
     })
+    console.log('osgop_formId',osgop_formId)
 
     const {data: filials} = useGetAllQuery({key: KEYS.branches, url: `${URLS.branches}/list`})
     const filialList = getSelectOptionsListFromData(get(filials, `data.data`, []), '_id', 'branchName')
