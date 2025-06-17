@@ -216,6 +216,7 @@ export const URLS = {
     specificList: 'api/branch/specific/list',
     unattachPolicy: 'api/transaction/unattach-all',
     currencyList: 'api/references/currency/list',
+    gtkRegionList: 'api/references/gtk-region/list',
     eimzoChallenge: 'api/eimzo/challenge',
     eimzoPkcs7: 'api/eimzo/timestamp/pkcs7',
     agreementGtkDetails: 'api/agreement/gtk/details',

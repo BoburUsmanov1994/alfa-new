@@ -291,6 +291,11 @@ const StepTwo = ({id = null, ...props}) => {
         key: KEYS.policyIntentType, url: `${URLS.policyIntentType}`
     })
     const policyIntentTypeList = getSelectOptionsListFromData(get(policyIntentType, `data`, []), 'id', 'name')
+
+    const {data: gtkRegions} = useGetAllQuery({
+        key: KEYS.gtkRegionList, url: `${URLS.gtkRegionList}`
+    })
+    const gtkRegionList = getSelectOptionsListFromData(get(gtkRegions, `data`, []), 'code', 'name')
     const setFieldValue = (value, name = "") => {
 
         _setFields(prev => ({...prev, [name]: value}))
@@ -1614,9 +1619,10 @@ const StepTwo = ({id = null, ...props}) => {
                                     </Col>
                                     <Col xs={4} >
                                         <Field
+                                            options={gtkRegionList}
                                             params={{required: true}}
                                             label={t('Hududiy bojxona boshqarmasi kodi')}
-                                            type={'input'}
+                                            type={'select'}
                                             name={'objectOfInsurance.details.policyUgtk'}/>
                                     </Col>
                                     <Col xs={4}>

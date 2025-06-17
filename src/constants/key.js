@@ -212,4 +212,5 @@ export const KEYS = {
     nbuIntegrations:'nbuIntegrations',
     nbuPortfelReport:'nbuPortfelReport',
     engineType:'engineType',
+    gtkRegionList:'gtkRegionList',
 }
