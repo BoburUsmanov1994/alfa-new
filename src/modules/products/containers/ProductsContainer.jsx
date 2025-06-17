@@ -77,6 +77,7 @@ const ProductsContainer = () => {
                 viewUrl={'/products/view'}
                 createUrl={'/products/create'}
                 updateUrl={'/products/update'}
+                deleteUrl={'api/product/delete'}
                 responseDataKey={'data.data'}
                 hideCreateBtn={!includes([config.ROLES.admin],get(user,'role.name'))}
                 hideDeleteBtn={!includes([config.ROLES.admin],get(user,'role.name'))}
