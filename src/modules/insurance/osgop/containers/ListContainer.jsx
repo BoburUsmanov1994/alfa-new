@@ -159,7 +159,7 @@ const ListContainer = () => {
     <>
       <GridView
         ModalBody={ModalBody}
-        extraActions={(_tr)=><>{includes(['new', 'partialPaid','sent'],get(_tr,'attachStatus')) && <DollarSign onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}{includes([config.ROLES.admin],get(user,'role.name')) && <MessageCircle onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}</>}
+        extraActions={(_tr)=><>{includes(['new', 'partialPaid','sent'],get(_tr,'attachStatus')) && <DollarSign onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}{includes([config.ROLES.admin],get(user,'role.name')) && !isEqual(get(_tr,'status'),'annulled') && <MessageCircle onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}</>}
         tableHeaderData={[
           {
             id: 3,
