@@ -17,7 +17,7 @@ import Pagination from "../../../../components/pagination";
 import Modal from "../../../../components/modal";
 import {useGetAllQuery, usePostQuery} from "../../../../hooks/api";
 import config from "../../../../config";
-import {DollarSign, Download, FileText, Filter, Trash} from "react-feather";
+import {DollarSign, Download, FileText, Filter, MessageCircle, Trash} from "react-feather";
 import Flex from "../../../../components/flex";
 import {getSelectOptionsListFromData, saveFile} from "../../../../utils";
 import {useNavigate} from "react-router-dom";
@@ -75,6 +75,7 @@ const ListContainer = () => {
     branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
     const {mutate: attachRequest, isLoading: isLoadingAttach} = usePostQuery({listKeyId: [KEYS.osgorList,filter]})
     const {mutate: unAttachRequest} = usePostQuery({listKeyId: [KEYS.osgorList,filter]})
+    const {mutate:annualRequest,isLoading:isLoadingAnnual} = usePostQuery({listKeyId:[KEYS.osgorList, filter]})
     let {refetch:osgorReport} = useGetAllQuery({
         key: KEYS.osgorPortfelReport,
         url: URLS.osgorPortfelReport,
@@ -264,11 +265,16 @@ const ListContainer = () => {
                 key: "osgor_formId",
                 title: "Открепить деньги",
                 render: (row) =><Button onClick={()=>unAttach(get(row, 'osgor_formId'))} sm inline danger>Открепить</Button>
-
+            },
+            {
+                id: 12,
+                key: "osgor_formId",
+                title: "Расторжение",
+                render: (row) =>includes([config.ROLES.admin],get(user,'role.name')) && <Button className={'ml-15'} onClick={()=>navigate(`/policy/termination/${get(row,'osgor_formId')}/${get(row, 'policy._id')}`)} sm inline danger>Расторжение</Button>
             },
         ]}
         keyId={[KEYS.osgorList,filter]}
-        extraActions={(_tr)=>includes(['new', 'partialPaid','sent'],get(_tr,'attachStatus')) && <DollarSign onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}
+        extraActions={(_tr)=><>{includes(['new', 'partialPaid','sent'],get(_tr,'attachStatus')) && <DollarSign onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}{includes([config.ROLES.admin],get(user,'role.name')) && <MessageCircle onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}</>}
         url={URLS.osgorList}
         listUrl={URLS.osgorList}
         title={t("Osgor agreements list")}
@@ -523,6 +529,19 @@ const ListContainer = () => {
                 </Row>
             </Form>}
             <Pagination limit={50} page={page} setPage={setPage} totalItems={get(transactions, 'data.count', 0)} />
+        </Modal>
+        <Modal title={'Annual'} visible={!isNil(tr)}
+               hide={() => setTr(null)}>
+            <br/>
+            <Form formRequest={({data:attrs})=>{
+                annualRequest({url:`/api/osgor/annual/${get(tr,'_id')}`,attributes:{...attrs}},{
+                    onSuccess:()=>{
+                        setTr(null)
+                    }
+                })
+            }} footer={<Button type={"submit"} block>{t("Send")}</Button>}>
+                <Field params={{required:true}} label={'Reason'} name={'reason'} type={'textarea'} />
+            </Form>
         </Modal>
     </>
   );
