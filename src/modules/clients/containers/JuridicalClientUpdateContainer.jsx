@@ -205,7 +205,6 @@ const JuridicalClientUpdateContainer = ({id}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 noMaxWidth
-                                params={{required: true}}
                                 defaultValue={get(organization, 'representativeDoc',get(data,'data.organization.representativeDoc'))}
                                 label={'Representative document'}
                                 type={'input'}
@@ -214,7 +213,6 @@ const JuridicalClientUpdateContainer = ({id}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 noMaxWidth
-                                params={{required: true}}
                                 defaultValue={get(organization, 'representativeDocNumber',get(data,'data.organization.representativeDocNumber'))}
                                 label={'Representative document number'}
                                 type={'input'}
@@ -223,7 +221,6 @@ const JuridicalClientUpdateContainer = ({id}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 noMaxWidth
-                                params={{required: true}}
                                 defaultValue={get(organization, 'representativePinfl',get(data,'data.organization.representativePinfl'))}
                                 label={'Representative PINFL'}
                                 type={"input-mask"}
@@ -233,7 +230,6 @@ const JuridicalClientUpdateContainer = ({id}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 noMaxWidth
-                                params={{required: true}}
                                 defaultValue={get(organization, 'representativePassportSeria',get(data,'data.organization.representativePassportSeria'))}
                                 label={'Representative Passport Seria'}
                                 type={"input-mask"}
@@ -243,7 +239,6 @@ const JuridicalClientUpdateContainer = ({id}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 noMaxWidth
-                                params={{required: true}}
                                 defaultValue={get(organization, 'representativePassportNumber',get(data,'data.organization.representativePassportNumber'))}
                                 label={'Representative Passport Number'}
                                 type={"input-mask"}
