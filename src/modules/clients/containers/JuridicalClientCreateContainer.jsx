@@ -202,7 +202,6 @@ const JuridicalClientCreateContainer = ({...rest}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 noMaxWidth
-                                params={{required: true}}
                                 defaultValue={get(organization, 'representativeDoc')}
                                 label={'Representative document'}
                                 type={'input'}
@@ -211,7 +210,6 @@ const JuridicalClientCreateContainer = ({...rest}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 noMaxWidth
-                                params={{required: true}}
                                 defaultValue={get(organization, 'representativeDocNumber')}
                                 label={'Representative document number'}
                                 type={'input'}
@@ -220,7 +218,6 @@ const JuridicalClientCreateContainer = ({...rest}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 noMaxWidth
-                                params={{required: true}}
                                 defaultValue={get(organization, 'representativePinfl')}
                                 label={'Representative PINFL'}
                                 type={"input-mask"}
@@ -230,7 +227,6 @@ const JuridicalClientCreateContainer = ({...rest}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 noMaxWidth
-                                params={{required: true}}
                                 defaultValue={get(organization, 'representativePassportSeria')}
                                 label={'Representative Passport Seria'}
                                 type={"input-mask"}
@@ -240,7 +236,6 @@ const JuridicalClientCreateContainer = ({...rest}) => {
                         <Col xs={4} className={'mb-25'}>
                             <Field
                                 noMaxWidth
-                                params={{required: true}}
                                 defaultValue={get(organization, 'representativePassportNumber')}
                                 label={'Representative Passport Number'}
                                 type={"input-mask"}
