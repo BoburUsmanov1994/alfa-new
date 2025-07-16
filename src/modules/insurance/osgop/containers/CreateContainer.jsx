@@ -1244,6 +1244,8 @@ const CreateContainer = () => {
                                 <Row>
                                     <Col xs={12} className={'mb-25'}>
                                         <Field
+                                            disabled
+                                            defaultValue={'662a2c60577082fb291c0000'}
                                             options={[...agentsList]}
                                             label={'Агент'}
                                             type={'select'}
