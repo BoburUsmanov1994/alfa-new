@@ -157,7 +157,7 @@ const PolicyTerminationContainer = ({
                                 />
                             </Col>
                             <Col xs={4}>
-                                <Field defaultValue={terminateDate}  label={t('Дата расторжения NAPP')} type={'datepicker'}
+                                <Field defaultValue={new Date()} label={t('Дата расторжения NAPP')} type={'datepicker'}
                                        name={'terminateDateNapp'} params={{required: true}}
                                 />
                             </Col>
