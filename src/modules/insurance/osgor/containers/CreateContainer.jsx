@@ -153,6 +153,7 @@ const CreateContainer = ({...rest}) => {
         },
         enabled: !!(oked)
     })
+    console.log('activity',activity)
     const activityList = getSelectOptionsListFromData([{
         oked: get(activity, `data.oked`),
         name: get(activity, `data.name`)
@@ -720,21 +721,22 @@ const CreateContainer = ({...rest}) => {
                             <Col xs={3} className={'mb-25'}>
                                 <Field
                                     options={activityList}
+                                    defaultValue={get(activity,'data.oked')}
                                     label={'Вид деятельности (по правилам)'}
                                     type={'select'}
                                     name={'activityRisk'}/>
                             </Col>
                             <Col xs={3} className={'mb-25'}>
                                 <Field
-                                    params={{required: true}}
-                                    options={getSelectOptionsListFromData(get(activity, 'data.risks', []), 'number', 'number')}
+                                    params={{required: true,valueAsNumber:true}}
+                                    defaultValue={get(activity,'data.risks[0].number')}
                                     label={'Класс проф. риска'}
-                                    type={'select'}
+                                    type={'input'}
                                     name={'policies[0].risk'}/>
                             </Col>
                             <Col xs={3} className={'mb-25'}>
                                 <Field
-                                    defaultValue={get(find(get(activity, 'data.risks', []), _risk => get(_risk, 'number') == risk), 'coeficient')}
+                                    defaultValue={get(activity,'data.risks[0].coeficient')}
                                     property={{disabled: true}}
                                     label={'Коэффициент страхового тарифа'}
                                     type={'input'}
