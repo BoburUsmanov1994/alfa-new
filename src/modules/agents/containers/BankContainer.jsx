@@ -62,7 +62,8 @@ const BankContainer = ({...rest}) => {
                 listUrl={`${URLS.bank}/list`}
                 title={'Bank'}
                 responseDataKey={'data.data'}
-                // viewUrl={'/agents/bank/view'}
+                updateUrl={'/agents/bank/update'}
+                hasUpdateBtn
                 createUrl={'/agents/bank/create'}
             />
         </>

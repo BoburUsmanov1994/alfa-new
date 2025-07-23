@@ -48,6 +48,7 @@ import BcoPolicyStatusPage from "../modules/bco/pages/BcoPolicyStatusPage";
 import UserStatusPage from "../modules/users/pages/UserStatusPage";
 import BankPage from "../modules/agents/pages/BankPage";
 import BankCreatePage from "../modules/agents/pages/BankCreatePage";
+import BankUpdatePage from "../modules/agents/pages/BankEditPage";
 import AccountPage from "../modules/accounting/pages/AccountPage";
 import BcoActStatusPage from "../modules/bco/pages/BcoActStatusPage";
 import TransactionLogsPage from "../modules/accounting/pages/TransactionLogsPage";
@@ -193,6 +194,7 @@ const Router = ({...rest}) => {
                                 <Route path={"view/:id"} element={<AgentViewPage/>}/>
                                 <Route path={"bank"} element={<BankPage/>}/>
                                 <Route path={"bank/create"} element={<BankCreatePage/>}/>
+                                <Route path={"bank/update/:id"} element={<BankUpdatePage/>}/>
                                 <Route path={"commission"} element={<AgentsComissionPage/>}/>
                                 <Route path={"report"} element={<AgentsReportPage/>}/>
                                 <Route path={"report-control"} element={<AgentsReportControlPage/>}/>
