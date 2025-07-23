@@ -13,6 +13,7 @@ import InputRange from "./components/input-range";
 import CustomDatepicker from "./components/datepicker";
 import AsyncSelect from "./components/async-select";
 import NumberFormatInputFilter from "./components/number-format-input-filter";
+import File from "./components/file";
 
 const StyledField = styled.div`
   //margin-bottom: 25px;
@@ -40,6 +41,9 @@ const Field = ({type, ...rest}) => {
                                                                                             getValueFromField={getValueFromField}/>}</FormConsumer>;
                         case 'dropzone':
                             return <FormConsumer>{({attrs, getValueFromField}) => <CustomDropzone {...rest} {...attrs}
+                                                                                                  getValueFromField={getValueFromField}/>}</FormConsumer>;
+                        case 'file':
+                            return <FormConsumer>{({attrs, getValueFromField}) => <File {...rest} {...attrs}
                                                                                                   getValueFromField={getValueFromField}/>}</FormConsumer>;
                         case 'number-format-input':
                             return <FormConsumer>{({attrs, getValueFromField}) =>

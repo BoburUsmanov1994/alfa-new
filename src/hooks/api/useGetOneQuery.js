@@ -17,7 +17,7 @@ const useGetOneQuery = (
     }
 ) => {
 
-    const {isLoading, isError, data, error} = useQuery([key, id], () => fetchRequest(`${url}/${id}`, params), {
+    const {isLoading, isError, data, error,refetch} = useQuery([key, id], () => fetchRequest(`${url}/${id}`, params), {
         onSuccess: () => {
         },
         onError: (data) => {
@@ -33,6 +33,7 @@ const useGetOneQuery = (
         isError,
         data,
         error,
+        refetch
     }
 };
 

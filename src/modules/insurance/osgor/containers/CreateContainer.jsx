@@ -53,6 +53,7 @@ const CreateContainer = ({...rest}) => {
     const [fotSum, setFotSum] = useState(0)
     const [risk, setRisk] = useState(null)
     const [insurancePremium, setInsurancePremium] = useState(0)
+    const [_funeralExpensesSum, _setFuneralExpensesSum] = useState(0)
     const [rpmPercent, setRpmPercent] = useState(5)
     const [rewardPercent, setRewardPercent] = useState(0)
     const setBreadcrumbs = useStore(state => get(state, 'setBreadcrumbs', () => {
@@ -153,7 +154,7 @@ const CreateContainer = ({...rest}) => {
         },
         enabled: !!(oked)
     })
-    console.log('activity',activity)
+    console.log('activity', activity)
     const activityList = getSelectOptionsListFromData([{
         oked: get(activity, `data.oked`),
         name: get(activity, `data.name`)
@@ -217,6 +218,7 @@ const CreateContainer = ({...rest}) => {
             {
                 onSuccess: ({data}) => {
                     setInsurancePremium(get(data, 'insurancePremium'))
+                    _setFuneralExpensesSum(get(data, 'funeralExpensesSum'))
                 }
             }
         )
@@ -332,7 +334,6 @@ const CreateContainer = ({...rest}) => {
     if (isLoadingFilials || isLoadingInsuranceTerms || isLoadingCountry || isLoadingRegion) {
         return <OverlayLoader/>
     }
-
 
 
     return (<>
@@ -575,7 +576,7 @@ const CreateContainer = ({...rest}) => {
                                 <Col xs={3} className={'mb-25'}>
                                     <Field
                                         options={regionList}
-                                        params={{valueAsNumber:true}}
+                                        params={{valueAsNumber: true}}
                                         defaultValue={get(person, 'regionId')}
                                         label={'Region'}
                                         type={'select'}
@@ -721,22 +722,22 @@ const CreateContainer = ({...rest}) => {
                             <Col xs={3} className={'mb-25'}>
                                 <Field
                                     options={activityList}
-                                    defaultValue={get(activity,'data.oked')}
+                                    defaultValue={get(activity, 'data.oked')}
                                     label={'Вид деятельности (по правилам)'}
                                     type={'select'}
                                     name={'activityRisk'}/>
                             </Col>
                             <Col xs={3} className={'mb-25'}>
                                 <Field
-                                    params={{required: true,valueAsNumber:true}}
-                                    defaultValue={get(activity,'data.risks[0].number')}
+                                    params={{required: true, valueAsNumber: true}}
+                                    defaultValue={get(activity, 'data.risks[0].number')}
                                     label={'Класс проф. риска'}
                                     type={'input'}
                                     name={'policies[0].risk'}/>
                             </Col>
                             <Col xs={3} className={'mb-25'}>
                                 <Field
-                                    defaultValue={get(activity,'data.risks[0].coeficient')}
+                                    defaultValue={get(activity, 'data.risks[0].coeficient')}
                                     property={{disabled: true}}
                                     label={'Коэффициент страхового тарифа'}
                                     type={'input'}
@@ -744,8 +745,9 @@ const CreateContainer = ({...rest}) => {
                             </Col>
                             <Col xs={3} className={'mb-25'}>
                                 <Field
-                                    property={{type: 'number', max: 999999999}}
-                                    params={{required: true}}
+                                    defaultValue={_funeralExpensesSum}
+                                    property={{disabled: true}}
+                                    params={{required: true, valueAsNumber: true}}
                                     label={'Расходы на погребение'}
                                     type={'input'}
                                     name={'funeralExpensesSum'}/>
@@ -775,7 +777,10 @@ const CreateContainer = ({...rest}) => {
                                     <Col xs={6} className={'mb-25'}>
                                         <Field
                                             params={{required: true}}
-                                            property={{type: 'number', disabled: isEqual(agentId, '662a2c60577082fb291c0000')}}
+                                            property={{
+                                                type: 'number',
+                                                disabled: isEqual(agentId, '662a2c60577082fb291c0000')
+                                            }}
                                             defaultValue={isEqual(agentId, '662a2c60577082fb291c0000') ? 0 : 25}
                                             label={'Вознограждение %'}
                                             type={'input'}
