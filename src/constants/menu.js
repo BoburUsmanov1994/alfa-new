@@ -3,7 +3,7 @@ import config from "../config";
 import { t } from "i18next";
 
 export const menuData = (role) => [
-  includes([config.ROLES.admin], role) && {
+  includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
     id: 7,
     title: t("Продукты"),
     path: "/products",
@@ -30,34 +30,34 @@ export const menuData = (role) => [
       },
     ],
   },
-  includes([config.ROLES.admin, config.ROLES.user], role) && {
+  includes([config.ROLES.admin, config.ROLES.user, config.ROLES.endorsement,config.ROLES.superadmin], role) && {
     id: 222,
     title: t("Соглашения"),
     path: "/agreements",
   },
-  includes([config.ROLES.admin, config.ROLES.user], role) && {
+  includes([config.ROLES.admin, config.ROLES.user,config.ROLES.superadmin], role) && {
     id: 2,
     title: t("Клиенты"),
     path: "/clients",
     submenu: [
-      includes([config.ROLES.admin, config.ROLES.user], role) && {
+      includes([config.ROLES.admin, config.ROLES.user,config.ROLES.superadmin], role) && {
         id: 1,
         title: t("Физические лица"),
         path: "/clients/physical",
       },
-      includes([config.ROLES.admin, config.ROLES.user], role) && {
+      includes([config.ROLES.admin, config.ROLES.user,config.ROLES.superadmin], role) && {
         id: 2,
         title: t("Юридические лица"),
         path: "/clients/juridical",
       },
-      includes([config.ROLES.admin], role) && {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 5,
         title: t("Тип человека"),
         path: "/clients/person-type",
       },
     ],
   },
-  includes([config.ROLES.admin], role) && {
+  includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
     id: 8,
     title: t("Агенты"),
     path: "/agents",
@@ -104,7 +104,7 @@ export const menuData = (role) => [
       },
     ],
   },
-  includes([config.ROLES.admin], role) && {
+  includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
     id: 222,
     title: t("Аккаунты"),
     path: "/accounts",
@@ -126,7 +126,7 @@ export const menuData = (role) => [
       },
     ],
   },
-  includes([config.ROLES.admin], role) && {
+  includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
     id: 111,
     title: t("Филиалы и сотрудники"),
     path: "/branches",
@@ -163,7 +163,7 @@ export const menuData = (role) => [
       },
     ],
   },
-  includes([config.ROLES.admin], role) && {
+  includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
     id: 3,
     title: t("Бухгалтерия"),
     path: "/accounting",
@@ -200,59 +200,59 @@ export const menuData = (role) => [
       },
     ],
   },
-  includes([config.ROLES.admin, config.ROLES.user], role) && {
+  includes([config.ROLES.admin, config.ROLES.user,config.ROLES.superadmin], role) && {
     id: 2,
     title: t("БСО"),
     path: "/bco",
     submenu: [
-      includes([config.ROLES.admin], role) && {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 11,
         title: t("БСО"),
         path: "/bco",
       },
-      includes([config.ROLES.admin], role) && {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 1,
         title: t("Тип БСО"),
         path: "/bco/type",
       },
-      includes([config.ROLES.admin], role) && {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 2,
         title: t("БСО статус полиса"),
         path: "/bco/policy-status",
       },
-      includes([config.ROLES.admin], role) && {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 3,
         title: t("БСО статус"),
         path: "/bco/status",
       },
-      includes([config.ROLES.admin], role) && {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 4,
         title: t("БСО язык"),
         path: "/bco/language",
       },
-      includes([config.ROLES.admin], role) && {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 5,
         title: t("БСО blanks"),
         path: "/accounting/bco-blanks",
       },
-      includes([config.ROLES.admin, config.ROLES.user], role) && {
+      includes([config.ROLES.admin, config.ROLES.user,config.ROLES.superadmin], role) && {
         id: 6,
         title: t("ACTS"),
         path: "/accounting/act",
       },
-      includes([config.ROLES.admin], role) && {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 7,
         title: t("Act status"),
         path: "/bco/act-status",
       },
-      includes([config.ROLES.admin], role) && {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 8,
         title: t("Warehouse"),
         path: "/accounting/warehouse",
       },
     ],
   },
-  includes([config.ROLES.admin, config.ROLES.endorsement], role) && {
+  includes([config.ROLES.superadmin, config.ROLES.endorsement], role) && {
     id: 2222,
     title: t("Индоссамент"),
     path: "/endorsement",
@@ -263,6 +263,7 @@ export const menuData = (role) => [
       config.ROLES.osgop,
       config.ROLES.osgor,
       config.ROLES.user,
+      config.ROLES.superadmin
     ],
     role
   ) && {
@@ -271,7 +272,7 @@ export const menuData = (role) => [
     path: "/insurance",
     submenu: [
       includes(
-        [config.ROLES.admin, config.ROLES.osgor, config.ROLES.user],
+        [config.ROLES.admin, config.ROLES.osgor, config.ROLES.user,config.ROLES.superadmin],
         role
       ) && {
         id: 1,
@@ -279,29 +280,29 @@ export const menuData = (role) => [
         path: "/insurance/osgor",
       },
       includes(
-        [config.ROLES.admin, config.ROLES.osgop, config.ROLES.user],
+        [config.ROLES.admin, config.ROLES.osgop, config.ROLES.user,config.ROLES.superadmin],
         role
       ) && {
         id: 2,
         title: t("ОСГОП"),
         path: "/insurance/osgop",
       },
-      includes([config.ROLES.admin], role) && {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 3,
         title: t("ОСАГО"),
         path: "/insurance/osago",
       },
-      includes([config.ROLES.admin, config.ROLES.user], role) && {
+      includes([config.ROLES.admin, config.ROLES.user,config.ROLES.superadmin], role) && {
         id: 4,
         title: t("СМР"),
         path: "/insurance/smr",
       },
-      includes([config.ROLES.admin], role) && {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 5,
         title: t("СМР Распределение"),
         path: "/insurance/smr/distribute",
       },
-      includes([config.ROLES.admin], role) && {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 6,
         title: t("Страхования кредитов НБУ"),
         path: "/insurance/nbu-credits",
@@ -309,7 +310,7 @@ export const menuData = (role) => [
     ],
   },
 
-  includes([config.ROLES.admin], role) && {
+  includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
     id: 10,
     title: t("Справочники"),
     path: "/handbook",
@@ -491,7 +492,7 @@ export const menuData = (role) => [
       },
     ],
   },
-  includes([config.ROLES.admin], role) && {
+  includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
     id: 222,
     title: t("Translations"),
     path: "/handbook/translations",
