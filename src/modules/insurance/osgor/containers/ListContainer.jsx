@@ -359,9 +359,16 @@ const ListContainer = () => {
                     />
                 </Col>
                 <Col xs={3}>
-                    <Field label={t('Дата выдачи полиса')} type={'datepicker'}
-                           name={'issueDate'}
-                           defaultValue={get(filter, 'issueDate')}
+                    <Field label={t('Дата начало  выдачи полиса')} type={'datepicker'}
+                           name={'sentDateFrom'}
+                           defaultValue={get(filter, 'sentDateFrom')}
+
+                    />
+                </Col>
+                <Col xs={3}>
+                    <Field label={t('Дата окончания выдачи полиса')} type={'datepicker'}
+                           name={'sentDateTo'}
+                           defaultValue={get(filter, 'sentDateTo')}
 
                     />
                 </Col>

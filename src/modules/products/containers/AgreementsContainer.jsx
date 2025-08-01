@@ -113,6 +113,8 @@ const AgreementsContainer = () => {
                 branch: includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
                 page:get(pagination,'page',1),
                 limit:get(pagination,'limit',15),
+                subGroup:productSubGroupId,
+                group:productGroupId,
                 ...filter
             },
             responseType: 'blob'

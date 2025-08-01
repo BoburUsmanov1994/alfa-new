@@ -684,9 +684,9 @@ const StepOne = ({ id = null, ...props }) => {
                             </Col>
 
 
-                        </Row> : <Row className={'mt-15'}>
+                        </Row> : <Row className={'mt-15'} align={'end'}>
 
-                            <Col xs={6}>
+                            <Col xs={5}>
                                 <Field
                                     params={{ required: true }}
                                     type={'input-mask'}
@@ -700,6 +700,39 @@ const StepOne = ({ id = null, ...props }) => {
                                     }}
                                 />
                             </Col>
+                            <Col xs={2}>
+                                <Field
+                                    property={{
+                                        hideErrorMsg: true,
+                                        onChange: (val) => {
+                                            if (!isNil(val)) {
+                                                setIsNbu(val)
+                                            }
+                                        }
+                                    }}
+                                    label={t("Is NBU")}
+                                    type={'switch'}
+                                    name={'organization.isNbu'} />
+                            </Col>
+                            {isNbu && <Col xs={5}>
+                                <Field
+                                    property={{
+                                        hideErrorMsg: true,
+                                        onChange: (val) => {
+                                            setBeneficiary({
+                                                ...beneficiary, openModal: false, data: {
+                                                    ...get(find(get(clientList, `data.data`, []), (_client) => isEqual(get(_client, '_id'), val)), 'organization', {}),
+                                                    id: val
+                                                }
+                                            })
+                                        }
+                                    }}
+                                    label={t("Clients")}
+                                    type={'select'}
+                                    name={'organization.isNbu'}
+                                    options={clients}
+                                />
+                            </Col>}
                         </Row>}
 
                     </Form>
