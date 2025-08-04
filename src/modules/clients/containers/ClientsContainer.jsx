@@ -12,9 +12,9 @@ import Form from "../../../containers/form/form";
 import {Col, Row} from "react-grid-system";
 import Flex from "../../../components/flex";
 import Button from "../../../components/ui/button";
-import {Filter, Trash} from "react-feather";
+import {FileText, Filter, Trash} from "react-feather";
 import {useGetAllQuery} from "../../../hooks/api";
-import {getSelectOptionsListFromData} from "../../../utils";
+import {getSelectOptionsListFromData, saveFile} from "../../../utils";
 
 
 const ClientsContainer = () => {
@@ -43,6 +43,23 @@ const ClientsContainer = () => {
         }
     })
     branches = getSelectOptionsListFromData(get(branches, `data.data`, []), '_id', 'branchName')
+
+    let {refetch:report} = useGetAllQuery({
+        key: [KEYS.osgorPortfelReport,PERSON_TYPE.person],
+        url: URLS.clientReport,
+        params: {
+            params: {
+               type:PERSON_TYPE.person
+            },
+            responseType: 'blob'
+        },
+        enabled: false,
+        cb: {
+            success: (res) => {
+                saveFile(res)
+            }
+        }
+    })
 
     useEffect(() => {
         setBreadcrumbs(breadcrumbs)
@@ -204,6 +221,11 @@ const ClientsContainer = () => {
                                 <Button onClick={() => setFilter({})} className={'mt-15 mb-15 mr-8'} xs danger
                                         type={'reset'}><Flex justify={'center'}><Trash
                                     size={14}/><span>{t("Очистить")}</span></Flex></Button>
+                                <Button xs className={'ml-15'} onClick={() => {
+                                    report()
+                                }} green type={'button'}><Flex justify={'center'}><FileText
+                                    size={18}/><span
+                                    style={{marginLeft: '5px'}}>{t("Report")}</span></Flex></Button>
 
                             </Flex>
                         </Col>

@@ -213,4 +213,6 @@ export const KEYS = {
     nbuPortfelReport:'nbuPortfelReport',
     engineType:'engineType',
     gtkRegionList:'gtkRegionList',
+    clientReport:'clientReport',
+    employeeReport:'employeeReport',
 }

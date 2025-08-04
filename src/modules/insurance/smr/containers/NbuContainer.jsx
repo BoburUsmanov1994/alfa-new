@@ -51,6 +51,7 @@ const NbuContainer = () => {
         params: {
             params: {
                 branch: branch,
+                ...filter
             },
             responseType: 'blob'
         },
@@ -137,7 +138,25 @@ const NbuContainer = () => {
 
                             />
                         </Col>
+                        <Col xs={3}>
+                            <Field label={t('policy_number')} type={'input'}
+                                   name={'policy_number'}
+                                   defaultValue={get(filter, 'policy_number')}
 
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('insurance_amount_in_cents')} type={'number-format-input-filter'}
+                                   name={'insurance_amount_in_cents'}
+                                   defaultValue={get(filter, 'insurance_amount_in_cents', null)}
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field label={t('insurance_premium_in_cents')} type={'number-format-input-filter'}
+                                   name={'insurance_premium_in_cents'}
+                                   defaultValue={get(filter, 'insurance_premium_in_cents', null)}
+                            />
+                        </Col>
 
                         <Col xs={3}><Field  property={{onChange: (val) => setBranch(val)}} type={'select'} label={t("Филиал")} name={'branch'}
                                             options={branches} defaultValue={get(filter, 'branch')}

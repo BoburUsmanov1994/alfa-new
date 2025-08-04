@@ -229,4 +229,6 @@ export const URLS = {
     osgorUnAttachAll: 'api/osgor/unattach-all',
     osagoUnAttachAll: 'api/osago/unattach-all',
     smrUnAttachAll: 'api/smr/unattach-all',
+    clientReport: 'api/client/report/list',
+    employeeReport: 'api/employee/list/report',
 }
