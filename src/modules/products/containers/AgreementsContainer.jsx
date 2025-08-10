@@ -224,7 +224,7 @@ const AgreementsContainer = () => {
                 isHideColumn
                 checkStatus
                 extraActions={(_tr)=>includes([config.ROLES.admin],get(user,'role.name')) && <MessageCircle onClick={()=>setTr(_tr)} size={22} style={{marginLeft:10,cursor:'pointer',color:'#306962'}}/>}
-                                                  extraFilters={<Form sm formRequest={({data: {group, subGroup, ...rest} = {}}) => {
+                                                  extraFilters={<Form sm formRequest={({data: { ...rest} = {}}) => {
                     setFilter(rest);
                 }}
                                     mainClassName={'mt-15'}>
