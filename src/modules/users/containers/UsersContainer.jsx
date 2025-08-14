@@ -1,6 +1,6 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useStore} from "../../../store";
-import {get} from "lodash";
+import {get, includes} from "lodash";
 import GridView from "../../../containers/grid-view/grid-view";
 import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
@@ -9,9 +9,15 @@ import {useTranslation} from "react-i18next";
 import {useGetAllQuery} from "../../../hooks/api";
 import {getSelectOptionsListFromData} from "../../../utils";
 import {Col, Row} from "react-grid-system";
+import Form from "../../../containers/form/form";
+import config from "../../../config";
+import Flex from "../../../components/flex";
+import Button from "../../../components/ui/button";
+import {FileText, Filter, Trash} from "react-feather";
 
 const UsersContainer = () => {
     const {t} = useTranslation()
+    const [filter, setFilter] = useState({});
     let {data: branchList} = useGetAllQuery({key: KEYS.branches, url: `${URLS.branches}/list`})
     branchList = getSelectOptionsListFromData(get(branchList, `data.data`, []), '_id', 'branchName')
     let {data: employeeList} = useGetAllQuery({key: KEYS.employee, url: `${URLS.employee}/list`})
@@ -109,13 +115,53 @@ const UsersContainer = () => {
                         title: t("Status"),
                     }
                 ]}
-                keyId={KEYS.user}
+                keyId={[KEYS.user,filter]}
                 url={URLS.user}
                 listUrl={`${URLS.user}/list`}
                 title={t('All users')}
                 responseDataKey={'data.data'}
+                params={{
+                    ...filter
+                }}
                 isHideColumn
                 hasUpdateBtn
+                extraFilters={<Form sm formRequest={({data: {group, subGroup, ...rest} = {}}) => {
+                    setFilter(rest);
+                }}
+                                    mainClassName={'mt-15'}>
+
+                    {() => <Row align={'end'} gutterWidth={10}>
+
+
+                        <Col xs={3}>
+                            <Field  label={t('username')} type={'input'}
+                                   name={'username'}
+                                   defaultValue={get(filter, 'username')}
+
+                            />
+                        </Col>
+                        <Col xs={3}>
+                            <Field  label={t('fullname')} type={'input'}
+                                   name={'fullname'}
+                                   defaultValue={get(filter, 'fullname')}
+
+                            />
+                        </Col>
+
+
+                        <Col xs={6}>
+                            <Flex>
+                                <Button  htmlType={'submit'}><Flex justify={'center'}><Filter
+                                    size={14}/><span>{t("Применить")}</span></Flex></Button>
+                                <Button onClick={() => setFilter({})} className={'mt-15 mb-15 mr-8'}  danger
+                                        type={'reset'}><Flex justify={'center'}><Trash
+                                    size={14}/><span>{t("Очистить")}</span></Flex></Button>
+
+
+                            </Flex>
+                        </Col>
+                    </Row>}
+                </Form>}
             />
         </>
     );
