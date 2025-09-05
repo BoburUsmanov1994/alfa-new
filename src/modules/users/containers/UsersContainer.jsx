@@ -65,11 +65,11 @@ const UsersContainer = () => {
                        defaultValue={rowId ? get(data, 'username') : null}
                        params={{required: true}}/>
             </Col>
-            {!rowId && <Col xs={6}>
+             <Col xs={6}>
                 <Field name={'password'} type={'input'} label={t("Password")}
-                       defaultValue={rowId ? get(data, 'password') : null}
+                       // defaultValue={rowId ? get(data, 'password') : null}
                        params={{required: true}} property={{type: 'password'}}/>
-            </Col>}
+            </Col>
             <Col xs={6}>
                 <Field name={'role'} type={'select'} label={t("Role")} options={roles}
                        defaultValue={rowId ? get(data, 'role') : null} params={{required: true}}/>
