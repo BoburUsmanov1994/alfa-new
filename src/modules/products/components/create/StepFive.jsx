@@ -76,7 +76,8 @@ const StepFive = ({id = null, ...props}) => {
 
     const nextStep = () => {
         if (id) {
-            updateProduct({url: `${URLS.product}/${id}`, attributes: product}, {
+            const {hasFixedAgent,fixedAgent,...rest}=product
+            updateProduct({url: `${URLS.product}/${id}`, attributes: hasFixedAgent ? {...rest,fixedAgent,hasFixedAgent}:{...rest,hasFixedAgent}}, {
                 onSuccess: () => {
                     resetRiskList();
                     resetProduct();
@@ -112,7 +113,7 @@ const StepFive = ({id = null, ...props}) => {
         resetProduct();
         props.firstStep();
     }
-    console.log('product', product)
+    console.log('productt', product)
 
     return (<>
             {(isLoading || updateLoading) && <OverlayLoader/>}
