@@ -338,13 +338,7 @@ const StepTwo = ({id = null, ...props}) => {
             setComment(get(agreement,'product.riskComment'))
         }
     }, [agreement])
-    useEffect(()=>{
-        if(get(agreement,'product.specialNotes')){
-            setComment(get(agreement,'product.specialNotes'))
-        }else{
-            setComment('')
-        }
-    },[agreement])
+
 
 
     return (
@@ -1863,6 +1857,7 @@ const StepTwo = ({id = null, ...props}) => {
                             </Col>
                             <Col xs={4}>
                                 <Field
+                                    defaultValue={get(agreement,'product.specialNotes')}
                                     label={t("Специальные условия")}
                                     type={"input"}
                                     name={"objectOfInsurance.specialConditions"}
