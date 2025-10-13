@@ -338,6 +338,13 @@ const StepTwo = ({id = null, ...props}) => {
             setComment(get(agreement,'product.riskComment'))
         }
     }, [agreement])
+    useEffect(()=>{
+        if(get(agreement,'product.specialNotes')){
+            setComment(get(agreement,'product.specialNotes'))
+        }else{
+            setComment('')
+        }
+    },[agreement])
 
 
     return (
