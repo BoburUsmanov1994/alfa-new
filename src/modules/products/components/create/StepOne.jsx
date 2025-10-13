@@ -132,6 +132,11 @@ const StepOne = ({id = null, ...props}) => {
     const findItem = (list = [], id = null) => {
         return find(list, l => isEqual(get(l, "_id"), id))
     }
+    useEffect(()=>{
+        if(get(product,'specialNotes')){
+            setComment(get(product,'specialNotes'))
+        }
+    },[product])
     return (
         <Row>
             <Col xs={12}>

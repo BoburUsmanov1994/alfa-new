@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, {useState, memo, useEffect} from 'react';
 import { Col, Row } from "react-grid-system";
 import StepNav from "../../../../components/step-nav";
 import Field from "../../../../containers/form/field";
@@ -234,7 +234,6 @@ const StepOne = ({ id = null, ...props }) => {
             toast.warn('Select pledger')
         }
     }
-
     return (
         <Row>
             <Col xs={12}>

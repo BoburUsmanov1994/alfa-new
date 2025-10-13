@@ -113,7 +113,6 @@ const StepFive = ({id = null, ...props}) => {
         resetProduct();
         props.firstStep();
     }
-    console.log('productt', product)
 
     return (<>
             {(isLoading || updateLoading) && <OverlayLoader/>}
