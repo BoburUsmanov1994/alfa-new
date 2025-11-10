@@ -174,6 +174,13 @@ const PolicyTerminationContainer = ({
                                 />
                             </Col>
                             <Col xs={4}>
+                                <Field
+                                    type={'dropzone'}
+                                    name={`actTermination`}
+                                    label={'Акт'}
+                                />
+                            </Col>
+                            <Col xs={4}>
                                 <Field property={{onChange: (val) => setIsReturnPremium(val)}}
                                        label={t('Премия подлежит возврату')} type={'switch'}
                                        name={'isReturnPremium'} params={{required: true}}
@@ -235,6 +242,7 @@ const PolicyTerminationContainer = ({
                                            name={'returningAgentComission'} params={{required: true,valueAsNumber:true}}
                                     />
                                 </Col>
+
                             </>}
                         </Row>
                     </Col>
