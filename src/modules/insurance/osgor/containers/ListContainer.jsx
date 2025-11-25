@@ -270,7 +270,7 @@ const ListContainer = () => {
                 id: 12,
                 key: "osgor_formId",
                 title: "Расторжение",
-                render: (row) =>includes([config.ROLES.admin],get(user,'role.name')) && <Button className={'ml-15'} onClick={()=>navigate(`/policy/termination/${get(row,'osgor_formId')}/${get(row, 'policy._id')}`)} sm inline danger>Расторжение</Button>
+                render: (row) =>includes([config.ROLES.admin],get(user,'role.name')) && <Button className={'ml-15'} onClick={()=>navigate(`/policy/termination/${get(row,'osgor_formId')}/${get(row, 'policy')}`)} sm inline danger>Расторжение</Button>
             },
         ]}
         keyId={[KEYS.osgorList,filter]}

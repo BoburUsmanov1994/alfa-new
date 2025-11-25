@@ -7,6 +7,7 @@ import {URLS} from "../../../constants/url";
 import NumberFormat from "react-number-format";
 import {useTranslation} from "react-i18next";
 import {Download} from "react-feather";
+import dayjs from "dayjs";
 
 const TerminationsContainer = () => {
     const {t} = useTranslation();
@@ -41,9 +42,8 @@ const TerminationsContainer = () => {
                     },
                     {
                         id: 3,
-                        key: 'seria',
+                        key: 'insurant',
                         title: 'страхователь',
-                        render: (_tr) =>'-'
                     },
                     {
                         id: 4,
@@ -63,15 +63,15 @@ const TerminationsContainer = () => {
                     },
                     {
                         id: 44,
-                        key: 'returningPremium',
+                        key: 'payment',
                         title: 'наличие выплат',
-                        render: (_tr)=>'-'
+                        render: (_tr)=>get(_tr,'payment.paymentDate') ? dayjs(get(_tr,'payment.paymentDate')).format('YYYY-MM-DD'):'-',
                     },
                     {
                         id: 55,
-                        key: 'returningPremium',
+                        key: 'payment',
                         title: 'сумма выплат',
-                        render: (_tr)=>'-'
+                        render: (_tr)=><NumberFormat displayType={'text'} thousandSeparator={' '} value={get(_tr,'payment.paymentSum')} />
                     },
                     {
                         id: 66,
@@ -83,9 +83,8 @@ const TerminationsContainer = () => {
                     },
                     {
                         id: 77,
-                        key: 'returningPremium',
+                        key: 'sentDate',
                         title: 'дата отправки в НАПП',
-                        render: (_tr)=>'-'
                     },
                 ]}
                 keyId={KEYS.policyTerminations}

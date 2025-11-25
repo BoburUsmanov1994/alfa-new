@@ -312,9 +312,6 @@ export const menuData = (role) => [
     includes(
         [
             config.ROLES.admin,
-            config.ROLES.osgop,
-            config.ROLES.osgor,
-            config.ROLES.user,
             config.ROLES.superadmin
         ],
         role
@@ -324,7 +321,7 @@ export const menuData = (role) => [
         path: "/policy",
         submenu: [
             includes(
-                [config.ROLES.admin, config.ROLES.osgor, config.ROLES.user,config.ROLES.superadmin],
+                [config.ROLES.admin,config.ROLES.superadmin],
                 role
             ) && {
                 id: 1,
@@ -332,7 +329,7 @@ export const menuData = (role) => [
                 path: "/policy/payments",
             },
             includes(
-                [config.ROLES.admin, config.ROLES.osgop, config.ROLES.user,config.ROLES.superadmin],
+                [config.ROLES.admin,config.ROLES.superadmin],
                 role
             ) && {
                 id: 2,
