@@ -215,4 +215,6 @@ export const KEYS = {
     gtkRegionList:'gtkRegionList',
     clientReport:'clientReport',
     employeeReport:'employeeReport',
+    policyPayments:'policyPayments',
+    policyTerminations:'policyTerminations',
 }

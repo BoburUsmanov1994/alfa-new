@@ -309,6 +309,38 @@ export const menuData = (role) => [
       },
     ],
   },
+    includes(
+        [
+            config.ROLES.admin,
+            config.ROLES.osgop,
+            config.ROLES.osgor,
+            config.ROLES.user,
+            config.ROLES.superadmin
+        ],
+        role
+    ) && {
+        id: 301,
+        title: t("Полисы"),
+        path: "/policy",
+        submenu: [
+            includes(
+                [config.ROLES.admin, config.ROLES.osgor, config.ROLES.user,config.ROLES.superadmin],
+                role
+            ) && {
+                id: 1,
+                title: t("Платежи за финансовые риски"),
+                path: "/policy/payments",
+            },
+            includes(
+                [config.ROLES.admin, config.ROLES.osgop, config.ROLES.user,config.ROLES.superadmin],
+                role
+            ) && {
+                id: 2,
+                title: t("Заявлений на расторжение"),
+                path: "/policy/terminations",
+            },
+        ],
+    },
 
   includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
     id: 10,

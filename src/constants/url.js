@@ -231,4 +231,6 @@ export const URLS = {
     smrUnAttachAll: 'api/smr/unattach-all',
     clientReport: 'api/client/report/list',
     employeeReport: 'api/employee/list/report',
+    policyPayments: 'api/policy/payment',
+    policyTerminations: 'api/policy/terminate/list',
 }

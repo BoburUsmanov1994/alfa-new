@@ -140,6 +140,8 @@ const SmrDistributePage = lazy(() => import("../modules/insurance/smr/pages/SmrD
 
 const EndorsementPage = lazy(() => import("../modules/bco/pages/EndorsementPage"));
 const EndorsementViewPage = lazy(() => import("../modules/bco/pages/EndorsementViewPage"));
+const PolicyPaymentPage = lazy(() => import("../modules/policy/pages/PaymentsPage"));
+const PolicyTerminationsPage = lazy(() => import("../modules/policy/pages/TerminationsPage"));
 
 
 const Router = ({...rest}) => {
@@ -275,6 +277,8 @@ const Router = ({...rest}) => {
                             <Route path={"policy"}>
                                 <Route path={"create/:product_id"} element={<PolicyCreatePage/>}/>
                                 <Route path={"termination/:id/:policyId"} element={<PolicyTerminationPage/>}/>
+                                <Route path={"payments"} element={<PolicyPaymentPage/>}/>
+                                <Route path={"terminations"} element={<PolicyTerminationsPage/>}/>
                             </Route>
                             <Route path={"bco"}>
                                 <Route index element={<BcoPage/>}/>
