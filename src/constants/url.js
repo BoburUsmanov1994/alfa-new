@@ -233,4 +233,5 @@ export const URLS = {
     employeeReport: 'api/employee/list/report',
     policyPayments: 'api/policy/payment',
     policyTerminations: 'api/policy/terminate/list',
+    agreementCarReport: 'api/agreement/car/report',
 }

@@ -217,4 +217,5 @@ export const KEYS = {
     employeeReport:'employeeReport',
     policyPayments:'policyPayments',
     policyTerminations:'policyTerminations',
+    agreementCarReport:'agreementCarReport',
 }

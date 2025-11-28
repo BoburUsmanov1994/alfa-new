@@ -126,6 +126,24 @@ const AgreementsContainer = () => {
             }
         }
     })
+    let {refetch:carReportRefetch} = useGetAllQuery({
+        key: KEYS.agreementCarReport,
+        url: URLS.agreementCarReport,
+        params: {
+            params: {
+                createdAtFrom: createdAtFrom ? dayjs(createdAtFrom).format("YYYY-MM-DD") : undefined,
+                createdAtTo: createdAtTo ? dayjs(createdAtTo).format("YYYY-MM-DD") : undefined,
+                branch: includes([config.ROLES.admin], get(user, 'role.name')) ? branch : get(user, 'branch._id'),
+            },
+            responseType: 'blob'
+        },
+        enabled: false,
+        cb: {
+            success: (res) => {
+                saveFile(res)
+            }
+        }
+    })
     const {mutate:annualRequest,isLoading:isLoadingAnnual} = usePostQuery({listKeyId:[KEYS.agreements, filter]})
 
     useEffect(() => {
@@ -378,6 +396,11 @@ const AgreementsContainer = () => {
                                 }} className={'mb-15'} green type={'button'}><Flex justify={'center'}><FileText
                                     size={14}/><span
                                     style={{marginLeft: '5px'}}>{t("Portfel report")}</span></Flex></Button>
+                                <Button xs onClick={() => {
+                                    carReportRefetch()
+                                }} className={'mb-15'} green type={'button'}><Flex justify={'center'}><FileText
+                                    size={14}/><span
+                                    style={{marginLeft: '5px'}}>{t("Отчет по ТС")}</span></Flex></Button>
                             </div>
                         </Col>
                     </Row>}
