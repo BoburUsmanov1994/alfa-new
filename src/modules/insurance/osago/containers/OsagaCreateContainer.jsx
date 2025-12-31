@@ -396,6 +396,7 @@ const OsagaCreateContainer = () => {
         return <OverlayLoader/>
     }
 
+
     return (<>
         {(isLoadingPersonalInfo || isLoadingOrganizationInfo || isLoadingVehicleInfo || isLoadingPost) &&
             <OverlayLoader/>}
@@ -1071,16 +1072,16 @@ const OsagaCreateContainer = () => {
                             <Col xs={12} className={'mb-25'}><Title>Водители / Родственники</Title></Col>
                             <Col xs={12}>
                                 <Flex justify={'flex-end'}>
-                                    <Field label={'Количество водителей'}
+                                    <Field property={{onChange:(val)=>setDriverType(val)}} label={'Количество водителей'}
                                            defaultValue={1}
                                                                   options={driverTypeList} type={'radio-group'}
                                                                   name={'driverType'}/>
-                                    <Button
+                                    {isEqual(parseInt(driverType),1) &&<Button
                                     onClick={() => setVisible(true)} className={'ml-15'}
-                                    type={'button'}>Добавить</Button></Flex>
+                                    type={'button'}>Добавить</Button>}</Flex>
                             </Col>
                             <Col xs={12}>
-                                <div className={'horizontal-scroll mt-15 '}>
+                                {isEqual(parseInt(driverType),1) && <div className={'horizontal-scroll mt-15 '}>
                                     <Table bordered hideThead={false}
                                            thead={['Фамилия ', 'Имя', 'Отчество', 'Сария паспорта', 'Номер паспорта', 'Pinfl', 'Дата паспорта', 'Серия вод.удостоверения', 'Номер вод.удостоверения', 'Дата вод.удостоверения', 'Степень родства', 'Action']}>
                                         {
@@ -1101,7 +1102,7 @@ const OsagaCreateContainer = () => {
                                             </tr>)
                                         }
                                     </Table>
-                                </div>
+                                </div>}
                             </Col>
                         </Row>
 
