@@ -443,7 +443,7 @@ const OsagaCreateContainer = () => {
 
                                 <Row align={'center'} className={'mb-25'}>
                                     <Col xs={5}>Страховая сумма: </Col>
-                                    <Col xs={7}><Field defaultValue={40000000}
+                                    <Col xs={7}><Field defaultValue={80000000}
                                                        property={{hideLabel: true, disabled: true}}
                                                        type={'number-format-input'}
                                                        name={'policies[0].insuranceSum'}/></Col>
