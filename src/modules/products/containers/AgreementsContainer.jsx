@@ -184,7 +184,7 @@ const AgreementsContainer = () => {
                     },
                     {
                         id: 5,
-                        key: 'startOfInsurance',
+                        key: 'policy[0].issueDate',
                         title: t("startOfInsurance"),
                         date: true
                     },
