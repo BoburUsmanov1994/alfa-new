@@ -11,7 +11,7 @@ import {KEYS} from "../../../constants/key";
 import {URLS} from "../../../constants/url";
 import {ContentLoader, OverlayLoader} from "../../../components/loader";
 import {useNavigate} from "react-router-dom";
-import {get,isEqual} from "lodash"
+import {get, isEqual} from "lodash"
 import {useStore} from "../../../store";
 import Table from "../../../components/table";
 import NumberFormat from "react-number-format";
@@ -45,7 +45,7 @@ const PolicyTerminationContainer = ({
     const {mutate: terminatePolicyRequest, isLoading: isLoadingPolicy} = usePostQuery({listKeyId: KEYS.agreements})
 
 
-    const terminatePolicy = (data) =>{
+    const terminatePolicy = (data) => {
         terminatePolicyRequest({
             url: `${URLS.policy}/terminate/${policyId}`, attributes: {
                 ...data,
@@ -139,9 +139,10 @@ const PolicyTerminationContainer = ({
                 footer={<><Flex className={'mt-32'}><Button type={'submit'}
                                                             className={'mr-16'}>Расторгнуть</Button><Button
                     onClick={() => navigate(`/agreements/view/${id}`)} type={'button'} danger
-                    className={'mr-16'}>Отменить</Button> {(isEqual(whereToReturnPremium,'TO_CLIENT_ACCOUNT') || isReturnAgentCommission) && <Button
-                    onClick={() => navigate(`/agreements/view/${id}`)} type={'button'} green
-                    className={'mr-16'}>Возврат осуществлен</Button>}</Flex></>}>
+                    className={'mr-16'}>Отменить</Button> {(isEqual(whereToReturnPremium, 'TO_CLIENT_ACCOUNT') || isReturnAgentCommission) &&
+                    <Button
+                        onClick={() => navigate(`/agreements/view/${id}`)} type={'button'} green
+                        className={'mr-16'}>Возврат осуществлен</Button>}</Flex></>}>
                 <Row>
                     <Col xs={12}>
                         <Row className={'mt-15'}>
@@ -181,19 +182,51 @@ const PolicyTerminationContainer = ({
                                 />
                             </Col>
                             <Col xs={4}>
+                                <Field name={'MFOclient'} type={'input-mask'} label={'МФО'}
+                                       property={{mask: '99999', maskChar: '_'}}
+                                       params={{
+                                           required: true, pattern: {
+                                               value: /^[0-9]*$/,
+                                               message: 'Invalid format'
+                                           }
+                                       }}/>
+                            </Col>
+                            <Col xs={4}>
+                                <Field name={'Innbank'} type={'input-mask'} label={'ИНН банка'}
+                                       property={{mask: '999999999', maskChar: '_'}}
+                                       params={{
+                                           required: true, pattern: {
+                                               value: /^[0-9]*$/,
+                                               message: 'Invalid format'
+                                           }
+                                       }}/>
+                            </Col>
+                            <Col xs={4}>
+                                <Field params={{required: true}} label={'Расчетный счет'} name={'accountnumber'}
+                                       type={'input'}/>
+                            </Col>
+                            <Col xs={4}>
+                                <Field params={{required: true}} label={'Номер карты'} name={'cardnumber'}
+                                       type={'input'}/>
+                            </Col>
+                            <Col xs={4}>
                                 <Field property={{onChange: (val) => setIsReturnPremium(val)}}
                                        label={t('Премия подлежит возврату')} type={'switch'}
                                        name={'isReturnPremium'} params={{required: true}}
                                 />
                             </Col>
                             {isReturnPremium && <><Col xs={4}>
-                                <Field  property={{onChange:(val)=>setHasDemonstrableCosts(val)}} defaultValue={get(policyData, "data.hasDemonstrableCosts", false)}
+                                <Field property={{onChange: (val) => setHasDemonstrableCosts(val)}}
+                                       defaultValue={get(policyData, "data.hasDemonstrableCosts", false)}
                                        label={t('Доказуемые расходы')} type={'switch'}
                                        name={'hasDemonstrableCosts'} params={{required: true}}
                                 />
                             </Col>
                                 <Col xs={4}>
-                                    <Field  property={{disabled: !hasDemonstrableCosts,onChange:(val)=>setSumDemonstrableCosts(val)}}
+                                    <Field property={{
+                                        disabled: !hasDemonstrableCosts,
+                                        onChange: (val) => setSumDemonstrableCosts(val)
+                                    }}
                                            defaultValue={get(policyData, "data.sumDemonstrableCosts", 0)}
                                            label={t('Сумма')} type={'number-format-input'}
                                            name={'sumDemonstrableCosts'} params={{required: true}}
@@ -201,36 +234,36 @@ const PolicyTerminationContainer = ({
                                 </Col>
                                 <Col xs={4}>
                                     <Field
-                                        property={{onChange:(val)=>setIsReturnDemonstrableCosts(val)}}
-                                           label={t('Удержать доказуемые расходы')} type={'switch'}
-                                           name={'isReturnDemonstrableCosts'} params={{required: true}}
+                                        property={{onChange: (val) => setIsReturnDemonstrableCosts(val)}}
+                                        label={t('Удержать доказуемые расходы')} type={'switch'}
+                                        name={'isReturnDemonstrableCosts'} params={{required: true}}
                                     />
                                 </Col>
                                 <Col xs={4}>
                                     <Field property={{disabled: true}}
                                            defaultValue={hasDemonstrableCosts ? (isReturnDemonstrableCosts ? get(policyData, "data.returningPremium", 0) - sumDemonstrableCosts : get(policyData, "data.returningPremium", 0)) : get(policyData, "data.returningPremium", 0)}
                                            label={t('Итого премия к возврату')} type={'number-format-input'}
-                                           name={'returningPremium'} params={{required: true,valueAsNumber:true}}
+                                           name={'returningPremium'} params={{required: true, valueAsNumber: true}}
                                     />
                                 </Col>
                                 <Col xs={4}>
                                     <Field label={'Куда вернуть премию'}
-                                           property={{onChange:(val)=>setWhereToReturnPremium(val)}}
+                                           property={{onChange: (val) => setWhereToReturnPremium(val)}}
                                            options={[
                                                {
-                                                   value:'TO_CLIENT_BALANCE ',
-                                                   label:'на баланс клиента'
+                                                   value: 'TO_CLIENT_BALANCE ',
+                                                   label: 'на баланс клиента'
                                                },
                                                {
-                                                   value:'TO_CLIENT_ACCOUNT',
-                                                   label:'возврат на счет клиента'
+                                                   value: 'TO_CLIENT_ACCOUNT',
+                                                   label: 'возврат на счет клиента'
                                                }
                                            ]} type={'radio-group'}
                                            name={'whereToReturnPremium'}/>
                                 </Col>
                                 <Col xs={4}>
                                     <Field
-                                        property={{onChange:(val)=>setIsReturnAgentCommission(val)}}
+                                        property={{onChange: (val) => setIsReturnAgentCommission(val)}}
                                         label={t('Удержать агентские')} type={'switch'}
                                         name={'isReturnAgentCommission'} params={{required: true}}
                                     />
@@ -239,7 +272,8 @@ const PolicyTerminationContainer = ({
                                     <Field property={{disabled: true}}
                                            defaultValue={get(policyData, "data.returningAgentComission", 0)}
                                            label={t('Агентские к возврату')} type={'number-format-input'}
-                                           name={'returningAgentComission'} params={{required: true,valueAsNumber:true}}
+                                           name={'returningAgentComission'}
+                                           params={{required: true, valueAsNumber: true}}
                                     />
                                 </Col>
 

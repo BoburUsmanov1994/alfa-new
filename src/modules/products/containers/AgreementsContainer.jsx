@@ -417,21 +417,10 @@ const AgreementsContainer = () => {
                     })
                 }} footer={<Button type={"submit"} block>{t("Send")}</Button>}>
                  <Row>
-                     <Col xs={6}>
+                     <Col xs={12}>
                          <Field params={{required:true}} label={'Reason'} name={'reason'} type={'textarea'} />
                      </Col>
-                     <Col xs={6}>
-                         <Field params={{required:true}} label={'Клиент МФО'} name={'MFOclient'} type={'input'} />
-                     </Col>
-                     <Col xs={6}>
-                         <Field params={{required:true}} label={'INN'} name={'Innbank'} type={'input'} />
-                     </Col>
-                     <Col xs={6}>
-                         <Field params={{required:true}} label={'Номер счета'} name={'accountnumber'} type={'input'} />
-                     </Col>
-                     <Col xs={6}>
-                         <Field params={{required:true}} label={'Номер карты'} name={'cardnumber'} type={'input'} />
-                     </Col>
+
                  </Row>
                 </Form>
             </Modal>
