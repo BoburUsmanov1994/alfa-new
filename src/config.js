@@ -9,7 +9,8 @@ const config = {
         superadmin: 'superadmin',
         endorsement: 'endorsement',
         osgor: 'osgor',
-        osgop: 'osgop'
+        osgop: 'osgop',
+        personal:'personal'
     },
     PERMISSIONS: [],
 }

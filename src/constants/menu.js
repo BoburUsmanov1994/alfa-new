@@ -126,7 +126,7 @@ export const menuData = (role) => [
       },
     ],
   },
-  includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
+  includes([config.ROLES.admin,config.ROLES.superadmin,config.ROLES.personal], role) && {
     id: 111,
     title: t("Филиалы и сотрудники"),
     path: "/branches",
@@ -136,6 +136,7 @@ export const menuData = (role) => [
         title: t("Филиалы"),
         path: "/branches/list",
       },
+      includes([config.ROLES.admin,config.ROLES.superadmin,config.ROLES.personal], role) &&
       {
         id: 2,
         title: t("Employees"),
