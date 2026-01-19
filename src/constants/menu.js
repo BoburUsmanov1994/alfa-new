@@ -131,7 +131,7 @@ export const menuData = (role) => [
     title: t("Филиалы и сотрудники"),
     path: "/branches",
     submenu: [
-      {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) && {
         id: 1,
         title: t("Филиалы"),
         path: "/branches/list",
@@ -142,22 +142,22 @@ export const menuData = (role) => [
         title: t("Employees"),
         path: "/branches/employees",
       },
-      {
+      includes([config.ROLES.admin,config.ROLES.superadmin,config.ROLES.personal], role) && {
         id: 3,
         title: t("Position"),
         path: "/branches/position",
       },
-      {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) &&{
         id: 31,
         title: t("Branch level"),
         path: "/handbook/branch-level",
       },
-      {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) &&{
         id: 32,
         title: t("Branch status"),
         path: "/handbook/branch-status",
       },
-      {
+      includes([config.ROLES.admin,config.ROLES.superadmin], role) &&{
         id: 33,
         title: t("Банк реквизиты филиалов"),
         path: "/handbook/branch-bank-settings",
