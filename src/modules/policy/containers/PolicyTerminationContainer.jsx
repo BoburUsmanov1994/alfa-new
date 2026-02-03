@@ -27,6 +27,7 @@ const PolicyTerminationContainer = ({
     const navigate = useNavigate();
     const [terminateDate, setTerminateDate] = useState(new Date())
     const [isReturnPremium, setIsReturnPremium] = useState(false)
+    const [isTransfer, setIsTransfer] = useState(false)
     const [whereToReturnPremium, setWhereToReturnPremium] = useState(null)
     const [isReturnAgentCommission, setIsReturnAgentCommission] = useState(false)
     const [hasDemonstrableCosts, setHasDemonstrableCosts] = useState(false)
@@ -277,6 +278,31 @@ const PolicyTerminationContainer = ({
                                     />
                                 </Col>
 
+                            </>}
+                            <Col xs={4}>
+                                <Field    options={[
+                                    {
+                                        value: false,
+                                        label: 'вернуть'
+                                    },
+                                    {
+                                        value: true,
+                                        label: 'перекинуть'
+                                    }
+                                ]} property={{onChange: (val) => setIsTransfer(val)}}
+                                       label={t('Вернуть деньги клиенту / перекинуть на другой полис')} type={'switch'}
+                                       name={'isTransfer'} params={{required: true}}
+                                />
+                            </Col>
+                            {isTransfer && <>
+                                <Col xs={4}>
+                                    <Field params={{required: true}} label={'Номер полиса'} name={'nomer'}
+                                           type={'input'}/>
+                                </Col>
+                                <Col xs={4}>
+                                    <Field params={{required: true}} label={'Серия полиса'} name={'seria'}
+                                           type={'input'}/>
+                                </Col>
                             </>}
                         </Row>
                     </Col>
