@@ -33,6 +33,7 @@ const PolicyTerminationContainer = ({
     const [hasDemonstrableCosts, setHasDemonstrableCosts] = useState(false)
     const [isReturnDemonstrableCosts, setIsReturnDemonstrableCosts] = useState(false)
     const [sumDemonstrableCosts, setSumDemonstrableCosts] = useState(0)
+    const [receiverType, setReceiverType] = useState(0)
     let {data: policyData, isLoading, refetch} = useGetAllQuery({
         key: `terminate-${policyId}-${terminateDate}`,
         url: `${URLS.policy}/terminate-details`,
@@ -279,6 +280,42 @@ const PolicyTerminationContainer = ({
                                 </Col>
 
                             </>}
+                            <Col xs={4}>
+                                <Field label={t('Получатель')} name={'receiver_name'}
+                                       type={'input'}/>
+                            </Col>
+                            <Col xs={4}>
+                                <Field label={t('Тип получателя')}
+                                       defaultValue={0}
+                                       property={{onChange: (val) => setReceiverType(val)}}
+                                       options={[
+                                           {value: 0, label: 'Физ. лиц.'},
+                                           {value: 1, label: 'Юр. лиц.'},
+                                       ]}
+                                       type={'select'}
+                                       name={'receiver_type'} params={{valueAsNumber: true}}
+                                />
+                            </Col>
+                            {receiverType === 1 && <Col xs={4}>
+                                <Field name={'receiver_inn'} type={'input-mask'} label={t('ИНН Получателья')}
+                                       property={{mask: '999999999', maskChar: '_'}}
+                                       params={{
+                                           pattern: {
+                                               value: /^[0-9]*$/,
+                                               message: 'Invalid format'
+                                           }
+                                       }}/>
+                            </Col>}
+                            {receiverType === 0 && <Col xs={4}>
+                                <Field name={'receiver_pinfl'} type={'input-mask'} label={t('ПИНФЛ Получателья')}
+                                       property={{mask: '99999999999999', maskChar: '_'}}
+                                       params={{
+                                           pattern: {
+                                               value: /^[0-9]*$/,
+                                               message: 'Invalid format'
+                                           }
+                                       }}/>
+                            </Col>}
                             <Col xs={4}>
                                 <Field    options={[
                                     {
